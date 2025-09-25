@@ -330,15 +330,23 @@ function initScrollSpy(){
   const links = $$('.nav-link');
   const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
   let ticking = false;
+
+  const onScroll = () => {
+    const y = window.scrollY + 120;
+    let current = null;
+    sections.forEach(sec => { if(y >= sec.offsetTop) current = sec.id; });
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+
+    // Mark body as scrolled for header shadow styling
+    document.body.classList.toggle('scrolled', (window.scrollY || 0) > 10);
+    ticking = false;
+  };
+
   window.addEventListener('scroll', () => {
-    if(ticking) return; ticking = true; requestAnimationFrame(() => {
-      const y = window.scrollY + 120; // offset for sticky header
-      let current = null;
-      sections.forEach(sec => { if(y >= sec.offsetTop) current = sec.id; });
-      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
-      ticking = false;
-    });
-  });
+    if(ticking) return; ticking = true; requestAnimationFrame(onScroll);
+  }, { passive: true });
+
+  onScroll(); // initial
 }
 
 // Load CV markdown (simple fetch and render minimal)
@@ -529,9 +537,9 @@ function initHeaderAutoHide(){
   if(!header) return;
 
   let lastY = window.pageYOffset || window.scrollY || 0;
-  const upThresh = 5;     // pixels to consider as an upward move
-  const downThresh = 5;   // pixels to consider as a downward move
-  const showTop = 40;     // always show near top
+  const upThresh = 0;      // show on any upward movement
+  const downThresh = 24;   // require a bit more movement to hide
+  const showTop = 40;      // always show near top
 
   const nav = document.getElementById('primaryNav');
   const menuBtn = document.getElementById('menuToggle');
@@ -553,10 +561,10 @@ function initHeaderAutoHide(){
     }
 
     if (y > lastY + downThresh) {
-      // scrolling down
+      // scrolling down (enough)
       hide();
     } else if (y < lastY - upThresh) {
-      // scrolling up
+      // any upward movement shows it
       show();
     }
 
@@ -568,5 +576,13 @@ function initHeaderAutoHide(){
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(onScroll);
+  }, { passive: true });
+
+  // Wheel fallback: if user scrolls up but the page is at/bottom edge and barely moves,
+  // still show the header for responsiveness.
+  window.addEventListener('wheel', (e) => {
+    if (e.deltaY < 0 && (window.scrollY || 0) > showTop && !isMenuOpen()) {
+      show();
+    }
   }, { passive: true });
 }
