@@ -6,6 +6,9 @@ const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 const I18N = {
   en: {
     brandName: 'Mamoun Tantaoui El Araki',
+    'nav.home': 'Home',
+    'nav.about': 'About',
+    'nav.creative': 'Creative',
     'nav.projects': 'Projects',
     'nav.cv': 'CV',
     'nav.contact': 'Contact',
@@ -18,6 +21,8 @@ const I18N = {
   'cta.exploreCode': 'Explore Code',
   'cta.readCase': 'Read Technical Details',
     'sections.projects': 'Projects',
+  'sections.about': 'About Me',
+  'sections.creative': 'Creative Work',
     'sections.projectsSub': 'Selected work — case study cards with tech stacks and links.',
     'sections.cv': 'Curriculum Vitae',
     'sections.contact': 'Contact',
@@ -29,6 +34,9 @@ const I18N = {
   },
   fr: {
     brandName: 'Mamoun Tantaoui El Araki',
+    'nav.home': 'Accueil',
+    'nav.about': 'À propos',
+    'nav.creative': 'Créatif',
     'nav.projects': 'Projets',
     'nav.cv': 'CV',
     'nav.contact': 'Contact',
@@ -41,6 +49,8 @@ const I18N = {
   'cta.exploreCode': 'Voir le code',
   'cta.readCase': 'Lire l’étude technique',
     'sections.projects': 'Projets',
+  'sections.about': 'À propos de moi',
+  'sections.creative': 'Travaux créatifs',
     'sections.projectsSub': 'Sélection — cartes d’études de cas, stacks et liens.',
     'sections.cv': 'Curriculum Vitae',
     'sections.contact': 'Contact',
@@ -52,6 +62,9 @@ const I18N = {
   },
   ar: {
     brandName: 'مامون تنتاوي العرَقي',
+    'nav.home': 'الرئيسية',
+    'nav.about': 'نبذة',
+    'nav.creative': 'الأعمال الإبداعية',
     'nav.projects': 'المشاريع',
     'nav.cv': 'السيرة الذاتية',
     'nav.contact': 'تواصل',
@@ -64,6 +77,8 @@ const I18N = {
   'cta.exploreCode': 'استعراض الشيفرة',
   'cta.readCase': 'قراءة التفاصيل التقنية',
     'sections.projects': 'المشاريع',
+  'sections.about': 'نبذة عني',
+  'sections.creative': 'الأعمال الإبداعية',
     'sections.projectsSub': 'مختارات — بطاقات دراسة حالة مع التقنيات والروابط.',
     'sections.cv': 'السيرة الذاتية',
     'sections.contact': 'تواصل',
@@ -284,6 +299,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   loadCV();
   initYear();
+  renderGalleries();
+  renderTimeline();
+  initLightbox();
 });
 
 // 3D tilt on cards
@@ -354,4 +372,62 @@ function closeCaseModal(){
   modal.classList.remove('show');
   modal.setAttribute('aria-hidden', 'true');
   modal.setAttribute('aria-modal', 'false');
+}
+
+// Creative galleries data (placeholders)
+const galleryPhoto = [
+  { src: 'assets/img/photo-1.jpg', alt: 'City lights' },
+  { src: 'assets/img/photo-2.jpg', alt: 'Desert dunes' },
+  { src: 'assets/img/photo-3.jpg', alt: 'Forest trail' },
+  { src: 'assets/img/photo-4.jpg', alt: 'Ocean horizon' }
+];
+const galleryDesign = [
+  { src: 'assets/img/design-1.jpg', alt: 'Logo concept' },
+  { src: 'assets/img/design-2.jpg', alt: 'Poster graphic' },
+  { src: 'assets/img/design-3.jpg', alt: 'UI wireframe' }
+];
+
+function renderGalleries(){
+  const p = $('#galleryPhoto');
+  const d = $('#galleryDesign');
+  if(p){ p.innerHTML = galleryPhoto.map(i => `<div class="gallery-item" data-img="${i.src}" aria-label="${escapeHtml(i.alt)}"><img src="${i.src}" alt="${escapeHtml(i.alt)}"/></div>`).join(''); }
+  if(d){ d.innerHTML = galleryDesign.map(i => `<div class="gallery-item" data-img="${i.src}" aria-label="${escapeHtml(i.alt)}"><img src="${i.src}" alt="${escapeHtml(i.alt)}"/></div>`).join(''); }
+}
+
+// Lightbox
+function initLightbox(){
+  if(!$('.lightbox')){
+    const lb = document.createElement('div');
+    lb.className = 'lightbox';
+    lb.innerHTML = '<img alt=""/>';
+    document.body.appendChild(lb);
+  }
+  const lb = $('.lightbox');
+  document.body.addEventListener('click', (e) => {
+    const item = e.target.closest('.gallery-item');
+    if(item){
+      const src = item.getAttribute('data-img');
+      $('.lightbox img').src = src;
+      lb.classList.add('show');
+    }else if(e.target === lb){
+      lb.classList.remove('show');
+    }
+  });
+}
+
+// Resume timeline (placeholder data)
+const timeline = [
+  { title: 'Software Engineer', meta: '2023 — Present', desc: 'Building AI and automation projects across government and healthcare.' },
+  { title: 'B.S. Computer Science', meta: '2019 — 2023', desc: 'University education with focus on systems and applied AI.' }
+];
+function renderTimeline(){
+  const el = $('#timeline');
+  if(!el) return;
+  el.innerHTML = timeline.map(it => `
+    <div class="timeline-item">
+      <h4 class="timeline-title">${escapeHtml(it.title)}</h4>
+      <div class="timeline-meta">${escapeHtml(it.meta)}</div>
+      <p>${escapeHtml(it.desc)}</p>
+    </div>
+  `).join('');
 }

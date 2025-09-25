@@ -28,7 +28,10 @@
         </a>
 
         <nav class="nav" aria-label="Primary">
+          <a href="#top" class="nav-link" data-i18n="nav.home">Home</a>
+          <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
           <a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+          <a href="#creative" class="nav-link" data-i18n="nav.creative">Creative</a>
           <a href="#cv" class="nav-link" data-i18n="nav.cv">CV</a>
           <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
         </nav>
@@ -62,7 +65,7 @@
               <span class="role" data-i18n="hero.role">Software Engineer</span>
             </h1>
             <p class="hero-tagline" data-i18n="hero.tagline">
-              Turning ideas into working apps & intelligent bots.
+              Building apps, designing stories, capturing moments.
             </p>
             <div class="hero-cta">
               <a href="#projects" class="btn btn-primary" data-i18n="cta.viewProjects">View Projects</a>
@@ -94,6 +97,50 @@
         </div>
       </section>
 
+      <section id="about" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="sections.about">About Me</h2>
+            <p class="section-sub" data-i18n="about.sub">A quick intro 
+              — who I am, what I study, and how I think.</p>
+          </div>
+          <div class="about-grid" data-reveal>
+            <div class="about-photo">
+              <img src="assets/img/profile.svg" alt="Profile" />
+            </div>
+            <div class="about-text">
+              <p data-i18n="about.bio">
+                I’m Mamoun, a builder who blends software engineering with creative thinking. I enjoy shipping clean, robust systems and telling compelling product stories.
+              </p>
+              <ul class="about-list">
+                <li>EN • FR • AR</li>
+                <li>Software Engineering & AI</li>
+                <li>Photography & Visual Design</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="creative" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="sections.creative">Creative Work</h2>
+            <p class="section-sub" data-i18n="creative.sub">Photography & Design selections.</p>
+          </div>
+
+          <div class="creative-group">
+            <h3 class="creative-title" data-i18n="creative.photo">Photography</h3>
+            <div id="galleryPhoto" class="gallery-grid" aria-live="polite"></div>
+          </div>
+
+          <div class="creative-group">
+            <h3 class="creative-title" data-i18n="creative.design">Design Showcase</h3>
+            <div id="galleryDesign" class="gallery-grid" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
       <section id="cv" class="section">
         <div class="container">
           <div class="section-head">
@@ -106,6 +153,8 @@
           <article id="cvContent" class="cv-content" aria-busy="true">
             <div class="loading" data-i18n="cv.loading">Loading CV…</div>
           </article>
+
+          <div class="resume-timeline" id="timeline" data-reveal></div>
         </div>
       </section>
 

@@ -97,6 +97,31 @@ body{
 .site-footer{ border-top:1px solid var(--border); padding:18px 0; background:color-mix(in oklab, var(--bg-soft) 60%, transparent) }
 .footer-inner{ display:flex; align-items:center; justify-content:center; gap:12px; color:var(--muted) }
 
+/* About */
+.about-grid{ display:grid; grid-template-columns: 320px 1fr; gap:18px; align-items:center }
+.about-photo img{ width:100%; max-width:320px; border-radius:16px; border:1px solid var(--border); background:var(--card) }
+.about-list{ margin:10px 0 0; padding-left:18px; color:var(--muted) }
+
+/* Creative galleries */
+.creative-group{ margin: 24px 0 }
+.creative-title{ margin: 0 0 10px }
+.gallery-grid{ display:grid; grid-template-columns: repeat(6, 1fr); gap:10px }
+.gallery-item{ position:relative; aspect-ratio: 4 / 3; overflow:hidden; border-radius:12px; border:1px solid var(--border); cursor:pointer; background:var(--card) }
+.gallery-item img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .3s ease }
+.gallery-item:hover img{ transform: scale(1.04) }
+
+/* Timeline */
+.resume-timeline{ margin-top:18px; border-left: 2px solid var(--border); padding-left:14px }
+.timeline-item{ margin:14px 0; position:relative }
+.timeline-item::before{ content:""; position:absolute; left:-9px; top:4px; width:10px; height:10px; background:linear-gradient(135deg, var(--primary), var(--primary-2)); border-radius:50% }
+.timeline-title{ font-weight:700; margin:0 }
+.timeline-meta{ color:var(--muted); font-size:12px; margin:4px 0 6px }
+
+/* Lightbox */
+.lightbox{ position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.8); z-index:120 }
+.lightbox.show{ display:grid }
+.lightbox img{ max-width:92vw; max-height:88vh; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.5) }
+
 @media (max-width: 960px){
   .hero-inner{ grid-template-columns: 1fr }
   .projects-grid{ grid-template-columns: repeat(6, 1fr) }
@@ -106,6 +131,8 @@ body{
   .projects-grid{ grid-template-columns: repeat(1, 1fr) }
   .project-card{ grid-column: auto }
   .contact-cards{ grid-template-columns: 1fr }
+  .about-grid{ grid-template-columns: 1fr }
+  .gallery-grid{ grid-template-columns: repeat(2, 1fr) }
 }
 
 /* subtle reveal animations */
