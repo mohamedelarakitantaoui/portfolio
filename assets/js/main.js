@@ -384,6 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initMenu();
   initScrollSpy();
+  initHeaderAutoHide();
   initLang();
   initReveal();
   loadCV();
@@ -520,4 +521,48 @@ function renderTimeline(){
       <p>${escapeHtml(it.desc)}</p>
     </div>
   `).join('');
+}
+
+// Header auto-hide on scroll
+function initHeaderAutoHide(){
+  const header = document.querySelector('.site-header');
+  if(!header) return;
+  let lastY = window.scrollY;
+  let ticking = false;
+  const threshold = 12; // minimal delta to avoid jitter
+
+  const nav = document.getElementById('primaryNav');
+  const menuBtn = document.getElementById('menuToggle');
+  const isMenuOpen = () => nav?.classList.contains('nav-open') || menuBtn?.getAttribute('aria-expanded') === 'true';
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    const dy = y - lastY;
+
+    // Always show near the very top or when menu is open
+    if (y < 40 || isMenuOpen()) {
+      header.classList.remove('is-hidden');
+      lastY = y;
+      ticking = false;
+      return;
+    }
+
+    if (Math.abs(dy) > threshold){
+      if (dy > 0) {
+        // scrolling down
+        header.classList.add('is-hidden');
+      } else {
+        // scrolling up
+        header.classList.remove('is-hidden');
+      }
+      lastY = y;
+    }
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(onScroll);
+  });
 }
