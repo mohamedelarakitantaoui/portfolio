@@ -1,0 +1,17 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+
+# Node / build artifacts
+node_modules/
+dist/
+
+# Project-specific
+project/node_modules/
+project/dist/
+
+# Env files
+.env
+.env.*
