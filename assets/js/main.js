@@ -81,8 +81,8 @@ const projects = [
   {
     id: 'gov-rag',
     title: 'Secure Government RAG',
-    description: 'On‑prem RAG system with local LLM, role‑based access, full audit logging, and multilingual UI (AR/FR/EN).',
-    tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL+pgvector', 'MinIO', 'Keycloak', 'Docker'],
+    description: 'On‑prem RAG with local LLM, role‑based access, full audit logging, multilingual UI (AR/FR/EN), citation‑based chatbot, and PDF→Excel document extraction.',
+    tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL+pgvector', 'MinIO', 'Keycloak', 'Docker', 'AI'],
     caseStudy: 'content/projects/gov-rag.md',
     links: {
       github: 'https://github.com/mohamedelarakitantaoui',
@@ -134,12 +134,7 @@ const projects = [
     links: { github: 'https://github.com/mohamedelarakitantaoui' },
   },
   {
-    id: 'gov-rag',
-    title: 'Secure Government RAG',
-    description: 'On‑prem RAG with local LLM, role‑based access, full audit logging, multilingual UI (AR/FR/EN), citation‑based chatbot, and PDF→Excel document extraction.',
-    tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL+pgvector', 'MinIO', 'Keycloak', 'Docker', 'AI'],
-    caseStudy: 'content/projects/gov-rag.md',
-    links: { github: 'https://github.com/mohamedelarakitantaoui' },
+    
   },
 ];
 
