@@ -15,6 +15,8 @@ const I18N = {
     'hero.available': 'Available for opportunities',
     'cta.viewProjects': 'View Projects',
     'cta.viewCV': 'Read CV',
+  'cta.exploreCode': 'Explore Code',
+  'cta.readCase': 'Read Technical Details',
     'sections.projects': 'Projects',
     'sections.projectsSub': 'Selected work — case study cards with tech stacks and links.',
     'sections.cv': 'Curriculum Vitae',
@@ -36,6 +38,8 @@ const I18N = {
     'hero.available': 'Disponible pour opportunités',
     'cta.viewProjects': 'Voir les projets',
     'cta.viewCV': 'Lire le CV',
+  'cta.exploreCode': 'Voir le code',
+  'cta.readCase': 'Lire l’étude technique',
     'sections.projects': 'Projets',
     'sections.projectsSub': 'Sélection — cartes d’études de cas, stacks et liens.',
     'sections.cv': 'Curriculum Vitae',
@@ -57,6 +61,8 @@ const I18N = {
     'hero.available': 'متاح لفرص جديدة',
     'cta.viewProjects': 'استعراض المشاريع',
     'cta.viewCV': 'قراءة السيرة',
+  'cta.exploreCode': 'استعراض الشيفرة',
+  'cta.readCase': 'قراءة التفاصيل التقنية',
     'sections.projects': 'المشاريع',
     'sections.projectsSub': 'مختارات — بطاقات دراسة حالة مع التقنيات والروابط.',
     'sections.cv': 'السيرة الذاتية',
@@ -71,47 +77,68 @@ const I18N = {
 
 // Project data
 const projects = [
+  // Priority 1: Government RAG
+  {
+    id: 'gov-rag',
+    title: 'Secure Government RAG',
+    description: 'On‑prem RAG system with local LLM, role‑based access, full audit logging, and multilingual UI (AR/FR/EN).',
+    tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL+pgvector', 'MinIO', 'Keycloak', 'Docker'],
+    caseStudy: 'content/projects/gov-rag.md',
+    links: {
+      github: 'https://github.com/mohamedelarakitantaoui',
+      demo: '#'
+    }
+  },
+  // Priority 2: DCE Scraper
+  {
+    id: 'dce-scraper',
+    title: 'DCE Scraper — Microservices',
+    description: 'Advanced procurement scraper refactored from monolith to 7 microservices with 90%+ speed gains and zero silent failures.',
+    tech: ['Python 3.12', 'Selenium', 'Microservices', 'Multithreading', 'Async', 'Click CLI', 'YAML config'],
+    caseStudy: 'content/projects/dce-scraper.md',
+    links: {
+      github: 'https://github.com/mohamedelarakitantaoui',
+    }
+  },
+  // Priority 3: eSaha
+  {
+    id: 'esaha',
+    title: 'eSaha — Mental Health Platform',
+    description: 'Privacy‑first healthcare platform: secure auth, real‑time chat, journaling, scheduling, and resources library.',
+    tech: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Supabase', 'Axios'],
+    caseStudy: 'content/projects/esaha.md',
+    links: {
+      github: 'https://github.com/mohamedelarakitantaoui',
+    }
+  },
+  // Other Projects (concise cards)
   {
     id: 'quiz-game',
     title: 'Quiz Game App',
-    description: 'Kotlin app powered by Firebase and coroutines. Real-time questions, leaderboards, and offline cache.',
+    description: 'Kotlin + Firebase with coroutines, real-time questions, leaderboards, and offline cache.',
     tech: ['Kotlin', 'Firebase', 'Coroutines'],
-    links: { github: '#', demo: '#' },
+    links: { github: 'https://github.com/mohamedelarakitantaoui' },
   },
   {
     id: 'preparia',
     title: 'Preparia Platform',
-    description: 'WordPress-based learning platform using Elementor and H5P interactive content.',
+    description: 'WordPress e-learning platform using Elementor and interactive H5P content.',
     tech: ['WordPress', 'Elementor', 'H5P'],
-    links: { site: '#'},
+    links: { github: 'https://github.com/mohamedelarakitantaoui' },
   },
   {
     id: 'courses-lessons',
     title: 'Courses & Lessons App',
-    description: 'Flutter mobile app with WordPress backend — browse courses, lessons, and media content.',
+    description: 'Flutter app with WordPress backend for browsing courses, lessons, and media.',
     tech: ['Flutter', 'Dart', 'WordPress'],
-    links: { github: '#', demo: '#' },
-  },
-  {
-    id: 'essaha',
-    title: 'Essaha App',
-    description: 'Self-developed mobile app. Clean architecture, robust state management, and polished UI.',
-    tech: ['Mobile', 'Design', 'Clean Architecture'],
-    links: { demo: '#' },
-  },
-  {
-    id: 'dce-scraper',
-    title: 'DCE Scraper Bot',
-    description: 'Automation bot that scrapes and downloads consultation files end-to-end.',
-    tech: ['Python', 'Playwright/Selenium', 'Scraping'],
-    links: { github: '#'},
+    links: { github: 'https://github.com/mohamedelarakitantaoui' },
   },
   {
     id: 'ai-chatbot-pdf-excel',
-    title: 'AI Chatbot & PDF→Excel Converter',
-    description: 'Chatbot with citation-based answers plus a utility to convert PDF documents into Excel tables.',
+    title: 'AI Chatbot & PDF→Excel',
+    description: 'Chatbot with citation-based answers and a PDF‑to‑Excel conversion tool.',
     tech: ['AI', 'Embeddings', 'ETL'],
-    links: { demo: '#', github: '#' },
+    links: { github: 'https://github.com/mohamedelarakitantaoui' },
   },
 ];
 
@@ -131,11 +158,14 @@ function renderProjects() {
           ${p.tech.map(t => `<span class="chip">${t}</span>`).join('')}
         </div>
         <div class="card-actions">
-          ${Object.entries(p.links).map(([k,v]) => `<a class="btn btn-secondary" href="${v}" target="_blank" rel="noopener">${labelForLink(k)}</a>`).join('')}
+          ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${t('cta.exploreCode')}</a>` : ''}
+          ${p.links?.demo ? `<a class="btn btn-secondary" href="${p.links.demo}" target="_blank" rel="noopener">${labelForLink('demo')}</a>` : ''}
+          ${p.caseStudy ? `<button class="btn btn-primary btn-case" data-case="${p.caseStudy}" data-title="${escapeHtml(p.title)}">${t('cta.readCase')}</button>` : ''}
         </div>
       </div>
     </article>
   `).join('');
+  initCaseStudyButtons();
 }
 
 function labelForLink(kind){
@@ -195,6 +225,16 @@ function setLang(lang){
   });
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   document.documentElement.lang = lang;
+}
+
+function t(key){
+  const lang = document.documentElement.lang || 'en';
+  return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+}
+
+function escapeHtml(str){
+  const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' };
+  return str.replace(/[&<>'"]/g, c => map[c]);
 }
 
 // Scroll reveal
@@ -276,4 +316,46 @@ function initTilt(){
     card.addEventListener('mousemove', onMove);
     card.addEventListener('mouseleave', reset);
   });
+}
+
+// Case Study Modal
+function initCaseStudyButtons(){
+  $$('.btn-case').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const path = btn.getAttribute('data-case');
+      const title = btn.getAttribute('data-title') || 'Case Study';
+      openCaseModal(title);
+      try{
+        const res = await fetch(path);
+        const md = await res.text();
+        $('#modalBody').innerHTML = markdownToHtml(md);
+      }catch(err){
+        $('#modalBody').innerHTML = '<p>Unable to load case study right now.</p>';
+      }
+    });
+  });
+}
+
+function openCaseModal(title){
+  const modal = $('#caseModal');
+  $('#modalTitle').textContent = title;
+  $('#modalBody').innerHTML = '<div class="loading">Loading…</div>';
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  modal.setAttribute('aria-modal', 'true');
+  // close events
+  const onClose = (e) => {
+    if(e.target.hasAttribute?.('data-close') || e.target === $('.modal-backdrop', modal)){
+      closeCaseModal();
+    }
+  };
+  modal.addEventListener('click', onClose, { once: true });
+  $('.modal-close', modal)?.addEventListener('click', closeCaseModal, { once: true });
+}
+
+function closeCaseModal(){
+  const modal = $('#caseModal');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  modal.setAttribute('aria-modal', 'false');
 }
