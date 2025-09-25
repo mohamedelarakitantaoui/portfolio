@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111827" />
+  <title>Mamoun Tantaoui El Araki — Portfolio</title>
+    <meta
+      name="description"
+      content="Modern portfolio showcasing apps, bots, and creative engineering — turning ideas into working apps & intelligent bots."
+    />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <script defer src="assets/js/main.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="#top" class="brand" aria-label="Home">
+          <img src="assets/img/logo-mark.svg" alt="Logo" class="brand-mark" />
+          <span class="brand-text" data-i18n="brandName">Mamoun Tantaoui El Araki</span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+          <a href="#cv" class="nav-link" data-i18n="nav.cv">CV</a>
+          <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="btn-ghost" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+            <span class="icon">🌙</span>
+          </button>
+          <div class="lang-switch">
+            <button class="btn-ghost" id="langCurrent" aria-haspopup="listbox" aria-expanded="false" title="Language">
+              EN
+            </button>
+            <ul class="lang-menu" id="langMenu" role="listbox" aria-label="Language menu">
+              <li role="option" data-lang="en">EN</li>
+              <li role="option" data-lang="fr">FR</li>
+              <li role="option" data-lang="ar">العربية</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="container hero-inner">
+          <div class="hero-text">
+            <p class="eyebrow" data-i18n="hero.eyebrow">Portfolio</p>
+            <h1 class="hero-title">
+              <span data-i18n="hero.name">Mamoun Tantaoui El Araki</span>
+              <span class="gradient">—</span>
+              <span class="role" data-i18n="hero.role">Software Engineer</span>
+            </h1>
+            <p class="hero-tagline" data-i18n="hero.tagline">
+              Turning ideas into working apps & intelligent bots.
+            </p>
+            <div class="hero-cta">
+              <a href="#projects" class="btn btn-primary" data-i18n="cta.viewProjects">View Projects</a>
+              <a href="#cv" class="btn btn-secondary" data-i18n="cta.viewCV">Read CV</a>
+            </div>
+            <div class="hero-meta">
+              <span class="badge">EN</span>
+              <span class="badge">FR</span>
+              <span class="badge">AR</span>
+              <span class="spacer"></span>
+              <span class="subtle" data-i18n="hero.available">Available for opportunities</span>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="assets/img/hero-visual.svg" alt="Creative technology visual" />
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="sections.projects">Projects</h2>
+            <p class="section-sub" data-i18n="sections.projectsSub">
+              Selected work — case study cards with tech stacks and links.
+            </p>
+          </div>
+          <div id="projectsGrid" class="projects-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="cv" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="sections.cv">Curriculum Vitae</h2>
+            <div class="cv-actions">
+              <a class="btn btn-secondary" href="content/cv.md" download data-i18n="cv.downloadTxt">Download CV (txt)</a>
+              <a class="btn btn-ghost" href="content/cv.pdf" download data-i18n="cv.downloadPdf">Download PDF</a>
+            </div>
+          </div>
+          <article id="cvContent" class="cv-content" aria-busy="true">
+            <div class="loading" data-i18n="cv.loading">Loading CV…</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="sections.contact">Contact</h2>
+            <p class="section-sub" data-i18n="contact.sub">Let’s build something great together.</p>
+          </div>
+          <div class="contact-cards">
+            <a class="contact-card" href="mailto:you@example.com" target="_blank" rel="noopener" aria-label="Email">
+              <span class="contact-emoji">✉️</span>
+              <div>
+                <div class="contact-label" data-i18n="contact.email">Email</div>
+                <div class="contact-value">you@example.com</div>
+              </div>
+            </a>
+            <a class="contact-card" href="https://github.com/yourhandle" target="_blank" rel="noopener" aria-label="GitHub">
+              <span class="contact-emoji">🐙</span>
+              <div>
+                <div class="contact-label">GitHub</div>
+                <div class="contact-value">github.com/yourhandle</div>
+              </div>
+            </a>
+            <a class="contact-card" href="https://www.linkedin.com/in/yourhandle" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <span class="contact-emoji">💼</span>
+              <div>
+                <div class="contact-label">LinkedIn</div>
+                <div class="contact-value">linkedin.com/in/yourhandle</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+  <span>© <span id="year"></span> <span data-i18n="brandName">Mamoun Tantaoui El Araki</span></span>
+        <span class="subtle">•</span>
+        <span class="subtle" data-i18n="footer.built">Built with HTML, CSS & JS</span>
+      </div>
+    </footer>
+  </body>
+  </html>
