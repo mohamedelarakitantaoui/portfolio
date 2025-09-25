@@ -2,6 +2,8 @@
 
 **Government-grade RAG (Retrieval Augmented Generation) application with complete data sovereignty and military-grade security**
 
+Includes an enterprise chatbot that provides citation-based answers grounded in uploaded documents and a PDF→Excel conversion workflow for tabular extraction.
+
 ## Key Highlights
 - 100% On-premises: Zero external API calls or data leakage
 - Military-grade security: Guardrails and audit logging
@@ -31,6 +33,8 @@ Frontend (React) → Chat Service (FastAPI) → Ollama LLM (Local)
 
 ## Core Features
 - Secure Document Q&A with context restriction
+- Citation-based chatbot answers with source links
+- PDF→Excel document conversion for tables and structured data
 - Multi-language processing (Arabic RTL support)
 - Enterprise authentication with Keycloak
 - Modern SaaS UI with audit trail
