@@ -148,25 +148,25 @@ const projects = [
     tech: ['Flutter', 'Dart', 'WordPress'],
     links: { github: 'https://github.com/mohamedelarakitantaoui' },
   },
-  {
-    
-  },
+  // Note: Keep this list clean; avoid empty items that can break rendering.
 ];
 
 // Render project cards
 function renderProjects() {
   const grid = $('#projectsGrid');
   if (!grid) return;
-  grid.innerHTML = projects.map(p => `
+  // Filter out any incomplete entries to avoid runtime errors
+  const safe = projects.filter(p => p && p.title && p.description);
+  grid.innerHTML = safe.map(p => `
     <article class="project-card" data-reveal data-id="${p.id}">
       <div class="project-media" aria-hidden="true">
-        <span>${p.title.split(' ').map(w=>w[0]).join('').slice(0,4).toUpperCase()}</span>
+        <span>${String(p.title).split(' ').map(w=>w[0]).join('').slice(0,4).toUpperCase()}</span>
       </div>
       <div class="project-body">
         <h3 class="project-title">${p.title}</h3>
         <p class="project-desc">${p.description}</p>
         <div class="tech-list">
-          ${p.tech.map(t => `<span class="chip">${t}</span>`).join('')}
+          ${(p.tech||[]).map(t => `<span class="chip">${t}</span>`).join('')}
         </div>
         <div class="card-actions">
           ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${t('cta.exploreCode')}</a>` : ''}
@@ -207,6 +207,7 @@ function initLang(){
   const menu = $('#langMenu');
   const saved = localStorage.getItem('lang') || 'en';
   setLang(saved);
+  if(!currentBtn || !menu) return; // graceful if controls missing
   currentBtn.textContent = saved.toUpperCase() === 'AR' ? 'AR' : saved.toUpperCase();
   currentBtn.addEventListener('click', () => {
     const isOpen = menu.classList.contains('show');
@@ -226,6 +227,20 @@ function initLang(){
   document.addEventListener('click', (e)=>{
     if(!menu.contains(e.target) && e.target !== currentBtn) menu.classList.remove('show');
   })
+}
+
+// Hide PDF download if the file isn't present
+async function initCvDownloads(){
+  const pdfLink = document.querySelector('a[href="content/cv.pdf"]');
+  if(!pdfLink) return;
+  try{
+    const res = await fetch('content/cv.pdf', { method: 'HEAD' });
+    if(!res.ok){
+      pdfLink.style.display = 'none';
+    }
+  }catch(err){
+    pdfLink.style.display = 'none';
+  }
 }
 
 function setLang(lang){
@@ -298,6 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLang();
   initReveal();
   loadCV();
+  initCvDownloads();
   initYear();
   renderGalleries();
   renderTimeline();
