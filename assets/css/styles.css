@@ -1,32 +1,34 @@
 :root{
-  --bg: #0b1020;
-  --bg-soft:#0f1530;
-  --text:#e6e9ef;
-  --muted:#98a2b3;
-  --primary:#7c5cff;
-  --primary-2:#22d3ee;
-  --card:#11172f;
-  --border:#1d2240;
-  --ok:#22c55e;
-  --warn:#f59e0b;
+  /* Zellige Night palette: deep indigo + emerald + terracotta accents */
+  --bg:#0b0f17;            /* night indigo */
+  --bg-soft:#101725;       /* softer panel */
+  --text:#e8edf6;          /* moonlight */
+  --muted:#9aa7bd;         /* slate mist */
+  --primary:#5fe1c3;       /* mint-emerald tile */
+  --primary-2:#ff7a59;     /* warm terracotta */
+  --card:#0f1624;          /* card base */
+  --border:#1b2436;        /* border ink */
+  --ok:#22c55e;            /* success */
+  --warn:#f59e0b;          /* warning */
 }
 
 [data-theme="light"]{
-  --bg:#f7f7fb;
-  --bg-soft:#ffffff;
-  --text:#0f172a;
-  --muted:#475569;
+  --bg:#fbfbfd;            /* paper */
+  --bg-soft:#ffffff;       /* card */
+  --text:#0f172a;          /* ink */
+  --muted:#475569;         /* slate */
   --card:#ffffff;
-  --border:#e5e7eb;
+  --border:#e6eaf0;
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "DM Sans", sans-serif;
-  background: radial-gradient(1200px 800px at 10% -10%, rgba(124,92,255,.12), transparent 60%),
-              radial-gradient(1000px 700px at 100% 0%, rgba(34,211,238,.12), transparent 50%),
-              var(--bg);
+  background:
+    radial-gradient(1200px 800px at 10% -10%, color-mix(in oklab, var(--primary) 18%, transparent), transparent 60%),
+    radial-gradient(1000px 700px at 100% 0%, color-mix(in oklab, var(--primary-2) 18%, transparent), transparent 50%),
+    var(--bg);
   color:var(--text); line-height:1.6; letter-spacing:.2px;
 }
 
@@ -44,9 +46,17 @@ body{
 .nav{ display:flex; gap:18px }
 .nav-link{ color:var(--muted); text-decoration:none; font-weight:500 }
 .nav-link:hover{ color:var(--text) }
+.nav-link.active{ color:var(--text); position:relative }
+.nav-link.active::after{ content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background:linear-gradient(90deg, var(--primary), var(--primary-2)); border-radius:2px }
+.nav-link.active{ color:var(--text); position:relative }
+.nav-link.active::after{ content:''; position:absolute; left:0; right:0; bottom:-6px; height:2px; background:linear-gradient(90deg, var(--primary), var(--primary-2)); border-radius:2px }
 .header-actions{ display:flex; gap:8px; align-items:center }
 .btn-ghost{ background:transparent; color:var(--text); border:1px solid var(--border); padding:8px 10px; border-radius:10px; cursor:pointer }
 .btn-ghost:hover{ border-color:color-mix(in oklab, var(--border), var(--text) 40%) }
+
+/* Mobile nav */
+.nav-open{ display:block !important }
+.no-scroll{ overflow:hidden }
 
 .lang-switch{ position:relative }
 .lang-menu{ position:absolute; right:0; top:42px; display:none; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:6px; list-style:none; margin:0; min-width:120px }
@@ -72,7 +82,7 @@ body{
 
 .projects-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px }
 .project-card{ grid-column: span 6; background:linear-gradient(180deg, color-mix(in oklab, var(--card), transparent 16%), var(--card)); border:1px solid var(--border); border-radius:16px; overflow:hidden; position:relative; transition: transform .2s ease, box-shadow .2s ease }
-.project-media{ aspect-ratio: 16/9; background:linear-gradient(135deg, rgba(124,92,255,.2), rgba(34,211,238,.2)); display:grid; place-items:center; color:#1e293b; font-weight:800; letter-spacing:.06em }
+.project-media{ aspect-ratio: 16/9; background:linear-gradient(135deg, color-mix(in oklab, var(--primary) 30%, transparent), color-mix(in oklab, var(--primary-2) 30%, transparent)); display:grid; place-items:center; color:#0f172a; font-weight:800; letter-spacing:.06em }
 .project-body{ padding:14px 14px 12px }
 .project-title{ margin:2px 0 4px; font-size:18px }
 .project-desc{ margin:0 0 10px; color:var(--muted) }
@@ -123,12 +133,19 @@ body{
 .lightbox img{ max-width:92vw; max-height:88vh; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.5) }
 
 @media (max-width: 960px){
-  .hero-inner{ grid-template-columns: 1fr }
+  .nav{ display:none; position:absolute; right:10px; top:60px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px; flex-direction:column; gap:10px; box-shadow:0 12px 30px rgba(0,0,0,.35) }
+  #menuToggle{ display:inline-flex }
   .projects-grid{ grid-template-columns: repeat(6, 1fr) }
 }
 @media (max-width: 680px){
-  .nav{ display:none }
+  .nav{ display:none; position:absolute; top:64px; right:10px; left:10px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:10px; flex-direction:column; z-index:60 }
+  .nav.nav-open{ display:flex }
   .projects-grid{ grid-template-columns: repeat(1, 1fr) }
+
+/* Ensure light theme contrasts */
+[data-theme="light"] .project-media{ color:#0f172a }
+[data-theme="light"] .btn-secondary{ background:#f2f4f7; color:#0f172a }
+[data-theme="light"] .chip{ background:#f9fafb; color:#334155 }
   .project-card{ grid-column: auto }
   .contact-cards{ grid-template-columns: 1fr }
   .about-grid{ grid-template-columns: 1fr }

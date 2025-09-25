@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  /* Zellige Night theme */
+  --bg:#0b0f17;
+  --bg-soft:#101725;
+  --text:#e8edf6;
+  --muted:#9aa7bd;
+  --primary:#5fe1c3;
+  --primary-2:#ff7a59;
+  --card:#0f1624;
+  --border:#1b2436;
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+  --bg:#fbfbfd;
+  --bg-soft:#ffffff;
+  --text:#0f172a;
+  --muted:#475569;
+  --card:#ffffff;
+  --border:#e6eaf0;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+}

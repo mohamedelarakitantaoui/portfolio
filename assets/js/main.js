@@ -6,6 +6,7 @@ const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 const I18N = {
   en: {
     brandName: 'Mamoun Tantaoui El Araki',
+    'hero.name': 'Mamoun Tantaoui El Araki',
     'nav.home': 'Home',
     'nav.about': 'About',
     'nav.creative': 'Creative',
@@ -18,29 +19,29 @@ const I18N = {
     'hero.available': 'Available for opportunities',
     'cta.viewProjects': 'View Projects',
     'cta.viewCV': 'Read CV',
-  'cta.exploreCode': 'Explore Code',
-  'cta.readCase': 'Read Technical Details',
+    'cta.exploreCode': 'Explore Code',
+    'cta.readCase': 'Read Technical Details',
     'sections.projects': 'Projects',
-  'sections.about': 'About Me',
-  'sections.creative': 'Creative Work',
+    'sections.about': 'About Me',
+    'sections.creative': 'Creative Work',
     'sections.projectsSub': 'Selected work — case study cards with tech stacks and links.',
     'sections.cv': 'Curriculum Vitae',
     'sections.contact': 'Contact',
-  'contact.sub': 'Let’s build something great together.',
-  'about.sub': 'A quick intro — who I am, what I study, and how I think.',
-  'about.bio': 'I’m Mamoun, a builder who blends software engineering with creative thinking. I enjoy shipping clean, robust systems and telling compelling product stories.',
-  'creative.sub': 'Photography & Design selections.',
-  'creative.photo': 'Photography',
-  'creative.design': 'Design Showcase',
-  'hero.name': 'Mamoun Tantaoui El Araki',
-  'contact.email': 'Email',
+    'about.sub': 'A quick intro — who I am, what I study, and how I think.',
+    'about.bio': 'I’m Mamoun, a builder who blends software engineering with creative thinking. I enjoy shipping clean, robust systems and telling compelling product stories.',
+    'creative.sub': 'Photography & Design selections.',
+    'creative.photo': 'Photography',
+    'creative.design': 'Design Showcase',
+    'contact.sub': 'Let’s build something great together.',
+    'contact.email': 'Email',
     'cv.downloadTxt': 'Download CV (txt)',
-  'cv.downloadPdf': 'Download PDF',
+    'cv.downloadPdf': 'Download PDF',
     'cv.loading': 'Loading CV…',
     'footer.built': 'Built with HTML, CSS & JS'
   },
   fr: {
     brandName: 'Mamoun Tantaoui El Araki',
+    'hero.name': 'Mamoun Tantaoui El Araki',
     'nav.home': 'Accueil',
     'nav.about': 'À propos',
     'nav.creative': 'Créatif',
@@ -53,29 +54,29 @@ const I18N = {
     'hero.available': 'Disponible pour opportunités',
     'cta.viewProjects': 'Voir les projets',
     'cta.viewCV': 'Lire le CV',
-  'cta.exploreCode': 'Voir le code',
-  'cta.readCase': 'Lire l’étude technique',
+    'cta.exploreCode': 'Voir le code',
+    'cta.readCase': 'Lire l’étude technique',
     'sections.projects': 'Projets',
-  'sections.about': 'À propos de moi',
-  'sections.creative': 'Travaux créatifs',
+    'sections.about': 'À propos de moi',
+    'sections.creative': 'Travaux créatifs',
     'sections.projectsSub': 'Sélection — cartes d’études de cas, stacks et liens.',
     'sections.cv': 'Curriculum Vitae',
     'sections.contact': 'Contact',
-  'contact.sub': 'Construisons quelque chose de génial.',
-  'about.sub': 'Présentation rapide — qui je suis, ce que j’étudie et ma façon de penser.',
-  'about.bio': 'Je suis Mamoun, un bâtisseur qui mêle ingénierie logicielle et pensée créative. J’aime livrer des systèmes propres et robustes et raconter de belles histoires produit.',
-  'creative.sub': 'Sélection de Photographie & Design.',
-  'creative.photo': 'Photographie',
-  'creative.design': 'Design',
-  'hero.name': 'Mamoun Tantaoui El Araki',
-  'contact.email': 'Email',
+    'about.sub': 'Présentation rapide — qui je suis, ce que j’étudie et ma façon de penser.',
+    'about.bio': 'Je suis Mamoun, un bâtisseur qui mêle ingénierie logicielle et créativité. J’aime livrer des systèmes propres et raconter des histoires produit.',
+    'creative.sub': 'Sélection de Photographie & Design.',
+    'creative.photo': 'Photographie',
+    'creative.design': 'Vitrine Design',
+    'contact.sub': 'Construisons quelque chose de génial.',
+    'contact.email': 'Email',
     'cv.downloadTxt': 'Télécharger CV (txt)',
-  'cv.downloadPdf': 'Télécharger PDF',
+    'cv.downloadPdf': 'Télécharger PDF',
     'cv.loading': 'Chargement du CV…',
     'footer.built': 'Créé avec HTML, CSS & JS'
   },
   ar: {
     brandName: 'مامون تنتاوي العرَقي',
+    'hero.name': 'مامون تنتاوي العرَقي',
     'nav.home': 'الرئيسية',
     'nav.about': 'نبذة',
     'nav.creative': 'الأعمال الإبداعية',
@@ -88,24 +89,23 @@ const I18N = {
     'hero.available': 'متاح لفرص جديدة',
     'cta.viewProjects': 'استعراض المشاريع',
     'cta.viewCV': 'قراءة السيرة',
-  'cta.exploreCode': 'استعراض الشيفرة',
-  'cta.readCase': 'قراءة التفاصيل التقنية',
+    'cta.exploreCode': 'استعراض الشيفرة',
+    'cta.readCase': 'قراءة التفاصيل التقنية',
     'sections.projects': 'المشاريع',
-  'sections.about': 'نبذة عني',
-  'sections.creative': 'الأعمال الإبداعية',
+    'sections.about': 'نبذة عني',
+    'sections.creative': 'الأعمال الإبداعية',
     'sections.projectsSub': 'مختارات — بطاقات دراسة حالة مع التقنيات والروابط.',
     'sections.cv': 'السيرة الذاتية',
     'sections.contact': 'تواصل',
-  'contact.sub': 'لنصنع شيئًا رائعًا معًا.',
-  'about.sub': 'نبذة سريعة — من أنا، ماذا أدرس، وكيف أفكر.',
-  'about.bio': 'أنا مامون، أبني حلولًا تمزج بين هندسة البرمجيات والتفكير الإبداعي. أستمتع ببناء أنظمة نظيفة ومتينة وسرد قصص منتج مقنعة.',
-  'creative.sub': 'مختارات من التصوير والتصميم.',
-  'creative.photo': 'التصوير',
-  'creative.design': 'عرض التصميم',
-  'hero.name': 'مامون تنتاوي العرَقي',
-  'contact.email': 'البريد الإلكتروني',
+    'about.sub': 'نبذة سريعة — من أنا، ماذا أتعلم، وكيف أفكر.',
+    'about.bio': 'أنا مامون، أمزج بين هندسة البرمجيات والتفكير الإبداعي. أستمتع ببناء أنظمة متينة وسرد قصص منتج مميزة.',
+    'creative.sub': 'مختارات من التصوير والتصميم.',
+    'creative.photo': 'التصوير',
+    'creative.design': 'عرض التصميم',
+    'contact.sub': 'لنصنع شيئًا رائعًا معًا.',
+    'contact.email': 'البريد الإلكتروني',
     'cv.downloadTxt': 'تنزيل السيرة (نص)',
-  'cv.downloadPdf': 'تنزيل PDF',
+    'cv.downloadPdf': 'تنزيل PDF',
     'cv.loading': 'جارٍ تحميل السيرة…',
     'footer.built': 'تم بناؤه بـ HTML وCSS وJS'
   }
@@ -179,15 +179,15 @@ function renderProjects() {
   // Filter out any incomplete entries to avoid runtime errors
   const safe = projects.filter(p => p && p.title && p.description);
   grid.innerHTML = safe.map(p => `
-    <article class="project-card" data-reveal data-id="${p.id}">
+    <article class="project-card" data-reveal data-id="${escapeHtml(String(p.id||''))}">
       <div class="project-media" aria-hidden="true">
-        <span>${String(p.title).split(' ').map(w=>w[0]).join('').slice(0,4).toUpperCase()}</span>
+        <span>${escapeHtml(String(p.title).split(' ').map(w=>w[0]).join('').slice(0,4).toUpperCase())}</span>
       </div>
       <div class="project-body">
-        <h3 class="project-title">${p.title}</h3>
-        <p class="project-desc">${p.description}</p>
+        <h3 class="project-title">${escapeHtml(String(p.title))}</h3>
+        <p class="project-desc">${escapeHtml(String(p.description))}</p>
         <div class="tech-list">
-          ${(p.tech||[]).map(t => `<span class="chip">${t}</span>`).join('')}
+          ${(p.tech||[]).map(tg => `<span class="chip">${escapeHtml(String(tg))}</span>`).join('')}
         </div>
         <div class="card-actions">
           ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${t('cta.exploreCode')}</a>` : ''}
@@ -212,14 +212,26 @@ function labelForLink(kind){
 // Theme toggle
 function initTheme(){
   const btn = $('#themeToggle');
-  const ls = localStorage.getItem('theme');
-  if (ls) document.documentElement.setAttribute('data-theme', ls);
+  // Prefer saved theme, else system preference, default to dark
+  const saved = localStorage.getItem('theme');
+  const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = saved || (systemDark ? 'dark' : 'light');
+  setTheme(initial);
   btn?.addEventListener('click', () => {
-    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    const cur = getTheme();
     const next = cur === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    setTheme(next);
   });
+  // Update icon
+  function updateIcon(mode){ const icon = btn?.querySelector('.icon'); if(icon) icon.textContent = mode === 'dark' ? '🌙' : '☀️'; }
+  function setTheme(mode){
+    document.documentElement.setAttribute('data-theme', mode);
+    localStorage.setItem('theme', mode);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if(meta){ meta.setAttribute('content', mode === 'dark' ? '#0b1020' : '#f7f7fb'); }
+    updateIcon(mode);
+  }
+  function getTheme(){ return document.documentElement.getAttribute('data-theme') || 'dark'; }
 }
 
 // Language switcher (LTR/RTL aware)
@@ -292,13 +304,52 @@ function initReveal(){
   $$('[data-reveal]').forEach(el => io.observe(el));
 }
 
+// Mobile menu toggle
+function initMenu(){
+  const btn = $('#menuToggle');
+  const nav = $('#primaryNav');
+  if(!btn || !nav) return;
+  const openClass = 'nav-open';
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    nav.classList.toggle(openClass, !expanded);
+  });
+  // Close on link click (for mobile UX)
+  nav.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if(a && nav.classList.contains(openClass)){
+      nav.classList.remove(openClass);
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// Scroll spy (active nav link)
+function initScrollSpy(){
+  const links = $$('.nav-link');
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if(ticking) return; ticking = true; requestAnimationFrame(() => {
+      const y = window.scrollY + 120; // offset for sticky header
+      let current = null;
+      sections.forEach(sec => { if(y >= sec.offsetTop) current = sec.id; });
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+      ticking = false;
+    });
+  });
+}
+
 // Load CV markdown (simple fetch and render minimal)
 async function loadCV(){
   const el = $('#cvContent');
   if(!el) return;
   try{
     const res = await fetch('content/cv.md');
-    const md = await res.text();
+    let md = await res.text();
+    // Normalize CRLF to LF for consistent parsing across Windows
+    md = md.replace(/\r\n/g, '\n');
     el.innerHTML = markdownToHtml(md);
     el.removeAttribute('aria-busy');
   }catch(err){
@@ -331,6 +382,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProjects();
   initTilt();
   initTheme();
+  initMenu();
+  initScrollSpy();
   initLang();
   initReveal();
   loadCV();
