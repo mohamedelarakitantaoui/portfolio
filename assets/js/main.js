@@ -527,36 +527,40 @@ function renderTimeline(){
 function initHeaderAutoHide(){
   const header = document.querySelector('.site-header');
   if(!header) return;
-  let lastY = window.scrollY;
-  let ticking = false;
-  const threshold = 12; // minimal delta to avoid jitter
+
+  let lastY = window.pageYOffset || window.scrollY || 0;
+  const upThresh = 5;     // pixels to consider as an upward move
+  const downThresh = 5;   // pixels to consider as a downward move
+  const showTop = 40;     // always show near top
 
   const nav = document.getElementById('primaryNav');
   const menuBtn = document.getElementById('menuToggle');
   const isMenuOpen = () => nav?.classList.contains('nav-open') || menuBtn?.getAttribute('aria-expanded') === 'true';
 
-  const onScroll = () => {
-    const y = window.scrollY;
-    const dy = y - lastY;
+  const show = () => header.classList.remove('is-hidden');
+  const hide = () => header.classList.add('is-hidden');
 
-    // Always show near the very top or when menu is open
-    if (y < 40 || isMenuOpen()) {
-      header.classList.remove('is-hidden');
+  let ticking = false;
+  const onScroll = () => {
+    const y = window.pageYOffset || window.scrollY || 0;
+
+    // Always show when near the top or when menu is open
+    if (y <= showTop || isMenuOpen()) {
+      show();
       lastY = y;
       ticking = false;
       return;
     }
 
-    if (Math.abs(dy) > threshold){
-      if (dy > 0) {
-        // scrolling down
-        header.classList.add('is-hidden');
-      } else {
-        // scrolling up
-        header.classList.remove('is-hidden');
-      }
-      lastY = y;
+    if (y > lastY + downThresh) {
+      // scrolling down
+      hide();
+    } else if (y < lastY - upThresh) {
+      // scrolling up
+      show();
     }
+
+    lastY = y;
     ticking = false;
   };
 
@@ -564,5 +568,5 @@ function initHeaderAutoHide(){
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(onScroll);
-  });
+  }, { passive: true });
 }
