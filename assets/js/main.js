@@ -34,6 +34,25 @@ const I18N = {
     'creative.sub': 'Photography & Design selections.',
     'creative.photo': 'Photography',
     'creative.design': 'Design Showcase',
+    'creative.intro': 'Beyond code, I\'m passionate about photography and visual design. Here\'s a selection of my creative work.',
+    'creative.filterAll': 'All',
+    'creative.filterPhoto': 'Photography',
+    'creative.filterDesign': 'Design',
+    'photo.featured.title': 'Creative Moment',
+    'photo.featured.caption': 'Captured during creative process, 2025',
+    'photo.placeholder1': 'City sunset',
+    'photo.placeholder2': 'Street photography',
+    'photo.placeholder3': 'Portrait session',
+    'photo.placeholder4': 'Architecture study',
+    'photo.placeholder5': 'Nature composition',
+    'design.project1.title': 'Magazine',
+    'design.project1.desc': 'UI/UX design for a complete mobile application project',
+    'design.project2.title': 'Movie Poster',
+    'design.project2.desc': 'Original movie poster design concept with bold visual storytelling',
+    'design.project3.title': 'Newsletter Design',
+    'design.project3.desc': 'Magazine-style newsletter layout experiment with typography focus',
+    'design.viewPdf': 'View PDF',
+    'design.download': 'Download',
     'contact.sub': 'Let’s build something great together.',
     'contact.email': 'Email',
     'cv.downloadTxt': 'Download CV (txt)',
@@ -71,6 +90,25 @@ const I18N = {
     'creative.sub': 'Sélection de Photographie & Design.',
     'creative.photo': 'Photographie',
     'creative.design': 'Vitrine Design',
+    'creative.intro': 'Au-delà du code, je suis passionné par la photographie et le design visuel. Voici une sélection de mon travail créatif.',
+    'creative.filterAll': 'Tout',
+    'creative.filterPhoto': 'Photographie',
+    'creative.filterDesign': 'Design',
+    'photo.featured.title': 'Moment Créatif',
+    'photo.featured.caption': 'Capturé pendant le processus créatif, 2025',
+    'photo.placeholder1': 'Coucher de soleil urbain',
+    'photo.placeholder2': 'Photographie de rue',
+    'photo.placeholder3': 'Session portrait',
+    'photo.placeholder4': 'Étude d\'architecture',
+    'photo.placeholder5': 'Composition naturelle',
+    'design.project1.title': 'Magazine',
+    'design.project1.desc': 'Design UI/UX pour un projet d\'application mobile complet',
+    'design.project2.title': 'Affiche de Film',
+    'design.project2.desc': 'Concept d\'affiche de film original avec narration visuelle audacieuse',
+    'design.project3.title': 'Design de Newsletter',
+    'design.project3.desc': 'Expérimentation de mise en page newsletter style magazine avec focus typographique',
+    'design.viewPdf': 'Voir PDF',
+    'design.download': 'Télécharger',
     'contact.sub': 'Construisons quelque chose de génial.',
     'contact.email': 'Email',
     'cv.downloadTxt': 'Télécharger CV (txt)',
@@ -108,6 +146,25 @@ const I18N = {
     'creative.sub': 'مختارات من التصوير والتصميم.',
     'creative.photo': 'التصوير',
     'creative.design': 'عرض التصميم',
+    'creative.intro': 'ما وراء البرمجة، أنا شغوف بالتصوير والتصميم البصري. إليكم مجموعة مختارة من أعمالي الإبداعية.',
+    'creative.filterAll': 'الكل',
+    'creative.filterPhoto': 'التصوير',
+    'creative.filterDesign': 'التصميم',
+    'photo.featured.title': 'لحظة إبداعية',
+    'photo.featured.caption': 'تم التقاطها أثناء العملية الإبداعية، 2025',
+    'photo.placeholder1': 'غروب المدينة',
+    'photo.placeholder2': 'تصوير الشارع',
+    'photo.placeholder3': 'جلسة تصوير شخصي',
+    'photo.placeholder4': 'دراسة معمارية',
+    'photo.placeholder5': 'تكوين طبيعي',
+    'design.project1.title': 'مجلة',
+    'design.project1.desc': 'تصميم واجهة وتجربة المستخدم لمشروع تطبيق جوال كامل',
+    'design.project2.title': 'ملصق فيلم',
+    'design.project2.desc': 'مفهوم تصميم ملصق فيلم أصلي مع سرد بصري جريء',
+    'design.project3.title': 'تصميم النشرة الإخبارية',
+    'design.project3.desc': 'تجربة تخطيط نشرة إخبارية بنمط المجلة مع التركيز على الطباعة',
+    'design.viewPdf': 'عرض PDF',
+    'design.download': 'تحميل',
     'contact.sub': 'لنصنع شيئًا رائعًا معًا.',
     'contact.email': 'البريد الإلكتروني',
     'cv.downloadTxt': 'تنزيل السيرة (نص)',
@@ -119,15 +176,7 @@ const I18N = {
 
 // Project data
 const projects = [
-  // Priority 1: Government RAG
-  {
-    id: 'gov-rag',
-    title: 'Secure Government RAG',
-    description: 'On‑prem RAG with local LLM, role‑based access, full audit logging, multilingual UI (AR/FR/EN), citation‑based chatbot, and PDF→Excel document extraction.',
-    tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL+pgvector', 'MinIO', 'Keycloak', 'Docker', 'AI'],
-    caseStudy: 'content/projects/gov-rag.md'
-  },
-  // Priority 2: DCE Scraper
+  // Priority 1: DCE Scraper
   {
     id: 'dce-scraper',
     title: 'DCE Scraper — Microservices',
@@ -138,7 +187,7 @@ const projects = [
       github: 'https://github.com/mohamedelarakitantaoui/ScraperBot',
     }
   },
-  // Priority 3: eSaha
+  // Priority 2: eSaha
   {
     id: 'esaha',
     title: 'eSaha — Mental Health Platform',
@@ -409,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLightbox();
   initStickyCta();
   initBackToTop();
+  initCreativeSection(); // Creative section functionality
 });
 
 // 3D tilt on cards
@@ -649,4 +699,210 @@ function initBackToTop(){
   window.addEventListener('scroll', onScroll, { passive: true });
   btn.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
   onScroll();
+}
+
+// ========================================= 
+// CREATIVE SECTION FUNCTIONALITY 
+// ========================================= 
+
+// Creative Gallery Lightbox
+function initCreativeLightbox() {
+  const modal = $('#lightboxModal');
+  const modalImage = $('#lightboxImage');
+  const modalTitle = $('#lightboxTitle');
+  const modalCaption = $('#lightboxCaption');
+  const closeButtons = $$('[data-lightbox-close]');
+  const prevButton = $('.lightbox-prev');
+  const nextButton = $('.lightbox-next');
+  
+  if (!modal) return;
+
+  let currentGallery = [];
+  let currentIndex = 0;
+
+  // Gallery data
+  const galleryData = [
+    {
+      src: 'assets/img/featured-photo-1.png',
+      title: 'Creative Moment',
+      caption: 'Captured during creative process, 2025',
+      category: 'photography'
+    }
+  ];
+
+  // Open lightbox
+  function openLightbox(index, gallery = galleryData) {
+    currentGallery = gallery;
+    currentIndex = index;
+    showImage();
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    modal.setAttribute('aria-modal', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Close lightbox
+  function closeLightbox() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('aria-modal', 'false');
+    document.body.style.overflow = '';
+  }
+
+  // Show current image
+  function showImage() {
+    const item = currentGallery[currentIndex];
+    if (!item) return;
+    
+    modalImage.src = item.src;
+    modalImage.alt = item.title;
+    modalTitle.textContent = item.title;
+    modalCaption.textContent = item.caption;
+  }
+
+  // Navigate gallery
+  function navigateGallery(direction) {
+    if (direction === 'next') {
+      currentIndex = (currentIndex + 1) % currentGallery.length;
+    } else {
+      currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+    }
+    showImage();
+  }
+
+  // Event listeners
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', closeLightbox);
+  });
+
+  prevButton?.addEventListener('click', () => navigateGallery('prev'));
+  nextButton?.addEventListener('click', () => navigateGallery('next'));
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('show')) return;
+    
+    switch(e.key) {
+      case 'Escape':
+        closeLightbox();
+        break;
+      case 'ArrowLeft':
+        navigateGallery('prev');
+        break;
+      case 'ArrowRight':
+        navigateGallery('next');
+        break;
+    }
+  });
+
+  // Gallery item click handlers
+  $$('[data-lightbox="photography"]').forEach((item, index) => {
+    item.addEventListener('click', () => {
+      if (!item.classList.contains('placeholder')) {
+        openLightbox(index);
+      }
+    });
+  });
+}
+
+// Creative Filter Functionality
+function initCreativeFilters() {
+  const filterTabs = $$('.filter-tab');
+  const creativeGroups = $$('.creative-group[data-category]');
+  
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const filter = tab.dataset.filter;
+      
+      // Update active tab
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Filter content
+      creativeGroups.forEach(group => {
+        const category = group.dataset.category;
+        if (filter === 'all' || filter === category) {
+          group.classList.remove('filter-hidden');
+        } else {
+          group.classList.add('filter-hidden');
+        }
+      });
+    });
+  });
+}
+
+// Hero Video Controls
+function initHeroVideoControls() {
+  const video = $('.hero-video');
+  const playBtn = $('.video-play-btn');
+  
+  if (!video || !playBtn) return;
+  
+  let isPlaying = video.autoplay;
+  
+  playBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      video.pause();
+      video.removeAttribute('autoplay');
+      isPlaying = false;
+    } else {
+      video.play();
+      video.setAttribute('autoplay', '');
+      isPlaying = true;
+    }
+    updatePlayButton();
+  });
+  
+  function updatePlayButton() {
+    const playIcon = playBtn.querySelector('.play-icon');
+    const pauseIcon = playBtn.querySelector('.pause-icon');
+    
+    if (isPlaying) {
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+    } else {
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+    }
+  }
+  
+  // Handle video events
+  video.addEventListener('play', () => {
+    isPlaying = true;
+    updatePlayButton();
+  });
+  
+  video.addEventListener('pause', () => {
+    isPlaying = false;
+    updatePlayButton();
+  });
+  
+  updatePlayButton();
+}
+
+// Reveal Animation for Creative Section
+function initCreativeRevealAnimation() {
+  const revealElements = $$('[data-reveal]');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  revealElements.forEach(el => observer.observe(el));
+}
+
+// Initialize Creative Section
+function initCreativeSection() {
+  initCreativeLightbox();
+  initCreativeFilters();
+  initHeroVideoControls();
+  initCreativeRevealAnimation();
 }

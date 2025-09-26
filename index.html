@@ -122,6 +122,77 @@
               </ul>
             </div>
           </div>
+
+          <!-- Timeline Section -->
+          <div class="about-timeline" data-reveal>
+            <h3 class="timeline-title">Journey</h3>
+            <div class="timeline-items">
+              <div class="timeline-item current">
+                <div class="timeline-marker">🔄</div>
+                <div class="timeline-content">
+                  <span class="timeline-period">In Progress</span>
+                  <p>Secure Government RAG - building enterprise AI system with complete data sovereignty.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-marker">🎯</div>
+                <div class="timeline-content">
+                  <span class="timeline-period">Previously</span>
+                  <p>Intern at Intelcia IT Solutions - Development of a Web Scraping System for Automated Data Collection for AI Chatbot Training.</p>
+                </div>
+              </div>
+              <div class="timeline-item future">
+                <div class="timeline-marker">🚀</div>
+                <div class="timeline-content">
+                  <span class="timeline-period">Next</span>
+                  <p>BCG technical interview 2026, developing AI-powered football analytics platform.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Section -->
+          <div class="about-skills" data-reveal>
+            <h3 class="skills-title">Skills & Expertise</h3>
+            <div class="skill-clusters">
+              <div class="skill-cluster">
+                <div class="skill-cluster-header">
+                  <span class="skill-icon">⚙️</span>
+                  <h4>Backend & DevOps</h4>
+                </div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Python</span>
+                  <span class="skill-tag">Node.js</span>
+                  <span class="skill-tag">Docker</span>
+                  <span class="skill-tag">AWS</span>
+                </div>
+              </div>
+              <div class="skill-cluster">
+                <div class="skill-cluster-header">
+                  <span class="skill-icon">🧠</span>
+                  <h4>AI & RAG</h4>
+                </div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Machine Learning</span>
+                  <span class="skill-tag">RAG Systems</span>
+                  <span class="skill-tag">LangChain</span>
+                  <span class="skill-tag">Vector DBs</span>
+                </div>
+              </div>
+              <div class="skill-cluster">
+                <div class="skill-cluster-header">
+                  <span class="skill-icon">🎨</span>
+                  <h4>Creative/Photography</h4>
+                </div>
+                <div class="skill-tags">
+                  <span class="skill-tag">Photography</span>
+                  <span class="skill-tag">UI/UX Design</span>
+                  <span class="skill-tag">Adobe Suite</span>
+                  <span class="skill-tag">Visual Storytelling</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -132,17 +203,172 @@
             <p class="section-sub" data-i18n="creative.sub">Photography & Design selections.</p>
           </div>
 
-          <div class="creative-group">
-            <h3 class="creative-title" data-i18n="creative.photo">Photography</h3>
-            <div id="galleryPhoto" class="gallery-grid" aria-live="polite"></div>
+          <!-- Hero Video Introduction -->
+          <div class="creative-hero" data-reveal>
+            <div class="creative-hero-content">
+              <p class="creative-intro" data-i18n="creative.intro">
+                Beyond code, I'm passionate about photography and visual design. Here's a selection of my creative work.
+              </p>
+              <div class="creative-filter-tabs">
+                <button class="filter-tab active" data-filter="all" data-i18n="creative.filterAll">All</button>
+                <button class="filter-tab" data-filter="photography" data-i18n="creative.filterPhoto">Photography</button>
+                <button class="filter-tab" data-filter="design" data-i18n="creative.filterDesign">Design</button>
+              </div>
+            </div>
+            <div class="hero-video-container">
+              <video 
+                class="hero-video" 
+                autoplay 
+                muted 
+                loop 
+                playsinline
+                poster="assets/img/featured-photo-1.png"
+                aria-label="Creative work showcase video">
+                <source src="assets/img/hero-video.mp4" type="video/mp4">
+                <img src="assets/img/featured-photo-1.png" alt="Creative work showcase" />
+              </video>
+              <div class="video-overlay">
+                <button class="video-play-btn" aria-label="Play/Pause video">
+                  <span class="play-icon">▶</span>
+                  <span class="pause-icon">⏸</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div class="creative-group">
-            <h3 class="creative-title" data-i18n="creative.design">Design Showcase</h3>
-            <div id="galleryDesign" class="gallery-grid" aria-live="polite"></div>
+          <!-- Photography Gallery -->
+          <div class="creative-group" data-category="photography" data-reveal>
+            <h3 class="creative-title" data-i18n="creative.photo">Photography</h3>
+            <div class="gallery-grid">
+              <div class="gallery-item featured" data-lightbox="photography">
+                <img src="assets/img/featured-photo-1.png" alt="Featured photograph" loading="lazy" decoding="async" />
+                <div class="gallery-overlay">
+                  <h4 class="gallery-title" data-i18n="photo.featured.title">Creative Moment</h4>
+                  <p class="gallery-caption" data-i18n="photo.featured.caption">Captured during creative process, 2025</p>
+                </div>
+              </div>
+              <div class="gallery-item placeholder" data-lightbox="photography">
+                <div class="placeholder-content">
+                  <span class="placeholder-icon">📸</span>
+                  <p data-i18n="photo.placeholder1">City sunset</p>
+                </div>
+              </div>
+              <div class="gallery-item placeholder" data-lightbox="photography">
+                <div class="placeholder-content">
+                  <span class="placeholder-icon">📸</span>
+                  <p data-i18n="photo.placeholder2">Street photography</p>
+                </div>
+              </div>
+              <div class="gallery-item placeholder" data-lightbox="photography">
+                <div class="placeholder-content">
+                  <span class="placeholder-icon">📸</span>
+                  <p data-i18n="photo.placeholder3">Portrait session</p>
+                </div>
+              </div>
+              <div class="gallery-item placeholder" data-lightbox="photography">
+                <div class="placeholder-content">
+                  <span class="placeholder-icon">📸</span>
+                  <p data-i18n="photo.placeholder4">Architecture study</p>
+                </div>
+              </div>
+              <div class="gallery-item placeholder" data-lightbox="photography">
+                <div class="placeholder-content">
+                  <span class="placeholder-icon">📸</span>
+                  <p data-i18n="photo.placeholder5">Nature composition</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Design Projects -->
+          <div class="creative-group" data-category="design" data-reveal>
+            <h3 class="creative-title" data-i18n="creative.design">Design Projects</h3>
+            <div class="design-grid">
+              <div class="design-card">
+                <div class="design-thumbnail">
+                  <div class="design-preview">
+                    <span class="design-icon">🎨</span>
+                    <span class="design-tool">Adobe XD</span>
+                  </div>
+                </div>
+                <div class="design-content">
+                  <h4 class="design-title" data-i18n="design.project1.title">Magazine</h4>
+                  <p class="design-desc" data-i18n="design.project1.desc">UI/UX design for a complete mobile application project</p>
+                  <div class="design-tools">
+                    <span class="tool-badge">Adobe XD</span>
+                    <span class="tool-badge">UI/UX</span>
+                  </div>
+                  <div class="design-actions">
+                    <a href="assets/pdfs/final-project-adobe-xd.pdf" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
+                    <a href="assets/pdfs/final-project-adobe-xd.pdf" class="btn btn-secondary" download data-i18n="design.download">Download</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="design-card">
+                <div class="design-thumbnail">
+                  <div class="design-preview">
+                    <span class="design-icon">🎬</span>
+                    <span class="design-tool">Photoshop</span>
+                  </div>
+                </div>
+                <div class="design-content">
+                  <h4 class="design-title" data-i18n="design.project2.title">Movie Poster</h4>
+                  <p class="design-desc" data-i18n="design.project2.desc">Original movie poster design concept with bold visual storytelling</p>
+                  <div class="design-tools">
+                    <span class="tool-badge">Photoshop</span>
+                    <span class="tool-badge">Visual Design</span>
+                  </div>
+                  <div class="design-actions">
+                    <a href="assets/pdfs/movie-poster-design.pdf" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
+                    <a href="assets/pdfs/movie-poster-design.pdf" class="btn btn-secondary" download data-i18n="design.download">Download</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="design-card">
+                <div class="design-thumbnail">
+                  <div class="design-preview">
+                    <span class="design-icon">📰</span>
+                    <span class="design-tool">InDesign</span>
+                  </div>
+                </div>
+                <div class="design-content">
+                  <h4 class="design-title" data-i18n="design.project3.title">Newsletter Design</h4>
+                  <p class="design-desc" data-i18n="design.project3.desc">Magazine-style newsletter layout experiment with typography focus</p>
+                  <div class="design-tools">
+                    <span class="tool-badge">InDesign</span>
+                    <span class="tool-badge">Layout Design</span>
+                  </div>
+                  <div class="design-actions">
+                    <a href="assets/pdfs/newsletter-indesign.pdf" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
+                    <a href="assets/pdfs/newsletter-indesign.pdf" class="btn btn-secondary" download data-i18n="design.download">Download</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      <!-- Lightbox Modal for Gallery -->
+      <div id="lightboxModal" class="lightbox-modal" aria-hidden="true" role="dialog" aria-labelledby="lightboxTitle" aria-modal="false">
+        <div class="lightbox-backdrop" data-lightbox-close></div>
+        <div class="lightbox-container">
+          <button class="lightbox-close" aria-label="Close gallery" data-lightbox-close>×</button>
+          <div class="lightbox-nav">
+            <button class="lightbox-prev" aria-label="Previous image">‹</button>
+            <button class="lightbox-next" aria-label="Next image">›</button>
+          </div>
+          <div class="lightbox-content">
+            <img id="lightboxImage" src="" alt="" />
+            <div class="lightbox-info">
+              <h3 id="lightboxTitle">Image Title</h3>
+              <p id="lightboxCaption">Image caption</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       
 
@@ -153,6 +379,7 @@
             <div class="cv-actions">
               <a class="btn btn-secondary" href="content/cv.md" download data-i18n="cv.downloadTxt">Download CV (txt)</a>
               <a class="btn btn-ghost" href="pdfCv/RenderCV_EngineeringResumes_Theme.pdf" data-cv-pdf download data-i18n="cv.downloadPdf">Download PDF</a>
+              <span class="cv-date">Updated September 2025</span>
             </div>
           </div>
           <article id="cvContent" class="cv-content" aria-busy="true">
