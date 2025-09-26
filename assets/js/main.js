@@ -404,6 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGalleries();
   renderTimeline();
   initLightbox();
+  initStickyCta();
+  initBackToTop();
 });
 
 // 3D tilt on cards
@@ -588,4 +590,25 @@ function initHeaderAutoHide(){
       show();
     }
   }, { passive: true });
+}
+
+// Sticky CTA shows after scrolling past hero
+function initStickyCta(){
+  const bar = $('#stickyCta');
+  if(!bar) return;
+  const hero = document.querySelector('.hero');
+  const showAt = () => (hero?.getBoundingClientRect().bottom || 0) < 0;
+  const onScroll = () => { bar.classList.toggle('show', showAt()); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+// Back to top
+function initBackToTop(){
+  const btn = $('#backToTop');
+  if(!btn) return;
+  const onScroll = () => { btn.classList.toggle('show', (window.scrollY||0) > 400); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  btn.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
+  onScroll();
 }
