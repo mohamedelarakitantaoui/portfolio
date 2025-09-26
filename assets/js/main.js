@@ -125,11 +125,7 @@ const projects = [
     title: 'Secure Government RAG',
     description: 'On‑prem RAG with local LLM, role‑based access, full audit logging, multilingual UI (AR/FR/EN), citation‑based chatbot, and PDF→Excel document extraction.',
     tech: ['React', 'TypeScript', 'FastAPI', 'PostgreSQL+pgvector', 'MinIO', 'Keycloak', 'Docker', 'AI'],
-    caseStudy: 'content/projects/gov-rag.md',
-    links: {
-      github: 'https://github.com/mohamedelarakitantaoui',
-      demo: '#'
-    }
+    caseStudy: 'content/projects/gov-rag.md'
   },
   // Priority 2: DCE Scraper
   {
@@ -139,7 +135,7 @@ const projects = [
     tech: ['Python 3.12', 'Selenium', 'Microservices', 'Multithreading', 'Async', 'Click CLI', 'YAML config'],
     caseStudy: 'content/projects/dce-scraper.md',
     links: {
-      github: 'https://github.com/mohamedelarakitantaoui',
+      github: 'https://github.com/mohamedelarakitantaoui/ScraperBot',
     }
   },
   // Priority 3: eSaha
@@ -160,7 +156,7 @@ const projects = [
     description: 'Kotlin + Firebase with coroutines, real-time questions, leaderboards, and offline cache.',
     tech: ['Kotlin', 'Firebase', 'Coroutines'],
     links: { 
-      github: 'https://github.com/mohamedelarakitantaoui',
+      github: 'https://github.com/mohamedelarakitantaoui/game-app',
       qr: 'assets/img/quiz-app-qr.png'
     },
   },
