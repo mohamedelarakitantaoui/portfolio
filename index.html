@@ -81,10 +81,12 @@
             </div>
           </div>
           <div class="hero-art">
-            <img src="assets/img/hero-visual.svg" alt="Creative technology visual" />
+            <img src="assets/img/hero-visual.svg" alt="Creative technology visual" loading="eager" decoding="async" />
           </div>
         </div>
       </section>
+
+      
 
       <section id="projects" class="section">
         <div class="container">
@@ -107,7 +109,7 @@
           </div>
           <div class="about-grid" data-reveal>
             <div class="about-photo">
-              <img src="assets/img/profile.svg" alt="Profile" />
+              <img src="assets/img/IMG-20250509-WA0012-removebg-preview.png" alt="Photo of Mamoun Tantaoui El Araki" loading="lazy" decoding="async" />
             </div>
             <div class="about-text">
               <p data-i18n="about.bio">
@@ -142,13 +144,15 @@
         </div>
       </section>
 
+      
+
       <section id="cv" class="section">
         <div class="container">
           <div class="section-head">
             <h2 data-i18n="sections.cv">Curriculum Vitae</h2>
             <div class="cv-actions">
               <a class="btn btn-secondary" href="content/cv.md" download data-i18n="cv.downloadTxt">Download CV (txt)</a>
-              <a class="btn btn-ghost" href="content/cv.pdf" download data-i18n="cv.downloadPdf">Download PDF</a>
+              <a class="btn btn-ghost" href="pdfCv/RenderCV_EngineeringResumes_Theme.pdf" data-cv-pdf download data-i18n="cv.downloadPdf">Download PDF</a>
             </div>
           </div>
           <article id="cvContent" class="cv-content" aria-busy="true">
@@ -159,6 +163,8 @@
         </div>
       </section>
 
+      
+
       <section id="contact" class="section">
         <div class="container">
           <div class="section-head">
@@ -166,27 +172,21 @@
             <p class="section-sub" data-i18n="contact.sub">Let’s build something great together.</p>
           </div>
           <div class="contact-cards">
-            <a class="contact-card" href="mailto:you@example.com" target="_blank" rel="noopener" aria-label="Email">
+            <a class="contact-card" href="mailto:elaraki48@gmail.com" target="_blank" rel="noopener" aria-label="Email">
               <span class="contact-emoji">✉️</span>
               <div>
                 <div class="contact-label" data-i18n="contact.email">Email</div>
-                <div class="contact-value">you@example.com</div>
+                <div class="contact-value">elaraki48@gmail.com</div>
               </div>
             </a>
-            <a class="contact-card" href="https://github.com/yourhandle" target="_blank" rel="noopener" aria-label="GitHub">
+            <a class="contact-card" href="https://github.com/mohamedelarakitantaoui" target="_blank" rel="noopener" aria-label="GitHub">
               <span class="contact-emoji">🐙</span>
               <div>
                 <div class="contact-label">GitHub</div>
-                <div class="contact-value">github.com/yourhandle</div>
+                <div class="contact-value">github.com/mohamedelarakitantaoui</div>
               </div>
             </a>
-            <a class="contact-card" href="https://www.linkedin.com/in/yourhandle" target="_blank" rel="noopener" aria-label="LinkedIn">
-              <span class="contact-emoji">💼</span>
-              <div>
-                <div class="contact-label">LinkedIn</div>
-                <div class="contact-value">linkedin.com/in/yourhandle</div>
-              </div>
-            </a>
+            
           </div>
         </div>
       </section>
@@ -212,5 +212,19 @@
         <article id="modalBody" class="modal-body"><div class="loading">Loading…</div></article>
       </div>
     </div>
+
+    <!-- Sticky CTA -->
+    <div id="stickyCta" class="sticky-cta" aria-hidden="true">
+      <div class="container sticky-cta-inner">
+        <span class="sticky-cta-text" data-i18n="cta.stickyText">Like what you see?</span>
+        <div class="sticky-cta-actions">
+          <a href="mailto:elaraki48@gmail.com" class="btn btn-primary">Email me</a>
+          <a href="#cv" class="btn btn-secondary" data-i18n="cta.viewCV">Read CV</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">↑</button>
   </body>
   </html>

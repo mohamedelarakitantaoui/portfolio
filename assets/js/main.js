@@ -20,6 +20,7 @@ const I18N = {
     'cta.viewProjects': 'View Projects',
     'cta.viewCV': 'Read CV',
     'cta.exploreCode': 'Explore Code',
+    'cta.visitWebsite': 'Visit Website',
     'cta.readCase': 'Read Technical Details',
     'sections.projects': 'Projects',
     'sections.about': 'About Me',
@@ -55,6 +56,7 @@ const I18N = {
     'cta.viewProjects': 'Voir les projets',
     'cta.viewCV': 'Lire le CV',
     'cta.exploreCode': 'Voir le code',
+    'cta.visitWebsite': 'Visiter le site',
     'cta.readCase': 'Lire l’étude technique',
     'sections.projects': 'Projets',
     'sections.about': 'À propos de moi',
@@ -90,6 +92,7 @@ const I18N = {
     'cta.viewProjects': 'استعراض المشاريع',
     'cta.viewCV': 'قراءة السيرة',
     'cta.exploreCode': 'استعراض الشيفرة',
+    'cta.visitWebsite': 'زيارة الموقع',
     'cta.readCase': 'قراءة التفاصيل التقنية',
     'sections.projects': 'المشاريع',
     'sections.about': 'نبذة عني',
@@ -190,7 +193,7 @@ function renderProjects() {
           ${(p.tech||[]).map(tg => `<span class="chip">${escapeHtml(String(tg))}</span>`).join('')}
         </div>
         <div class="card-actions">
-          ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${t('cta.exploreCode')}</a>` : ''}
+          ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${p.id === 'preparia' ? t('cta.visitWebsite') || t('cta.exploreCode') : t('cta.exploreCode')}</a>` : ''}
           ${p.links?.demo ? `<a class="btn btn-secondary" href="${p.links.demo}" target="_blank" rel="noopener">${labelForLink('demo')}</a>` : ''}
           ${p.caseStudy ? `<button class="btn btn-primary btn-case" data-case="${p.caseStudy}" data-title="${escapeHtml(p.title)}">${t('cta.readCase')}</button>` : ''}
         </div>

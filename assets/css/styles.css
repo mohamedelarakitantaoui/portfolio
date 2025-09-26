@@ -102,7 +102,13 @@ body{
 .cv-content p{ margin:8px 0 }
 .loading{ color:var(--muted) }
 
-.contact-cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap:12px }
+.contact-cards{
+  display:grid;
+  /* Use fixed-width tracks so a pair of cards can center within the container */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
+  gap:12px;
+  justify-content:center; /* center the grid tracks when total width is less than container */
+}
 .contact-card{ display:flex; gap:12px; align-items:center; padding:14px; border:1px solid var(--border); border-radius:14px; background:var(--card); color:inherit; text-decoration:none }
 .contact-card:hover{ transform: translateY(-2px); transition:.2s ease transform }
 .contact-emoji{ font-size:20px }
@@ -114,7 +120,8 @@ body{
 
 /* About */
 .about-grid{ display:grid; grid-template-columns: 320px 1fr; gap:18px; align-items:center }
-.about-photo img{ width:100%; max-width:320px; border-radius:16px; border:1px solid var(--border); background:var(--card) }
+.about-photo{ display:flex; justify-content:center; }
+.about-photo img{ width:100%; max-width:320px; border-radius:16px; background:transparent; border:none; box-shadow: 0 24px 60px rgba(0,0,0,.35); }
 .about-list{ margin:10px 0 0; padding-left:18px; color:var(--muted) }
 
 /* Creative galleries */
@@ -177,3 +184,49 @@ body{
 .modal-body h1,.modal-body h2,.modal-body h3{ margin:14px 0 8px }
 .modal-body p{ margin:8px 0; color:var(--text) }
 .modal-body code, .modal-body pre{ background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:8px; display:block; overflow:auto }
+
+/* Services */
+.services-grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap:16px }
+.service-card{ grid-column: span 4; background:linear-gradient(180deg, color-mix(in oklab, var(--card), transparent 16%), var(--card)); border:1px solid var(--border); border-radius:16px; padding:16px }
+.service-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px }
+.service-emoji{ font-size:20px }
+.service-title{ font-weight:700; margin:0 }
+.service-body{ color:var(--muted); margin:6px 0 0 }
+
+/* Testimonials slider */
+.testimonials{ position:relative }
+.slider{ overflow:hidden; border:1px solid var(--border); border-radius:16px; background:var(--card) }
+.slides{ display:flex; transition: transform .4s ease; will-change: transform }
+.slide{ flex: 0 0 100%; padding:20px; display:grid; gap:8px }
+.quote{ font-size:18px }
+.author{ color:var(--muted) }
+.slider-nav{ display:flex; align-items:center; justify-content:center; gap:8px; margin-top:10px }
+.dots{ display:flex; gap:6px }
+.dot{ width:8px; height:8px; border-radius:50%; background:var(--border); border:1px solid var(--border); cursor:pointer }
+.dot[aria-selected="true"]{ background:linear-gradient(135deg, var(--primary), var(--primary-2)) }
+
+/* FAQ */
+.faq{ display:grid; gap:10px }
+.faq-item{ border:1px solid var(--border); border-radius:12px; background:var(--card) }
+.faq-q{ width:100%; text-align:left; padding:12px 14px; background:transparent; color:var(--text); border:none; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer; border-radius:12px 12px 0 0 }
+.faq-a{ padding:12px 14px; color:var(--muted); display:none }
+.faq-item.open .faq-a{ display:block }
+
+/* Sticky CTA */
+.sticky-cta{ position:fixed; left:0; right:0; bottom:12px; transform: translateY(120%); transition: transform .3s ease; z-index:90 }
+.sticky-cta.show{ transform:none }
+.sticky-cta-inner{ background:color-mix(in oklab, var(--bg-soft) 80%, transparent); border:1px solid var(--border); border-radius:999px; padding:10px; display:flex; align-items:center; justify-content:center; gap:12px; box-shadow:0 10px 30px rgba(0,0,0,.35) }
+.sticky-cta-text{ color:var(--muted) }
+.sticky-cta-actions{ display:flex; gap:8px }
+
+/* Back to Top */
+.back-to-top{ position:fixed; right:16px; bottom:16px; width:42px; height:42px; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--text); display:grid; place-items:center; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,.3); transform: translateY(120%); transition: transform .25s ease; z-index:95 }
+.back-to-top.show{ transform:none }
+
+/* Responsive tweaks for new components */
+@media (max-width: 960px){
+  .services-grid{ grid-template-columns: repeat(6, 1fr) }
+}
+@media (max-width: 680px){
+  .service-card{ grid-column: span 6 }
+}
