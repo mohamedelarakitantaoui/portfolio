@@ -165,7 +165,7 @@ const projects = [
     title: 'Preparia Platform',
     description: 'WordPress e-learning platform using Elementor and interactive H5P content.',
     tech: ['WordPress', 'Elementor', 'H5P'],
-    links: { github: 'https://github.com/mohamedelarakitantaoui' },
+    links: { github: 'https://preparia.ma/fr_fr' },
   },
   {
     id: 'courses-lessons',
