@@ -21,6 +21,7 @@ const I18N = {
     'cta.viewCV': 'Read CV',
     'cta.exploreCode': 'Explore Code',
     'cta.visitWebsite': 'Visit Website',
+    'cta.downloadApp': 'Download App',
     'cta.readCase': 'Read Technical Details',
     'sections.projects': 'Projects',
     'sections.about': 'About Me',
@@ -57,6 +58,7 @@ const I18N = {
     'cta.viewCV': 'Lire le CV',
     'cta.exploreCode': 'Voir le code',
     'cta.visitWebsite': 'Visiter le site',
+    'cta.downloadApp': 'Télécharger l\'app',
     'cta.readCase': 'Lire l’étude technique',
     'sections.projects': 'Projets',
     'sections.about': 'À propos de moi',
@@ -93,6 +95,7 @@ const I18N = {
     'cta.viewCV': 'قراءة السيرة',
     'cta.exploreCode': 'استعراض الشيفرة',
     'cta.visitWebsite': 'زيارة الموقع',
+    'cta.downloadApp': 'تحميل التطبيق',
     'cta.readCase': 'قراءة التفاصيل التقنية',
     'sections.projects': 'المشاريع',
     'sections.about': 'نبذة عني',
@@ -147,7 +150,7 @@ const projects = [
     tech: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Supabase', 'Axios'],
     caseStudy: 'content/projects/esaha.md',
     links: {
-      github: 'https://github.com/mohamedelarakitantaoui',
+      github: 'https://github.com/mohamedelarakitantaoui/eSaha',
     }
   },
   // Other Projects (concise cards)
@@ -156,7 +159,10 @@ const projects = [
     title: 'Quiz Game App',
     description: 'Kotlin + Firebase with coroutines, real-time questions, leaderboards, and offline cache.',
     tech: ['Kotlin', 'Firebase', 'Coroutines'],
-    links: { github: 'https://github.com/mohamedelarakitantaoui' },
+    links: { 
+      github: 'https://github.com/mohamedelarakitantaoui',
+      qr: 'assets/img/quiz-app-qr.png'
+    },
   },
   {
     id: 'preparia',
@@ -194,6 +200,7 @@ function renderProjects() {
         </div>
         <div class="card-actions">
           ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${p.id === 'preparia' ? t('cta.visitWebsite') || t('cta.exploreCode') : t('cta.exploreCode')}</a>` : ''}
+          ${p.links?.qr ? `<button class="btn btn-secondary btn-qr" data-qr="${p.links.qr}" data-title="${escapeHtml(p.title)}">${t('cta.downloadApp')}</button>` : ''}
           ${p.links?.demo ? `<a class="btn btn-secondary" href="${p.links.demo}" target="_blank" rel="noopener">${labelForLink('demo')}</a>` : ''}
           ${p.caseStudy ? `<button class="btn btn-primary btn-case" data-case="${p.caseStudy}" data-title="${escapeHtml(p.title)}">${t('cta.readCase')}</button>` : ''}
         </div>
@@ -452,6 +459,15 @@ function initCaseStudyButtons(){
       }
     });
   });
+
+  // QR Code Modal
+  $$('.btn-qr').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const qrPath = btn.getAttribute('data-qr');
+      const title = btn.getAttribute('data-title') || 'Download App';
+      openQRModal(title, qrPath);
+    });
+  });
 }
 
 function openCaseModal(title){
@@ -476,6 +492,32 @@ function closeCaseModal(){
   modal.classList.remove('show');
   modal.setAttribute('aria-hidden', 'true');
   modal.setAttribute('aria-modal', 'false');
+}
+
+function openQRModal(title, qrPath){
+  const modal = $('#caseModal');
+  $('#modalTitle').textContent = `${title} - ${t('cta.downloadApp')}`;
+  $('#modalBody').innerHTML = `
+    <div style="text-align: center; padding: 20px;">
+      <div style="display: inline-block; padding: 20px; background: white; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); margin-bottom: 20px;">
+        <img src="${qrPath}" alt="QR Code to download ${title}" style="width: 200px; height: 200px; display: block;"/>
+      </div>
+      <h3 style="margin: 16px 0 8px; color: var(--text);">📱 ${t('cta.downloadApp')}</h3>
+      <p style="color: var(--muted); margin: 0 0 16px;">Scan the QR code with your phone camera to download the Android app</p>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 14px;">
+        <span>📱</span>
+        <span>Android App</span>
+        <span>•</span>
+        <span>Free Download</span>
+      </div>
+    </div>
+  `;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  modal.setAttribute('aria-modal', 'true');
+  const onClose = (e) => { if(e.target.hasAttribute?.('data-close') || e.target === $('.modal-backdrop', modal)){ closeCaseModal(); } };
+  modal.addEventListener('click', onClose, { once: true });
+  $('.modal-close', modal)?.addEventListener('click', closeCaseModal, { once: true });
 }
 
 // Creative galleries data (placeholders)
