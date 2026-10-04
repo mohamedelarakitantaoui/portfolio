@@ -1,6 +1,14 @@
 // Utilities
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function store(key, value){
+  try{
+    if(value === undefined) return localStorage.getItem(key);
+    localStorage.setItem(key, value);
+  }catch(err){ return null; }
+}
 
 // i18n dictionary (headings/labels only; project content remains EN to keep style concise)
 const I18N = {
@@ -13,24 +21,49 @@ const I18N = {
     'nav.projects': 'Projects',
     'nav.cv': 'CV',
     'nav.contact': 'Contact',
-    'hero.eyebrow': 'Portfolio',
+    'hero.eyebrow': 'Software engineer · Marrakech, Morocco',
     'hero.role': 'Software Engineer',
     'hero.tagline': 'Turning ideas into working apps & intelligent bots.',
+    'hero.lede': 'Secure on-prem RAG, Python automation that runs 95% faster, and polished React & Flutter apps.',
     'hero.available': 'Available for opportunities',
+    'hero.route': 'Marrakech · Ifrane · Istanbul',
+    'hero.now': 'Now building',
+    'hero.nowTitle': 'Secure Government RAG',
+    'stat.speed': 'faster document pipeline — 2.5 h down to 15 min',
+    'stat.services': 'microservices carved from a 3,643-line monolith',
+    'stat.langs': 'works and ships in three languages',
+    'cta.hire': 'Hire me',
+    'cta.emailMe': 'Email me',
+    'cta.stickyText': 'Like what you see?',
     'cta.viewProjects': 'View Projects',
     'cta.viewCV': 'Read CV',
     'cta.exploreCode': 'Explore Code',
     'cta.visitWebsite': 'Visit Website',
     'cta.downloadApp': 'Download App',
     'cta.readCase': 'Read Technical Details',
+    'cta.scanQr': 'Scan the QR code with your phone camera to download the Android app.',
     'sections.projects': 'Projects',
     'sections.about': 'About Me',
     'sections.creative': 'Creative Work',
     'sections.projectsSub': 'Selected work — case study cards with tech stacks and links.',
     'sections.cv': 'Curriculum Vitae',
     'sections.contact': 'Contact',
+    'sections.skills': 'Skills & Expertise',
+    'sections.journey': 'Journey',
     'about.sub': 'A quick intro — who I am, what I study, and how I think.',
     'about.bio': 'I’m Mamoun, a builder who blends software engineering with creative thinking. I enjoy shipping clean, robust systems and telling compelling product stories.',
+    'about.item1': 'B.S. Computer Science, Al Akhawayn University — 2026',
+    'about.item2': 'Exchange semester, Boğaziçi University, Istanbul',
+    'about.item3': 'Software Engineering & AI · Photography & Visual Design',
+    'skills.backend': 'Backend & DevOps',
+    'skills.ai': 'AI & RAG',
+    'skills.creative': 'Creative / Photography',
+    'journey.prevLabel': 'Previously',
+    'journey.prev': 'Intern at Intelcia IT Solutions — built a web scraping system that collects data automatically for AI chatbot training.',
+    'journey.nowLabel': 'In progress',
+    'journey.now': 'Secure Government RAG — an enterprise AI system with complete data sovereignty.',
+    'journey.nextLabel': 'Next',
+    'journey.next': 'An AI-powered football analytics platform.',
     'creative.sub': 'Photography & Design selections.',
     'creative.photo': 'Photography',
     'creative.design': 'Design Showcase',
@@ -38,6 +71,7 @@ const I18N = {
     'creative.filterAll': 'All',
     'creative.filterPhoto': 'Photography',
     'creative.filterDesign': 'Design',
+    'creative.soon': 'Coming soon',
     'photo.featured.title': 'Creative Moment',
     'photo.featured.caption': 'Captured during creative process, 2025',
     'photo.placeholder1': 'City sunset',
@@ -55,10 +89,24 @@ const I18N = {
     'design.download': 'Download',
     'contact.sub': 'Let’s build something great together.',
     'contact.email': 'Email',
+    'contact.formName': 'Your name',
+    'contact.formEmail': 'Your email',
+    'contact.formMsg': 'Message',
+    'contact.send': 'Send message',
+    'contact.note': 'Opens your email app with the message ready to send.',
+    'contact.sent': 'Your email app should now be open with the message ready. Talk soon!',
+    'contact.errName': 'Please enter your name.',
+    'contact.errEmail': 'Please enter a valid email address.',
+    'contact.errMsg': 'Please write a short message (at least 10 characters).',
     'cv.downloadTxt': 'Download CV (txt)',
     'cv.downloadPdf': 'Download PDF',
     'cv.loading': 'Loading CV…',
-    'footer.built': 'Built with HTML, CSS & JS'
+    'cv.updated': 'Updated September 2025',
+    'cv.base': 'Based in',
+    'cv.study': 'Studying',
+    'cv.langs': 'Languages',
+    'footer.built': 'Built with HTML, CSS & JS',
+    'footer.privacy': 'No cookies, no tracking — theme and language are saved in your browser only.'
   },
   fr: {
     brandName: 'Mamoun Tantaoui El Araki',
@@ -69,24 +117,49 @@ const I18N = {
     'nav.projects': 'Projets',
     'nav.cv': 'CV',
     'nav.contact': 'Contact',
-    'hero.eyebrow': 'Portfolio',
+    'hero.eyebrow': 'Ingénieur logiciel · Marrakech, Maroc',
     'hero.role': 'Ingénieur Logiciel',
     'hero.tagline': 'Transformer des idées en applis et bots intelligents.',
+    'hero.lede': 'RAG sécurisé sur site, automatisation Python 95 % plus rapide, et applis React & Flutter soignées.',
     'hero.available': 'Disponible pour opportunités',
+    'hero.route': 'Marrakech · Ifrane · Istanbul',
+    'hero.now': 'En cours',
+    'hero.nowTitle': 'RAG gouvernemental sécurisé',
+    'stat.speed': 'de temps gagné sur le traitement — de 2 h 30 à 15 min',
+    'stat.services': 'microservices issus d’un monolithe de 3 643 lignes',
+    'stat.langs': 'je travaille et livre en trois langues',
+    'cta.hire': 'Me recruter',
+    'cta.emailMe': 'M’écrire',
+    'cta.stickyText': 'Ça vous plaît ?',
     'cta.viewProjects': 'Voir les projets',
     'cta.viewCV': 'Lire le CV',
     'cta.exploreCode': 'Voir le code',
     'cta.visitWebsite': 'Visiter le site',
     'cta.downloadApp': 'Télécharger l\'app',
     'cta.readCase': 'Lire l’étude technique',
+    'cta.scanQr': 'Scannez le QR code avec l’appareil photo de votre téléphone pour télécharger l’app Android.',
     'sections.projects': 'Projets',
     'sections.about': 'À propos de moi',
     'sections.creative': 'Travaux créatifs',
     'sections.projectsSub': 'Sélection — cartes d’études de cas, stacks et liens.',
     'sections.cv': 'Curriculum Vitae',
     'sections.contact': 'Contact',
+    'sections.skills': 'Compétences',
+    'sections.journey': 'Parcours',
     'about.sub': 'Présentation rapide — qui je suis, ce que j’étudie et ma façon de penser.',
     'about.bio': 'Je suis Mamoun, un bâtisseur qui mêle ingénierie logicielle et créativité. J’aime livrer des systèmes propres et raconter des histoires produit.',
+    'about.item1': 'Licence en informatique, Université Al Akhawayn — 2026',
+    'about.item2': 'Semestre d’échange, Université Boğaziçi, Istanbul',
+    'about.item3': 'Génie logiciel & IA · Photographie & design visuel',
+    'skills.backend': 'Backend & DevOps',
+    'skills.ai': 'IA & RAG',
+    'skills.creative': 'Créatif / Photographie',
+    'journey.prevLabel': 'Avant',
+    'journey.prev': 'Stagiaire chez Intelcia IT Solutions — système de web scraping qui collecte automatiquement des données pour entraîner un chatbot IA.',
+    'journey.nowLabel': 'En cours',
+    'journey.now': 'RAG gouvernemental sécurisé — un système d’IA d’entreprise avec souveraineté totale des données.',
+    'journey.nextLabel': 'Ensuite',
+    'journey.next': 'Une plateforme d’analyse football propulsée par l’IA.',
     'creative.sub': 'Sélection de Photographie & Design.',
     'creative.photo': 'Photographie',
     'creative.design': 'Vitrine Design',
@@ -94,6 +167,7 @@ const I18N = {
     'creative.filterAll': 'Tout',
     'creative.filterPhoto': 'Photographie',
     'creative.filterDesign': 'Design',
+    'creative.soon': 'Bientôt',
     'photo.featured.title': 'Moment Créatif',
     'photo.featured.caption': 'Capturé pendant le processus créatif, 2025',
     'photo.placeholder1': 'Coucher de soleil urbain',
@@ -111,10 +185,24 @@ const I18N = {
     'design.download': 'Télécharger',
     'contact.sub': 'Construisons quelque chose de génial.',
     'contact.email': 'Email',
+    'contact.formName': 'Votre nom',
+    'contact.formEmail': 'Votre email',
+    'contact.formMsg': 'Message',
+    'contact.send': 'Envoyer',
+    'contact.note': 'Ouvre votre messagerie avec le message prêt à envoyer.',
+    'contact.sent': 'Votre messagerie devrait s’ouvrir avec le message prêt. À très vite !',
+    'contact.errName': 'Veuillez indiquer votre nom.',
+    'contact.errEmail': 'Veuillez saisir une adresse email valide.',
+    'contact.errMsg': 'Écrivez un court message (au moins 10 caractères).',
     'cv.downloadTxt': 'Télécharger CV (txt)',
     'cv.downloadPdf': 'Télécharger PDF',
     'cv.loading': 'Chargement du CV…',
-    'footer.built': 'Créé avec HTML, CSS & JS'
+    'cv.updated': 'Mis à jour en septembre 2025',
+    'cv.base': 'Basé à',
+    'cv.study': 'Études',
+    'cv.langs': 'Langues',
+    'footer.built': 'Créé avec HTML, CSS & JS',
+    'footer.privacy': 'Aucun cookie, aucun suivi — le thème et la langue sont enregistrés uniquement dans votre navigateur.'
   },
   ar: {
     brandName: 'مامون تنتاوي العرَقي',
@@ -125,24 +213,49 @@ const I18N = {
     'nav.projects': 'المشاريع',
     'nav.cv': 'السيرة الذاتية',
     'nav.contact': 'تواصل',
-    'hero.eyebrow': 'ملفّ أعمال',
+    'hero.eyebrow': 'مهندس برمجيات · مراكش، المغرب',
     'hero.role': 'مهندس برمجيات',
     'hero.tagline': 'نحوّل الأفكار إلى تطبيقات وعُمّال ذكيين.',
+    'hero.lede': 'أنظمة RAG آمنة محلية، وأتمتة بايثون أسرع بنسبة 95٪، وتطبيقات React وFlutter متقنة.',
     'hero.available': 'متاح لفرص جديدة',
+    'hero.route': 'مراكش · إفران · إسطنبول',
+    'hero.now': 'أعمل الآن على',
+    'hero.nowTitle': 'نظام RAG حكومي آمن',
+    'stat.speed': 'أسرع في معالجة الوثائق — من ساعتين ونصف إلى 15 دقيقة',
+    'stat.services': 'خدمات مصغّرة انطلاقًا من كتلة برمجية من 3,643 سطرًا',
+    'stat.langs': 'أعمل وأُنجز بثلاث لغات',
+    'cta.hire': 'وظّفني',
+    'cta.emailMe': 'راسلني',
+    'cta.stickyText': 'هل أعجبك ما رأيت؟',
     'cta.viewProjects': 'استعراض المشاريع',
     'cta.viewCV': 'قراءة السيرة',
     'cta.exploreCode': 'استعراض الشيفرة',
     'cta.visitWebsite': 'زيارة الموقع',
     'cta.downloadApp': 'تحميل التطبيق',
     'cta.readCase': 'قراءة التفاصيل التقنية',
+    'cta.scanQr': 'امسح رمز QR بكاميرا هاتفك لتحميل تطبيق أندرويد.',
     'sections.projects': 'المشاريع',
     'sections.about': 'نبذة عني',
     'sections.creative': 'الأعمال الإبداعية',
     'sections.projectsSub': 'مختارات — بطاقات دراسة حالة مع التقنيات والروابط.',
     'sections.cv': 'السيرة الذاتية',
     'sections.contact': 'تواصل',
+    'sections.skills': 'المهارات والخبرات',
+    'sections.journey': 'المسار',
     'about.sub': 'نبذة سريعة — من أنا، ماذا أتعلم، وكيف أفكر.',
     'about.bio': 'أنا مامون، أمزج بين هندسة البرمجيات والتفكير الإبداعي. أستمتع ببناء أنظمة متينة وسرد قصص منتج مميزة.',
+    'about.item1': 'بكالوريوس علوم الحاسوب، جامعة الأخوين — 2026',
+    'about.item2': 'فصل تبادل طلابي، جامعة بوغازيتشي، إسطنبول',
+    'about.item3': 'هندسة البرمجيات والذكاء الاصطناعي · التصوير والتصميم البصري',
+    'skills.backend': 'الواجهة الخلفية وDevOps',
+    'skills.ai': 'الذكاء الاصطناعي وRAG',
+    'skills.creative': 'الإبداع / التصوير',
+    'journey.prevLabel': 'سابقًا',
+    'journey.prev': 'متدرّب في Intelcia IT Solutions — نظام لجمع البيانات آليًا من الويب لتدريب روبوت محادثة ذكي.',
+    'journey.nowLabel': 'قيد الإنجاز',
+    'journey.now': 'نظام RAG حكومي آمن — نظام ذكاء اصطناعي مؤسسي بسيادة كاملة على البيانات.',
+    'journey.nextLabel': 'التالي',
+    'journey.next': 'منصة تحليلات كرة قدم مدعومة بالذكاء الاصطناعي.',
     'creative.sub': 'مختارات من التصوير والتصميم.',
     'creative.photo': 'التصوير',
     'creative.design': 'عرض التصميم',
@@ -150,6 +263,7 @@ const I18N = {
     'creative.filterAll': 'الكل',
     'creative.filterPhoto': 'التصوير',
     'creative.filterDesign': 'التصميم',
+    'creative.soon': 'قريبًا',
     'photo.featured.title': 'لحظة إبداعية',
     'photo.featured.caption': 'تم التقاطها أثناء العملية الإبداعية، 2025',
     'photo.placeholder1': 'غروب المدينة',
@@ -167,10 +281,24 @@ const I18N = {
     'design.download': 'تحميل',
     'contact.sub': 'لنصنع شيئًا رائعًا معًا.',
     'contact.email': 'البريد الإلكتروني',
+    'contact.formName': 'اسمك',
+    'contact.formEmail': 'بريدك الإلكتروني',
+    'contact.formMsg': 'الرسالة',
+    'contact.send': 'إرسال الرسالة',
+    'contact.note': 'يفتح تطبيق البريد لديك والرسالة جاهزة للإرسال.',
+    'contact.sent': 'يُفترض أن تطبيق البريد قد فُتح والرسالة جاهزة. إلى اللقاء قريبًا!',
+    'contact.errName': 'يرجى إدخال اسمك.',
+    'contact.errEmail': 'يرجى إدخال بريد إلكتروني صالح.',
+    'contact.errMsg': 'يرجى كتابة رسالة قصيرة (10 أحرف على الأقل).',
     'cv.downloadTxt': 'تنزيل السيرة (نص)',
     'cv.downloadPdf': 'تنزيل PDF',
     'cv.loading': 'جارٍ تحميل السيرة…',
-    'footer.built': 'تم بناؤه بـ HTML وCSS وJS'
+    'cv.updated': 'آخر تحديث: سبتمبر 2025',
+    'cv.base': 'مقيم في',
+    'cv.study': 'الدراسة',
+    'cv.langs': 'اللغات',
+    'footer.built': 'تم بناؤه بـ HTML وCSS وJS',
+    'footer.privacy': 'لا ملفات تعريف ارتباط ولا تتبّع — يُحفظ المظهر واللغة في متصفحك فقط.'
   }
 };
 
@@ -180,6 +308,9 @@ const projects = [
   {
     id: 'dce-scraper',
     title: 'DCE Scraper — Microservices',
+    kind: 'Automation · Intelcia internship',
+    featured: true,
+    metric: { value: '95%', label: 'faster — 2.5 h → 15 min for 300 consultations' },
     description: 'Advanced procurement scraper refactored from monolith to 7 microservices with 90%+ speed gains and zero silent failures.',
     tech: ['Python 3.12', 'Selenium', 'Microservices', 'Multithreading', 'Async', 'Click CLI', 'YAML config'],
     caseStudy: 'content/projects/dce-scraper.md',
@@ -191,6 +322,9 @@ const projects = [
   {
     id: 'esaha',
     title: 'eSaha — Mental Health Platform',
+    kind: 'Full-stack · Healthcare',
+    featured: true,
+    metric: { value: '7', label: 'core features — secure auth, live chat, journaling, scheduling & more' },
     description: 'Privacy‑first healthcare platform: secure auth, real‑time chat, journaling, scheduling, and resources library.',
     tech: ['React', 'TypeScript', 'Vite', 'Tailwind', 'Supabase', 'Axios'],
     caseStudy: 'content/projects/esaha.md',
@@ -202,9 +336,10 @@ const projects = [
   {
     id: 'quiz-game',
     title: 'Quiz Game App',
+    kind: 'Mobile · Android',
     description: 'Kotlin + Firebase with coroutines, real-time questions, leaderboards, and offline cache.',
     tech: ['Kotlin', 'Firebase', 'Coroutines'],
-    links: { 
+    links: {
       github: 'https://github.com/mohamedelarakitantaoui/game-app',
       qr: 'assets/img/quiz-app-qr.png'
     },
@@ -212,6 +347,7 @@ const projects = [
   {
     id: 'preparia',
     title: 'Preparia Platform',
+    kind: 'Web · E-learning',
     description: 'WordPress e-learning platform using Elementor and interactive H5P content.',
     tech: ['WordPress', 'Elementor', 'H5P'],
     links: { github: 'https://preparia.ma/fr_fr' },
@@ -219,6 +355,7 @@ const projects = [
   {
     id: 'courses-lessons',
     title: 'Courses & Lessons App',
+    kind: 'Mobile · Flutter',
     description: 'Flutter app with WordPress backend for browsing courses, lessons, and media.',
     tech: ['Flutter', 'Dart', 'WordPress'],
     links: { github: 'https://github.com/mohamedelarakitantaoui' },
@@ -226,33 +363,39 @@ const projects = [
   // Note: Keep this list clean; avoid empty items that can break rendering.
 ];
 
+const ICON_ARROW = '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>';
+
 // Render project cards
 function renderProjects() {
   const grid = $('#projectsGrid');
   if (!grid) return;
   // Filter out any incomplete entries to avoid runtime errors
   const safe = projects.filter(p => p && p.title && p.description);
-  grid.innerHTML = safe.map(p => `
-    <article class="project-card" data-reveal data-id="${escapeHtml(String(p.id||''))}">
-      <div class="project-media" aria-hidden="true">
-        <span>${escapeHtml(String(p.title).split(' ').map(w=>w[0]).join('').slice(0,4).toUpperCase())}</span>
+  grid.innerHTML = safe.map((p, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    const isSite = p.id === 'preparia';
+    const metric = p.featured && p.metric
+      ? `<p class="project-metric">${escapeHtml(p.metric.value)}<small>${escapeHtml(p.metric.label)}</small></p>`
+      : '';
+    return `
+    <article class="project-card${p.featured ? ' featured' : ''}" data-reveal data-id="${escapeHtml(String(p.id||''))}">
+      <div class="project-top">
+        <span class="project-num">${num}</span>
+        <span class="project-kind">${escapeHtml(String(p.kind || ''))}</span>
       </div>
-      <div class="project-body">
-        <h3 class="project-title">${escapeHtml(String(p.title))}</h3>
-        <p class="project-desc">${escapeHtml(String(p.description))}</p>
-        <div class="tech-list">
-          ${(p.tech||[]).map(tg => `<span class="chip">${escapeHtml(String(tg))}</span>`).join('')}
-        </div>
-        <div class="card-actions">
-          ${p.links?.github ? `<a class="btn btn-secondary" href="${p.links.github}" target="_blank" rel="noopener">${p.id === 'preparia' ? t('cta.visitWebsite') || t('cta.exploreCode') : t('cta.exploreCode')}</a>` : ''}
-          ${p.links?.qr ? `<button class="btn btn-secondary btn-qr" data-qr="${p.links.qr}" data-title="${escapeHtml(p.title)}">${t('cta.downloadApp')}</button>` : ''}
-          ${p.links?.demo ? `<a class="btn btn-secondary" href="${p.links.demo}" target="_blank" rel="noopener">${labelForLink('demo')}</a>` : ''}
-          ${p.caseStudy ? `<button class="btn btn-primary btn-case" data-case="${p.caseStudy}" data-title="${escapeHtml(p.title)}">${t('cta.readCase')}</button>` : ''}
-        </div>
+      ${metric}
+      <h3 class="project-title">${escapeHtml(String(p.title))}</h3>
+      <p class="project-desc">${escapeHtml(String(p.description))}</p>
+      <ul class="tags">${(p.tech||[]).map(tg => `<li>${escapeHtml(String(tg))}</li>`).join('')}</ul>
+      <div class="card-actions">
+        ${p.caseStudy ? `<button type="button" class="btn btn-primary btn-sm btn-case" data-case="${escapeHtml(p.caseStudy)}" data-title="${escapeHtml(p.title)}">${escapeHtml(t('cta.readCase'))}</button>` : ''}
+        ${p.links?.github ? `<a class="btn btn-outline btn-sm" href="${escapeHtml(p.links.github)}" target="_blank" rel="noopener">${escapeHtml(isSite ? t('cta.visitWebsite') : t('cta.exploreCode'))}${ICON_ARROW}</a>` : ''}
+        ${p.links?.qr ? `<button type="button" class="btn btn-primary btn-sm btn-qr" data-qr="${escapeHtml(p.links.qr)}" data-title="${escapeHtml(p.title)}">${escapeHtml(t('cta.downloadApp'))}</button>` : ''}
+        ${p.links?.demo ? `<a class="btn btn-outline btn-sm" href="${escapeHtml(p.links.demo)}" target="_blank" rel="noopener">${labelForLink('demo')}</a>` : ''}
       </div>
-    </article>
-  `).join('');
-  initCaseStudyButtons();
+    </article>`;
+  }).join('');
+  observeReveal($$('[data-reveal]', grid));
 }
 
 function labelForLink(kind){
@@ -268,23 +411,16 @@ function labelForLink(kind){
 function initTheme(){
   const btn = $('#themeToggle');
   // Prefer saved theme, else system preference, default to dark
-  const saved = localStorage.getItem('theme');
-  const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initial = saved || (systemDark ? 'dark' : 'light');
-  setTheme(initial);
+  const saved = store('theme');
+  const systemLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  setTheme(saved || (systemLight ? 'light' : 'dark'), false);
   btn?.addEventListener('click', () => {
-    const cur = getTheme();
-    const next = cur === 'dark' ? 'light' : 'dark';
-    setTheme(next);
+    setTheme(getTheme() === 'dark' ? 'light' : 'dark', true);
   });
-  // Update icon
-  function updateIcon(mode){ const icon = btn?.querySelector('.icon'); if(icon) icon.textContent = mode === 'dark' ? '🌙' : '☀️'; }
-  function setTheme(mode){
+  function setTheme(mode, persist){
     document.documentElement.setAttribute('data-theme', mode);
-    localStorage.setItem('theme', mode);
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if(meta){ meta.setAttribute('content', mode === 'dark' ? '#0b1020' : '#f7f7fb'); }
-    updateIcon(mode);
+    if(persist) store('theme', mode);
+    btn?.setAttribute('aria-label', mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
   }
   function getTheme(){ return document.documentElement.getAttribute('data-theme') || 'dark'; }
 }
@@ -292,42 +428,36 @@ function initTheme(){
 // Language switcher (LTR/RTL aware)
 function initLang(){
   const currentBtn = $('#langCurrent');
+  const label = $('#langLabel');
   const menu = $('#langMenu');
-  const saved = localStorage.getItem('lang') || 'en';
-  setLang(saved);
+  const saved = store('lang') || 'en';
+  applyLang(saved);
   if(!currentBtn || !menu) return; // graceful if controls missing
-  currentBtn.textContent = saved.toUpperCase() === 'AR' ? 'AR' : saved.toUpperCase();
-  currentBtn.addEventListener('click', () => {
-    const isOpen = menu.classList.contains('show');
-    menu.classList.toggle('show', !isOpen);
-    currentBtn.setAttribute('aria-expanded', String(!isOpen));
-  });
-  menu.addEventListener('click', (e) => {
-    const li = e.target.closest('li');
-    if (!li) return;
-    const lang = li.dataset.lang;
-    setLang(lang);
-    currentBtn.textContent = lang === 'ar' ? 'AR' : lang.toUpperCase();
-    menu.classList.remove('show');
-    currentBtn.setAttribute('aria-expanded', 'false');
-    localStorage.setItem('lang', lang);
-  });
-  document.addEventListener('click', (e)=>{
-    if(!menu.contains(e.target) && e.target !== currentBtn) menu.classList.remove('show');
-  })
-}
 
-// Hide PDF download if the file isn't present
-async function initCvDownloads(){
-  const pdfLink = document.querySelector('a[href="content/cv.pdf"]');
-  if(!pdfLink) return;
-  try{
-    const res = await fetch('content/cv.pdf', { method: 'HEAD' });
-    if(!res.ok){
-      pdfLink.style.display = 'none';
-    }
-  }catch(err){
-    pdfLink.style.display = 'none';
+  const open = (state) => {
+    menu.hidden = !state;
+    currentBtn.setAttribute('aria-expanded', String(state));
+  };
+  currentBtn.addEventListener('click', () => open(menu.hidden));
+  menu.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-lang]');
+    if (!b) return;
+    applyLang(b.dataset.lang);
+    store('lang', b.dataset.lang);
+    open(false);
+    currentBtn.focus();
+  });
+  document.addEventListener('click', (e) => {
+    if(!menu.hidden && !menu.contains(e.target) && !currentBtn.contains(e.target)) open(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && !menu.hidden){ open(false); currentBtn.focus(); }
+  });
+
+  function applyLang(lang){
+    setLang(lang);
+    if(label) label.textContent = lang.toUpperCase();
+    $$('button[data-lang]', menu).forEach(b => b.setAttribute('aria-current', String(b.dataset.lang === lang)));
   }
 }
 
@@ -339,6 +469,7 @@ function setLang(lang){
   });
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   document.documentElement.lang = lang;
+  renderProjects(); // card button labels are translated too
 }
 
 function t(key){
@@ -348,16 +479,24 @@ function t(key){
 
 function escapeHtml(str){
   const map = { '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' };
-  return str.replace(/[&<>'"]/g, c => map[c]);
+  return String(str).replace(/[&<>'"]/g, c => map[c]);
 }
 
 // Scroll reveal
-function initReveal(){
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
-  $$('[data-reveal]').forEach(el => io.observe(el));
+let revealObserver = null;
+function observeReveal(els){
+  if(!('IntersectionObserver' in window) || reduceMotion){
+    els.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  if(!revealObserver){
+    revealObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+  }
+  els.forEach(el => { if(!el.classList.contains('visible')) revealObserver.observe(el); });
 }
+function initReveal(){ observeReveal($$('[data-reveal]')); }
 
 // Mobile menu toggle
 function initMenu(){
@@ -365,19 +504,21 @@ function initMenu(){
   const nav = $('#primaryNav');
   if(!btn || !nav) return;
   const openClass = 'nav-open';
-  btn.addEventListener('click', () => {
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    nav.classList.toggle(openClass, !expanded);
-  });
+  const set = (state) => {
+    btn.setAttribute('aria-expanded', String(state));
+    btn.setAttribute('aria-label', state ? 'Close menu' : 'Open menu');
+    nav.classList.toggle(openClass, state);
+    document.body.classList.toggle('menu-open', state);
+  };
+  btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
   // Close on link click (for mobile UX)
   nav.addEventListener('click', (e) => {
-    const a = e.target.closest('a');
-    if(a && nav.classList.contains(openClass)){
-      nav.classList.remove(openClass);
-      btn.setAttribute('aria-expanded', 'false');
-    }
+    if(e.target.closest('a') && nav.classList.contains(openClass)) set(false);
   });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && nav.classList.contains(openClass)){ set(false); btn.focus(); }
+  });
+  window.addEventListener('resize', () => { if(window.innerWidth > 1100 && nav.classList.contains(openClass)) set(false); });
 }
 
 // Scroll spy (active nav link)
@@ -387,12 +528,16 @@ function initScrollSpy(){
   let ticking = false;
 
   const onScroll = () => {
-    const y = window.scrollY + 120;
+    const y = window.scrollY + 140;
     let current = null;
     sections.forEach(sec => { if(y >= sec.offsetTop) current = sec.id; });
-    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+    links.forEach(a => {
+      const on = a.getAttribute('href') === '#' + current;
+      a.classList.toggle('active', on);
+      if(on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
 
-    // Mark body as scrolled for header shadow styling
+    // Mark body as scrolled for header background styling
     document.body.classList.toggle('scrolled', (window.scrollY || 0) > 10);
     ticking = false;
   };
@@ -404,36 +549,65 @@ function initScrollSpy(){
   onScroll(); // initial
 }
 
-// Load CV markdown (simple fetch and render minimal)
+// Load CV markdown
 async function loadCV(){
   const el = $('#cvContent');
   if(!el) return;
   try{
     const res = await fetch('content/cv.md');
-    let md = await res.text();
-    // Normalize CRLF to LF for consistent parsing across Windows
-    md = md.replace(/\r\n/g, '\n');
-    el.innerHTML = markdownToHtml(md);
+    if(!res.ok) throw new Error(res.status);
+    el.innerHTML = markdownToHtml(await res.text());
     el.removeAttribute('aria-busy');
   }catch(err){
-    el.innerHTML = '<p>Unable to load CV. Please download instead.</p>';
+    el.innerHTML = '<p>Unable to load CV. Please download the PDF instead.</p>';
+    el.removeAttribute('aria-busy');
   }
 }
 
+// Small block-level markdown renderer: headings, lists, paragraphs, bold, italics, links.
+// Input is escaped first, so markdown files can't inject HTML.
 function markdownToHtml(md){
-  // very small MD -> HTML: headings, bold, italics, links, lists, paragraphs
-  let html = md
-    .replace(/^###\s?(.*)$/gim, '<h3>$1</h3>')
-    .replace(/^##\s?(.*)$/gim, '<h2>$1</h2>')
-    .replace(/^#\s?(.*)$/gim, '<h1>$1</h1>')
-    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-    .replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1<\/a>')
-    .replace(/\n-\s(.*)/gim, '<ul><li>$1</li></ul>')
-    .replace(/\n\n/g, '<br/><br/>' );
-  // merge consecutive <ul>
-  html = html.replace(/<\/ul>\s*<ul>/g, '');
-  return html;
+  const lines = md.replace(/\r\n/g, '\n').split('\n');
+  const out = [];
+  let list = null; // 'ul' | 'ol'
+  let para = [];
+
+  const inline = (s) => escapeHtml(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*(?!\s)(.+?)\*/g, '$1<em>$2</em>')
+    .replace(/\[(.+?)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/(^|[\s(])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>')
+    .replace(/(^|[\s(])([\w.+-]+@[\w-]+\.[\w.]+)/g, '$1<a href="mailto:$2">$2</a>');
+  const flushPara = () => { if(para.length){ out.push(`<p>${para.map(inline).join('<br/>')}</p>`); para = []; } };
+  const flushList = () => { if(list){ out.push(`</${list}>`); list = null; } };
+
+  lines.forEach(raw => {
+    const line = raw.trimEnd();
+    let m;
+    if(!line.trim()){ flushPara(); flushList(); return; }
+    if((m = line.match(/^(#{1,4})\s+(.*)$/))){
+      flushPara(); flushList();
+      const lvl = Math.min(m[1].length + 1, 5); // demote: the page owns the only h1
+      out.push(`<h${lvl}>${inline(m[2])}</h${lvl}>`);
+      return;
+    }
+    if((m = line.match(/^\s*[-*]\s+(.*)$/))){
+      flushPara();
+      if(list !== 'ul'){ flushList(); out.push('<ul>'); list = 'ul'; }
+      out.push(`<li>${inline(m[1])}</li>`);
+      return;
+    }
+    if((m = line.match(/^\s*\d+\.\s+(.*)$/))){
+      flushPara();
+      if(list !== 'ol'){ flushList(); out.push('<ol>'); list = 'ol'; }
+      out.push(`<li>${inline(m[1])}</li>`);
+      return;
+    }
+    flushList();
+    para.push(line.trim());
+  });
+  flushPara(); flushList();
+  return out.join('\n');
 }
 
 function initYear(){
@@ -442,226 +616,96 @@ function initYear(){
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {
-  renderProjects();
-  initTilt();
   initTheme();
+  initLang(); // renders projects
   initMenu();
   initScrollSpy();
   initHeaderAutoHide();
-  initLang();
   initReveal();
   loadCV();
-  initCvDownloads();
   initYear();
-  renderGalleries();
-  renderTimeline();
-  initLightbox();
+  initModal();
   initStickyCta();
   initBackToTop();
-  initCreativeSection(); // Creative section functionality
+  initCreativeSection();
+  initContactForm();
 });
 
-// 3D tilt on cards
-function initTilt(){
-  const maxTilt = 8; // degrees
-  const cards = $$('.project-card');
-  cards.forEach(card => {
-    let raf = null;
-    const onMove = (e) => {
-      const r = card.getBoundingClientRect();
-      const cx = r.left + r.width/2;
-      const cy = r.top + r.height/2;
-      const dx = (e.clientX - cx) / (r.width/2);
-      const dy = (e.clientY - cy) / (r.height/2);
-      const rx = (-dy * maxTilt).toFixed(2);
-      const ry = (dx * maxTilt).toFixed(2);
-      if(raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(()=>{
-        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-      });
-    };
-    const reset = () => {
-      if(raf) cancelAnimationFrame(raf);
-      card.style.transform = '';
-    };
-    card.addEventListener('mousemove', onMove);
-    card.addEventListener('mouseleave', reset);
-  });
-}
-
-// Case Study Modal
-function initCaseStudyButtons(){
-  $$('.btn-case').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      const path = btn.getAttribute('data-case');
-      const title = btn.getAttribute('data-title') || 'Case Study';
-      openCaseModal(title);
+// ---------- Case Study / QR Modal ----------
+let lastFocus = null;
+function initModal(){
+  const modal = $('#caseModal');
+  if(!modal) return;
+  document.addEventListener('click', async (e) => {
+    const caseBtn = e.target.closest('.btn-case');
+    const qrBtn = e.target.closest('.btn-qr');
+    if(caseBtn){
+      openModal(caseBtn.getAttribute('data-title') || 'Case Study');
       try{
-        const res = await fetch(path);
-        const md = await res.text();
-        $('#modalBody').innerHTML = markdownToHtml(md);
+        const res = await fetch(caseBtn.getAttribute('data-case'));
+        if(!res.ok) throw new Error(res.status);
+        $('#modalBody').innerHTML = markdownToHtml(await res.text());
       }catch(err){
         $('#modalBody').innerHTML = '<p>Unable to load case study right now.</p>';
       }
-    });
+    }else if(qrBtn){
+      const title = qrBtn.getAttribute('data-title') || 'App';
+      openModal(`${title} — ${t('cta.downloadApp')}`);
+      $('#modalBody').innerHTML = `
+        <div class="qr-box">
+          <img src="${escapeHtml(qrBtn.getAttribute('data-qr'))}" alt="QR code to download ${escapeHtml(title)}" width="220" height="220"/>
+          <p>${escapeHtml(t('cta.scanQr'))}</p>
+          <ul class="tags"><li>Android</li><li>Free</li></ul>
+        </div>`;
+    }else if(e.target.closest('[data-close]')){
+      closeModal();
+    }
   });
-
-  // QR Code Modal
-  $$('.btn-qr').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const qrPath = btn.getAttribute('data-qr');
-      const title = btn.getAttribute('data-title') || 'Download App';
-      openQRModal(title, qrPath);
-    });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && !modal.hidden) closeModal();
   });
 }
 
-function openCaseModal(title){
+function openModal(title){
   const modal = $('#caseModal');
+  lastFocus = document.activeElement;
   $('#modalTitle').textContent = title;
-  $('#modalBody').innerHTML = '<div class="loading">Loading…</div>';
-  modal.classList.add('show');
+  $('#modalBody').innerHTML = '<p class="loading">Loading…</p>';
+  modal.hidden = false;
   modal.setAttribute('aria-hidden', 'false');
-  modal.setAttribute('aria-modal', 'true');
-  // close events
-  const onClose = (e) => {
-    if(e.target.hasAttribute?.('data-close') || e.target === $('.modal-backdrop', modal)){
-      closeCaseModal();
-    }
-  };
-  modal.addEventListener('click', onClose, { once: true });
-  $('.modal-close', modal)?.addEventListener('click', closeCaseModal, { once: true });
+  document.body.style.overflow = 'hidden';
+  $('.modal-close', modal)?.focus();
 }
 
-function closeCaseModal(){
+function closeModal(){
   const modal = $('#caseModal');
-  modal.classList.remove('show');
+  modal.hidden = true;
   modal.setAttribute('aria-hidden', 'true');
-  modal.setAttribute('aria-modal', 'false');
-}
-
-function openQRModal(title, qrPath){
-  const modal = $('#caseModal');
-  $('#modalTitle').textContent = `${title} - ${t('cta.downloadApp')}`;
-  $('#modalBody').innerHTML = `
-    <div style="text-align: center; padding: 20px;">
-      <div style="display: inline-block; padding: 20px; background: white; border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); margin-bottom: 20px;">
-        <img src="${qrPath}" alt="QR Code to download ${title}" style="width: 200px; height: 200px; display: block;"/>
-      </div>
-      <h3 style="margin: 16px 0 8px; color: var(--text);">📱 ${t('cta.downloadApp')}</h3>
-      <p style="color: var(--muted); margin: 0 0 16px;">Scan the QR code with your phone camera to download the Android app</p>
-      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 14px;">
-        <span>📱</span>
-        <span>Android App</span>
-        <span>•</span>
-        <span>Free Download</span>
-      </div>
-    </div>
-  `;
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden', 'false');
-  modal.setAttribute('aria-modal', 'true');
-  const onClose = (e) => { if(e.target.hasAttribute?.('data-close') || e.target === $('.modal-backdrop', modal)){ closeCaseModal(); } };
-  modal.addEventListener('click', onClose, { once: true });
-  $('.modal-close', modal)?.addEventListener('click', closeCaseModal, { once: true });
-}
-
-// Creative galleries data (placeholders)
-const galleryPhoto = [
-  { src: 'assets/img/photo-1.jpg', alt: 'City lights' },
-  { src: 'assets/img/photo-2.jpg', alt: 'Desert dunes' },
-  { src: 'assets/img/photo-3.jpg', alt: 'Forest trail' },
-  { src: 'assets/img/photo-4.jpg', alt: 'Ocean horizon' }
-];
-const galleryDesign = [
-  { src: 'assets/img/design-1.jpg', alt: 'Logo concept' },
-  { src: 'assets/img/design-2.jpg', alt: 'Poster graphic' },
-  { src: 'assets/img/design-3.jpg', alt: 'UI wireframe' }
-];
-
-function renderGalleries(){
-  const p = $('#galleryPhoto');
-  const d = $('#galleryDesign');
-  if(p){ p.innerHTML = galleryPhoto.map(i => `<div class="gallery-item" data-img="${i.src}" aria-label="${escapeHtml(i.alt)}"><img src="${i.src}" alt="${escapeHtml(i.alt)}"/></div>`).join(''); }
-  if(d){ d.innerHTML = galleryDesign.map(i => `<div class="gallery-item" data-img="${i.src}" aria-label="${escapeHtml(i.alt)}"><img src="${i.src}" alt="${escapeHtml(i.alt)}"/></div>`).join(''); }
-}
-
-// Lightbox
-function initLightbox(){
-  if(!$('.lightbox')){
-    const lb = document.createElement('div');
-    lb.className = 'lightbox';
-    lb.innerHTML = '<img alt=""/>';
-    document.body.appendChild(lb);
-  }
-  const lb = $('.lightbox');
-  document.body.addEventListener('click', (e) => {
-    const item = e.target.closest('.gallery-item');
-    if(item){
-      const src = item.getAttribute('data-img');
-      $('.lightbox img').src = src;
-      lb.classList.add('show');
-    }else if(e.target === lb){
-      lb.classList.remove('show');
-    }
-  });
-}
-
-// Resume timeline (placeholder data)
-const timeline = [
-  { title: 'Software Engineer', meta: '2023 — Present', desc: 'Building AI and automation projects across government and healthcare.' },
-  { title: 'B.S. Computer Science', meta: '2019 — 2023', desc: 'University education with focus on systems and applied AI.' }
-];
-function renderTimeline(){
-  const el = $('#timeline');
-  if(!el) return;
-  el.innerHTML = timeline.map(it => `
-    <div class="timeline-item">
-      <h4 class="timeline-title">${escapeHtml(it.title)}</h4>
-      <div class="timeline-meta">${escapeHtml(it.meta)}</div>
-      <p>${escapeHtml(it.desc)}</p>
-    </div>
-  `).join('');
+  document.body.style.overflow = '';
+  lastFocus?.focus?.();
 }
 
 // Header auto-hide on scroll
 function initHeaderAutoHide(){
-  const header = document.querySelector('.site-header');
+  const header = $('#siteHeader');
   if(!header) return;
 
-  let lastY = window.pageYOffset || window.scrollY || 0;
-  const upThresh = 0;      // show on any upward movement
+  let lastY = window.scrollY || 0;
   const downThresh = 24;   // require a bit more movement to hide
   const showTop = 40;      // always show near top
-
-  const nav = document.getElementById('primaryNav');
-  const menuBtn = document.getElementById('menuToggle');
-  const isMenuOpen = () => nav?.classList.contains('nav-open') || menuBtn?.getAttribute('aria-expanded') === 'true';
-
-  const show = () => header.classList.remove('is-hidden');
-  const hide = () => header.classList.add('is-hidden');
+  const isMenuOpen = () => document.body.classList.contains('menu-open');
 
   let ticking = false;
   const onScroll = () => {
-    const y = window.pageYOffset || window.scrollY || 0;
-
-    // Always show when near the top or when menu is open
-    if (y <= showTop || isMenuOpen()) {
-      show();
-      lastY = y;
-      ticking = false;
-      return;
+    const y = window.scrollY || 0;
+    if (y <= showTop || isMenuOpen() || header.contains(document.activeElement)) {
+      header.classList.remove('is-hidden');
+    } else if (y > lastY + downThresh) {
+      header.classList.add('is-hidden');
+    } else if (y < lastY) {
+      header.classList.remove('is-hidden');
     }
-
-    if (y > lastY + downThresh) {
-      // scrolling down (enough)
-      hide();
-    } else if (y < lastY - upThresh) {
-      // any upward movement shows it
-      show();
-    }
-
-    lastY = y;
+    if (Math.abs(y - lastY) > downThresh || y < lastY) lastY = y;
     ticking = false;
   };
 
@@ -670,23 +714,23 @@ function initHeaderAutoHide(){
     ticking = true;
     requestAnimationFrame(onScroll);
   }, { passive: true });
-
-  // Wheel fallback: if user scrolls up but the page is at/bottom edge and barely moves,
-  // still show the header for responsiveness.
-  window.addEventListener('wheel', (e) => {
-    if (e.deltaY < 0 && (window.scrollY || 0) > showTop && !isMenuOpen()) {
-      show();
-    }
-  }, { passive: true });
+  header.addEventListener('focusin', () => header.classList.remove('is-hidden'));
 }
 
-// Sticky CTA shows after scrolling past hero
+// Sticky CTA shows after scrolling past hero, hides again at the contact section
 function initStickyCta(){
   const bar = $('#stickyCta');
   if(!bar) return;
-  const hero = document.querySelector('.hero');
-  const showAt = () => (hero?.getBoundingClientRect().bottom || 0) < 0;
-  const onScroll = () => { bar.classList.toggle('show', showAt()); };
+  const hero = $('.hero');
+  const contact = $('#contact');
+  const onScroll = () => {
+    const pastHero = (hero?.getBoundingClientRect().bottom || 0) < 0;
+    const atContact = contact && contact.getBoundingClientRect().top < window.innerHeight * 0.8;
+    const show = pastHero && !atContact;
+    bar.classList.toggle('show', show);
+    bar.setAttribute('aria-hidden', String(!show));
+    $$('a', bar).forEach(a => a.tabIndex = show ? 0 : -1);
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 }
@@ -695,214 +739,167 @@ function initStickyCta(){
 function initBackToTop(){
   const btn = $('#backToTop');
   if(!btn) return;
-  const onScroll = () => { btn.classList.toggle('show', (window.scrollY||0) > 400); };
+  const onScroll = () => { btn.classList.toggle('show', (window.scrollY||0) > 600); };
   window.addEventListener('scroll', onScroll, { passive: true });
-  btn.addEventListener('click', ()=> window.scrollTo({ top:0, behavior:'smooth' }));
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
   onScroll();
 }
 
-// ========================================= 
-// CREATIVE SECTION FUNCTIONALITY 
-// ========================================= 
+// =========================================
+// CREATIVE SECTION
+// =========================================
 
-// Creative Gallery Lightbox
 function initCreativeLightbox() {
   const modal = $('#lightboxModal');
-  const modalImage = $('#lightboxImage');
-  const modalTitle = $('#lightboxTitle');
-  const modalCaption = $('#lightboxCaption');
-  const closeButtons = $$('[data-lightbox-close]');
-  const prevButton = $('.lightbox-prev');
-  const nextButton = $('.lightbox-next');
-  
   if (!modal) return;
+  const img = $('#lightboxImage');
+  const title = $('#lightboxTitle');
+  const caption = $('#lightboxCaption');
+  let opener = null;
+  let index = 0;
 
-  let currentGallery = [];
-  let currentIndex = 0;
+  const items = () => $$('[data-lightbox="photography"]').map(el => ({
+    src: $('img', el)?.getAttribute('src'),
+    alt: $('img', el)?.getAttribute('alt') || '',
+    title: $('.gallery-title', el)?.textContent || '',
+    caption: $('.gallery-caption', el)?.textContent || ''
+  }));
 
-  // Gallery data
-  const galleryData = [
-    {
-      src: 'assets/img/featured-photo-1.png',
-      title: 'Creative Moment',
-      caption: 'Captured during creative process, 2025',
-      category: 'photography'
-    }
-  ];
-
-  // Open lightbox
-  function openLightbox(index, gallery = galleryData) {
-    currentGallery = gallery;
-    currentIndex = index;
-    showImage();
-    modal.classList.add('show');
-    modal.setAttribute('aria-hidden', 'false');
-    modal.setAttribute('aria-modal', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-
-  // Close lightbox
-  function closeLightbox() {
-    modal.classList.remove('show');
-    modal.setAttribute('aria-hidden', 'true');
-    modal.setAttribute('aria-modal', 'false');
-    document.body.style.overflow = '';
-  }
-
-  // Show current image
-  function showImage() {
-    const item = currentGallery[currentIndex];
+  function show() {
+    const list = items();
+    const item = list[index];
     if (!item) return;
-    
-    modalImage.src = item.src;
-    modalImage.alt = item.title;
-    modalTitle.textContent = item.title;
-    modalCaption.textContent = item.caption;
+    img.src = item.src;
+    img.alt = item.alt;
+    title.textContent = item.title;
+    caption.textContent = item.caption;
+    const single = list.length < 2;
+    $('.lightbox-prev', modal).hidden = single;
+    $('.lightbox-next', modal).hidden = single;
+  }
+  function open(i) {
+    opener = document.activeElement;
+    index = i;
+    show();
+    modal.hidden = false;
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    $('.lightbox-close', modal).focus();
+  }
+  function close() {
+    modal.hidden = true;
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    opener?.focus?.();
+  }
+  function step(dir) {
+    const n = items().length;
+    index = (index + dir + n) % n;
+    show();
   }
 
-  // Navigate gallery
-  function navigateGallery(direction) {
-    if (direction === 'next') {
-      currentIndex = (currentIndex + 1) % currentGallery.length;
-    } else {
-      currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
-    }
-    showImage();
-  }
-
-  // Event listeners
-  closeButtons.forEach(btn => {
-    btn.addEventListener('click', closeLightbox);
-  });
-
-  prevButton?.addEventListener('click', () => navigateGallery('prev'));
-  nextButton?.addEventListener('click', () => navigateGallery('next'));
-
-  // Keyboard navigation
+  $$('[data-lightbox-close]', modal).forEach(b => b.addEventListener('click', close));
+  $('.lightbox-prev', modal)?.addEventListener('click', () => step(-1));
+  $('.lightbox-next', modal)?.addEventListener('click', () => step(1));
   document.addEventListener('keydown', (e) => {
-    if (!modal.classList.contains('show')) return;
-    
-    switch(e.key) {
-      case 'Escape':
-        closeLightbox();
-        break;
-      case 'ArrowLeft':
-        navigateGallery('prev');
-        break;
-      case 'ArrowRight':
-        navigateGallery('next');
-        break;
-    }
+    if (modal.hidden) return;
+    const rtl = document.documentElement.dir === 'rtl';
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') step(rtl ? 1 : -1);
+    if (e.key === 'ArrowRight') step(rtl ? -1 : 1);
   });
-
-  // Gallery item click handlers
-  $$('[data-lightbox="photography"]').forEach((item, index) => {
-    item.addEventListener('click', () => {
-      if (!item.classList.contains('placeholder')) {
-        openLightbox(index);
-      }
-    });
-  });
+  $$('[data-lightbox="photography"]').forEach((el, i) => el.addEventListener('click', () => open(i)));
 }
 
-// Creative Filter Functionality
 function initCreativeFilters() {
-  const filterTabs = $$('.filter-tab');
-  const creativeGroups = $$('.creative-group[data-category]');
-  
-  filterTabs.forEach(tab => {
+  const tabs = $$('.filter-tab');
+  const groups = $$('.creative-group[data-category]');
+  tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const filter = tab.dataset.filter;
-      
-      // Update active tab
-      filterTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      
-      // Filter content
-      creativeGroups.forEach(group => {
-        const category = group.dataset.category;
-        if (filter === 'all' || filter === category) {
-          group.classList.remove('filter-hidden');
-        } else {
-          group.classList.add('filter-hidden');
-        }
+      tabs.forEach(x => {
+        x.classList.toggle('active', x === tab);
+        x.setAttribute('aria-pressed', String(x === tab));
       });
+      groups.forEach(g => g.classList.toggle('filter-hidden', !(filter === 'all' || filter === g.dataset.category)));
     });
   });
 }
 
-// Hero Video Controls
-function initHeroVideoControls() {
+// Video: only download the 35 MB file when it scrolls near, and don't autoplay for reduced motion
+function initCreativeVideo() {
   const video = $('.hero-video');
-  const playBtn = $('.video-play-btn');
-  
-  if (!video || !playBtn) return;
-  
-  let isPlaying = video.autoplay;
-  
-  playBtn.addEventListener('click', () => {
-    if (isPlaying) {
-      video.pause();
-      video.removeAttribute('autoplay');
-      isPlaying = false;
-    } else {
-      video.play();
-      video.setAttribute('autoplay', '');
-      isPlaying = true;
+  const btn = $('.video-play-btn');
+  if (!video || !btn) return;
+
+  const load = () => {
+    if (video.dataset.src && !video.src) {
+      video.src = video.dataset.src;
     }
-    updatePlayButton();
+  };
+  const sync = () => {
+    const playing = !video.paused;
+    btn.setAttribute('aria-pressed', String(playing));
+    btn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+  };
+
+  btn.addEventListener('click', () => {
+    load();
+    if (video.paused) video.play().catch(() => {}); else video.pause();
   });
-  
-  function updatePlayButton() {
-    const playIcon = playBtn.querySelector('.play-icon');
-    const pauseIcon = playBtn.querySelector('.pause-icon');
-    
-    if (isPlaying) {
-      playIcon.style.display = 'none';
-      pauseIcon.style.display = 'block';
-    } else {
-      playIcon.style.display = 'block';
-      pauseIcon.style.display = 'none';
-    }
+  video.addEventListener('play', sync);
+  video.addEventListener('pause', sync);
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { load(); video.play().catch(() => {}); }
+        else if (!video.paused) video.pause();
+      });
+    }, { rootMargin: '200px 0px' });
+    io.observe(video);
   }
-  
-  // Handle video events
-  video.addEventListener('play', () => {
-    isPlaying = true;
-    updatePlayButton();
-  });
-  
-  video.addEventListener('pause', () => {
-    isPlaying = false;
-    updatePlayButton();
-  });
-  
-  updatePlayButton();
+  sync();
 }
 
-// Reveal Animation for Creative Section
-function initCreativeRevealAnimation() {
-  const revealElements = $$('[data-reveal]');
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
-  
-  revealElements.forEach(el => observer.observe(el));
-}
-
-// Initialize Creative Section
 function initCreativeSection() {
   initCreativeLightbox();
   initCreativeFilters();
-  initHeroVideoControls();
-  initCreativeRevealAnimation();
+  initCreativeVideo();
+}
+
+// ---------- Contact form (mailto, no backend needed) ----------
+function initContactForm(){
+  const form = $('#contactForm');
+  if(!form) return;
+  const success = $('#cfSuccess');
+  const fields = {
+    name: { el: $('#cfName'), err: $('#cfNameErr'), ok: v => v.trim().length > 1, msg: 'contact.errName' },
+    email: { el: $('#cfEmail'), err: $('#cfEmailErr'), ok: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()), msg: 'contact.errEmail' },
+    message: { el: $('#cfMsg'), err: $('#cfMsgErr'), ok: v => v.trim().length >= 10, msg: 'contact.errMsg' }
+  };
+  const check = (f) => {
+    const valid = f.ok(f.el.value);
+    f.err.textContent = valid ? '' : t(f.msg);
+    f.el.setAttribute('aria-invalid', String(!valid));
+    f.el.closest('.field').classList.toggle('has-error', !valid);
+    return valid;
+  };
+  Object.values(fields).forEach(f => f.el.addEventListener('blur', () => { if(f.el.value) check(f); }));
+  Object.values(fields).forEach(f => f.el.addEventListener('input', () => { if(f.el.getAttribute('aria-invalid') === 'true') check(f); }));
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    success.hidden = true;
+    const results = Object.values(fields).map(check);
+    const firstBad = Object.values(fields).find((f, i) => !results[i]);
+    if(firstBad){ firstBad.el.focus(); return; }
+    const name = fields.name.el.value.trim();
+    const subject = encodeURIComponent(`Portfolio contact — ${name}`);
+    const body = encodeURIComponent(`${fields.message.el.value.trim()}\n\n— ${name} (${fields.email.el.value.trim()})`);
+    window.location.href = `mailto:elaraki48@gmail.com?subject=${subject}&body=${body}`;
+    success.hidden = false;
+    form.reset();
+    Object.values(fields).forEach(f => f.el.removeAttribute('aria-invalid'));
+  });
 }

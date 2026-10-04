@@ -1,419 +1,428 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111827" />
-  <title>Mamoun Tantaoui El Araki — Portfolio</title>
+    <meta name="theme-color" content="#0B1530" />
+    <title>Mamoun Tantaoui El Araki — Software Engineer, Morocco</title>
     <meta
       name="description"
-      content="Modern portfolio showcasing apps, bots, and creative engineering — turning ideas into working apps & intelligent bots."
+      content="Software engineer in Marrakech, Morocco building secure on-prem RAG, Python automation and React/Flutter apps. Projects, CV and contact."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mamoun Tantaoui El Araki — Software Engineer" />
+    <meta property="og:description" content="Secure AI systems, automation pipelines and web & mobile apps. Based in Marrakech, Morocco — EN · FR · AR." />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Noto+Kufi+Arabic:wght@400;600;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <script>
+      // Apply saved theme before paint to avoid a flash
+      try { var t = localStorage.getItem('theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+      document.documentElement.classList.add('js');
+    </script>
     <script defer src="assets/js/main.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Mamoun Tantaoui El Araki",
+        "jobTitle": "Software Engineer",
+        "email": "mailto:elaraki48@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Marrakech", "addressCountry": "MA" },
+        "alumniOf": [
+          { "@type": "CollegeOrUniversity", "name": "Al Akhawayn University" },
+          { "@type": "CollegeOrUniversity", "name": "Boğaziçi University" }
+        ],
+        "knowsLanguage": ["en", "fr", "ar"],
+        "knowsAbout": ["Retrieval Augmented Generation", "Python", "Web scraping", "Microservices", "React", "FastAPI", "Flutter"],
+        "sameAs": ["https://github.com/mohamedelarakitantaoui"]
+      }
+    </script>
   </head>
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a href="#top" class="brand" aria-label="Home">
-          <img src="assets/img/logo-mark.svg" alt="Logo" class="brand-mark" />
+    <!-- Icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="i-star" viewBox="0 0 100 100"><path d="M50 0L64.64 14.64H85.36V35.36L100 50L85.36 64.64V85.36H64.64L50 100L35.36 85.36H14.64V64.64L0 50L14.64 35.36V14.64H35.36Z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></g></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></symbol>
+      <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 12v6M9 15l3 3 3-3"/></g></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></g></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></symbol>
+      <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-camera" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></g></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+    </svg>
+
+    <a class="skip-link" href="#projects">Skip to content</a>
+
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner">
+        <a href="#top" class="brand" aria-label="Mamoun Tantaoui El Araki — home">
+          <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star"/></svg>
           <span class="brand-text" data-i18n="brandName">Mamoun Tantaoui El Araki</span>
         </a>
 
         <nav class="nav" id="primaryNav" aria-label="Primary">
           <a href="#top" class="nav-link" data-i18n="nav.home">Home</a>
-          <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
           <a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+          <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
           <a href="#creative" class="nav-link" data-i18n="nav.creative">Creative</a>
           <a href="#cv" class="nav-link" data-i18n="nav.cv">CV</a>
           <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
         </nav>
 
         <div class="header-actions">
-          <button class="btn-ghost" id="menuToggle" aria-label="Open menu" title="Menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
-          <button class="btn-ghost" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
-            <span class="icon">🌙</span>
+          <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+            <svg class="i i-moon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-moon"/></svg>
+            <svg class="i i-sun" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
           </button>
           <div class="lang-switch">
-            <button class="btn-ghost" id="langCurrent" aria-haspopup="listbox" aria-expanded="false" title="Language">
-              EN
+            <button class="icon-btn lang-btn" id="langCurrent" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" title="Language">
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-globe"/></svg>
+              <span id="langLabel">EN</span>
             </button>
-            <ul class="lang-menu" id="langMenu" role="listbox" aria-label="Language menu">
-              <li role="option" data-lang="en">EN</li>
-              <li role="option" data-lang="fr">FR</li>
-              <li role="option" data-lang="ar">العربية</li>
+            <ul class="lang-menu" id="langMenu" aria-label="Language menu" hidden>
+              <li><button type="button" data-lang="en" lang="en">English</button></li>
+              <li><button type="button" data-lang="fr" lang="fr">Français</button></li>
+              <li><button type="button" data-lang="ar" lang="ar">العربية</button></li>
             </ul>
           </div>
+          <a href="#contact" class="btn btn-accent btn-sm header-cta" data-i18n="cta.hire">Hire me</a>
+          <button class="icon-btn menu-btn" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+            <svg class="i i-open" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-menu"/></svg>
+            <svg class="i i-shut" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
         </div>
       </div>
     </header>
 
     <main id="top">
-      <section class="hero section">
-        <div class="container hero-inner">
-          <div class="hero-text">
-            <p class="eyebrow" data-i18n="hero.eyebrow">Portfolio</p>
-            <h1 class="hero-title">
-              <span data-i18n="hero.name">Mamoun Tantaoui El Araki</span>
-              <span class="gradient">—</span>
-              <span class="role" data-i18n="hero.role">Software Engineer</span>
+      <!-- ============ HERO — layered poster ============ -->
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-stage" aria-hidden="true">
+          <svg class="hero-halo" viewBox="0 0 100 100"><use href="#i-star"/></svg>
+          <div class="hero-word"><span>MAMOUN<svg class="hero-spark" viewBox="0 0 100 100"><use href="#i-star"/></svg></span></div>
+          <img class="hero-subject" src="assets/img/IMG-20250509-WA0012-removebg-preview.png" alt="" width="353" height="364" fetchpriority="high" decoding="async" />
+        </div>
+
+        <div class="hero-grid">
+          <div class="hero-left">
+            <p class="eyebrow"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg><span data-i18n="hero.eyebrow">Software engineer · Marrakech, Morocco</span></p>
+            <h1 id="heroTitle" class="hero-title">
+              <span class="hero-name" data-i18n="hero.name">Mamoun Tantaoui El Araki</span>
+              <span class="hero-tagline" data-i18n="hero.tagline">Turning ideas into working apps &amp; intelligent bots.</span>
             </h1>
-            <p class="hero-tagline" data-i18n="hero.tagline">
-              Crafting intelligent systems and elegant solutions. Specializing in AI, full-stack development, and creative engineering.
-            </p>
+            <p class="hero-lede" data-i18n="hero.lede">Secure on-prem RAG, Python automation that runs 95% faster, and polished React &amp; Flutter apps.</p>
             <div class="hero-cta">
-              <a href="#projects" class="btn btn-primary" data-i18n="cta.viewProjects">View Projects</a>
-              <a href="#cv" class="btn btn-secondary" data-i18n="cta.viewCV">Read CV</a>
-            </div>
-            <div class="hero-meta">
-              <span class="badge">EN</span>
-              <span class="badge">FR</span>
-              <span class="badge">AR</span>
-              <span class="spacer"></span>
-              <span class="subtle" data-i18n="hero.available">Available for opportunities</span>
+              <a href="#projects" class="btn btn-primary"><span data-i18n="cta.viewProjects">View Projects</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a href="#cv" class="btn btn-outline" data-i18n="cta.viewCV">Read CV</a>
             </div>
           </div>
-          <div class="hero-art">
-            <img src="assets/img/hero-visual.svg" alt="Creative technology visual" loading="eager" decoding="async" />
+
+          <aside class="hero-right" aria-label="Highlights">
+            <p class="status"><span class="status-dot" aria-hidden="true"></span><span data-i18n="hero.available">Available for opportunities</span></p>
+            <dl class="hero-stats">
+              <div><dt>95%</dt><dd data-i18n="stat.speed">faster document pipeline — 2.5 h down to 15 min</dd></div>
+              <div><dt>7</dt><dd data-i18n="stat.services">microservices carved from a 3,643-line monolith</dd></div>
+              <div><dt>EN·FR·AR</dt><dd data-i18n="stat.langs">works and ships in three languages</dd></div>
+            </dl>
+          </aside>
+
+          <div class="hero-bottom">
+            <ul class="hero-socials" aria-label="Links">
+              <li><a href="https://github.com/mohamedelarakitantaoui" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github"/></svg></a></li>
+              <li><a href="mailto:elaraki48@gmail.com" aria-label="Email"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+              <li><a href="pdfCv/RenderCV_EngineeringResumes_Theme.pdf" target="_blank" rel="noopener" aria-label="CV (PDF)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file"/></svg></a></li>
+            </ul>
+            <a class="hero-scroll" href="#projects">
+              <span data-i18n="hero.route">Marrakech · Ifrane · Istanbul</span>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-down"/></svg>
+            </a>
+            <a class="hero-next" href="#journey">
+              <span class="hero-next-mark" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#i-star"/></svg></span>
+              <span class="hero-next-text">
+                <small data-i18n="hero.now">Now building</small>
+                <strong data-i18n="hero.nowTitle">Secure Government RAG</strong>
+              </span>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
           </div>
         </div>
       </section>
 
-      
-
-      <section id="projects" class="section">
-        <div class="container">
-          <div class="section-head">
-            <h2 data-i18n="sections.projects">Projects</h2>
-            <p class="section-sub" data-i18n="sections.projectsSub">
-              Selected work — case study cards with tech stacks and links.
-            </p>
-          </div>
-          <div id="projectsGrid" class="projects-grid" aria-live="polite"></div>
-        </div>
-      </section>
-
-      <section id="about" class="section">
-        <div class="container">
-          <div class="section-head">
-            <h2 data-i18n="sections.about">About Me</h2>
-            <p class="section-sub" data-i18n="about.sub">A quick intro 
-              — who I am, what I study, and how I think.</p>
-          </div>
-          <div class="about-grid" data-reveal>
-            <div class="about-photo">
-              <img src="assets/img/IMG-20250509-WA0012-removebg-preview.png" alt="Photo of Mamoun Tantaoui El Araki" loading="lazy" decoding="async" />
-            </div>
-            <div class="about-text">
-              <p data-i18n="about.bio">
-                I’m Mamoun, a builder who blends software engineering with creative thinking. I enjoy shipping clean, robust systems and telling compelling product stories.
-              </p>
-              <ul class="about-list">
-                <li>EN • FR • AR</li>
-                <li>Software Engineering & AI</li>
-                <li>Photography & Visual Design</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Timeline Section -->
-          <div class="about-timeline" data-reveal>
-            <h3 class="timeline-title">Journey</h3>
-            <div class="timeline-items">
-              <div class="timeline-item current">
-                <div class="timeline-marker">🔄</div>
-                <div class="timeline-content">
-                  <span class="timeline-period">In Progress</span>
-                  <p>Secure Government RAG - building enterprise AI system with complete data sovereignty.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-marker">🎯</div>
-                <div class="timeline-content">
-                  <span class="timeline-period">Previously</span>
-                  <p>Intern at Intelcia IT Solutions - Development of a Web Scraping System for Automated Data Collection for AI Chatbot Training.</p>
-                </div>
-              </div>
-              <div class="timeline-item future">
-                <div class="timeline-marker">🚀</div>
-                <div class="timeline-content">
-                  <span class="timeline-period">Next</span>
-                  <p>Developing AI-powered football analytics platform.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Skills Section -->
-          <div class="about-skills" data-reveal>
-            <h3 class="skills-title">Skills & Expertise</h3>
-            <div class="skill-clusters">
-              <div class="skill-cluster">
-                <div class="skill-cluster-header">
-                  <span class="skill-icon">⚙️</span>
-                  <h4>Backend & DevOps</h4>
-                </div>
-                <div class="skill-tags">
-                  <span class="skill-tag">Python</span>
-                  <span class="skill-tag">Node.js</span>
-                  <span class="skill-tag">Docker</span>
-                  <span class="skill-tag">AWS</span>
-                </div>
-              </div>
-              <div class="skill-cluster">
-                <div class="skill-cluster-header">
-                  <span class="skill-icon">🧠</span>
-                  <h4>AI & RAG</h4>
-                </div>
-                <div class="skill-tags">
-                  <span class="skill-tag">Machine Learning</span>
-                  <span class="skill-tag">RAG Systems</span>
-                  <span class="skill-tag">LangChain</span>
-                  <span class="skill-tag">Vector DBs</span>
-                </div>
-              </div>
-              <div class="skill-cluster">
-                <div class="skill-cluster-header">
-                  <span class="skill-icon">🎨</span>
-                  <h4>Creative/Photography</h4>
-                </div>
-                <div class="skill-tags">
-                  <span class="skill-tag">Photography</span>
-                  <span class="skill-tag">UI/UX Design</span>
-                  <span class="skill-tag">Adobe Suite</span>
-                  <span class="skill-tag">Visual Storytelling</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="creative" class="section">
-        <div class="container">
-          <div class="section-head">
-            <h2 data-i18n="sections.creative">Creative Work</h2>
-            <p class="section-sub" data-i18n="creative.sub">Photography & Design selections.</p>
-          </div>
-
-          <!-- Hero Video Introduction -->
-          <div class="creative-hero" data-reveal>
-            <div class="creative-hero-content">
-              <p class="creative-intro" data-i18n="creative.intro">
-                Beyond code, I'm passionate about photography and visual design. Here's a selection of my creative work.
-              </p>
-              <div class="creative-filter-tabs">
-                <button class="filter-tab active" data-filter="all" data-i18n="creative.filterAll">All</button>
-                <button class="filter-tab" data-filter="photography" data-i18n="creative.filterPhoto">Photography</button>
-                <button class="filter-tab" data-filter="design" data-i18n="creative.filterDesign">Design</button>
-              </div>
-            </div>
-            <div class="hero-video-container">
-              <video 
-                class="hero-video" 
-                autoplay 
-                muted 
-                loop 
-                playsinline
-                poster="assets/img/featured-photo-1.png"
-                aria-label="Creative work showcase video">
-                <source src="assets/img/hero-video.mp4" type="video/mp4">
-                <img src="assets/img/featured-photo-1.png" alt="Creative work showcase" />
-              </video>
-              <div class="video-overlay">
-                <button class="video-play-btn" aria-label="Play/Pause video">
-                  <span class="play-icon">▶</span>
-                  <span class="pause-icon">⏸</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Photography Gallery -->
-          <div class="creative-group" data-category="photography" data-reveal>
-            <h3 class="creative-title" data-i18n="creative.photo">Photography</h3>
-            <div class="gallery-grid">
-              <div class="gallery-item featured" data-lightbox="photography">
-                <img src="assets/img/featured-photo-1.png" alt="Featured photograph" loading="lazy" decoding="async" />
-                <div class="gallery-overlay">
-                  <h4 class="gallery-title" data-i18n="photo.featured.title">Creative Moment</h4>
-                  <p class="gallery-caption" data-i18n="photo.featured.caption">Captured during creative process, 2025</p>
-                </div>
-              </div>
-              <div class="gallery-item placeholder" data-lightbox="photography">
-                <div class="placeholder-content">
-                  <span class="placeholder-icon">📸</span>
-                  <p data-i18n="photo.placeholder1">City sunset</p>
-                </div>
-              </div>
-              <div class="gallery-item placeholder" data-lightbox="photography">
-                <div class="placeholder-content">
-                  <span class="placeholder-icon">📸</span>
-                  <p data-i18n="photo.placeholder2">Street photography</p>
-                </div>
-              </div>
-              <div class="gallery-item placeholder" data-lightbox="photography">
-                <div class="placeholder-content">
-                  <span class="placeholder-icon">📸</span>
-                  <p data-i18n="photo.placeholder3">Portrait session</p>
-                </div>
-              </div>
-              <div class="gallery-item placeholder" data-lightbox="photography">
-                <div class="placeholder-content">
-                  <span class="placeholder-icon">📸</span>
-                  <p data-i18n="photo.placeholder4">Architecture study</p>
-                </div>
-              </div>
-              <div class="gallery-item placeholder" data-lightbox="photography">
-                <div class="placeholder-content">
-                  <span class="placeholder-icon">📸</span>
-                  <p data-i18n="photo.placeholder5">Nature composition</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Design Projects -->
-          <div class="creative-group" data-category="design" data-reveal>
-            <h3 class="creative-title" data-i18n="creative.design">Design Projects</h3>
-            <div class="design-grid">
-              <div class="design-card">
-                <div class="design-thumbnail">
-                  <div class="design-preview">
-                    <span class="design-icon">🎨</span>
-                    <span class="design-tool">Adobe XD</span>
-                  </div>
-                </div>
-                <div class="design-content">
-                  <h4 class="design-title" data-i18n="design.project1.title">Magazine</h4>
-                  <p class="design-desc" data-i18n="design.project1.desc">UI/UX design for a complete mobile application project</p>
-                  <div class="design-tools">
-                    <span class="tool-badge">Adobe XD</span>
-                    <span class="tool-badge">UI/UX</span>
-                  </div>
-                  <div class="design-actions">
-                    <a href="assets/pdfs/final-project-adobe-xd.pdf" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
-                    <a href="assets/pdfs/final-project-adobe-xd.pdf" class="btn btn-secondary" download data-i18n="design.download">Download</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="design-card">
-                <div class="design-thumbnail">
-                  <div class="design-preview">
-                    <span class="design-icon">🎬</span>
-                    <span class="design-tool">Photoshop</span>
-                  </div>
-                </div>
-                <div class="design-content">
-                  <h4 class="design-title" data-i18n="design.project2.title">Movie Poster</h4>
-                  <p class="design-desc" data-i18n="design.project2.desc">Original movie poster design concept with bold visual storytelling</p>
-                  <div class="design-tools">
-                    <span class="tool-badge">Photoshop</span>
-                    <span class="tool-badge">Visual Design</span>
-                  </div>
-                  <div class="design-actions">
-                    <a href="assets/pdfs/movie-poster-design.pdf" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
-                    <a href="assets/pdfs/movie-poster-design.pdf" class="btn btn-secondary" download data-i18n="design.download">Download</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="design-card">
-                <div class="design-thumbnail">
-                  <div class="design-preview">
-                    <span class="design-icon">📰</span>
-                    <span class="design-tool">InDesign</span>
-                  </div>
-                </div>
-                <div class="design-content">
-                  <h4 class="design-title" data-i18n="design.project3.title">Newsletter Design</h4>
-                  <p class="design-desc" data-i18n="design.project3.desc">Magazine-style newsletter layout experiment with typography focus</p>
-                  <div class="design-tools">
-                    <span class="tool-badge">InDesign</span>
-                    <span class="tool-badge">Layout Design</span>
-                  </div>
-                  <div class="design-actions">
-                    <a href="assets/pdfs/newsletter-indesign.pdf" class="btn btn-ghost" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
-                    <a href="assets/pdfs/newsletter-indesign.pdf" class="btn btn-secondary" download data-i18n="design.download">Download</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Lightbox Modal for Gallery -->
-      <div id="lightboxModal" class="lightbox-modal" aria-hidden="true" role="dialog" aria-labelledby="lightboxTitle" aria-modal="false">
-        <div class="lightbox-backdrop" data-lightbox-close></div>
-        <div class="lightbox-container">
-          <button class="lightbox-close" aria-label="Close gallery" data-lightbox-close>×</button>
-          <div class="lightbox-nav">
-            <button class="lightbox-prev" aria-label="Previous image">‹</button>
-            <button class="lightbox-next" aria-label="Next image">›</button>
-          </div>
-          <div class="lightbox-content">
-            <img id="lightboxImage" src="" alt="" />
-            <div class="lightbox-info">
-              <h3 id="lightboxTitle">Image Title</h3>
-              <p id="lightboxCaption">Image caption</p>
-            </div>
-          </div>
+      <!-- Stack ticker -->
+      <div class="ticker" aria-label="Tech stack">
+        <div class="ticker-track">
+          <ul class="ticker-list">
+            <li>Python</li><li>FastAPI</li><li>React</li><li>TypeScript</li><li>Ollama</li><li>pgvector</li><li>Selenium</li><li>Docker</li><li>Flutter</li><li>Kotlin</li><li>Supabase</li><li>MinIO</li>
+          </ul>
+          <ul class="ticker-list" aria-hidden="true">
+            <li>Python</li><li>FastAPI</li><li>React</li><li>TypeScript</li><li>Ollama</li><li>pgvector</li><li>Selenium</li><li>Docker</li><li>Flutter</li><li>Kotlin</li><li>Supabase</li><li>MinIO</li>
+          </ul>
         </div>
       </div>
 
-      
-
-      <section id="cv" class="section">
+      <!-- ============ PROJECTS ============ -->
+      <section id="projects" class="section band-tint">
         <div class="container">
-          <div class="section-head">
-            <h2 data-i18n="sections.cv">Curriculum Vitae</h2>
-            <div class="cv-actions">
-              <a class="btn btn-secondary" href="content/cv.md" download data-i18n="cv.downloadTxt">Download CV (txt)</a>
-              <a class="btn btn-ghost" href="pdfCv/RenderCV_EngineeringResumes_Theme.pdf" data-cv-pdf download data-i18n="cv.downloadPdf">Download PDF</a>
-              <span class="cv-date">Updated September 2025</span>
+          <div class="section-head" data-reveal>
+            <p class="section-index">01</p>
+            <div>
+              <h2 data-i18n="sections.projects">Projects</h2>
+              <p class="section-sub" data-i18n="sections.projectsSub">Selected work — case study cards with tech stacks and links.</p>
             </div>
           </div>
-          <article id="cvContent" class="cv-content" aria-busy="true">
-            <div class="loading" data-i18n="cv.loading">Loading CV…</div>
-          </article>
-
-          <div class="resume-timeline" id="timeline" data-reveal></div>
+          <div id="projectsGrid" class="projects-grid"></div>
         </div>
       </section>
 
-      
-
-      <section id="contact" class="section">
+      <!-- ============ ABOUT ============ -->
+      <section id="about" class="section band-deep">
         <div class="container">
-          <div class="section-head">
-            <h2 data-i18n="sections.contact">Contact</h2>
-            <p class="section-sub" data-i18n="contact.sub">Let’s build something great together.</p>
+          <div class="section-head" data-reveal>
+            <p class="section-index">02</p>
+            <div>
+              <h2 data-i18n="sections.about">About Me</h2>
+              <p class="section-sub" data-i18n="about.sub">A quick intro — who I am, what I study, and how I think.</p>
+            </div>
           </div>
-          <div class="contact-cards">
-            <a class="contact-card" href="mailto:elaraki48@gmail.com" target="_blank" rel="noopener" aria-label="Email">
-              <span class="contact-emoji">✉️</span>
-              <div>
-                <div class="contact-label" data-i18n="contact.email">Email</div>
-                <div class="contact-value">elaraki48@gmail.com</div>
+
+          <div class="about-grid">
+            <figure class="about-photo" data-reveal>
+              <svg class="about-photo-star" viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star"/></svg>
+              <img src="assets/img/IMG-20250509-WA0012-removebg-preview.png" alt="Portrait of Mamoun Tantaoui El Araki" width="353" height="364" loading="lazy" decoding="async" />
+            </figure>
+            <div class="about-text" data-reveal>
+              <p class="about-bio" data-i18n="about.bio">I’m Mamoun, a builder who blends software engineering with creative thinking. I enjoy shipping clean, robust systems and telling compelling product stories.</p>
+              <ul class="about-list">
+                <li><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star"/></svg><span data-i18n="about.item1">B.S. Computer Science, Al Akhawayn University — 2026</span></li>
+                <li><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star"/></svg><span data-i18n="about.item2">Exchange semester, Boğaziçi University, Istanbul</span></li>
+                <li><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star"/></svg><span data-i18n="about.item3">Software Engineering &amp; AI · Photography &amp; Visual Design</span></li>
+              </ul>
+
+              <h3 class="sub-title" data-i18n="sections.skills">Skills &amp; Expertise</h3>
+              <div class="skill-clusters">
+                <div class="skill-cluster">
+                  <h4 data-i18n="skills.backend">Backend &amp; DevOps</h4>
+                  <ul class="tags"><li>Python</li><li>Node.js</li><li>FastAPI</li><li>Docker</li><li>AWS</li></ul>
+                </div>
+                <div class="skill-cluster">
+                  <h4 data-i18n="skills.ai">AI &amp; RAG</h4>
+                  <ul class="tags"><li>Machine Learning</li><li>RAG Systems</li><li>LangChain</li><li>Vector DBs</li></ul>
+                </div>
+                <div class="skill-cluster">
+                  <h4 data-i18n="skills.creative">Creative / Photography</h4>
+                  <ul class="tags"><li>Photography</li><li>UI/UX Design</li><li>Adobe Suite</li><li>Visual Storytelling</li></ul>
+                </div>
               </div>
-            </a>
-            <a class="contact-card" href="https://github.com/mohamedelarakitantaoui" target="_blank" rel="noopener" aria-label="GitHub">
-              <span class="contact-emoji">🐙</span>
-              <div>
-                <div class="contact-label">GitHub</div>
-                <div class="contact-value">github.com/mohamedelarakitantaoui</div>
+            </div>
+          </div>
+
+          <div class="journey" id="journey" data-reveal>
+            <h3 class="sub-title" data-i18n="sections.journey">Journey</h3>
+            <ol class="journey-list">
+              <li class="is-past">
+                <span class="journey-period" data-i18n="journey.prevLabel">Previously</span>
+                <p data-i18n="journey.prev">Intern at Intelcia IT Solutions — built a web scraping system that collects data automatically for AI chatbot training.</p>
+              </li>
+              <li class="is-current">
+                <span class="journey-period" data-i18n="journey.nowLabel">In progress</span>
+                <p data-i18n="journey.now">Secure Government RAG — an enterprise AI system with complete data sovereignty.</p>
+              </li>
+              <li class="is-next">
+                <span class="journey-period" data-i18n="journey.nextLabel">Next</span>
+                <p data-i18n="journey.next">An AI-powered football analytics platform.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CREATIVE ============ -->
+      <section id="creative" class="section band-tint">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <p class="section-index">03</p>
+            <div>
+              <h2 data-i18n="sections.creative">Creative Work</h2>
+              <p class="section-sub" data-i18n="creative.intro">Beyond code, I'm passionate about photography and visual design. Here's a selection of my creative work.</p>
+            </div>
+          </div>
+
+          <div class="creative-bar" data-reveal>
+            <div class="filter-tabs" role="group" aria-label="Filter creative work">
+              <button type="button" class="filter-tab active" aria-pressed="true" data-filter="all" data-i18n="creative.filterAll">All</button>
+              <button type="button" class="filter-tab" aria-pressed="false" data-filter="photography" data-i18n="creative.filterPhoto">Photography</button>
+              <button type="button" class="filter-tab" aria-pressed="false" data-filter="design" data-i18n="creative.filterDesign">Design</button>
+            </div>
+          </div>
+
+          <div class="video-frame" data-reveal>
+            <video class="hero-video" muted loop playsinline preload="none" poster="assets/img/featured-photo-1.png" aria-label="Creative work showcase video" data-src="assets/img/hero-video.mp4"></video>
+            <button class="video-play-btn" type="button" aria-label="Play video" aria-pressed="false">
+              <svg class="i play-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg>
+              <svg class="i pause-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pause"/></svg>
+            </button>
+            <p class="video-caption"><span data-i18n="photo.featured.title">Creative Moment</span> — <span data-i18n="photo.featured.caption">Captured during creative process, 2025</span></p>
+          </div>
+
+          <!-- Photography -->
+          <div class="creative-group" data-category="photography" data-reveal>
+            <h3 class="sub-title" data-i18n="creative.photo">Photography</h3>
+            <div class="gallery-grid">
+              <button type="button" class="gallery-item featured" data-lightbox="photography" data-index="0">
+                <img src="assets/img/featured-photo-1.png" alt="Call for Duty — a six-frame photo series shot in a university lab" width="1588" height="1125" loading="lazy" decoding="async" />
+                <span class="gallery-overlay">
+                  <span class="gallery-title" data-i18n="photo.featured.title">Creative Moment</span>
+                  <span class="gallery-caption" data-i18n="photo.featured.caption">Captured during creative process, 2025</span>
+                </span>
+              </button>
+              <div class="gallery-item placeholder"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><p data-i18n="photo.placeholder1">City sunset</p><span class="soon" data-i18n="creative.soon">Coming soon</span></div>
+              <div class="gallery-item placeholder"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><p data-i18n="photo.placeholder2">Street photography</p><span class="soon" data-i18n="creative.soon">Coming soon</span></div>
+              <div class="gallery-item placeholder"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><p data-i18n="photo.placeholder3">Portrait session</p><span class="soon" data-i18n="creative.soon">Coming soon</span></div>
+              <div class="gallery-item placeholder"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><p data-i18n="photo.placeholder4">Architecture study</p><span class="soon" data-i18n="creative.soon">Coming soon</span></div>
+              <div class="gallery-item placeholder"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><p data-i18n="photo.placeholder5">Nature composition</p><span class="soon" data-i18n="creative.soon">Coming soon</span></div>
+            </div>
+          </div>
+
+          <!-- Design -->
+          <div class="creative-group" data-category="design" data-reveal>
+            <h3 class="sub-title" data-i18n="creative.design">Design Showcase</h3>
+            <div class="design-grid">
+              <article class="design-card">
+                <div class="design-thumb" aria-hidden="true"><span class="design-glyph">Xd</span><span class="design-tool">Adobe XD</span></div>
+                <div class="design-body">
+                  <h4 class="design-title" data-i18n="design.project1.title">Magazine</h4>
+                  <p class="design-desc" data-i18n="design.project1.desc">UI/UX design for a complete mobile application project</p>
+                  <ul class="tags"><li>Adobe XD</li><li>UI/UX</li></ul>
+                  <div class="design-actions">
+                    <a href="assets/pdfs/final-project-adobe-xd.pdf" class="btn btn-solid btn-sm" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
+                    <a href="assets/pdfs/final-project-adobe-xd.pdf" class="btn btn-ghost btn-sm" download data-i18n="design.download">Download</a>
+                  </div>
+                </div>
+              </article>
+              <article class="design-card">
+                <div class="design-thumb" aria-hidden="true"><span class="design-glyph">Ps</span><span class="design-tool">Photoshop</span></div>
+                <div class="design-body">
+                  <h4 class="design-title" data-i18n="design.project2.title">Movie Poster</h4>
+                  <p class="design-desc" data-i18n="design.project2.desc">Original movie poster design concept with bold visual storytelling</p>
+                  <ul class="tags"><li>Photoshop</li><li>Visual Design</li></ul>
+                  <div class="design-actions">
+                    <a href="assets/pdfs/movie-poster-design.pdf" class="btn btn-solid btn-sm" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
+                    <a href="assets/pdfs/movie-poster-design.pdf" class="btn btn-ghost btn-sm" download data-i18n="design.download">Download</a>
+                  </div>
+                </div>
+              </article>
+              <article class="design-card">
+                <div class="design-thumb" aria-hidden="true"><span class="design-glyph">Id</span><span class="design-tool">InDesign</span></div>
+                <div class="design-body">
+                  <h4 class="design-title" data-i18n="design.project3.title">Newsletter Design</h4>
+                  <p class="design-desc" data-i18n="design.project3.desc">Magazine-style newsletter layout experiment with typography focus</p>
+                  <ul class="tags"><li>InDesign</li><li>Layout Design</li></ul>
+                  <div class="design-actions">
+                    <a href="assets/pdfs/newsletter-indesign.pdf" class="btn btn-solid btn-sm" target="_blank" rel="noopener" data-i18n="design.viewPdf">View PDF</a>
+                    <a href="assets/pdfs/newsletter-indesign.pdf" class="btn btn-ghost btn-sm" download data-i18n="design.download">Download</a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CV ============ -->
+      <section id="cv" class="section band-deep">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <p class="section-index">04</p>
+            <div>
+              <h2 data-i18n="sections.cv">Curriculum Vitae</h2>
+              <p class="section-sub" data-i18n="cv.updated">Updated September 2025</p>
+            </div>
+          </div>
+          <div class="cv-layout">
+            <aside class="cv-side" data-reveal>
+              <a class="btn btn-primary" href="pdfCv/RenderCV_EngineeringResumes_Theme.pdf" download><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file"/></svg><span data-i18n="cv.downloadPdf">Download PDF</span></a>
+              <a class="btn btn-outline" href="content/cv.md" download data-i18n="cv.downloadTxt">Download CV (txt)</a>
+              <dl class="cv-facts">
+                <div><dt data-i18n="cv.base">Based in</dt><dd>Marrakech, Morocco</dd></div>
+                <div><dt data-i18n="cv.study">Studying</dt><dd>B.S. Computer Science · AUI · 2026</dd></div>
+                <div><dt data-i18n="cv.langs">Languages</dt><dd>EN · FR · AR · ES (beginner)</dd></div>
+              </dl>
+            </aside>
+            <article id="cvContent" class="cv-paper" aria-busy="true">
+              <p class="loading" data-i18n="cv.loading">Loading CV…</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ CONTACT — second sandwich ============ -->
+      <section id="contact" class="section contact">
+        <div class="contact-stage" aria-hidden="true">
+          <div class="contact-word">SALAM</div>
+          <svg class="contact-star" viewBox="0 0 100 100"><use href="#i-star"/></svg>
+        </div>
+        <div class="container contact-inner">
+          <div class="contact-head" data-reveal>
+            <p class="section-index">05</p>
+            <h2 data-i18n="sections.contact">Contact</h2>
+            <p class="contact-title" data-i18n="contact.sub">Let’s build something great together.</p>
+            <a class="contact-email" href="mailto:elaraki48@gmail.com">elaraki48@gmail.com</a>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-cards" data-reveal>
+              <a class="contact-card" href="mailto:elaraki48@gmail.com">
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg>
+                <span><span class="contact-label" data-i18n="contact.email">Email</span><span class="contact-value">elaraki48@gmail.com</span></span>
+              </a>
+              <a class="contact-card" href="https://github.com/mohamedelarakitantaoui" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github"/></svg>
+                <span><span class="contact-label">GitHub</span><span class="contact-value">github.com/mohamedelarakitantaoui</span></span>
+              </a>
+              <a class="contact-card" href="pdfCv/RenderCV_EngineeringResumes_Theme.pdf" target="_blank" rel="noopener">
+                <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-file"/></svg>
+                <span><span class="contact-label" data-i18n="nav.cv">CV</span><span class="contact-value">PDF résumé</span></span>
+              </a>
+            </div>
+
+            <form class="contact-form" id="contactForm" novalidate data-reveal>
+              <div class="field">
+                <label for="cfName" data-i18n="contact.formName">Your name</label>
+                <input id="cfName" name="name" type="text" autocomplete="name" required aria-describedby="cfNameErr" />
+                <p class="field-error" id="cfNameErr" aria-live="polite"></p>
               </div>
-            </a>
-            
+              <div class="field">
+                <label for="cfEmail" data-i18n="contact.formEmail">Your email</label>
+                <input id="cfEmail" name="email" type="email" autocomplete="email" required aria-describedby="cfEmailErr" />
+                <p class="field-error" id="cfEmailErr" aria-live="polite"></p>
+              </div>
+              <div class="field">
+                <label for="cfMsg" data-i18n="contact.formMsg">Message</label>
+                <textarea id="cfMsg" name="message" rows="4" required aria-describedby="cfMsgErr"></textarea>
+                <p class="field-error" id="cfMsgErr" aria-live="polite"></p>
+              </div>
+              <button type="submit" class="btn btn-accent"><span data-i18n="contact.send">Send message</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+              <p class="form-note" data-i18n="contact.note">Opens your email app with the message ready to send.</p>
+              <p class="form-success" id="cfSuccess" role="status" hidden data-i18n="contact.sent">Your email app should now be open with the message ready. Talk soon!</p>
+            </form>
           </div>
         </div>
       </section>
@@ -421,37 +430,65 @@
 
     <footer class="site-footer">
       <div class="container footer-inner">
-  <span>© <span id="year"></span> <span data-i18n="brandName">Mamoun Tantaoui El Araki</span></span>
-        <span class="subtle">•</span>
-        <span class="subtle" data-i18n="footer.built">Built with HTML, CSS & JS</span>
+        <a href="#top" class="brand" aria-label="Back to top">
+          <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true"><use href="#i-star"/></svg>
+          <span class="brand-text" data-i18n="brandName">Mamoun Tantaoui El Araki</span>
+        </a>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="#projects" data-i18n="nav.projects">Projects</a>
+          <a href="#about" data-i18n="nav.about">About</a>
+          <a href="#creative" data-i18n="nav.creative">Creative</a>
+          <a href="#cv" data-i18n="nav.cv">CV</a>
+          <a href="#contact" data-i18n="nav.contact">Contact</a>
+        </nav>
+        <ul class="footer-socials" aria-label="Links">
+          <li><a href="https://github.com/mohamedelarakitantaoui" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github"/></svg></a></li>
+          <li><a href="mailto:elaraki48@gmail.com" aria-label="Email"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-mail"/></svg></a></li>
+        </ul>
+      </div>
+      <div class="container footer-legal">
+        <span>© <span id="year"></span> <span data-i18n="brandName">Mamoun Tantaoui El Araki</span> · <span data-i18n="footer.built">Built with HTML, CSS &amp; JS</span></span>
+        <span data-i18n="footer.privacy">No cookies, no tracking — theme and language are saved in your browser only.</span>
       </div>
     </footer>
 
-    <!-- Case Study Modal -->
-    <div id="caseModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="false">
+    <!-- Case Study / QR Modal -->
+    <div id="caseModal" class="modal" aria-hidden="true" hidden>
       <div class="modal-backdrop" data-close></div>
-      <div class="modal-dialog" role="document">
-        <button class="modal-close" aria-label="Close" data-close>×</button>
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
         <div class="modal-head">
           <h3 id="modalTitle">Case Study</h3>
-          <div class="modal-actions" id="modalActions"></div>
+          <button class="icon-btn modal-close" type="button" aria-label="Close" data-close><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button>
         </div>
-        <article id="modalBody" class="modal-body"><div class="loading">Loading…</div></article>
+        <article id="modalBody" class="modal-body md"><p class="loading">Loading…</p></article>
+      </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightboxModal" class="lightbox" aria-hidden="true" hidden>
+      <div class="lightbox-backdrop" data-lightbox-close></div>
+      <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" tabindex="-1">
+        <button class="icon-btn lightbox-close" type="button" aria-label="Close gallery" data-lightbox-close><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button>
+        <button class="icon-btn lightbox-prev" type="button" aria-label="Previous image"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+        <button class="icon-btn lightbox-next" type="button" aria-label="Next image"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+        <img id="lightboxImage" src="" alt="" />
+        <div class="lightbox-info">
+          <h3 id="lightboxTitle">Image Title</h3>
+          <p id="lightboxCaption">Image caption</p>
+        </div>
       </div>
     </div>
 
     <!-- Sticky CTA -->
     <div id="stickyCta" class="sticky-cta" aria-hidden="true">
-      <div class="container sticky-cta-inner">
-        <span class="sticky-cta-text" data-i18n="cta.stickyText">Like what you see?</span>
-        <div class="sticky-cta-actions">
-          <a href="mailto:elaraki48@gmail.com" class="btn btn-primary">Email me</a>
-          <a href="#cv" class="btn btn-secondary" data-i18n="cta.viewCV">Read CV</a>
-        </div>
-      </div>
+      <span class="sticky-cta-text" data-i18n="cta.stickyText">Like what you see?</span>
+      <a href="mailto:elaraki48@gmail.com" class="btn btn-primary btn-sm" tabindex="-1" data-i18n="cta.emailMe">Email me</a>
+      <a href="#cv" class="btn btn-outline btn-sm" tabindex="-1" data-i18n="cta.viewCV">Read CV</a>
     </div>
 
     <!-- Back to Top -->
-    <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">↑</button>
+    <button id="backToTop" class="back-to-top icon-btn" type="button" aria-label="Back to top" title="Back to top">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-up"/></svg>
+    </button>
   </body>
-  </html>
+</html>

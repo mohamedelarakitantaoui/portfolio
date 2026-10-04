@@ -1,14 +1,9 @@
-@echo off@echo off@echo off
+@echo off
+setlocal ENABLEEXTENSIONS
 
 REM Serve the static site from the repository root on port 5500
-
-set PORT=5500REM Serve the static site from the repository root on port 5500setlocal ENABLEEXTENSIONS
-
-python -m http.server %PORT%
-
-set PORT=5500cd /d "%~dp0"
-
-python -m http.server %PORT%
+set PORT=5500
+cd /d "%~dp0"
 
 rem Prefer Python HTTP server if available; otherwise fall back to npx http-server
 where python >NUL 2>&1
@@ -26,12 +21,12 @@ pause
 goto end
 
 :use_python
-echo Starting Python HTTP server on http://localhost:5500 ...
-python -m http.server 5500
+echo Starting Python HTTP server on http://localhost:%PORT% ...
+python -m http.server %PORT%
 goto end
 
 :use_npx
-echo Python not found. Using npx http-server on http://localhost:5500 ...
-npx --yes http-server -p 5500 -c-1 .
+echo Python not found. Using npx http-server on http://localhost:%PORT% ...
+npx --yes http-server -p %PORT% -c-1 .
 
 :end
