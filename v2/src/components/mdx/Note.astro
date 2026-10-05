@@ -1,0 +1,14 @@
+---
+import Star from '../Star.astro';
+---
+<p class="note"><Star class="note__star" /><span><slot /></span></p>
+
+<style>
+  .note {
+    display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-7);
+    padding: var(--s-3) var(--s-4); border: 1px solid var(--line-input); border-radius: var(--r-pill);
+    width: fit-content; max-width: 100%; font-family: var(--font-mono); font-size: 0.8125rem;
+    letter-spacing: 0.04em; text-transform: uppercase; color: var(--text);
+  }
+  .note :global(.note__star) { width: 14px; height: 14px; color: var(--accent-wall); flex: none; }
+</style>

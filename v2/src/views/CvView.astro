@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Rich from '../components/Rich.astro';
+import { cvDownloads, education, experience, person, skills, spoken, status } from '../data/site';
+import { type Lang, lp } from '../i18n/ui';
+import { rich } from '../lib/rich';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+const projects = (await getCollection('projects', (p) => p.data.lang === lang)).sort((a, b) => a.data.order - b.data.order);
+---
+<Base
+  lang={lang}
+  title={fr ? 'CV · Mamoun Tantaoui El Araki' : 'CV · Mamoun Tantaoui El Araki'}
+  description={fr
+    ? 'CV de Mamoun Tantaoui El Araki, ingénieur logiciel IA & automatisation : expérience Intelcia et ITS Elaraki, formation Al Akhawayn et Boğaziçi, compétences, PDF.'
+    : 'CV of Mamoun Tantaoui El Araki, software engineer in AI & automation: Intelcia and ITS Elaraki experience, Al Akhawayn and Boğaziçi education, skills, PDF.'}
+  ogKey="cv"
+>
+  <PageIntro label={fr ? 'Curriculum vitae' : 'Curriculum vitae'} title="CV" word="CV">
+    <p class="cv__updated mono"><span>{fr ? 'Mis à jour' : 'Updated'}</span> <span class="todo">{fr ? 'mois de mise à jour, 2026' : 'update month, 2026'}</span></p>
+    <ul class="downloads rows">
+      {cvDownloads.map((d) => (
+        <li class="dl">
+          <span class="dl__label">{d.label[lang]}</span>
+          {d.href
+            ? <a class="btn btn--primary btn--sm" href={d.href} download>PDF · {d.size}</a>
+            : <span class="todo">{d.todo?.[lang]}</span>}
+        </li>
+      ))}
+    </ul>
+  </PageIntro>
+
+  <section class="section band" aria-label={fr ? 'CV en ligne' : 'Web CV'}>
+    <div class="wrap">
+      <article class="paper">
+        <header class="paper__head">
+          <h2 class="paper__name">{person.name}</h2>
+          <p class="paper__role">{person.role[lang]}</p>
+          <p class="paper__contact mono"><a href={`mailto:${person.email}`}>{person.email}</a> · <a href={person.github}>{person.githubLabel}</a></p>
+          <Rich as="p" class="paper__status" text={status.employers[lang]} />
+        </header>
+
+        <section class="paper__sec">
+          <h3 class="paper__h">{fr ? 'Expérience' : 'Experience'}</h3>
+          {experience.map((e) => (
+            <div class="paper__item">
+              <p class="paper__when mono">{e.dates[lang]}</p>
+              <div><h4>{e.role[lang]}, {e.org}</h4><p>{e.result[lang]}</p></div>
+            </div>
+          ))}
+        </section>
+
+        <section class="paper__sec">
+          <h3 class="paper__h">{fr ? 'Projets' : 'Projects'}</h3>
+          {projects.map((p) => (
+            <div class="paper__item">
+              <p class="paper__when mono">{p.data.number.value}</p>
+              <div><h4><a href={lp(lang, `/work/${p.data.key}`)}>{p.data.title}</a></h4><p>{p.data.summary}</p></div>
+            </div>
+          ))}
+        </section>
+
+        <section class="paper__sec">
+          <h3 class="paper__h">{fr ? 'Formation' : 'Education'}</h3>
+          {education.map((e) => (
+            <div class="paper__item">
+              <p class="paper__when mono">{typeof e.dates === 'string' ? e.dates : e.dates[lang]}</p>
+              <div><h4>{e.school}</h4><p set:html={rich(e.degree[lang])} /></div>
+            </div>
+          ))}
+        </section>
+
+        <section class="paper__sec">
+          <h3 class="paper__h">{fr ? 'Compétences' : 'Skills'}</h3>
+          {skills.map((s) => (
+            <div class="paper__item"><p class="paper__when mono">{s.group[lang]}</p><p>{s.items}</p></div>
+          ))}
+          <div class="paper__item"><p class="paper__when mono">{fr ? 'Langues' : 'Languages'}</p><p>{spoken[lang].join(', ')}</p></div>
+        </section>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cv__updated { color: var(--text-quiet); margin-top: var(--s-5); display: flex; gap: var(--s-2); align-items: center; }
+  .downloads { margin-top: var(--s-6); max-width: 720px; }
+  .dl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-3); padding-block: var(--s-3); min-height: 64px; }
+  .dl__label { font-weight: 500; }
+  .paper { max-width: 880px; margin-inline: auto; }
+  .paper__head { padding-bottom: var(--s-6); border-bottom: 1px solid var(--line-strong); }
+  .paper__name { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 650; letter-spacing: var(--track-display); line-height: 1; }
+  .paper__role { margin-top: var(--s-2); color: var(--text-muted); }
+  .paper__contact { margin-top: var(--s-3); text-transform: none; letter-spacing: 0.02em; color: var(--text-muted); }
+  .paper__contact a { color: var(--text); }
+  .paper__status { margin-top: var(--s-4); color: var(--text-muted); max-width: 64ch; }
+  .paper__sec { padding-block: var(--s-6); border-bottom: 1px solid var(--line); }
+  .paper__h { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: var(--s-4); }
+  .paper__item { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-3); }
+  @media (min-width: 640px) { .paper__item { grid-template-columns: 9rem 1fr; } }
+  .paper__when { color: var(--text-quiet); padding-top: 0.25em; text-transform: none; letter-spacing: 0.02em; }
+  .paper__item h4 { font-weight: 600; font-size: 1.0625rem; }
+  .paper__item h4 a { text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 11px; margin-block: -11px; }
+  .paper__item p { color: var(--text-muted); }
+</style>

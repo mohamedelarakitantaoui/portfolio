@@ -1,0 +1,13 @@
+[build]
+  base = "v2"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # SITE_URL = "https://your-domain.example"  # TODO(user): set in the Netlify UI or here
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

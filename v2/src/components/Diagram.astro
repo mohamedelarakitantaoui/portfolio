@@ -1,0 +1,68 @@
+---
+import { diagrams, tr } from '../lib/diagrams';
+import type { Lang } from '../i18n/ui';
+interface Props { name: keyof typeof diagrams | string; lang: Lang; class?: string }
+const { name, lang, class: cls = '' } = Astro.props;
+const d = diagrams[name];
+if (!d) throw new Error(`Unknown diagram ${name}`);
+const uid = `d-${name}-${Math.random().toString(36).slice(2, 7)}`;
+const W = 420;
+---
+<figure class={`diagram ${cls}`}>
+  <svg
+    viewBox={`-14 -4 ${W + 28} ${d.h + 8}`}
+    role="img"
+    aria-labelledby={`${uid}-t ${uid}-d`}
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title id={`${uid}-t`}>{d.title[lang]}</title>
+    <desc id={`${uid}-d`}>{d.desc[lang]}</desc>
+    <defs>
+      <marker id={`${uid}-arrow`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0L10 5L0 10z" class="d-arrowhead" />
+      </marker>
+    </defs>
+    {d.groups?.map((g) => (
+      <g class="d-group">
+        <rect x={g.x} y={g.y} width={g.w} height={g.h} rx="14" />
+        <text x={g.x + 14} y={g.y + 18} class="d-group-label">{tr(g.label, lang)}</text>
+      </g>
+    ))}
+    {d.edges.map((e) => (
+      <polyline
+        points={e.pts.map((p) => p.join(',')).join(' ')}
+        class={`d-edge${e.dashed ? ' d-edge--dashed' : ''}`}
+        marker-end={`url(#${uid}-arrow)`}
+      />
+    ))}
+    {d.nodes.map((n) => {
+      const sub = tr(n.sub, lang);
+      const cy = n.y + n.h / 2;
+      return (
+        <g class={`d-node d-node--${n.kind ?? 'base'}`}>
+          <rect x={n.x} y={n.y} width={n.w} height={n.h} rx={n.kind === 'chip' ? n.h / 2 : 10} />
+          <text x={n.x + n.w / 2} y={sub ? cy - 4 : cy + 4.5} class="d-title" text-anchor="middle">{tr(n.title, lang)}</text>
+          {sub && <text x={n.x + n.w / 2} y={cy + 13} class="d-sub" text-anchor="middle">{sub}</text>}
+        </g>
+      );
+    })}
+  </svg>
+</figure>
+
+<style>
+  .diagram { margin: var(--s-5) 0 var(--s-6); max-width: 560px; }
+  svg { width: 100%; height: auto; overflow: visible; }
+  .d-group rect { fill: none; stroke: var(--line-strong); stroke-dasharray: 4 5; }
+  .d-group-label { fill: var(--text-quiet); font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; }
+  .d-node rect { fill: var(--surface); stroke: var(--line-input); stroke-width: 1; }
+  .d-node--chip rect { fill: transparent; }
+  .d-node--accent rect { stroke: var(--accent-wall); stroke-width: 1.5; }
+  .d-node--dashed rect { fill: transparent; stroke-dasharray: 5 4; }
+  .d-node--out rect { fill: var(--accent); stroke: var(--accent); }
+  .d-node--out .d-title, .d-node--out .d-sub { fill: var(--accent-ink); }
+  .d-title { fill: var(--text); font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; }
+  .d-sub { fill: var(--text-muted); font-family: var(--font-body); font-size: 11px; }
+  .d-edge { fill: none; stroke: var(--bone-2); stroke-width: 1.2; }
+  .d-edge--dashed { stroke-dasharray: 4 4; }
+  .d-arrowhead { fill: var(--bone-2); }
+</style>

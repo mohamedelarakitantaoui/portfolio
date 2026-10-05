@@ -1,0 +1,56 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectCover from './ProjectCover.astro';
+import { type Lang, lp, t } from '../i18n/ui';
+import { rich } from '../lib/rich';
+interface Props { project: CollectionEntry<'projects'>; lang: Lang; index: number; large?: boolean; headingLevel?: 'h3' | 'h2' }
+const { project, lang, index, large = false, headingLevel: H = 'h3' } = Astro.props;
+const d = project.data;
+const href = lp(lang, `/work/${d.key}`);
+---
+<article class:list={['pcard', { 'pcard--large': large }]} data-categories={d.categories.join(' ')}>
+  <a class="pcard__link" href={href} aria-labelledby={`pc-${d.key}-t`}>
+    <ProjectCover project={project} lang={lang} large={large} />
+  </a>
+  <div class="pcard__body">
+    <p class="pcard__meta mono"><span class="pcard__n">{String(index).padStart(2, '0')}</span><span>{d.kind}</span></p>
+    <H class="pcard__title" id={`pc-${d.key}-t`}><a href={href}>{d.title}</a></H>
+    <p class="pcard__summary">{d.summary}</p>
+    <div class="pcard__number">
+      <span class="pcard__value">{d.number.value}</span>
+      <span class="pcard__caption" set:html={rich(d.number.caption)} />
+    </div>
+    <dl class="pcard__facts">
+      <div><dt class="mono">{t(lang, 'work.role')}</dt><dd set:html={rich(d.role)} /></div>
+      <div><dt class="mono">{t(lang, 'work.constraint')}</dt><dd set:html={rich(d.constraint)} /></div>
+    </dl>
+    <ul class="tags" aria-label="Stack">{d.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>
+    <a class="pcard__more" href={href} aria-hidden="true" tabindex="-1">{t(lang, 'cta.caseStudy')} <span class="arrow">→</span></a>
+  </div>
+</article>
+
+<style>
+  .pcard { display: grid; gap: var(--s-5); }
+  .pcard__link { display: block; border-radius: var(--r-lg); }
+  .pcard__body { display: grid; gap: var(--s-3); align-content: start; }
+  .pcard__meta { display: flex; gap: var(--s-3); color: var(--text-quiet); }
+  .pcard__n { color: var(--accent); }
+  .pcard__title { font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 650; letter-spacing: -0.045em; line-height: 1; }
+  .pcard--large .pcard__title { font-size: clamp(2rem, 4.4vw, 3.75rem); }
+  .pcard__title a { text-decoration: none; }
+  .pcard__title a:hover { text-decoration: underline; text-decoration-color: var(--accent-wall); text-decoration-thickness: 2px; }
+  .pcard__summary { color: var(--text-muted); max-width: 52ch; }
+  .pcard__number { display: grid; gap: var(--s-1); padding-block: var(--s-3); border-block: 1px solid var(--line); margin-top: var(--s-2); }
+  .pcard__value { font-family: var(--font-display); font-weight: 650; letter-spacing: -0.04em; line-height: 1; font-size: var(--fs-stat); color: var(--text); }
+  .pcard__caption { color: var(--text-muted); font-size: var(--fs-small); }
+  .pcard__facts { display: grid; gap: var(--s-2); font-size: var(--fs-small); }
+  .pcard__facts div { display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--s-3); }
+  .pcard__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
+  .pcard__facts dd { color: var(--text-muted); }
+  .pcard__more { display: inline-flex; gap: var(--s-2); align-items: center; text-decoration: none; font-weight: 500; min-height: 44px; width: fit-content; }
+  .pcard__more:hover .arrow { transform: translateX(4px); }
+  .pcard__more .arrow { transition: transform var(--dur-1) var(--ease-out); }
+  @media (min-width: 1024px) {
+    .pcard--large { grid-template-columns: 1fr; }
+  }
+</style>

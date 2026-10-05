@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Statement from '../components/home/Statement.astro';
+import ProofStrip from '../components/home/ProofStrip.astro';
+import SelectedWork from '../components/home/SelectedWork.astro';
+import Capabilities from '../components/home/Capabilities.astro';
+import NowLab from '../components/home/NowLab.astro';
+import TwoDoors from '../components/home/TwoDoors.astro';
+import type { Lang } from '../i18n/ui';
+import { heroPortrait, PORTRAIT_SIZES } from '../lib/portrait';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const meta = {
+  en: {
+    title: 'Mamoun Tantaoui El Araki · AI & software engineer, Morocco',
+    description: 'Software engineer in Marrakech: Python automation that cut a 2.5 h procurement run to 15 min, on-prem RAG in Arabic, French and English, and web apps.',
+  },
+  fr: {
+    title: 'Mamoun Tantaoui El Araki · Ingénieur IA & logiciel, Maroc',
+    description: 'Ingénieur logiciel à Marrakech : automatisation Python (2 h 30 → 15 min sur 300 consultations), RAG on-premise en arabe, français, anglais, et applications web.',
+  },
+}[lang];
+const portrait = await heroPortrait();
+---
+<Base lang={lang} title={meta.title} description={meta.description} ogKey="home" bodyClass="page-home">
+  <link slot="head" rel="preload" as="image" type="image/avif" imagesrcset={portrait.avif} imagesizes={PORTRAIT_SIZES} fetchpriority="high" />
+  <Hero lang={lang} />
+  <Statement lang={lang} />
+  <ProofStrip lang={lang} />
+  <SelectedWork lang={lang} />
+  <Capabilities lang={lang} />
+  <NowLab lang={lang} />
+  <TwoDoors lang={lang} />
+</Base>

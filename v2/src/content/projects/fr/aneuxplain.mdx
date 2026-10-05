@@ -1,0 +1,81 @@
+---
+key: aneuxplain
+lang: fr
+order: 3
+title: AneuXplain
+description: IA explicable qui prédit le risque de rupture d’anévrismes intracrâniens à partir de la géométrie 3D des vaisseaux. Projet AUI, article ICOA 2026.
+categories: [research, ai]
+kind: Recherche · projet de fin d’études
+status: Article accepté à ICOA 2026 (paper ID 69)
+summary: Une prédiction du risque de rupture, trois explications qu’un clinicien peut vérifier. PointNet sur la géométrie 3D des vaisseaux.
+role: Auteur du projet de fin d’études ; co-auteur de l’article [[todo:liste complète des auteurs]]
+timeline: printemps 2026
+team: "[[todo:liste complète des auteurs]]"
+platforms: Prototype de recherche (Python)
+stack: [PyTorch, PointNet, DICOM, Marching cubes, Nuages de points 3D]
+venue: ICOA 2026, paper ID 69 [[todo:lien des actes / DOI une fois publié]]
+supervision: "Encadrant : Dr Oualid Kafi · Évaluatrice : Dr Lamiae Bouanane"
+links:
+  - { label: GitHub (AneuXplain-), href: "https://github.com/mohamedelarakitantaoui/AneuXplain-" }
+number: { value: "0,834", caption: "ROC-AUC sur le jeu de test interne" }
+constraint: "Un score brut est difficile à vérifier pour un médecin : chaque prédiction doit s’expliquer."
+tags: [PyTorch, PointNet, Explicabilité, Imagerie médicale]
+diagram: aneu
+next: esaha
+---
+
+<Note>Prototype de recherche, pas un dispositif médical.</Note>
+
+<Chapter n="01" label="Problème" title="Un score qu’un médecin ne peut pas vérifier est un score qu’il n’utilisera pas.">
+
+Les modèles de risque de rupture des anévrismes intracrâniens renvoient en général un seul chiffre. Trois problèmes :
+
+- le score ne montre pas **pourquoi** l’anévrisme semble à risque ;
+- un modèle entraîné dans un hôpital **peut échouer sur les scanners d’un autre** ;
+- un score brut est **difficile à vérifier** pour un médecin face à ce qu’il voit.
+
+</Chapter>
+
+<Chapter n="02" label="Approche" title="Une prédiction, trois explications.">
+
+Chaque prédiction est rendue sous forme :
+
+1. **d’une probabilité de risque** entre 0 et 1 ;
+2. **d’une carte de chaleur** des zones du vaisseau qui pèsent dans la prédiction ;
+3. **d’un rapport morphologique** de 8 mesures : rapport dôme/collet, taille du collet, taille du dôme, indice de tortuosité, angle de bifurcation, indice de sphéricité, indice d’irrégularité et rapport d’aspect.
+
+Le modèle a été entraîné sur **IntrA** (2 012 échantillons 3D, 103 patients) et testé en externe sur **Lausanne TOF-MRA** (50 patients : 25 avec anévrisme, 25 sains).
+
+</Chapter>
+
+<Chapter n="03" label="Architecture" title="D’un examen DICOM à un rapport en langage clair.">
+
+<Diagram name="aneu" lang="fr" />
+
+Le classifieur est **PointNet** : 2 048 points échantillonnés sur la surface du vaisseau → max pooling → MLP → probabilité de risque.
+
+</Chapter>
+
+<Chapter n="04" label="Résultat" title="Solide sur les données qu’il connaît.">
+
+<Stats items={[
+  { value: '0,834', caption: 'ROC-AUC, test interne' },
+  { value: '84,9 %', caption: 'exactitude, test interne' },
+  { value: '0,93', caption: 'PR-AUC, test interne' },
+]} />
+
+Ce sont des résultats internes sur IntrA. Le test externe de Lausanne est là où se trouve le vrai problème ouvert (chapitre 05). <Todo>exporter les diapositives du support utilisables comme figures</Todo>
+
+</Chapter>
+
+<Chapter n="05" label="Ce que je ferais autrement" title="Entraîner sur plusieurs hôpitaux dès le départ.">
+
+Le point faible, c’est la **généralisation d’un hôpital à l’autre** : la performance sur des examens venant d’un autre hôpital et d’un autre scanner. <Todo>le résultat du test externe et ce qu’il mesure, avant publication</Todo>
+
+Prochaines étapes :
+
+- entraîner sur plusieurs hôpitaux et scanners ;
+- ajouter un assistant « pourquoi est-ce risqué ? » destiné aux médecins, au-dessus des trois explications ;
+- publier le code, le modèle et le protocole de validation.
+
+</Chapter>

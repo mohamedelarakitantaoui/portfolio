@@ -1,0 +1,77 @@
+---
+key: dce-scraper
+lang: fr
+order: 1
+title: DCE Scraper
+description: Comment un scraper de 3 643 lignes est devenu 7 microservices et collecte 300 consultations en 15 minutes au lieu de 2 h 30, chez Intelcia.
+categories: [automation, ai]
+kind: Intelcia · stage
+status: Livré, été 2025 [[todo:toujours utilisé ?]]
+summary: Collecte des documents de marchés publics (DCE) sur trois portails pour constituer un jeu de données d’entraînement d’un chatbot IA.
+role: Stagiaire en développement logiciel
+timeline: juin–août 2025
+team: "[[todo:seul ou équipe de N ?]]"
+platforms: Outil en ligne de commande (Click) [[todo:où il tourne]]
+stack: [Python 3.12, Selenium WebDriver 4.15+, Configuration YAML, Threading + async, Click CLI]
+links: []
+codeNote: "Code privé (travail d’entreprise chez Intelcia). Démonstration sur demande."
+number: { value: "10×", caption: "plus rapide : 2 h 30 → 15 min pour 300 consultations" }
+constraint: Point de départ, un seul script de 3 643 lignes ; un été pour le reconstruire.
+tags: [Python, Selenium, Microservices, 10 workers]
+diagram: dce
+next: secure-gov-rag
+---
+
+<Chapter n="01" label="Problème" title="Un chatbot avait besoin des dossiers d’appel d’offres. Les portails les donnent un formulaire à la fois.">
+
+Intelcia avait besoin d’un jeu de documents de marchés publics pour entraîner un chatbot IA. Ces documents, ce sont les **DCE** (dossiers de consultation des entreprises) attachés à chaque consultation. Ils se trouvent derrière des pages de consultation et des formulaires de téléchargement sur trois sources : le portail marocain des marchés publics **marchespublics.gov.ma**, **marocao.com**, et le portail d’achats interne d’Intelcia.
+
+La première version du collecteur tenait en un script de 3 643 lignes. Un passage sur 300 consultations prenait 2 h 30, et quand un téléchargement échouait, rien ne le signalait : le fichier manquait simplement au jeu de données.
+
+</Chapter>
+
+<PullQuote cite="Titre de mon rapport de stage, Intelcia, été 2025">Automated Data Collection for AI Chatbot Training: Development of a DCE Web Scraping System</PullQuote>
+
+<Chapter n="02" label="Approche" title="Découper par tâche, puis lancer dix navigateurs à la fois.">
+
+- **Une responsabilité par service.** Le monolithe est devenu sept services, chacun responsable d’une étape : trouver les URL, remplir les formulaires, télécharger, classer, réessayer.
+- **Un pool de workers.** Jusqu’à 10 navigateurs Selenium en parallèle, réglés par configuration.
+- **De la configuration, pas du code, par portail.** Chaque source est décrite en YAML : un nouveau portail ou un sélecteur modifié, c’est une modification de configuration.
+- **Des échecs visibles.** Les reprises analysent le type d’échec avant de réessayer, et des contrôles de santé signalent ce qui échoue encore.
+
+</Chapter>
+
+<Chapter n="03" label="Architecture" title="Sept services, un orchestrateur.">
+
+<Diagram name="dce" lang="fr" />
+
+<Rows items={[
+  ['01', 'HybridOrchestrator', 'Contrôleur principal : planifie les consultations et coordonne les autres services.'],
+  ['02', 'UrlExtractionService', 'Trouve les pages de consultation et les URL des documents.'],
+  ['03', 'FormProcessingService', 'Remplit automatiquement les formulaires de téléchargement.'],
+  ['04', 'DownloadManagementService', 'Pilote les téléchargements et vérifie qu’ils sont complets.'],
+  ['05', 'WorkerPoolService', 'Gère jusqu’à 10 navigateurs en parallèle.'],
+  ['06', 'FileManagementService', 'Classe et vérifie les fichiers qui entrent dans le jeu de données.'],
+  ['07', 'RetryService', 'Analyse les échecs et réessaie intelligemment.'],
+]} />
+
+</Chapter>
+
+<Chapter n="04" label="Résultat" title="Les mêmes 300 consultations, le temps d’un café au lieu d’un après-midi.">
+
+<Stats items={[
+  { value: '2 h 30 → 15 min', caption: '300 consultations par passage (10× plus rapide)' },
+  { value: '3 643 → 7', caption: 'lignes d’un script → services ciblés' },
+  { value: '10', caption: 'navigateurs en parallèle, au maximum' },
+  { value: '0', caption: 'échec silencieux grâce aux reprises et contrôles de santé' },
+]} />
+
+Chaque échec est désormais réessayé ou signalé : un document manquant devient un événement journalisé, pas un trou silencieux dans le jeu de données. <Todo>confirmer la réduction de taille du code mentionnée dans les notes du dépôt avant publication</Todo>
+
+</Chapter>
+
+<Chapter n="05" label="Ce que je ferais autrement" title="[[todo:votre leçon en une ligne]]">
+
+<Todo>votre réponse honnête. Pistes : des tests avant le découpage ? une file (Redis/RQ) au lieu de threads ? des logs structurés et un tableau de bord ?</Todo>
+
+</Chapter>

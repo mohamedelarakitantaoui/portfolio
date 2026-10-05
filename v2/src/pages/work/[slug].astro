@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import CaseStudyView from '../../views/CaseStudyView.astro';
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', (p) => p.data.lang === 'en');
+  return projects.map((project) => ({ params: { slug: project.data.key }, props: { project } }));
+}
+const { project } = Astro.props;
+---
+<CaseStudyView project={project} lang="en" />

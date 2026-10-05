@@ -1,0 +1,121 @@
+/* Marrakech editorial: tokens. Contrast values are in docs/design-tokens.md. */
+:root {
+  color-scheme: dark;
+
+  /* Neutrals: the rampart red pulled toward black (ink) and toward lime plaster (bone) */
+  --ink-0: #0f0d0c;
+  --ink-1: #181412;
+  --ink-2: #221c19;
+  --bone-0: #ede6da;
+  --bone-1: #a39a90;
+  --bone-2: #9a9087;
+  --bone-unlit: #6a6058; /* large text only (>= 28px) */
+  --line: rgba(237, 230, 218, 0.1);
+  --line-strong: rgba(237, 230, 218, 0.22);
+  --line-input: #6a6058;
+
+  /* Accent: terracotta of the ramparts, split for contrast */
+  --accent-wall: #c4532d; /* graphics, star, rules, focus ring */
+  --accent: #d0603a; /* small accent text, button fill */
+  --accent-hover: #e07048;
+  --accent-ink: #0f0d0c;
+  --accent-on-surface: #e07048; /* accent text on --ink-2: 5.27:1 (plain --accent is 4.34 there) */
+
+  /* Semantic */
+  --bg: var(--ink-0);
+  --bg-band: var(--ink-1);
+  --surface: var(--ink-2);
+  --text: var(--bone-0);
+  --text-muted: var(--bone-1);
+  --text-quiet: var(--bone-2);
+
+  /* Type */
+  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Fallback', 'Arial Narrow', Arial, sans-serif;
+  --font-body: 'DM Sans Variable', 'DM Sans Fallback', 'Segoe UI', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+
+  --fs-hero-word: clamp(5.5rem, 24vw, 26rem);
+  --fs-giant: clamp(3rem, 11vw, 11rem);
+  --fs-h1: clamp(2.75rem, 7vw, 6.5rem);
+  --fs-h2: clamp(2rem, 4.6vw, 4.5rem);
+  --fs-statement: clamp(1.75rem, 3.4vw, 3.25rem);
+  --fs-h3: clamp(1.25rem, 1.8vw, 1.625rem);
+  --fs-stat: clamp(2.5rem, 5vw, 4.5rem);
+  --fs-lede: clamp(1.125rem, 1.4vw, 1.3125rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+  --fs-label: 0.75rem;
+
+  --track-display: -0.05em;
+  --lh-display: 0.95;
+
+  /* Space: 4 8 12 16 24 32 48 64 96 128 */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+  --gutter: 16px;
+  --max: 1360px;
+
+  /* Radius */
+  --r-pill: 999px;
+  --r-lg: 20px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 0.4s;
+  --dur-2: 0.8s;
+  --dur-3: 1.2s;
+
+  --header-h: 72px;
+}
+
+/* Light theme: bone ground, ink text, same rampart accent darkened for AA. Ratios in docs/design-tokens.md. */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --ink-0: #ede6da;
+  --ink-1: #e4dbcc;
+  --ink-2: #f6f1e9;
+  --bone-0: #0f0d0c;
+  --bone-1: #5c544d; /* 5.98 bg · 5.41 band · 6.60 surface */
+  --bone-2: #625a52; /* 5.46 · 4.93 · 6.02 */
+  --bone-unlit: #8c8278; /* 3.03 on bg, large text only */
+  --line: rgba(15, 13, 12, 0.12);
+  --line-strong: rgba(15, 13, 12, 0.24);
+  --line-input: #857b71; /* 3.34 · 3.02 · 3.68 */
+  --accent-wall: #c4532d; /* graphics: 3.66 on bg */
+  --accent: #9e3b1c; /* 5.47 · 4.94 · 6.03; bone on it 5.47 */
+  --accent-hover: #8a3216;
+  --accent-ink: #ede6da;
+  --accent-on-surface: #9e3b1c;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 32px; }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 48px; }
+}
+
+/* Size-adjusted fallbacks so the swap to the web fonts barely moves text */
+@font-face {
+  font-family: 'Bricolage Fallback';
+  src: local('Arial');
+  size-adjust: 96%;
+  ascent-override: 92%;
+  descent-override: 26%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial');
+  size-adjust: 99%;
+  ascent-override: 98%;
+  descent-override: 31%;
+}

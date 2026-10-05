@@ -1,0 +1,127 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProjectCover from '../components/ProjectCover.astro';
+import Diagram from '../components/Diagram.astro';
+import Star from '../components/Star.astro';
+import Chapter from '../components/mdx/Chapter.astro';
+import PullQuote from '../components/mdx/PullQuote.astro';
+import Stats from '../components/mdx/Stats.astro';
+import Rows from '../components/mdx/Rows.astro';
+import Note from '../components/mdx/Note.astro';
+import Todo from '../components/mdx/Todo.astro';
+import { type Lang, lp, t } from '../i18n/ui';
+import { rich } from '../lib/rich';
+interface Props { project: CollectionEntry<'projects'>; lang: Lang }
+const { project, lang } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+const all = await getCollection('projects', (p) => p.data.lang === lang);
+const next = all.find((p) => p.data.key === d.next)!;
+const fr = lang === 'fr';
+const meta: [string, string | undefined][] = [
+  [t(lang, 'meta.role'), d.role],
+  [t(lang, 'meta.timeline'), d.timeline],
+  [t(lang, 'meta.team'), d.team],
+  [t(lang, 'meta.status'), d.status],
+  [t(lang, 'meta.venue'), d.venue],
+  [t(lang, 'meta.supervision'), d.supervision],
+  [t(lang, 'meta.platforms'), d.platforms],
+  [t(lang, 'meta.languages'), d.languages],
+];
+---
+<Base lang={lang} title={`${d.title} · ${t(lang, 'cta.caseStudy')} · Mamoun Tantaoui El Araki`} description={d.description} ogKey={`work-${d.key}`}>
+  <article class="cs">
+    <header class="cs__head wrap">
+      <nav class="crumbs mono" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
+        <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
+      </nav>
+      <p class="label">{d.kind}</p>
+      <h1 class="h1 cs__title">{d.title}</h1>
+      <p class="lede cs__summary">{d.summary}</p>
+      <ul class="tags cs__tags">{d.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>
+    </header>
+
+    {d.cover && (
+      <div class="wrap cs__cover">
+        <ProjectCover project={project} lang={lang} eager large />
+      </div>
+    )}
+
+    <div class="wrap cs__grid">
+      <aside class="cs__side" aria-label={fr ? 'Fiche projet' : 'Project info'}>
+        <div class="cs__sticky">
+          <p class="mono cs__side-label"><Star class="cs__side-star" />{fr ? 'Fiche projet' : 'Project info'}</p>
+          <dl class="cs__meta">
+            {meta.filter(([, v]) => v).map(([k, v]) => (
+              <div><dt class="mono">{k}</dt><dd set:html={rich(v!)} /></div>
+            ))}
+            <div><dt class="mono">{t(lang, 'meta.stack')}</dt><dd>{d.stack.join(', ')}</dd></div>
+            <div>
+              <dt class="mono">{t(lang, 'meta.links')}</dt>
+              <dd>
+                {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => <li><a href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li>)}</ul>}
+                {d.codeNote && <p class="cs__codenote">{d.codeNote} <a href={lp(lang, '/contact')}>{fr ? 'Me contacter' : 'Ask me'} →</a></p>}
+                {!d.links.length && !d.codeNote && <span class="todo">{fr ? 'liens publics (dépôt, démo, article)' : 'public links (repo, demo, paper)'}</span>}
+              </dd>
+            </div>
+          </dl>
+          <div class="cs__big">
+            <span class="cs__big-value">{d.number.value}</span>
+            <span class="cs__big-caption" set:html={rich(d.number.caption)} />
+          </div>
+        </div>
+      </aside>
+
+      <div class="cs__body">
+        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram }} />
+      </div>
+    </div>
+
+    <a class="cs__next" href={lp(lang, `/work/${next.data.key}`)}>
+      <span class="wrap cs__next-inner">
+        <span class="mono cs__next-label">{t(lang, 'cta.nextProject')} →</span>
+        <span class="cs__next-title">{next.data.title}<Star class="cs__next-star" /></span>
+      </span>
+    </a>
+  </article>
+</Base>
+
+<style>
+  .cs__head { padding-top: calc(var(--header-h) + var(--s-8)); }
+  .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-6); }
+  .crumbs a { color: var(--text-muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .crumbs a:hover { color: var(--text); }
+  .crumbs span { display: inline-flex; align-items: center; }
+  .cs__title { font-size: clamp(3rem, 10vw, 9rem); }
+  .cs__summary { margin-top: var(--s-5); }
+  .cs__tags { margin-top: var(--s-5); }
+  .cs__cover { margin-top: var(--s-8); }
+  .cs__grid { display: grid; gap: var(--s-8); padding-block: var(--s-9); }
+  @media (min-width: 1024px) { .cs__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-9); } }
+  @media (min-width: 1024px) { .cs__sticky { position: sticky; top: var(--s-7); } }
+  .cs__side { align-self: start; }
+  .cs__sticky { background: var(--bg-band); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); }
+  .cs__side-label { display: flex; gap: var(--s-2); align-items: center; color: var(--text-quiet); margin-bottom: var(--s-4); }
+  .cs__side-label :global(.cs__side-star) { width: 10px; height: 10px; color: var(--accent-wall); }
+  .cs__meta > div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); font-size: var(--fs-small); }
+  .cs__meta dt { color: var(--text-quiet); padding-top: 0.2em; }
+  .cs__meta dd { color: var(--text); }
+  .cs__links { list-style: none; display: grid; gap: var(--s-1); }
+  .cs__links a { text-decoration-color: var(--accent-wall); }
+  .cs__codenote { color: var(--text-muted); }
+  .cs__codenote a { color: var(--text); text-decoration-color: var(--accent-wall); white-space: nowrap; }
+  .cs__big { display: grid; gap: var(--s-1); margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
+  .cs__big-value { font-family: var(--font-display); font-weight: 650; font-size: var(--fs-stat); letter-spacing: -0.04em; line-height: 1; }
+  .cs__big-caption { color: var(--text-muted); font-size: var(--fs-small); }
+  .cs__body { min-width: 0; }
+  .cs__next { display: block; text-decoration: none; border-top: 1px solid var(--line); padding-block: var(--s-8) var(--s-9); overflow-x: clip; }
+  .cs__next-inner { display: grid; gap: var(--s-3); }
+  .cs__next-label { color: var(--accent); }
+  .cs__next-title {
+    font-family: var(--font-display); font-weight: 650; letter-spacing: var(--track-display); line-height: 0.9;
+    font-size: clamp(3rem, 9vw, 9rem); text-wrap: balance; font-variation-settings: 'opsz' 96;
+  }
+  .cs__next-title :global(.cs__next-star) { display: inline-block; width: 0.4em; height: 0.4em; margin-inline-start: 0.15em; color: var(--accent-wall); transition: transform var(--dur-3) var(--ease-out); }
+  .cs__next:hover :global(.cs__next-star) { transform: rotate(90deg); }
+</style>

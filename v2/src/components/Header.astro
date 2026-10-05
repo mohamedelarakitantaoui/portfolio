@@ -1,0 +1,162 @@
+---
+import Star from './Star.astro';
+import { type Lang, lp, t } from '../i18n/ui';
+import { person } from '../data/site';
+interface Props { lang: Lang; enPath: string; frPath: string }
+const { lang, enPath, frPath } = Astro.props;
+const other: Lang = lang === 'en' ? 'fr' : 'en';
+const otherPath = other === 'en' ? enPath : frPath;
+const here = Astro.url.pathname.replace(/\/$/, '') || '/';
+const nav = [
+  { href: lp(lang, '/work'), label: t(lang, 'nav.work') },
+  { href: lp(lang, '/about'), label: t(lang, 'nav.about') },
+  { href: lp(lang, '/services'), label: t(lang, 'nav.services') },
+  { href: lp(lang, '/cv'), label: t(lang, 'nav.cv') },
+  { href: lp(lang, '/creative'), label: t(lang, 'nav.creative') },
+  { href: lp(lang, '/contact'), label: t(lang, 'nav.contact') },
+];
+const isCurrent = (href: string) => here === href || (href !== '/' && here.startsWith(href + '/'));
+---
+<header class="site-header" id="site-header">
+  <div class="site-header__inner wrap">
+    <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}>
+      <Star class="logo__star" />
+      <span class="logo__text">{person.short}</span>
+    </a>
+
+    <nav class="site-nav" aria-label={t(lang, 'nav.label')}>
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__tools">
+      <a class="lang-link mono" href={otherPath} hreflang={other} lang={other} title={t(lang, 'lang.switch')}>
+        <span class="sr-only">{t(lang, 'lang.switch')}</span><span aria-hidden="true">{lang === 'en' ? 'EN' : 'FR'} <span class="lang-link__dim">/ {t(lang, 'lang.short')}</span></span>
+      </a>
+      <button class="tool-btn" type="button" data-theme-toggle aria-label={t(lang, 'theme.toggle')} hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+      </button>
+      <button class="tool-btn kbd-pill mono" type="button" data-palette-open aria-label={t(lang, 'palette.open')} hidden>
+        <span aria-hidden="true" data-kbd>Ctrl K</span>
+      </button>
+      <a class="btn btn--primary btn--sm hire" href={lp(lang, '/contact') + '?for=role'}>{t(lang, 'cta.hire')}</a>
+      <a class="tool-btn menu-btn" href="#footer-nav" data-menu-open aria-haspopup="dialog">
+        <span>{t(lang, 'nav.menu')}</span><Star class="menu-btn__star" />
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Floating pill after the hero (JS only; without JS the header and footer nav remain) -->
+<button class="menu-pill" type="button" data-menu-open aria-haspopup="dialog" hidden>
+  <span>{t(lang, 'nav.menu')}</span><Star class="menu-btn__star" />
+</button>
+
+<dialog class="menu" id="site-menu" aria-label={t(lang, 'nav.menu')} data-lenis-prevent>
+  <div class="menu__inner wrap">
+    <div class="menu__top">
+      <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}><Star class="logo__star" /><span class="logo__text">{person.short}</span></a>
+      <button class="tool-btn menu-close" type="button" data-menu-close>
+        <span>{t(lang, 'nav.close')}</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
+      </button>
+    </div>
+    <nav aria-label={t(lang, 'nav.label')}>
+      <ol class="menu__list">
+        <li><a href={lp(lang, '/')}><span class="mono">00</span>{t(lang, 'nav.home')}</a></li>
+        {nav.map((n, i) => (
+          <li><a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}><span class="mono">{String(i + 1).padStart(2, '0')}</span>{n.label}</a></li>
+        ))}
+      </ol>
+    </nav>
+    <div class="menu__foot">
+      <a class="menu__email" href={`mailto:${person.email}`}>{person.email}</a>
+      <a class="mono" href={otherPath} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a>
+      <button class="tool-btn" type="button" data-theme-toggle hidden>{t(lang, 'theme.toggle')}</button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .site-header { position: absolute; inset: 0 0 auto 0; z-index: 30; }
+  .site-header__inner {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s-4);
+    min-height: var(--header-h);
+  }
+  .logo { display: inline-flex; align-items: center; gap: var(--s-2); text-decoration: none; font-weight: 600; letter-spacing: -0.01em; min-height: 44px; }
+  .logo :global(.logo__star) { width: 22px; height: 22px; color: var(--accent-wall); flex: none; }
+  .logo__text { font-family: var(--font-display); font-size: 1.0625rem; letter-spacing: -0.03em; white-space: nowrap; }
+
+  .site-nav { display: none; justify-self: center; }
+  .site-nav ul { display: flex; gap: var(--s-1); list-style: none; }
+  .site-nav a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3);
+    text-decoration: none; font-size: 0.9375rem; color: var(--text-muted); border-radius: var(--r-pill);
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--text); }
+  .site-nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--accent-wall); text-underline-offset: 6px; }
+
+  .site-header__tools { display: flex; align-items: center; gap: var(--s-2); justify-self: end; grid-column: 3; }
+  .lang-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2); text-decoration: none; color: var(--text); white-space: nowrap; }
+  .lang-link__dim { color: var(--text-quiet); }
+  .tool-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+    min-width: 44px; min-height: 44px; padding: 0 var(--s-3); border-radius: var(--r-pill);
+    border: 1px solid var(--line-input); background: transparent; cursor: pointer; text-decoration: none;
+    font-size: 0.875rem;
+  }
+  .tool-btn:hover { border-color: var(--text); }
+  .tool-btn svg { width: 18px; height: 18px; }
+  .kbd-pill { font-size: 0.6875rem; white-space: nowrap; }
+  @media (max-width: 767px) { .kbd-pill { display: none !important; } }
+  @media (max-width: 599px) { .site-header__tools > [data-theme-toggle] { display: none !important; } }
+  .hire { display: none; }
+  .menu-btn :global(.menu-btn__star), .menu-pill :global(.menu-btn__star) { width: 12px; height: 12px; color: var(--accent-wall); }
+
+  @media (min-width: 1100px) {
+    .site-nav { display: block; }
+    .hire { display: inline-flex; }
+    .menu-btn { display: none; }
+  }
+  @media (max-width: 420px) {
+    .logo__text { font-size: 0.9375rem; }
+  }
+
+  .menu-pill {
+    position: fixed; z-index: 40; left: 50%; bottom: max(16px, env(safe-area-inset-bottom));
+    transform: translate(-50%, 0);
+    display: inline-flex; align-items: center; gap: var(--s-2); min-height: 48px; padding: 0 var(--s-5);
+    border-radius: var(--r-pill); border: 1px solid var(--line-input); cursor: pointer;
+    background: var(--surface); color: var(--text); font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    transition: opacity var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out);
+  }
+  .menu-pill.is-hidden { opacity: 0; transform: translate(-50%, 16px); pointer-events: none; }
+  @media (min-width: 1100px) {
+    .menu-pill { left: auto; right: var(--gutter); top: var(--s-4); bottom: auto; transform: none; }
+    .menu-pill.is-hidden { transform: translateY(-12px); }
+  }
+
+  .menu {
+    position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+    margin: 0; padding: 0; border: 0; background: var(--bg); color: var(--text); z-index: 60;
+  }
+  .menu::backdrop { background: var(--bg); }
+  .menu__inner { display: grid; grid-template-rows: auto 1fr auto; min-height: 100%; padding-block: var(--s-3) var(--s-6); }
+  .menu__top { display: flex; justify-content: space-between; align-items: center; min-height: var(--header-h); }
+  .menu__list { list-style: none; align-self: center; padding-block: var(--s-6); }
+  .menu__list a {
+    display: flex; align-items: baseline; gap: var(--s-4); text-decoration: none;
+    font-family: var(--font-display); font-weight: 600; letter-spacing: var(--track-display); line-height: 1.05;
+    font-size: clamp(2.25rem, 8vw, 5rem); padding-block: var(--s-1);
+  }
+  .menu__list a .mono { color: var(--accent); font-size: var(--fs-label); letter-spacing: 0.08em; transform: translateY(-0.6em); }
+  .menu__list a:hover, .menu__list a[aria-current='page'] { color: var(--accent-hover); }
+  .menu__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-4); align-items: center; border-top: 1px solid var(--line); padding-top: var(--s-5); }
+  .menu__foot a { min-height: 44px; display: inline-flex; align-items: center; }
+  .menu__email { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 1.75rem); letter-spacing: -0.03em; }
+</style>

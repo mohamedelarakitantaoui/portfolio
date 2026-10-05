@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Rich from '../components/Rich.astro';
+import { education, experience, principles, spoken, person } from '../data/site';
+import { type Lang, lp, t } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+---
+<Base
+  lang={lang}
+  title={fr ? 'À propos · Mamoun Tantaoui El Araki' : 'About · Mamoun Tantaoui El Araki'}
+  description={fr
+    ? 'Informatique à Al Akhawayn (Ifrane), un semestre à Boğaziçi (Istanbul), deux stages qui ont livré du logiciel. Expérience, formation, langues et méthode.'
+    : 'Computer science at Al Akhawayn (Ifrane), a semester at Boğaziçi (Istanbul), two internships that shipped software. Experience, education, languages and how I work.'}
+  ogKey="about"
+>
+  <PageIntro
+    label={fr ? 'À propos' : 'About'}
+    title={fr ? 'À propos' : 'About'}
+    lede={fr
+      ? 'Informatique à Al Akhawayn, à Ifrane, un semestre de génie informatique à Boğaziçi, à Istanbul, et deux étés à livrer du logiciel pour de vraies organisations. Chez moi, c’est Marrakech, la ville rouge.'
+      : 'Computer science at Al Akhawayn in Ifrane, a semester of computer engineering at Boğaziçi in Istanbul, and two summers shipping software for real organisations. Home is Marrakech, the red city.'}
+    word="SALAM"
+  >
+    <p class="about__todo"><span class="todo">{fr ? 'confirmer « originaire de Marrakech » ou seulement « basé à Marrakech »' : 'confirm “from Marrakech” vs only “based in Marrakech”'}</span></p>
+  </PageIntro>
+
+  <section class="section band" aria-labelledby="exp-h2">
+    <div class="wrap two-col">
+      <div>
+        <p class="label">{fr ? 'Parcours' : 'Experience'}</p>
+        <h2 class="h2" id="exp-h2" data-reveal-lines>{fr ? 'Intelcia en 2025, ITS Elaraki en 2024.' : 'Intelcia in 2025, ITS Elaraki in 2024.'}</h2>
+        <a class="btn two-col__cta" href={person.cvHref} download>{t(lang, 'cta.downloadCv')}</a>
+      </div>
+      <ol class="rows dated">
+        {experience.map((e) => (
+          <li class="dated__row">
+            <p class="dated__date mono">{e.dates[lang]}</p>
+            <div>
+              <h3 class="dated__title">{e.role[lang]}, {e.org}</h3>
+              <p class="dated__text">{e.result[lang]}</p>
+              {e.href && <a class="dated__link" href={lp(lang, e.href)}>{t(lang, 'cta.caseStudy')} <span aria-hidden="true">→</span></a>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="edu-h2">
+    <div class="wrap two-col">
+      <div>
+        <p class="label">{fr ? 'Formation' : 'Education'}</p>
+        <h2 class="h2" id="edu-h2" data-reveal-lines>{fr ? 'Ifrane, puis Istanbul.' : 'Ifrane, then Istanbul.'}</h2>
+      </div>
+      <ol class="rows dated">
+        {education.map((e) => (
+          <li class="dated__row">
+            <p class="dated__date mono">{typeof e.dates === 'string' ? e.dates : e.dates[lang]}</p>
+            <div>
+              <h3 class="dated__title">{e.school}</h3>
+              <Rich as="p" class="dated__text" text={e.degree[lang]} />
+            </div>
+          </li>
+        ))}
+        <li class="dated__row">
+          <p class="dated__date mono">{fr ? 'Langues' : 'Languages'}</p>
+          <div><h3 class="dated__title">{spoken[lang].join(' · ')}</h3></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="how-h2">
+    <div class="wrap">
+      <p class="label">{fr ? 'Méthode' : 'How I work'}</p>
+      <h2 class="h2 how__h2" id="how-h2" data-reveal-lines>{fr ? 'Des échecs visibles, des données locales, trois langues, un chiffre.' : 'Loud failures, local data, three languages, one number.'}</h2>
+      <p class="how__todo"><span class="todo">{fr ? 'confirmer que ces quatre principes sont bien les vôtres' : 'confirm these four principles are yours'}</span></p>
+      <ol class="rows how">
+        {principles.map((p) => (
+          <li class="how__row">
+            <span class="mono how__n">[{p.n}]</span>
+            <h3 class="how__title">{p.title[lang]}</h3>
+            <p class="how__text">{p.text[lang]}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about__todo { margin-top: var(--s-4); }
+  .two-col { display: grid; gap: var(--s-7); }
+  @media (min-width: 1024px) { .two-col { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-8); align-items: start; } }
+  .two-col__cta { margin-top: var(--s-6); }
+  .dated__row { display: grid; gap: var(--s-2) var(--s-6); padding-block: var(--s-6); }
+  @media (min-width: 640px) { .dated__row { grid-template-columns: 9rem 1fr; } }
+  .dated__date { color: var(--accent); padding-top: 0.35em; }
+  .dated__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+  .dated__text { margin-top: var(--s-2); color: var(--text-muted); max-width: 62ch; }
+  .dated__link { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 44px; font-weight: 500; text-decoration-color: var(--accent-wall); }
+  .how__h2 { max-width: 16ch; }
+  .how__todo { margin-block: var(--s-4) var(--s-6); }
+  .how__row { display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s-1) var(--s-4); padding-block: var(--s-5); }
+  @media (min-width: 900px) { .how__row { grid-template-columns: 4rem minmax(0, 5fr) minmax(0, 7fr); align-items: baseline; } }
+  .how__n { color: var(--accent); }
+  .how__title { font-family: var(--font-display); font-size: clamp(1.375rem, 2.2vw, 2rem); font-weight: 600; letter-spacing: -0.035em; }
+  .how__text { color: var(--text-muted); grid-column: 2; }
+  @media (min-width: 900px) { .how__text { grid-column: 3; } }
+</style>

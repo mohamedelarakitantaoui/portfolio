@@ -1,0 +1,40 @@
+---
+// Privacy note and the form's no-JS "sent" page.
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { type Lang, lp, t } from '../i18n/ui';
+interface Props { lang: Lang; page: 'privacy' | 'sent' }
+const { lang, page } = Astro.props;
+const fr = lang === 'fr';
+const copy = {
+  privacy: {
+    title: fr ? 'Confidentialité' : 'Privacy',
+    meta: fr ? 'Confidentialité · Mamoun Tantaoui El Araki' : 'Privacy · Mamoun Tantaoui El Araki',
+    desc: fr ? 'Ce site ne pose aucun cookie et ne fait aucune mesure d’audience. Ce que devient le formulaire de contact.' : 'This site sets no cookies and runs no analytics. What happens to the contact form.',
+    body: fr
+      ? ['Ce site ne pose aucun cookie et ne fait aucune mesure d’audience.', 'Vos choix de thème et de langue restent dans le stockage local de votre navigateur.', 'Le terminal ask-mamoun cherche dans un fichier JSON statique, dans votre navigateur : vos questions ne sont envoyées nulle part.', 'Le formulaire de contact envoie votre nom, votre e-mail et votre message pour que je puisse vous répondre, et à rien d’autre.']
+      : ['This site sets no cookies and runs no analytics.', 'Your theme and language choices stay in your browser’s local storage.', 'The ask-mamoun terminal searches a static JSON file inside your browser: your questions are not sent anywhere.', 'The contact form sends your name, email and message so I can reply, and for nothing else.'],
+    todo: fr ? 'nom du service de formulaire (Netlify Forms ou Formspree)' : 'name of the form service (Netlify Forms or Formspree)',
+  },
+  sent: {
+    title: fr ? 'Message envoyé' : 'Message sent',
+    meta: fr ? 'Message envoyé · Mamoun Tantaoui El Araki' : 'Message sent · Mamoun Tantaoui El Araki',
+    desc: fr ? 'Votre message est bien parti.' : 'Your message is on its way.',
+    body: fr ? ['Merci, votre message est bien parti.'] : ['Thanks, your message is on its way.'],
+    todo: '',
+  },
+}[page];
+---
+<Base lang={lang} title={copy.meta} description={copy.desc} ogKey={page === 'sent' ? 'contact' : 'privacy'} noindex={page === 'sent'}>
+  <PageIntro label={copy.title} title={copy.title}>
+    <div class="simple prose">
+      {copy.body.map((p) => <p>{p}</p>)}
+      {copy.todo && <p><span class="todo">{copy.todo}</span></p>}
+      <p><a href={lp(lang, '/')}>{t(lang, 'nav.home')} →</a></p>
+    </div>
+  </PageIntro>
+</Base>
+
+<style>
+  .simple { margin-top: var(--s-6); color: var(--text-muted); font-size: var(--fs-lede); }
+</style>

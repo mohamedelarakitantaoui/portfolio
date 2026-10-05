@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Rich from '../components/Rich.astro';
+import { faq, process, services } from '../data/site';
+import { type Lang, lp, t } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+const L = fr
+  ? { scope: 'Périmètre', deliverable: 'Livrable', timeline: 'Délai', price: 'À partir de', proof: 'Déjà fait' }
+  : { scope: 'Scope', deliverable: 'Deliverable', timeline: 'Timeline', price: 'From', proof: 'Done before' };
+---
+<Base
+  lang={lang}
+  title={fr ? 'Services freelance · Mamoun Tantaoui El Araki' : 'Freelance services · Mamoun Tantaoui El Araki'}
+  description={fr
+    ? 'Trois offres freelance au périmètre fixe : automatisation et scraping Python, assistant RAG privé sur vos documents, MVP d’application web. Marrakech, à distance.'
+    : 'Three fixed-scope freelance packs: Python automation and scraping, a private RAG assistant over your documents, and a web app MVP. Marrakech, remote.'}
+  ogKey="services"
+>
+  <PageIntro
+    label={fr ? 'Pour les clients' : 'For clients'}
+    title={fr ? 'Du robot de portail au RAG privé.' : 'From portal bots to private RAG.'}
+    lede={fr
+      ? 'Pour les équipes qui copient des données à la main, ne retrouvent pas leurs propres documents, ou ont besoin d’une application qui marche avant la prochaine réunion. Tout projet plus gros commence par un appel.'
+      : 'For teams that copy data by hand, can’t search their own documents, or need a working app before the next meeting. Anything bigger starts with a call.'}
+    word="PACKS"
+  />
+
+  <section class="section packs-sec" aria-label={fr ? 'Offres' : 'Packs'}>
+    <div class="wrap">
+      <ol class="rows packs">
+        {services.map((s) => (
+          <li class="pack">
+            <div class="pack__head">
+              <span class="mono pack__n">[{s.n}]</span>
+              <h2 class="pack__name">{s.name[lang]}</h2>
+            </div>
+            <dl class="pack__facts">
+              <div><dt class="mono">{L.scope}</dt><dd><Rich text={s.scope[lang]} /></dd></div>
+              <div><dt class="mono">{L.deliverable}</dt><dd>{s.deliverable[lang]}</dd></div>
+              <div><dt class="mono">{L.timeline}</dt><dd><Rich text={s.timeline[lang]} /></dd></div>
+              <div><dt class="mono">{L.price}</dt><dd class="pack__price">{s.price[lang]}</dd></div>
+              <div><dt class="mono">{L.proof}</dt><dd><a href={lp(lang, `/work/${s.proof.slug}`)}>{s.proof.label} <span aria-hidden="true">→</span></a></dd></div>
+            </dl>
+            <a class="btn btn--primary pack__cta" href={lp(lang, '/contact') + `?for=project&pack=${s.n}`}>{t(lang, 'cta.start')}<span class="arrow" aria-hidden="true">→</span></a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="process-h2">
+    <div class="wrap">
+      <p class="label">{fr ? 'Déroulé' : 'Process'}</p>
+      <h2 class="h2 sec-h2" id="process-h2" data-reveal-lines>{fr ? 'Un appel, une page de périmètre, une démo par semaine.' : 'One call, one page of scope, a demo every week.'}</h2>
+      <ol class="steps">
+        {process.map((p) => (
+          <li class="step">
+            <span class="mono step__n">{p.n}</span>
+            <h3 class="step__title">{p.title[lang]}</h3>
+            <Rich as="p" class="step__text" text={p.text[lang]} />
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-h2">
+    <div class="wrap faq-grid">
+      <div>
+        <p class="label">FAQ</p>
+        <h2 class="h2 sec-h2" id="faq-h2" data-reveal-lines>{fr ? 'On-premise ? En arabe ? À qui le code ?' : 'On-prem? In Arabic? Who owns the code?'}</h2>
+      </div>
+      <div class="faq">
+        {faq.map((f) => (
+          <details class="faq__item">
+            <summary>{f.q[lang]}<span class="faq__icon" aria-hidden="true"></span></summary>
+            <Rich as="p" class="faq__a" text={f.a[lang]} />
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .packs-sec { padding-top: 0; }
+  .pack { display: grid; gap: var(--s-5); padding-block: var(--s-7); }
+  @media (min-width: 1024px) { .pack { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto; gap: var(--s-7); align-items: start; } }
+  .pack__head { display: grid; gap: var(--s-2); }
+  .pack__n { color: var(--accent); }
+  .pack__name { font-family: var(--font-display); font-weight: 650; font-size: clamp(2rem, 4.2vw, 3.75rem); letter-spacing: var(--track-display); line-height: 0.95; }
+  .pack__facts > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); }
+  .pack__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
+  .pack__facts dd { color: var(--text-muted); }
+  .pack__facts a { color: var(--text); text-decoration-color: var(--accent-wall); }
+  .pack__price { color: var(--text) !important; font-weight: 600; }
+  .pack__cta { justify-self: start; }
+  .sec-h2 { max-width: 16ch; margin-bottom: var(--s-7); }
+  .steps { list-style: none; display: grid; gap: var(--s-6); }
+  @media (min-width: 768px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .step { border-top: 1px solid var(--line-strong); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
+  .step__n { color: var(--accent); }
+  .step__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; }
+  .step__text { color: var(--text-muted); }
+  .faq-grid { display: grid; gap: var(--s-6); }
+  @media (min-width: 1024px) { .faq-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); } }
+  .faq__item { border-top: 1px solid var(--line); }
+  .faq__item:last-child { border-bottom: 1px solid var(--line); }
+  .faq__item summary {
+    display: flex; justify-content: space-between; gap: var(--s-4); align-items: center; min-height: 64px; cursor: pointer;
+    font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; list-style: none;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__icon { position: relative; width: 14px; height: 14px; flex: none; }
+  .faq__icon::before, .faq__icon::after { content: ''; position: absolute; inset: 6px 0 auto; height: 2px; background: var(--accent-wall); transition: transform var(--dur-1) var(--ease-out); }
+  .faq__icon::after { transform: rotate(90deg); }
+  .faq__item[open] .faq__icon::after { transform: rotate(0); }
+  .faq__a { color: var(--text-muted); padding-bottom: var(--s-5); max-width: 60ch; }
+</style>

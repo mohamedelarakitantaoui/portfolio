@@ -1,0 +1,35 @@
+---
+// The site's one marquee: institutions as mono wordmarks (no logos). Pauses on hover/focus; static under reduced motion.
+import { proof } from '../../data/site';
+import { starSvg } from '../../lib/rich';
+import type { Lang } from '../../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const row = proof.map((p) => `<li>${p}</li><li class="sep" aria-hidden="true">${starSvg()}</li>`).join('');
+---
+<section class="proof" aria-label={lang === 'fr' ? 'Où j’ai étudié et travaillé' : 'Where I studied and worked'}>
+  <div class="proof__track" tabindex="0">
+    <ul class="proof__list" set:html={row} />
+    <ul class="proof__list" aria-hidden="true" set:html={row} />
+  </div>
+</section>
+
+<style>
+  .proof { border-block: 1px solid var(--line); overflow-x: clip; background: var(--bg-band); }
+  .proof__track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
+  .proof__track:hover, .proof__track:focus-visible { animation-play-state: paused; }
+  .proof__track:focus-visible { outline-offset: -4px; }
+  .proof__list { display: flex; align-items: center; list-style: none; flex: none; }
+  .proof__list :global(li) {
+    padding: var(--s-5) var(--s-5); font-family: var(--font-mono); font-size: clamp(0.8125rem, 1.2vw, 1rem);
+    letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; color: var(--text);
+  }
+  .proof__list :global(li.sep) { padding-inline: var(--s-2); }
+  .proof__list :global(.star-glyph) { width: 12px; height: 12px; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .proof__track { animation: none; width: 100%; }
+    .proof__list { flex-wrap: wrap; justify-content: center; width: 100%; }
+    .proof__list[aria-hidden='true'] { display: none; }
+  }
+</style>

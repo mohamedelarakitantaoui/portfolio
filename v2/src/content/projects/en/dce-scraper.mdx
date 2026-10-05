@@ -1,0 +1,77 @@
+---
+key: dce-scraper
+lang: en
+order: 1
+title: DCE Scraper
+description: How a 3,643-line scraper became 7 microservices and collected 300 procurement consultations in 15 minutes instead of 2.5 hours, at Intelcia.
+categories: [automation, ai]
+kind: Intelcia · internship
+status: Delivered, summer 2025 [[todo:still in use?]]
+summary: Collected public-procurement documents (DCE) from three portals into an LLM training dataset for an AI chatbot.
+role: Software development intern
+timeline: Jun–Aug 2025
+team: "[[todo:solo or team of N?]]"
+platforms: Command-line tool (Click) [[todo:where it runs]]
+stack: [Python 3.12, Selenium WebDriver 4.15+, YAML config, Threading + async, Click CLI]
+links: []
+codeNote: "Code private (Intelcia company work). Walkthrough on request."
+number: { value: "10×", caption: "faster: 2.5 h → 15 min for 300 consultations" }
+constraint: Started from a single 3,643-line script; one summer to rebuild it.
+tags: [Python, Selenium, Microservices, 10 workers]
+diagram: dce
+next: secure-gov-rag
+---
+
+<Chapter n="01" label="Problem" title="A chatbot needed tender documents. The portals hand them out one form at a time.">
+
+Intelcia needed a dataset of public-procurement documents to train an AI chatbot. Those documents are the **DCE** (dossier de consultation des entreprises), the tender file attached to each consultation. They sit behind consultation pages and download forms on three sources: Morocco's public-procurement portal **marchespublics.gov.ma**, **marocao.com**, and Intelcia's internal purchasing portal.
+
+The first version of the collector was one 3,643-line script. A run over 300 consultations took 2.5 hours, and when a download failed, nothing said so: the file was simply missing from the dataset.
+
+</Chapter>
+
+<PullQuote cite="Title of my internship report, Intelcia, summer 2025">Automated Data Collection for AI Chatbot Training: Development of a DCE Web Scraping System</PullQuote>
+
+<Chapter n="02" label="Approach" title="Split it by job, then run ten browsers at once.">
+
+- **One responsibility per service.** The monolith became seven services, each owning one step: find the URLs, fill the forms, download, file, retry.
+- **A worker pool.** Up to 10 Selenium browsers run in parallel, scaled by configuration.
+- **Config, not code, per portal.** Each source is described in YAML, so a new portal or a changed selector is a config edit.
+- **Loud failure.** Retries look at the failure pattern before trying again, and health checks flag anything that still fails.
+
+</Chapter>
+
+<Chapter n="03" label="Architecture" title="Seven services, one orchestrator.">
+
+<Diagram name="dce" lang="en" />
+
+<Rows items={[
+  ['01', 'HybridOrchestrator', 'Main controller: schedules consultations and coordinates the other services.'],
+  ['02', 'UrlExtractionService', 'Discovers consultation pages and document URLs.'],
+  ['03', 'FormProcessingService', 'Fills the download forms automatically.'],
+  ['04', 'DownloadManagementService', 'Controls downloads and checks they completed.'],
+  ['05', 'WorkerPoolService', 'Manages up to 10 parallel browsers.'],
+  ['06', 'FileManagementService', 'Organises and verifies the files that land in the dataset.'],
+  ['07', 'RetryService', 'Analyses failure patterns and retries intelligently.'],
+]} />
+
+</Chapter>
+
+<Chapter n="04" label="Outcome" title="Same 300 consultations, a coffee break instead of an afternoon.">
+
+<Stats items={[
+  { value: '2.5 h → 15 min', caption: '300 consultations per run (10× faster)' },
+  { value: '3,643 → 7', caption: 'lines of one script → focused services' },
+  { value: '10', caption: 'browsers in parallel, at most' },
+  { value: '0', caption: 'silent failures after retries + health checks' },
+]} />
+
+Every failure is now retried or reported, so a missing document is a logged event instead of a silent gap in the dataset. <Todo>confirm the code-size reduction in the repo notes before it is published</Todo>
+
+</Chapter>
+
+<Chapter n="05" label="What I'd do differently" title="[[todo:your one-line lesson]]">
+
+<Todo>your honest answer. Prompts: tests before the refactor? a queue (Redis/RQ) instead of threads? structured logs and a dashboard?</Todo>
+
+</Chapter>

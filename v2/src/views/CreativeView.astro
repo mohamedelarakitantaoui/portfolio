@@ -1,0 +1,115 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageIntro from '../components/PageIntro.astro';
+import poster from '../assets/creative/journey-poster.png';
+import callForDuty from '../assets/creative/call-for-duty.png';
+import xd from '../assets/creative/magazine-app-xd.png';
+import moviePoster from '../assets/creative/movie-poster.png';
+import newsletter from '../assets/creative/newsletter.png';
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+const posterSet = await Promise.all([480, 640, 960, 1280].map((w) => getImage({ src: poster, width: w, format: 'webp', quality: 68 })));
+const posterSrcset = posterSet.map((img, i) => `${img.src} ${[480, 640, 960, 1280][i]}w`).join(', ');
+const posterSizes = '(min-width: 1360px) 760px, (min-width: 1024px) 56vw, calc(100vw - 32px)';
+const designs = [
+  { img: xd, title: fr ? 'Application magazine' : 'Magazine app UI', tool: 'Adobe XD', note: fr ? 'Projet final, maquettes d’application mobile' : 'Final project, mobile app UI', href: '/creative/final-project-adobe-xd.pdf', size: '4.5 MB', alt: fr ? 'Première page du projet final Adobe XD : maquettes d’une application magazine' : 'First page of the Adobe XD final project: magazine app screens' },
+  { img: moviePoster, title: fr ? 'Affiche de film' : 'Movie poster', tool: 'Photoshop', note: fr ? 'Concept d’affiche originale' : 'Original poster concept', href: '/creative/movie-poster-design.pdf', size: '68 MB', alt: fr ? 'Affiche de film réalisée dans Photoshop' : 'Movie poster made in Photoshop' },
+  { img: newsletter, title: 'Newsletter', tool: 'InDesign', note: fr ? 'Mise en page éditoriale' : 'Editorial layout study', href: '/creative/newsletter-indesign.pdf', size: '0.2 MB', alt: fr ? 'Newsletter mise en page dans InDesign' : 'Newsletter laid out in InDesign' },
+];
+---
+<Base
+  lang={lang}
+  title={fr ? 'Créatif · Mamoun Tantaoui El Araki' : 'Creative · Mamoun Tantaoui El Araki'}
+  description={fr
+    ? 'Photographie et mise en page faites à côté du code : un livre photo sur deux projets de fin d’études, une série en six images, des projets XD, Photoshop et InDesign.'
+    : 'Photography and layout made alongside the code: a photo book on two capstone projects, a six-frame series, and Adobe XD, Photoshop and InDesign work.'}
+  ogKey="creative"
+>
+  <link slot="head" rel="preload" as="image" type="image/webp" imagesrcset={posterSrcset} imagesizes={posterSizes} fetchpriority="high" />
+  <PageIntro
+    label={fr ? 'Créatif' : 'Creative'}
+    title={fr ? 'Créatif' : 'Creative'}
+    lede={fr ? 'Photographie et mise en page, faites à côté du code.' : 'Photography and layout work, made alongside the code.'}
+    word="LENS"
+  />
+
+  <section class="section creative" aria-labelledby="photo-h2">
+    <div class="wrap">
+      <p class="label">{fr ? 'Photographie' : 'Photography'}</p>
+      <h2 class="h2 sec-h2" id="photo-h2">{fr ? 'Un livre photo et une série de six images.' : 'A photo book and a six-frame lab series.'}</h2>
+      <div class="photo-grid">
+        <figure class="photo photo--video">
+          <div class="photo__frame">
+            <img class="photo__media" srcset={posterSrcset} sizes={posterSizes} src={posterSet[1].src} width="1280" height="720" alt={fr ? 'Couverture du livre photo Journey Through the Lens' : 'Cover of the Journey Through the Lens photo book'} loading="eager" fetchpriority="high" decoding="async" />
+            <video class="photo__video" muted loop playsinline controls preload="none" width="960" height="540" data-loop aria-label={fr ? 'Extrait muet du livre photo Journey Through the Lens' : 'Silent excerpt of the Journey Through the Lens photo book'}>
+              <source src="/media/journey-loop.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <figcaption>
+            <strong>Journey Through the Lens</strong> <span class="todo">{fr ? 'confirmer le titre' : 'confirm title'}</span>
+            <span class="photo__meta">{fr ? 'Livre photo qui suit les projets de fin d’études de deux étudiants, 2025.' : 'A photo book following two students’ capstone projects, 2025.'}</span>
+            <a class="btn btn--sm" href="/media/journey-full.mp4">{fr ? 'Voir la vidéo complète (1 min 07, son, 2,1 Mo)' : 'Watch the full video (1:07, sound, 2.1 MB)'}</a>
+          </figcaption>
+        </figure>
+        <figure class="photo">
+          <Image src={callForDuty} alt={fr ? 'Call for Duty : série de six photos prise dans un laboratoire universitaire' : 'Call for Duty: a six-frame photo series shot in a university lab'} widths={[640, 960, 1280, 1588]} sizes="(min-width: 1024px) 45vw, 100vw" format="webp" class="photo__media" />
+          <figcaption>
+            <strong>Call for Duty</strong>
+            <span class="photo__meta">{fr ? 'Série de six images, laboratoire universitaire.' : 'Six-frame series, university lab.'}</span>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="more"><span class="todo">{fr ? 'ajouter d’autres photos si vous en avez' : 'add more photos if you have them'}</span></p>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="design-h2">
+    <div class="wrap">
+      <p class="label">Design</p>
+      <h2 class="h2 sec-h2" id="design-h2">{fr ? 'Une appli, une affiche, une newsletter.' : 'An app, a poster, a newsletter.'}</h2>
+      <ul class="design-grid">
+        {designs.map((d) => (
+          <li class="design">
+            <a class="design__link" href={d.href} target="_blank" rel="noopener">
+              <Image src={d.img} alt={d.alt} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw" format="webp" class="design__img" />
+              <span class="design__body">
+                <span class="mono design__tool">{d.tool}</span>
+                <span class="design__title">{d.title}</span>
+                <span class="design__note">{d.note}</span>
+                <span class="design__pdf">PDF · {d.size} <span aria-hidden="true">↗</span><span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .sec-h2 { margin-bottom: var(--s-7); }
+  .photo-grid { display: grid; gap: var(--s-7); }
+  @media (min-width: 1024px) { .photo-grid { grid-template-columns: 7fr 5fr; align-items: start; } .photo:nth-child(2) { margin-top: var(--s-9); } }
+  .photo__media { width: 100%; height: auto; border-radius: var(--r-lg); background: var(--surface); }
+  .photo__frame { position: relative; }
+  .photo__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-lg); background: transparent; }
+  .photo figcaption { display: grid; gap: var(--s-2); margin-top: var(--s-4); justify-items: start; }
+  .photo figcaption strong { font-family: var(--font-display); font-size: var(--fs-h3); letter-spacing: -0.03em; font-weight: 600; }
+  .photo__meta { color: var(--text-muted); }
+  .photo figcaption .btn { white-space: normal; text-align: start; line-height: 1.3; padding-block: var(--s-2); }
+  .more { margin-top: var(--s-6); }
+  .design-grid { list-style: none; display: grid; gap: var(--s-7); }
+  @media (min-width: 640px) { .design-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .design-grid { grid-template-columns: repeat(3, 1fr); } .design:nth-child(2) { margin-top: var(--s-8); } }
+  .design__link { display: grid; gap: var(--s-4); text-decoration: none; }
+  .design__img { width: 100%; height: auto; aspect-ratio: 1275 / 1650; object-fit: cover; border-radius: var(--r-lg); border: 1px solid var(--line); }
+  .design__body { display: grid; gap: var(--s-1); }
+  .design__tool { color: var(--accent); }
+  .design__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; }
+  .design__note { color: var(--text-muted); }
+  .design__pdf { color: var(--text); font-size: var(--fs-small); margin-top: var(--s-1); }
+  .design__link:hover .design__title { text-decoration: underline; text-decoration-color: var(--accent-wall); }
+</style>

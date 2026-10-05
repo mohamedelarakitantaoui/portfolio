@@ -1,0 +1,81 @@
+---
+key: aneuxplain
+lang: en
+order: 3
+title: AneuXplain
+description: Explainable AI for intracranial aneurysm rupture-risk prediction from 3D vascular geometry. AUI capstone; paper accepted at ICOA 2026.
+categories: [research, ai]
+kind: Research · AUI capstone
+status: Paper accepted at ICOA 2026 (paper ID 69)
+summary: One rupture-risk prediction, three explanations a clinician can check. PointNet on 3D vessel geometry.
+role: Capstone author; paper co-author [[todo:full author list]]
+timeline: Spring 2026
+team: "[[todo:full author list]]"
+platforms: Research prototype (Python)
+stack: [PyTorch, PointNet, DICOM, Marching cubes, 3D point clouds]
+venue: ICOA 2026, paper ID 69 [[todo:proceedings link / DOI once published]]
+supervision: "Supervisor: Dr. Oualid Kafi · Evaluator: Dr. Lamiae Bouanane"
+links:
+  - { label: GitHub (AneuXplain-), href: "https://github.com/mohamedelarakitantaoui/AneuXplain-" }
+number: { value: "0.834", caption: "ROC-AUC on the internal test set" }
+constraint: A bare score is hard for a doctor to verify, so every prediction has to explain itself.
+tags: [PyTorch, PointNet, Explainability, Medical imaging]
+diagram: aneu
+next: esaha
+---
+
+<Note>Research prototype, not a medical device.</Note>
+
+<Chapter n="01" label="Problem" title="A risk score a doctor can't check is a score a doctor won't use.">
+
+Rupture-risk models for intracranial aneurysms usually return one number. Three things go wrong with that:
+
+- the score doesn't show **why** the aneurysm looks risky;
+- a model trained at one hospital **may fail on another hospital's scanners**;
+- a bare score is **hard for a doctor to verify** against what they see.
+
+</Chapter>
+
+<Chapter n="02" label="Approach" title="One prediction, three explanations.">
+
+Each prediction is returned as:
+
+1. **a risk probability** between 0 and 1;
+2. **a heatmap** of the vessel regions driving the prediction;
+3. **a morphology report** of 8 measurements: dome-to-neck ratio, neck size, dome size, tortuosity index, branching angle, sphericity index, irregularity index and aspect ratio.
+
+The model was trained on **IntrA** (2,012 3D samples from 103 patients) and tested externally on **Lausanne TOF-MRA** (50 patients: 25 with an aneurysm, 25 healthy).
+
+</Chapter>
+
+<Chapter n="03" label="Architecture" title="From a DICOM scan to a plain-language report.">
+
+<Diagram name="aneu" lang="en" />
+
+The classifier is **PointNet**: 2,048 points sampled on the vessel surface → max pool → MLP → risk probability.
+
+</Chapter>
+
+<Chapter n="04" label="Outcome" title="Strong on the data it learned from.">
+
+<Stats items={[
+  { value: '0.834', caption: 'ROC-AUC, internal test' },
+  { value: '84.9%', caption: 'accuracy, internal test' },
+  { value: '0.93', caption: 'PR-AUC, internal test' },
+]} />
+
+These are internal results on IntrA. The external Lausanne test is where the open problem lives (chapter 05). <Todo>export the deck slides you may show as figures</Todo>
+
+</Chapter>
+
+<Chapter n="05" label="What I'd do differently" title="Train across hospitals from day one.">
+
+The weak point is **cross-hospital generalisation**: performance on scans from a different hospital and scanner. <Todo>the external-test result and what it measures, before it is published</Todo>
+
+Next steps:
+
+- train across several hospitals and scanners;
+- add a doctor-facing “why is this risky?” assistant on top of the three explanations;
+- release the code, the model and the validation protocol.
+
+</Chapter>

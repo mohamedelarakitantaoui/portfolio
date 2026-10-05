@@ -1,0 +1,84 @@
+---
+// Signature interaction: client-side RAG demo. Static example transcript is computed at build with the
+// same BM25 code the browser runs, so the no-JS fallback shows real output.
+import { corpus, corpusSize } from '../../data/knowledge';
+import { buildIndex } from '../../lib/bm25';
+import { type Lang, lp } from '../../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+const example = fr ? 'quelles langues ?' : 'which languages?';
+const hits = buildIndex(corpus(lang))(example);
+const chips = fr
+  ? ['qu’as-tu construit chez Intelcia ?', 'quelles langues ?', 'quelle stack pour le RAG ?', 'es-tu disponible ?', 'résultats d’AneuXplain ?']
+  : ['what did you build at Intelcia?', 'which languages?', 'what is the RAG stack?', 'are you available?', 'AneuXplain results?'];
+const label = fr ? 'démo RAG côté client · pas de LLM · aucune donnée ne quitte votre navigateur' : 'client-side RAG demo · no LLM · no data leaves your browser';
+---
+<div class="term" data-terminal data-lang={lang} data-src={lp(lang, '/knowledge.json')} data-lenis-prevent>
+  <div class="term__bar">
+    <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="term__title mono">ask-mamoun</span>
+    <span class="term__label">{label}</span>
+  </div>
+  <div class="term__screen" data-term-screen role="log" aria-live="polite" aria-label={fr ? 'Sortie du terminal' : 'Terminal output'} tabindex="0">
+    <div class="term__block" data-term-static>
+      <p><span class="term__ps">$</span> ask-mamoun "{example}"</p>
+      <p class="term__dim">{fr ? 'retrouvé' : 'retrieved'} (BM25, top {hits.length} {fr ? 'sur' : 'of'} {corpusSize} {fr ? 'notes' : 'chunks'})</p>
+      {hits.map((h) => (
+        <p class="term__hit"><span class="term__score">{h.score.toFixed(2)}</span><span class="term__id">{h.doc.id}</span><span class="term__snip">{h.doc.text.slice(0, 64)}…</span></p>
+      ))}
+      <p class="term__answer"><span class="term__arrow">answer</span> {hits[0]?.doc.answer}</p>
+    </div>
+  </div>
+  <form class="term__form" data-term-form hidden>
+    <label class="sr-only" for={`term-input-${lang}`}>{fr ? 'Posez une question' : 'Ask a question'}</label>
+    <span class="term__ps" aria-hidden="true">$</span>
+    <input id={`term-input-${lang}`} class="term__input" type="text" autocomplete="off" spellcheck="false" maxlength="140" placeholder={fr ? 'ask-mamoun "votre question"' : 'ask-mamoun "your question"'} />
+    <button class="btn btn--sm term__send" type="submit">{fr ? 'Demander' : 'Ask'}</button>
+  </form>
+  <ul class="term__chips" data-term-chips hidden aria-label={fr ? 'Exemples de questions' : 'Example questions'}>
+    {chips.map((c) => <li><button type="button" class="term__chip" data-q={c}>{c}</button></li>)}
+  </ul>
+  <noscript><p class="term__noscript">{fr ? 'Le terminal interactif a besoin de JavaScript ; l’exemple ci-dessus est un vrai résultat calculé à la construction du site.' : 'The interactive terminal needs JavaScript; the example above is real output computed when the site was built.'}</p></noscript>
+</div>
+
+<style>
+  .term {
+    border: 1px solid var(--line-input); border-radius: var(--r-lg); background: var(--surface);
+    font-family: var(--font-mono); font-size: 0.8125rem; overflow: hidden; display: grid;
+  }
+  .term__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); }
+  .term__dots { display: flex; gap: 6px; }
+  .term__dots i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line-input); }
+  .term__dots i:first-child { background: var(--accent-wall); border-color: var(--accent-wall); }
+  .term__title { color: var(--text); font-size: 0.75rem; }
+  .term__label { color: var(--text-muted); font-size: 0.6875rem; letter-spacing: 0.02em; }
+  .term__screen { min-height: 300px; max-height: 420px; overflow: auto; padding: var(--s-4); display: grid; gap: var(--s-4); align-content: start; line-height: 1.55; }
+  .term__screen:focus-visible { outline-offset: -3px; }
+  .term__block { display: grid; gap: 2px; }
+  .term__ps { color: var(--accent-on-surface); margin-inline-end: var(--s-2); }
+  .term__dim { color: var(--text-quiet); }
+  .term__hit { display: grid; grid-template-columns: 3.4em 9.5em 1fr; gap: var(--s-2); color: var(--text-muted); }
+  .term__score { color: var(--accent-on-surface); text-align: end; }
+  .term__id { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .term__snip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .term__answer { margin-top: var(--s-2); color: var(--text); font-family: var(--font-body); font-size: 0.9375rem; line-height: 1.5; }
+  .term__arrow { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-on-surface); margin-inline-end: var(--s-2); }
+  .term__arrow::after { content: ' ─'; }
+  @media (max-width: 600px) {
+    .term__hit { grid-template-columns: 3.4em 1fr; }
+    .term__snip { grid-column: 2; }
+  }
+  .term__form { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); border-top: 1px solid var(--line); }
+  .term__input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 0.875rem; }
+  .term__input::placeholder { color: var(--text-quiet); }
+  .term__input:focus { outline: none; }
+  .term__form:focus-within { box-shadow: inset 0 0 0 2px var(--accent-wall); }
+  .term__chips { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0 var(--s-4) var(--s-4); list-style: none; }
+  .term__chip {
+    min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-input); border-radius: var(--r-pill);
+    background: transparent; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+  }
+  .term__chip:hover { color: var(--text); border-color: var(--text); }
+  .term__noscript { padding: 0 var(--s-4) var(--s-4); color: var(--text-muted); font-family: var(--font-body); }
+</style>

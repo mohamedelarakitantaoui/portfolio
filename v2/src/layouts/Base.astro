@@ -1,0 +1,135 @@
+---
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CommandPalette from '../components/CommandPalette.astro';
+import Star from '../components/Star.astro';
+import { type Lang, swapLangPath, t } from '../i18n/ui';
+import { person } from '../data/site';
+import { plain } from '../lib/rich';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  ogKey: string;
+  bodyClass?: string;
+  noindex?: boolean;
+}
+const { lang, title, description, ogKey, bodyClass = '', noindex = false } = Astro.props;
+
+const site = Astro.site ?? new URL('https://example.com');
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path, site).href;
+const isNotFound = path === '/404';
+const enPath = isNotFound ? '/' : swapLangPath(path, 'en');
+const frPath = isNotFound ? '/fr' : swapLangPath(path, 'fr');
+const ogImage = new URL(`/og/${ogKey}-${lang}.png`, site).href;
+const fullTitle = title.length > 60 ? title.slice(0, 59) + '…' : title;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: person.name,
+    jobTitle: person.jobTitle,
+    email: `mailto:${person.email}`,
+    url: new URL('/', site).href,
+    image: new URL('/og/home-en.png', site).href,
+    address: { '@type': 'PostalAddress', addressLocality: 'Marrakech', addressCountry: 'MA' },
+    alumniOf: [
+      { '@type': 'CollegeOrUniversity', name: 'Al Akhawayn University' },
+      { '@type': 'CollegeOrUniversity', name: 'Boğaziçi University' },
+    ],
+    knowsLanguage: ['en', 'fr', 'ar'],
+    knowsAbout: ['Retrieval-augmented generation', 'Python automation', 'Web scraping', 'Microservices', 'PointNet', 'React', 'FastAPI'],
+    sameAs: [person.github],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: person.name,
+    url: new URL('/', site).href,
+    inLanguage: ['en', 'fr'],
+  },
+];
+---
+<!doctype html>
+<html lang={lang} dir="ltr" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={plain(description).slice(0, 155)} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL(enPath, site).href} />
+    <link rel="alternate" hreflang="fr" href={new URL(frPath, site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(enPath, site).href} />
+    <meta name="theme-color" content="#0f0d0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={person.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={plain(description).slice(0, 155)} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'fr' ? 'en_US' : 'fr_FR'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={plain(description).slice(0, 155)} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script is:inline>
+      // Before paint: theme choice, JS flag, first-visit preloader (CSS-only, <= 0.9 s, never gates content).
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        try { var th = localStorage.getItem('theme'); if (th === 'light' || th === 'dark') { d.setAttribute('data-theme', th); if (th === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ede6da'); } } catch (e) {}
+        try {
+          var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!reduce && !sessionStorage.getItem('seen')) d.classList.add('is-preloading');
+          sessionStorage.setItem('seen', '1');
+        } catch (e) {}
+      })();
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <div class="preloader" aria-hidden="true"><Star class="preloader__star" stroke /></div>
+    <a class="skip-link" href="#main">{t(lang, 'skip')}</a>
+    <Header lang={lang} enPath={enPath} frPath={frPath} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} enPath={enPath} frPath={frPath} />
+    <CommandPalette lang={lang} enPath={enPath} frPath={frPath} />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .preloader { display: none; }
+  .is-preloading .preloader {
+    display: grid; place-items: center; position: fixed; inset: 0; z-index: 200;
+    background: var(--bg); pointer-events: none;
+    animation: preloader-out 0.25s var(--ease-out) 0.65s forwards;
+  }
+  .preloader__star { width: 72px; height: 72px; color: var(--accent-wall); }
+  .preloader__star path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: star-draw 0.6s var(--ease-out) forwards; }
+  @keyframes star-draw { to { stroke-dashoffset: 0; } }
+  @keyframes preloader-out { to { opacity: 0; visibility: hidden; } }
+  main:focus { outline: none; }
+</style>
