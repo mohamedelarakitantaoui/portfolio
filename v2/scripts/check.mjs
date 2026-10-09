@@ -9,12 +9,12 @@ const fast = process.argv.includes('--fast');
 const steps = [
   ['types (astro check)', 'npx astro check'],
   ['styles (stylelint)', 'npx stylelint "src/**/*.{css,astro}"'],
-  ['banned strings', 'node scripts/check-banned.mjs'],
+  ['banned strings', 'node scripts/check-banned.mjs --source'],
   ['EN/FR twins', 'node scripts/check-i18n.mjs'],
   ['tokens ↔ design-references', 'node scripts/check-tokens.mjs'],
   ...(fast ? [] : [
     ['build', 'npx astro build'],
-    ['banned strings (built site)', 'node scripts/check-banned.mjs'],
+    ['banned strings (built site)', 'node scripts/check-banned.mjs --dist'],
     ['HTML (html-validate)', 'npx html-validate "dist/**/*.html"'],
     ['links', 'node scripts/check-links.mjs'],
     ['SEO (sitemap, robots, hreflang)', 'node scripts/check-seo.mjs'],

@@ -1,5 +1,6 @@
 // Scans for the "Never" list in scripts/banned.json.
 //   node scripts/check-banned.mjs            -> src/ and public/ text files, plus dist/ pages if dist/ exists
+//   ... --source / --dist                    -> only the sources / only the built site
 //   node scripts/check-banned.mjs <files...> -> only those files (git hook, Claude Code hook)
 // In dist/, only visible text and attributes count: <style> and <script> blocks are removed first (they hold
 // library code and the dev-only TODO marker style). Prints file:line [rule] why. Exit 1 on any match.
@@ -26,8 +27,13 @@ const rules = cfg.rules
 const rel = (f) => path.relative(ROOT, path.resolve(f)).split(path.sep).join('/');
 const walk = (d) => (fs.existsSync(d) ? fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)])) : []);
 
-let files = process.argv.slice(2);
-if (!files.length) files = [...walk(path.join(ROOT, 'src')), ...walk(path.join(ROOT, 'public')), ...walk(path.join(ROOT, 'dist'))];
+// --source: src/ and public/ only (before a build, dist/ may be stale). --dist: the built site only.
+const flags = process.argv.slice(2).filter((a) => a.startsWith('--'));
+let files = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+if (!files.length) {
+  if (!flags.includes('--dist')) files.push(...walk(path.join(ROOT, 'src')), ...walk(path.join(ROOT, 'public')));
+  if (!flags.includes('--source')) files.push(...walk(path.join(ROOT, 'dist')));
+}
 files = files.filter((f) => TEXT.test(f) && !SKIP.some((s) => s.test(f)) && fs.existsSync(f));
 
 const allowed = (file, lineNo, lineText, rule) =>
