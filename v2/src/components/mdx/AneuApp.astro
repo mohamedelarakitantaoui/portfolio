@@ -12,7 +12,7 @@ import s05 from '../../assets/aneuxplain/05-measurements.webp';
 const fr = langFromUrl(Astro.url) === 'fr';
 const dir = '/media/aneuxplain';
 const walk = `${dir}/aneuxplain-walkthrough.mp4`;
-const poster = `${dir}/aneuxplain-poster.webp`;
+const poster = `${dir}/aneuxplain-poster-v2.webp`;
 const stills = [
   { img: s01, t: 27, cap: fr ? 'Charger le scanner' : 'Load the scan', alt: fr ? 'Visionneuse DICOM : coupe 71 sur 140 d’une IRM cérébrale, segmentation en cours' : 'DICOM viewer: slice 71 of 140 of a brain MRA, segmentation running' },
   { img: s02, t: 57, cap: fr ? 'Reconstruire les vaisseaux en 3D' : 'Rebuild the vessels in 3D', alt: fr ? 'Arbre vasculaire reconstruit en 3D' : 'Vessel tree reconstructed in 3D' },
@@ -25,9 +25,9 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
 <figure class="app">
   <div class="app__frame">
     <video class="app__loop" data-loop muted loop playsinline preload="none" poster={poster} width="1280" height="690"
-      aria-label={fr ? 'Boucle muette de 24 s : reconstruction 3D, score de risque, carte de chaleur, mesures' : 'Silent 24 s loop: 3D reconstruction, risk score, heatmap, measurements'}>
-      <source src={`${dir}/aneuxplain-loop.webm`} type="video/webm" />
-      <source src={`${dir}/aneuxplain-loop.mp4`} type="video/mp4" />
+      aria-label={fr ? 'Boucle muette de 20 s : score de risque, carte de chaleur, mesures, reconstruction 3D' : 'Silent 20 s loop: risk score, heatmap, measurements, 3D reconstruction'}>
+      <source src={`${dir}/aneuxplain-loop-v2.webm`} type="video/webm" />
+      <source src={`${dir}/aneuxplain-loop-v2.mp4`} type="video/mp4" />
     </video>
     <button class="app__toggle meta" type="button" data-loop-toggle hidden
       data-play={fr ? 'Lire la boucle' : 'Play loop'} data-pause={fr ? 'Pause' : 'Pause'}>
