@@ -1,0 +1,149 @@
+{
+  "$comment": "Guardrail file: edit only with Mamoun's OK. Each rule: id, regex (JavaScript, flags), why, where (src = src/ + public/ text files, dist = built pages). allow: legitimate matches, by file and line or by file and text, each with a reason.",
+  "rules": [
+    {
+      "id": "95-percent",
+      "regex": "\\b95[\\s\\u00a0\\u202f]?%",
+      "flags": "",
+      "why": "The Intelcia figure is 90% (2h30 → 15 min), never 95%.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "supabase",
+      "regex": "supabase",
+      "flags": "i",
+      "why": "eSaha never used Supabase.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "government-rag",
+      "regex": "government[\\s-]+rag|rag[\\s-]+gouvernemental",
+      "flags": "i",
+      "why": "The Secure Government RAG project is removed (EN and FR).",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "star-glyph",
+      "regex": "[✦★✶✵✷۞⭐]",
+      "flags": "u",
+      "why": "No star or khatam mark anywhere (v4).",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "bricolage",
+      "regex": "bricolage",
+      "flags": "i",
+      "why": "One font family: DM Sans.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "inter-font",
+      "regex": "font-family\\s*:[^;}\"]*\\bInter\\b|['\"]Inter( Variable)?['\"]",
+      "flags": "",
+      "why": "No Inter (generic AI look); DM Sans only.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "clay-orange",
+      "regex": "#(d97757|cc785c)\\b",
+      "flags": "i",
+      "why": "Clay orange reads as Claude/Anthropic branding.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "cream-bg",
+      "regex": "#(f0eee6|faf9f5|f5f4ed|eeece2)\\b",
+      "flags": "i",
+      "why": "Cream backgrounds read as Claude/Anthropic branding.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "lorem",
+      "regex": "\\blorem\\b",
+      "flags": "i",
+      "why": "No filler text.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "filler-years",
+      "regex": "\\b\\d+\\+?\\s+years of experience\\b|\\b10\\+ years\\b",
+      "flags": "i",
+      "why": "No invented experience claims.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "todo-in-production",
+      "regex": "\\bTODO\\b",
+      "flags": "",
+      "why": "No visible TODO in the built site.",
+      "where": [
+        "dist"
+      ]
+    },
+    {
+      "id": "phone-number",
+      "regex": "\\+212[\\s\\d().-]{6,}",
+      "flags": "",
+      "why": "Mamoun's phone number is never published.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    },
+    {
+      "id": "intelcia-internal",
+      "regex": "",
+      "flags": "i",
+      "hosts": [],
+      "why": "No Intelcia internal URL or hostname. Exact hostnames: ask Mamoun, then list them in hosts.",
+      "where": [
+        "src",
+        "dist"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "file": "src/styles/base.css",
+      "contains": "content: 'TODO(user): '",
+      "rule": "todo-in-production",
+      "reason": "Dev-only marker style; production pages never contain the marker (build guard)."
+    },
+    {
+      "file": "src/scripts/effects/fx/media-grow.ts",
+      "contains": "start: 'top 95%'",
+      "rule": "95-percent",
+      "reason": "ScrollTrigger start position (95% of the viewport), not a claim."
+    }
+  ]
+}

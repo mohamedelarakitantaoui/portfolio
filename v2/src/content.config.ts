@@ -11,7 +11,7 @@ const projects = defineCollection({
       key: z.string(),
       lang: z.enum(['en', 'fr']),
       order: z.number(),
-      title: z.string(),
+      title: z.string().min(1),
       description: z.string().max(155),
       // featured = one of the three cards on the home page and /work; more = a one-line row.
       tier: z.enum(['featured', 'more']).default('more'),
@@ -19,7 +19,7 @@ const projects = defineCollection({
       // Small uppercase meta line on cards and the case-study header, e.g. "Research · Capstone · 2026".
       meta: z.string(),
       // One sentence: what changed.
-      outcome: z.string(),
+      outcome: z.string().min(1),
       // Exactly three bullets: the problem, what I built, the result (with a number).
       tldr: z.array(z.string()).length(3).optional(),
       status: z.string(),
@@ -36,12 +36,12 @@ const projects = defineCollection({
       metric: z.string().optional(),
       // No screenshot yet: a before/after bar panel drawn from the two real numbers stands in as the card media.
       bars: z.object({
-        title: z.string(),
+        title: z.string().min(1),
         before: z.object({ label: z.string(), value: z.number(), text: z.string() }),
         after: z.object({ label: z.string(), value: z.number(), text: z.string() }),
       }).optional(),
       constraint: z.string(),
-      tags: z.array(z.string()).max(4),
+      tags: z.array(z.string().min(1)).min(1).max(4),
       cover: image().optional(),
       coverAlt: z.string().optional(),
       // Real product loop for the card and case-study header (files in public/).
@@ -51,6 +51,14 @@ const projects = defineCollection({
       // draft: the case-study page is built by `astro dev` only, never in production.
       draft: z.boolean().default(false),
       next: z.string(),
+    }).superRefine((d, ctx) => {
+      // Guardrails: a featured card always shows a real result or says it is in progress; a cover always has alt text.
+      if (d.tier === 'featured' && !d.metric && !d.progress) {
+        ctx.addIssue({ code: 'custom', path: ['metric'], message: 'A featured project needs `metric` (a real number) or `progress` ("In progress: …").' });
+      }
+      if (d.cover && !d.coverAlt) {
+        ctx.addIssue({ code: 'custom', path: ['coverAlt'], message: 'A `cover` needs `coverAlt` (what the image shows).' });
+      }
     }),
 });
 

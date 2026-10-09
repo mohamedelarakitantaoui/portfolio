@@ -22,7 +22,7 @@ export function langFromUrl(url: URL): Lang {
   return url.pathname === '/fr' || url.pathname.startsWith('/fr/') ? 'fr' : 'en';
 }
 
-const strings = {
+export const strings = {
   en: {
     'skip': 'Skip to content',
     'nav.label': 'Primary',

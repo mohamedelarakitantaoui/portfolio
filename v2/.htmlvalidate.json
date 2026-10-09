@@ -1,0 +1,46 @@
+{
+  "extends": [
+    "html-validate:recommended"
+  ],
+  "rules": {
+    "no-inline-style": "off",
+    "attribute-boolean-style": "off",
+    "attribute-empty-style": "off",
+    "void-style": "off",
+    "no-trailing-whitespace": "off",
+    "long-title": [
+      "error",
+      {
+        "maxlength": 70
+      }
+    ],
+    "doctype-style": "off",
+    "attr-case": [
+      "error",
+      {
+        "style": "lowercase",
+        "ignoreForeign": true
+      }
+    ],
+    "prefer-native-element": [
+      "error",
+      {
+        "exclude": [
+          "combobox",
+          "listbox"
+        ]
+      }
+    ],
+    "aria-label-misuse": [
+      "error",
+      {
+        "allowAnyNamable": false,
+        "elements": {
+          "exclude": [
+            "video"
+          ]
+        }
+      }
+    ]
+  }
+}

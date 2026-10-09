@@ -64,7 +64,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" /></svg>
     </button>
   </div>
-  <video class="walk__video" controls playsinline preload="none" poster={poster} width="1280" height="690" data-src={walk}>
+  <video class="walk__video" controls muted playsinline preload="none" poster={poster} width="1280" height="690" data-src={walk}>
     <source src={walk} type="video/mp4" />
   </video>
 </dialog>

@@ -45,7 +45,7 @@ const designs = [
         <figure class="photo photo--video">
           <div class="photo__frame">
             <img class="photo__media" srcset={posterSrcset} sizes={posterSizes} src={posterSet[1].src} width="1280" height="720" alt={fr ? 'Couverture du livre photo Journey Through the Lens' : 'Cover of the Journey Through the Lens photo book'} loading="eager" fetchpriority="high" decoding="async" />
-            <video class="photo__video" muted loop playsinline controls preload="none" width="960" height="540" data-loop aria-label={fr ? 'Extrait muet du livre photo Journey Through the Lens' : 'Silent excerpt of the Journey Through the Lens photo book'}>
+            <video class="photo__video" muted loop playsinline controls preload="none" poster={posterSet[1].src} width="960" height="540" data-loop aria-label={fr ? 'Extrait muet du livre photo Journey Through the Lens' : 'Silent excerpt of the Journey Through the Lens photo book'}>
               <source src="/media/journey-loop.mp4" type="video/mp4" />
             </video>
           </div>

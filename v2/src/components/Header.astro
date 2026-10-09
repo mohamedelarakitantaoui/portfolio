@@ -50,7 +50,7 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
       <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}>{person.name}</a>
       <button class="pill menu-close" type="button" data-menu-close>{t(lang, 'nav.close')}</button>
     </div>
-    <nav aria-label={t(lang, 'nav.label')}>
+    <nav aria-label={t(lang, 'nav.menu')}>
       <ol class="menu__list">
         <li><a href={lp(lang, '/')}>{t(lang, 'nav.home')}</a></li>
         {nav.map((n) => (
