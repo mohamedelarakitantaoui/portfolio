@@ -29,13 +29,12 @@ const frac = (v: number) => Math.max(0.02, v / max).toFixed(4);
 </figure>
 
 <style>
-  /* 2:1 from tablet up; on phones the panel takes the height its two rows need (overflow is clipped for the hover zoom). */
-  .bars { position: relative; display: grid; aspect-ratio: 2 / 1; background: var(--bg-band); border: 1px solid var(--line); }
-  @media (max-width: 767px) { .bars { aspect-ratio: auto; } }
-  .bars__inner { display: grid; gap: var(--s-6); align-content: space-between; padding: clamp(20px, 4%, 40px); }
-  .bars__rows { display: grid; gap: clamp(20px, 6%, 44px); }
+  /* Height = content: caption, then the two bars directly under it, 32px padding. No ratio, no dead space. */
+  .bars { position: relative; background: var(--bg-band); border: 1px solid var(--line); }
+  .bars__inner { display: grid; gap: var(--s-5); padding: var(--s-6); }
+  .bars__rows { display: grid; gap: var(--s-5); }
   .bars__row { display: grid; gap: var(--s-3); }
-  .bars__label { color: var(--text-muted); font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1rem); }
+  .bars__label { color: var(--text-muted); font-size: var(--fs-small); }
   .bars__track { display: flex; font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem); align-items: center; gap: var(--s-3); }
   .bars__fill { display: block; height: clamp(16px, 2.4vw, 32px); width: calc((100% - 4.5em) * var(--f)); flex: none; border-radius: 0 4px 4px 0; background: var(--line-input); }
   .bars__row--after .bars__fill { background: var(--accent); }
