@@ -19,6 +19,17 @@
   --accent-hover: #ffc233;
   --accent-ink: #0c0c0c; /* text on accent fill: 9.7 */
 
+  /* Paper: the light state of the Experience section (effect 6). Contrast on #F2F0EA: ink 16.6, muted 7.8, quiet 6.1,
+     accent 6.1 (saffron itself is only 1.76 on paper, so labels darken), input outline 3.0. */
+  --paper: #f2f0ea;
+  --paper-ink: #111111;
+  --paper-muted: #4a4a45;
+  --paper-quiet: #5a5a55;
+  --paper-accent: #765300;
+  --paper-line: rgba(17, 17, 17, 0.14);
+  --paper-line-strong: rgba(17, 17, 17, 0.26);
+  --paper-line-input: #8a8a85;
+
   /* Semantic */
   --bg: var(--ink-0);
   --bg-band: var(--ink-1);
