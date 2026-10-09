@@ -18,11 +18,11 @@ export default function rollWord(p: HTMLElement, { gsap, ScrollTrigger }: FxCont
   const els = words.map((w) => {
     const s = document.createElement('span');
     s.className = 'roll__w';
-    s.textContent = w;
+    s.textContent = `${w}.`; // the full stop rides with the word, so a short word leaves no gap before it
     roll.append(s);
     return s;
   });
-  visual.append(`${lead} `, roll, '.');
+  visual.append(`${lead} `, roll);
   // The static sentence can wrap to more lines than the rolling one: keep its height so nothing below moves.
   p.style.minHeight = `${p.offsetHeight}px`;
   p.replaceChildren(sentence, visual);
