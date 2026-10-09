@@ -4,6 +4,7 @@
 // Called from main.ts only when effects are allowed (kill switch, ?effects=off, reduced motion all checked there).
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type Lenis from 'lenis';
 
 export interface FxContext { gsap: typeof gsap; ScrollTrigger: typeof ScrollTrigger; fine: boolean }
 type FxModule = { default: (el: HTMLElement, ctx: FxContext) => void | Promise<void> };
@@ -60,5 +61,5 @@ export async function start() {
 }
 
 declare global {
-  interface Window { __lenis?: { stop(): void; start(): void; scrollTo(t: Element | number, o?: object): void } }
+  interface Window { __lenis?: Lenis }
 }

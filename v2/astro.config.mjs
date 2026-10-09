@@ -10,12 +10,15 @@ const SITE_URL = process.env.SITE_URL || 'https://mamounelaraki.com';
 
 /** Fails `astro build` if a TODO(user) marker would reach a public page. Dev builds still show them. */
 function noTodoInProduction() {
+  /** @type {(d: string) => string[]} */
   const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
   return {
     name: 'no-todo-in-production',
     hooks: {
+      /** @param {{ dir: URL, logger: import('astro').AstroIntegrationLogger }} options */
       'astro:build:done': ({ dir, logger }) => {
         const root = fileURLToPath(dir);
+        /** @type {string[]} */
         const bad = [];
         for (const f of walk(root).filter((f) => /\.(html|json|xml|txt)$/.test(f))) {
           // Inlined <style> holds the dev-only `.todo` rule; only markup and text matter here.
