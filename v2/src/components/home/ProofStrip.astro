@@ -1,11 +1,12 @@
 ---
-// Static proof row (v4): where I studied, worked and published, as plain text wordmarks. No logos, no motion.
+// Proof row (v4): where I studied, worked and published, as plain text wordmarks. No logos. Static here; on wide
+// screens the effects loader turns it into a slow loop (src/scripts/effects/fx/proof-loop.ts).
 import { proof } from '../../data/site';
 import type { Lang } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 ---
-<section class="proof" aria-label={lang === 'fr' ? 'Où j’ai étudié, travaillé et publié' : 'Where I studied, worked and published'}>
+<section class="proof" data-fx="proof-loop" aria-label={lang === 'fr' ? 'Où j’ai étudié, travaillé et publié' : 'Where I studied, worked and published'}>
   <div class="wrap">
     <ul class="proof__list">
       {proof.map((p) => <li>{p}</li>)}
@@ -29,4 +30,10 @@ const { lang } = Astro.props;
     .proof__list li:nth-child(-n + 2) { border-bottom: 0; }
     .proof__list li:not(:last-child) { border-inline-end: 1px solid var(--line); }
   }
+  /* Effect (src/scripts/effects/fx/proof-loop.ts): two copies of the list side by side, moved by transform. */
+  .proof:global(.is-looping) { overflow: clip; }
+  .proof:global(.is-looping) .wrap { max-width: none; padding-inline: 0; }
+  .proof :global(.proof__track) { display: flex; width: max-content; will-change: transform; }
+  .proof:global(.is-looping) .proof__list { display: flex; flex: none; }
+  .proof:global(.is-looping) .proof__list li { width: max(25vw, 320px); white-space: nowrap; border-bottom: 0; border-inline-end: 1px solid var(--line); }
 </style>
