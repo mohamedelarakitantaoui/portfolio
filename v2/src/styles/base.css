@@ -178,6 +178,13 @@ html[dir='rtl'] .label::after { content: '↖' / ''; }
 .zoom img, .zoom video, .zoom .zoom__inner { transition: transform var(--dur-3) var(--ease-out); }
 a:hover > .zoom img, .zoom:hover img, a:hover > .zoom .zoom__inner, .zoom:hover video { transform: scale(1.03); }
 
+/* Lenis (smooth wheel scrolling, mouse devices only, added by the effects loader) */
+html.lenis, html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

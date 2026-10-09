@@ -44,7 +44,7 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
   <span class="menu-pill__bars" aria-hidden="true"></span>{t(lang, 'nav.menu')}
 </button>
 
-<dialog class="menu" id="site-menu" aria-label={t(lang, 'nav.menu')}>
+<dialog class="menu" id="site-menu" aria-label={t(lang, 'nav.menu')} data-lenis-prevent>
   <div class="menu__inner wrap">
     <div class="menu__top">
       <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}>{person.name}</a>

@@ -1,5 +1,6 @@
 // Progressive enhancement. Every page works without this file; it only adds behaviour.
 import { buildIndex, MIN_SCORE, type Doc } from '../lib/bm25';
+import { EFFECTS_ENABLED } from '../config';
 
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll<T>(s));
@@ -325,4 +326,13 @@ if (!reduce && 'IntersectionObserver' in window) {
   window.addEventListener('scroll', () => {
     for (const el of blocks) if (!el.classList.contains('is-in') && el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-in');
   }, { passive: true });
+}
+
+/* ---------------- effects (last, optional) ---------------- */
+// Off with the kill switch, with ?effects=off, or under reduced motion: the page stays in its static version.
+const effectsOff = !EFFECTS_ENABLED || new URLSearchParams(location.search).get('effects') === 'off';
+if (!reduce && !effectsOff) {
+  const go = () => import('./effects').then((m) => m.start()).catch(() => {});
+  const idle = (cb: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 200));
+  if (document.readyState === 'complete') idle(go); else window.addEventListener('load', () => idle(go), { once: true });
 }
