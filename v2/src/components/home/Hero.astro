@@ -10,7 +10,7 @@ const { lang } = Astro.props;
 const img = await heroPortrait();
 const cv = cvLink(lang);
 ---
-<section class="hero" aria-labelledby="hero-h1">
+<section class="hero" aria-labelledby="hero-h1" data-fx="hero-depth">
   <div class="hero__stage">
     <p class="hero__word" aria-hidden="true">MAMOUN</p>
     <div class="hero__portrait">
