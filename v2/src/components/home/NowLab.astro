@@ -8,16 +8,16 @@ const { lang } = Astro.props;
 const fr = lang === 'fr';
 ---
 <section class="lab section band" aria-labelledby="lab-h2" id="lab">
-  <div class="wrap lab__grid">
+  <div class="wrap grid-12 lab__grid">
     <div class="lab__left">
       <p class="label">{fr ? 'Maintenant' : 'Now'}</p>
-      <h2 class="h2" id="lab-h2" data-reveal-lines>{fr ? 'Un modèle xG pour le football, et un modèle Kaggle pour le genou.' : 'A football xG model and a Kaggle knee model.'}</h2>
-      <p class="lab__group mono">{fr ? 'En cours' : 'In progress'}</p>
+      <h2 class="h2" id="lab-h2">{fr ? 'Un modèle xG pour le football, et un modèle Kaggle pour le genou.' : 'A football xG model and a Kaggle knee model.'}</h2>
+      <p class="lab__group meta">{fr ? 'En cours' : 'In progress'}</p>
       <ul class="rows lab__items">
         {now.inProgress.map((it) => <li><Rich text={it[lang]} /></li>)}
       </ul>
     </div>
-    <div class="lab__right">
+    <div class="lab__right" data-reveal>
       <p class="lab__intro">{fr
         ? 'Posez-moi une question. Ce terminal cherche dans mes notes avec BM25, directement dans votre navigateur, et montre ce qu’il a retrouvé avant de répondre.'
         : 'Ask me something. This terminal searches my notes with BM25, right in your browser, and shows what it retrieved before it answers.'}</p>
@@ -27,10 +27,14 @@ const fr = lang === 'fr';
 </section>
 
 <style>
-  .lab__grid { display: grid; gap: var(--s-8); }
-  @media (min-width: 1024px) { .lab__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--grid-gap) var(--s-8); align-items: start; } }
-  .lab__group { color: var(--accent); margin-top: var(--s-7); margin-bottom: var(--s-3); }
+  .lab__grid { row-gap: var(--s-8); align-items: start; }
+  .lab__left .h2 { max-width: 14ch; }
+  @media (min-width: 1024px) {
+    .lab__left { grid-column: 1 / span 5; }
+    .lab__right { grid-column: 7 / -1; }
+  }
+  .lab__group { margin-top: var(--s-7); margin-bottom: var(--s-3); }
   .lab__items > li { padding-block: var(--s-4); color: var(--text-muted); max-width: var(--measure); }
-  .lab__items :global(strong) { color: var(--text); font-weight: 600; }
+  .lab__items :global(strong) { color: var(--heading); font-weight: 600; }
   .lab__intro { color: var(--text-muted); margin-bottom: var(--s-5); max-width: 56ch; }
 </style>

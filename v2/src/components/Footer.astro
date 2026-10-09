@@ -1,100 +1,91 @@
 ---
-import Star from './Star.astro';
 import CopyEmail from './CopyEmail.astro';
 import { type Lang, lp, t } from '../i18n/ui';
 import { person } from '../data/site';
-import { cvLink } from '../lib/cv';
 interface Props { lang: Lang; enPath: string; frPath: string }
 const { lang, enPath, frPath } = Astro.props;
 const other: Lang = lang === 'en' ? 'fr' : 'en';
 const fr = lang === 'fr';
-const nav = [
+const pages = [
   { href: lp(lang, '/'), label: t(lang, 'nav.home') },
   { href: lp(lang, '/work'), label: t(lang, 'nav.work') },
   { href: lp(lang, '/about'), label: t(lang, 'nav.about') },
   { href: lp(lang, '/services'), label: t(lang, 'nav.services') },
+];
+const more = [
   { href: lp(lang, '/cv'), label: t(lang, 'nav.cv') },
   { href: lp(lang, '/creative'), label: t(lang, 'nav.creative') },
   { href: lp(lang, '/contact'), label: t(lang, 'nav.contact') },
+  { href: lp(lang, '/privacy'), label: t(lang, 'nav.privacy') },
 ];
 const year = new Date().getFullYear();
-const cv = cvLink(lang);
 const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 ---
 <footer class="site-footer" id="site-footer">
-  <div class="wrap">
+  <div class="wrap site-footer__top">
     <div class="site-footer__talk">
       <p class="label">{t(lang, 'footer.talk')}</p>
       <p class="site-footer__email-wrap"><a class="site-footer__email" href={`mailto:${person.email}`}>{person.email}</a></p>
       <div class="site-footer__actions">
-        <CopyEmail lang={lang} />
-        <a class="btn" href={person.linkedin} rel="me noopener" target="_blank">LinkedIn<span class="sr-only"> ({newTab})</span></a>
-        <a class="btn" href={person.github} rel="me noopener" target="_blank">{t(lang, 'footer.github')}<span class="sr-only"> ({newTab})</span></a>
-        <a class="btn" href={cv.href}>{t(lang, 'nav.cv')}</a>
+        <a class="link" href={person.linkedin} rel="me noopener" target="_blank">LinkedIn<span class="sr-only"> ({newTab})</span></a>
+        <a class="link" href={person.github} rel="me noopener" target="_blank">{t(lang, 'footer.github')}<span class="sr-only"> ({newTab})</span></a>
+        <CopyEmail lang={lang} class="btn--sm" />
       </div>
     </div>
 
-    <div class="site-footer__grid">
-      <nav aria-label={fr ? 'Pied de page' : 'Footer'} id="footer-nav">
-        <ul class="site-footer__nav">
-          {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+    <nav class="site-footer__nav" aria-label={fr ? 'Pied de page' : 'Footer'} id="footer-nav">
+      <div>
+        <p class="meta">{fr ? 'Pages' : 'Pages'}</p>
+        <ul>{pages.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <p class="meta">{fr ? 'Plus' : 'More'}</p>
+        <ul>
+          {more.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
           <li><a href={other === 'en' ? enPath : frPath} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a></li>
-          <li><a href={lp(lang, '/privacy')}>{t(lang, 'nav.privacy')}</a></li>
-          <li><button class="site-footer__theme" type="button" data-theme-toggle hidden>{t(lang, 'theme.toggle')}</button></li>
         </ul>
-      </nav>
-      <p class="site-footer__where">{person.location[lang]}</p>
-    </div>
+      </div>
+    </nav>
   </div>
 
-  <p class="site-footer__giant" aria-hidden="true">
-    <span>Mamoun</span>
-    <span>El Araki<Star class="site-footer__star" weight={5} /></span>
-  </p>
+  <div class="wrap">
+    <p class="site-footer__giant" aria-hidden="true">{person.name}</p>
+  </div>
 
   <div class="wrap site-footer__legal">
     <span>© {year} {person.name}</span>
+    <span>{person.location[lang]}</span>
     <span>{t(lang, 'footer.privacy')}</span>
   </div>
 </footer>
 
 <style>
   .site-footer { background: var(--bg-band); padding-top: var(--section-y); overflow-x: clip; border-top: 1px solid var(--line); }
-  .site-footer__talk .label { display: flex; }
+  .site-footer__top { display: grid; gap: var(--s-8); }
+  @media (min-width: 1024px) { .site-footer__top { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(100% / 12); align-items: start; } }
   .site-footer__email-wrap { max-width: none; }
   .site-footer__email {
-    display: inline-block; font-family: var(--font-display); font-weight: 600;
-    font-size: clamp(1.75rem, 5.4vw, 4.5rem); letter-spacing: var(--track-display); line-height: 1.05;
-    text-decoration: none; overflow-wrap: anywhere; padding-block: var(--s-2);
-    background-image: linear-gradient(var(--accent-wall), var(--accent-wall));
-    background-size: 0 2px; background-repeat: no-repeat; background-position: 0 100%;
-    transition: background-size var(--dur-2) var(--ease-out);
+    display: inline-block; font-size: clamp(1.75rem, 1rem + 2.4vw, 3rem); font-weight: 600; letter-spacing: var(--track-h); line-height: 1.15;
+    color: var(--heading); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.16em;
+    text-decoration-color: var(--line-strong); overflow-wrap: anywhere;
+    transition: text-decoration-color var(--dur-2) var(--ease-out);
   }
-  .site-footer__email:hover, .site-footer__email:focus-visible { background-size: 100% 2px; }
-  .site-footer__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
-  .site-footer__grid {
-    display: grid; gap: var(--s-6); margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--line);
-  }
-  @media (min-width: 768px) { .site-footer__grid { grid-template-columns: 2fr 1fr; align-items: start; } }
-  .site-footer__nav { list-style: none; display: flex; flex-wrap: wrap; gap: 0 var(--s-5); }
-  .site-footer__nav a, .site-footer__theme {
-    display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; color: var(--text-muted);
-  }
-  .site-footer__theme { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
-  .site-footer__nav a:hover, .site-footer__theme:hover { color: var(--text); }
-  .site-footer__where { color: var(--text-muted); }
-  @media (min-width: 768px) { .site-footer__where { text-align: end; } }
+  .site-footer__email:hover, .site-footer__email:focus-visible { text-decoration-color: var(--accent); }
+  .site-footer__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-6); }
+  .site-footer__nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }
+  .site-footer__nav .meta { margin-bottom: var(--s-3); }
+  .site-footer__nav ul { list-style: none; }
+  .site-footer__nav a { display: inline-flex; min-height: 40px; align-items: center; text-decoration: none; color: var(--text-muted); }
+  .site-footer__nav a:hover { color: var(--heading); }
 
   .site-footer__giant {
-    margin-top: var(--s-8); padding-inline: var(--gutter);
-    font-family: var(--font-display); font-weight: 650; letter-spacing: var(--track-display); line-height: 0.88;
-    font-size: clamp(3.5rem, 15vw, 15rem); white-space: nowrap; color: var(--text);
-    font-variation-settings: 'opsz' 96;
+    margin-top: var(--s-9); max-width: none; text-align: end;
+    font-size: clamp(3rem, 9.6vw, 11.5rem); font-weight: 700; letter-spacing: var(--track-display); line-height: 0.9;
+    padding-inline-end: 0.06em; white-space: nowrap; color: var(--heading);
   }
-  .site-footer__giant span { display: block; }
-  .site-footer__giant :global(.site-footer__star) { display: inline-block; width: 0.42em; height: 0.42em; margin-inline-start: 0.12em; vertical-align: 0.06em; color: var(--accent-wall); }
   .site-footer__legal {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2) var(--s-5);
-    padding-block: var(--s-6) var(--s-8); color: var(--text-quiet); font-size: var(--fs-small);
+    margin-top: var(--s-6); padding-block: var(--s-5) var(--s-7); border-top: 1px solid var(--line);
+    color: var(--text-quiet); font-size: var(--fs-small);
   }
 </style>

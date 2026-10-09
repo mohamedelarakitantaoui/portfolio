@@ -1,68 +1,47 @@
 ---
-// Card anatomy (v3): real media 16:10 → mono meta → title → one-sentence outcome → big number (or an
-// "In progress" line) → role + constraint → max 4 tags → "Read case study".
+// Card anatomy (v4): media (loop, screenshot or real-number bars) → meta → title → one-line outcome →
+// metric line → "In progress" line if any → tags → "Case study ↗".
 import type { CollectionEntry } from 'astro:content';
 import ProjectMedia from './ProjectMedia.astro';
 import { type Lang, lp, t } from '../i18n/ui';
-import { rich, shows } from '../lib/rich';
-interface Props { project: CollectionEntry<'projects'>; lang: Lang; large?: boolean; headingLevel?: 'h3' | 'h2' }
-const { project, lang, large = false, headingLevel: H = 'h3' } = Astro.props;
+import { rich } from '../lib/rich';
+interface Props { project: CollectionEntry<'projects'>; lang: Lang; headingLevel?: 'h3' | 'h2' }
+const { project, lang, headingLevel: H = 'h3' } = Astro.props;
 const d = project.data;
 const href = d.caseStudy && (import.meta.env.DEV || !d.draft) ? lp(lang, `/work/${d.key}`) : null;
 // A loop carries its own play/pause button, so it is never wrapped in a link.
 const linkMedia = href && !d.loop;
+const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}` : null);
 ---
-<article class:list={['pcard', { 'pcard--large': large }]}>
+<article class="pcard" data-reveal>
   {linkMedia ? (
-    <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true"><ProjectMedia project={project} lang={lang} large={large} /></a>
+    <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true"><ProjectMedia project={project} lang={lang} /></a>
   ) : (
-    <div class="pcard__media"><ProjectMedia project={project} lang={lang} large={large} /></div>
+    <div class="pcard__media"><ProjectMedia project={project} lang={lang} /></div>
   )}
   <div class="pcard__body">
-    <p class="pcard__meta mono">{d.meta}</p>
+    <p class="meta">{d.meta}</p>
     <H class="pcard__title">{href ? <a href={href}>{d.title}</a> : d.title}</H>
     <p class="pcard__outcome" set:html={rich(d.outcome)} />
-    {d.number && (
-      <div class="pcard__number">
-        <span class="pcard__value">{d.number.value}</span>
-        <span class="pcard__caption" set:html={rich(d.number.caption)} />
-      </div>
-    )}
-    {d.progress && (
-      <p class:list={['pcard__progress', { 'pcard__progress--after': d.number }]}><span class="pcard__dot" aria-hidden="true"></span><span set:html={rich(d.progress)} /></p>
-    )}
-    <dl class="pcard__facts">
-      {shows(d.role) && <div><dt class="mono">{t(lang, 'work.role')}</dt><dd set:html={rich(d.role)} /></div>}
-      {shows(d.constraint) && <div><dt class="mono">{t(lang, 'work.constraint')}</dt><dd set:html={rich(d.constraint)} /></div>}
-    </dl>
-    <ul class="tags" aria-label="Stack">{d.tags.slice(0, 4).map((tg) => <li class="tag">{tg}</li>)}</ul>
-    {href && <a class="pcard__more" href={href} aria-hidden="true" tabindex="-1">{t(lang, 'cta.caseStudy')} <span class="arrow">→</span></a>}
+    {metric && <p class="pcard__metric" set:html={rich(metric)} />}
+    {d.progress && <p class="pcard__progress"><span class="pcard__dot" aria-hidden="true"></span><span set:html={rich(d.progress)} /></p>}
+    <div class="pcard__foot">
+      <ul class="tags" aria-label="Stack">{d.tags.slice(0, 4).map((tg) => <li class="tag">{tg}</li>)}</ul>
+      {href && <a class="link" href={href} aria-hidden="true" tabindex="-1">{t(lang, 'cs.label')}</a>}
+    </div>
   </div>
 </article>
 
 <style>
   .pcard { display: grid; gap: var(--s-5); align-content: start; }
-  .pcard__media { display: block; border-radius: var(--r-lg); }
+  .pcard__media { display: block; text-decoration: none; color: inherit; }
   .pcard__body { display: grid; gap: var(--s-3); align-content: start; }
-  .pcard__meta { color: var(--text-quiet); }
-  .pcard__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 650; letter-spacing: -0.035em; line-height: 1.1; }
-  .pcard--large .pcard__title { font-size: clamp(1.75rem, 2.6vw, 2.25rem); }
+  .pcard__title { font-size: var(--fs-card); font-weight: 500; letter-spacing: var(--track-h); line-height: 1.2; margin-top: calc(-1 * var(--s-1)); }
   .pcard__title a { text-decoration: none; }
-  .pcard__title a:hover { text-decoration: underline; text-decoration-color: var(--accent-wall); text-decoration-thickness: 2px; }
-  .pcard__outcome { color: var(--text); }
-  .pcard__number { display: grid; gap: var(--s-1); padding-block: var(--s-3); border-block: 1px solid var(--line); margin-top: var(--s-1); }
-  .pcard__value { font-family: var(--font-display); font-weight: 650; letter-spacing: -0.04em; line-height: 1; font-size: clamp(2.25rem, 4vw, 3.25rem); color: var(--text); }
-  .pcard--large .pcard__value { font-size: clamp(2.5rem, 5vw, 4rem); }
-  .pcard__caption { color: var(--text-muted); font-size: var(--fs-small); }
-  .pcard__progress { display: flex; gap: var(--s-3); align-items: baseline; padding-block: var(--s-3); border-block: 1px solid var(--line); margin-top: var(--s-1); color: var(--text); }
-  @media (min-width: 768px) { .pcard__progress { font-size: var(--fs-small); } }
-  .pcard__progress--after { border-top: 0; margin-top: calc(-1 * var(--s-3)); }
-  .pcard__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-wall); transform: translateY(-1px); }
-  .pcard__facts { display: grid; gap: var(--s-2); font-size: var(--fs-small); }
-  .pcard__facts div { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--s-3); }
-  .pcard__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
-  .pcard__facts dd { color: var(--text-muted); }
-  .pcard__more { display: inline-flex; gap: var(--s-2); align-items: center; text-decoration: none; font-weight: 500; min-height: 44px; width: fit-content; }
-  .pcard__more:hover .arrow { transform: translateX(4px); }
-  .pcard__more .arrow { transition: transform var(--dur-1) var(--ease-out); }
+  .pcard__title a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+  .pcard__outcome { color: var(--text-muted); max-width: 62ch; }
+  .pcard__metric { color: var(--heading); font-weight: 600; padding-block: var(--s-3); border-block: 1px solid var(--line); max-width: none; }
+  .pcard__progress { display: flex; gap: var(--s-3); align-items: baseline; color: var(--text); font-size: var(--fs-small); margin-top: calc(-1 * var(--s-3)); padding-bottom: var(--s-3); border-bottom: 1px solid var(--line); max-width: none; }
+  .pcard__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); transform: translateY(-1px); }
+  .pcard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3) var(--s-5); margin-top: var(--s-1); }
 </style>

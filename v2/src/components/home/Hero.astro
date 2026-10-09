@@ -1,29 +1,18 @@
 ---
-// Hero (v3): name, role, h1, one supporting line, one primary action + CV, three proofs. Nothing else.
-// Signature kept: giant M A M ✦ U N behind the cutout portrait.
+// Hero (v4): giant MAMOUN behind the centred cutout portrait; bottom-left role + h1 + two actions;
+// bottom-right three proof rows. Static HTML, painted on first load: no preloader, nothing waits for JS.
 import { heroPortrait, PORTRAIT_SIZES } from '../../lib/portrait';
-import Star from '../Star.astro';
 import { type Lang, t } from '../../i18n/ui';
 import { hero, person } from '../../data/site';
-import { rich } from '../../lib/rich';
 import { cvLink } from '../../lib/cv';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const letters = ['M', 'A', 'M', '*', 'U', 'N'];
 const img = await heroPortrait();
 const cv = cvLink(lang);
 ---
 <section class="hero" aria-labelledby="hero-h1">
   <div class="hero__stage">
-    <!-- Back layer: the giant word, star in place of the O (decorative) -->
-    <p class="hero__word" aria-hidden="true">
-      {letters.map((l) =>
-        l === '*'
-          ? <span class="hero__letter hero__letter--star"><Star class="hero__star" weight={6} /></span>
-          : <span class="hero__letter">{l}</span>
-      )}
-    </p>
-    <!-- Middle layer: the cutout portrait -->
+    <p class="hero__word" aria-hidden="true">MAMOUN</p>
     <div class="hero__portrait">
       <picture>
         <source type="image/avif" srcset={img.avif} sizes={PORTRAIT_SIZES} />
@@ -33,19 +22,16 @@ const cv = cvLink(lang);
     </div>
   </div>
 
-  <!-- Front layer: the text corner -->
   <div class="hero__text">
-    <p class="hero__name">{person.name}</p>
-    <p class="hero__role">{person.role[lang]}</p>
+    <p class="hero__role label label--plain">{person.role[lang]}</p>
     <h1 class="hero__h1" id="hero-h1">{hero.h1[lang]}</h1>
-    <p class="hero__support" set:html={rich(hero.support[lang])} />
     <div class="hero__ctas">
-      <a class="btn btn--primary" href="#work">{t(lang, 'cta.viewWork')}<span class="arrow" aria-hidden="true">↓</span></a>
-      <a class="btn" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
+      <a class="btn btn--primary" href="#work">{t(lang, 'cta.viewWork')}</a>
+      <a class="link" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
     </div>
   </div>
 
-  <dl class="hero__rail">
+  <dl class="hero__proof">
     {hero.stats.map((s) => (
       <div class="hero__stat">
         <dt>{s.value[lang]}</dt>
@@ -56,97 +42,65 @@ const cv = cvLink(lang);
 </section>
 
 <style>
-  /* ---------- mobile first: text → photo with MAMOUN → rail ---------- */
+  /* ---------- mobile first: stage (word + photo) → text → proof ---------- */
   .hero {
-    position: relative; overflow: clip;
-    padding: calc(var(--header-h) + var(--s-2)) var(--gutter) var(--s-6);
-    display: grid; grid-template-columns: 100%; grid-template-areas: 'text' 'stage' 'rail';
+    position: relative; overflow: clip; background: var(--bg-band);
+    padding: var(--header-h) var(--gutter) var(--s-7);
+    display: grid; grid-template-columns: 100%; grid-template-areas: 'stage' 'text' 'proof';
   }
-  .hero__text { grid-area: text; position: relative; z-index: 3; }
-  .hero__name { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.02em; }
-  .hero__role { color: var(--text-muted); font-size: 1rem; margin-top: 2px; }
-  .hero__h1 {
-    margin-top: var(--s-3); font-family: var(--font-display); font-weight: 650;
-    font-size: clamp(2rem, 8.4vw, 2.5rem); letter-spacing: -0.035em; line-height: 1.02;
-    text-wrap: balance; max-width: 18ch; font-variation-settings: 'opsz' 48;
-  }
-  .hero__support { margin-top: var(--s-3); color: var(--text-muted); font-size: 0.9375rem; line-height: 1.5; max-width: 46ch; }
-  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
-
-  .hero__stage { grid-area: stage; position: relative; display: grid; justify-items: center; height: 232px; margin-top: var(--s-4); }
+  .hero__stage { grid-area: stage; position: relative; height: clamp(250px, 66vw, 420px); margin-inline: calc(-1 * var(--gutter)); }
   .hero__word {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1; margin: 0;
-    display: flex; align-items: center; font-family: var(--font-display); font-weight: 700; line-height: 0.8;
-    font-size: min(15vw, 5.5rem); letter-spacing: 0.1em; padding-inline-start: 0.1em;
-    font-variation-settings: 'opsz' 96; color: var(--text); opacity: 0.92; white-space: nowrap; user-select: none;
+    position: absolute; left: 50%; top: 4%; transform: translateX(-50%); z-index: 1; margin: 0; max-width: none;
+    font-size: 21.5vw; font-weight: 700; letter-spacing: -0.065em; line-height: 0.8; padding-inline-end: 0.065em;
+    color: var(--heading); white-space: nowrap; user-select: none;
   }
-  .hero__letter { display: inline-block; }
-  .hero__letter--star { width: 0.72em; height: 0.72em; margin-inline: 0.04em; }
-  .hero__letter--star :global(.hero__star) { width: 100%; height: 100%; color: var(--accent-wall); animation: star-spin 60s linear infinite; }
-  @keyframes star-spin { to { transform: rotate(1turn); } }
-
   .hero__portrait {
     position: absolute; z-index: 2; left: 50%; bottom: 0; transform: translateX(-50%);
-    height: 210px; aspect-ratio: 1212 / 1156;
-    --fade: linear-gradient(to bottom, #000 50%, transparent 96%), linear-gradient(to right, transparent 4%, #000 28%, #000 72%, transparent 96%);
+    height: 92%; aspect-ratio: 1212 / 1156;
+    --fade: linear-gradient(to bottom, #000 62%, transparent 99%), linear-gradient(to right, transparent 2%, #000 24%, #000 76%, transparent 98%);
     -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in;
     mask-image: var(--fade); mask-composite: intersect;
   }
   .hero__portrait :global(picture), .hero__portrait :global(img) { width: 100%; height: 100%; }
 
-  .hero__rail {
-    grid-area: rail; position: relative; z-index: 3; margin-top: calc(-1 * var(--s-7));
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3);
+  .hero__text { grid-area: text; position: relative; z-index: 3; margin-top: var(--s-4); }
+  .hero__role { margin-bottom: var(--s-3); }
+  .hero__h1 {
+    font-size: var(--fs-h1-hero); font-weight: 700; letter-spacing: var(--track-h); line-height: 1;
+    text-wrap: balance; max-width: 14ch;
   }
-  .hero__stat { border-top: 1px solid var(--line-strong); padding-top: var(--s-2); }
-  .hero__stat dt { font-family: var(--font-display); font-weight: 650; font-size: clamp(1.25rem, 5.6vw, 2rem); letter-spacing: -0.04em; line-height: 1; white-space: nowrap; }
-  .hero__stat dd { margin-top: var(--s-1); font-size: 0.8125rem; color: var(--text-muted); line-height: 1.35; }
+  .hero__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-5); }
 
-  @media (min-width: 600px) and (max-width: 1023px) {
-    .hero__stage { height: 360px; }
-    .hero__word { font-size: min(15vw, 8rem); }
-    .hero__portrait { height: 330px; }
-    .hero__h1 { font-size: clamp(2.5rem, 6vw, 3.25rem); }
-    .hero__support { font-size: 1rem; }
-  }
+  .hero__proof { grid-area: proof; position: relative; z-index: 3; margin-top: var(--s-7); border-top: 1px solid var(--line); }
+  .hero__stat { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); padding-block: var(--s-3); border-bottom: 1px solid var(--line); }
+  .hero__stat dt { font-size: var(--fs-sub); font-weight: 700; letter-spacing: var(--track-h); line-height: 1.1; color: var(--heading); white-space: nowrap; }
+  .hero__stat dd { color: var(--text-muted); font-size: var(--fs-small); text-align: end; }
 
-  /* ---------- desktop poster ---------- */
+  /* ---------- desktop poster: one screen, corners used ---------- */
   @media (min-width: 1024px) {
-    .hero {
-      display: block; height: 100svh; min-height: 720px; max-height: 1100px; padding: 0;
-    }
-    .hero__stage { position: absolute; inset: 0; height: auto; margin: 0; display: block; }
-    .hero__word {
-      top: calc(var(--header-h) + 3svh); font-size: min(14vw, 23svh); letter-spacing: 0.18em; padding-inline-start: 0.18em;
-    }
+    .hero { display: block; height: 100svh; min-height: 700px; max-height: 1120px; padding: 0; }
+    .hero__stage { position: absolute; inset: 0; height: auto; margin: 0; }
+    .hero__word { top: calc(var(--header-h) + 6svh); font-size: min(24vw, 34svh, 30rem); }
     .hero__portrait {
-      left: 57%; height: min(68svh, 640px);
-      --fade: linear-gradient(to bottom, #000 66%, transparent 97%), linear-gradient(to right, transparent 8%, #000 34%, #000 72%, transparent 94%);
+      height: min(66svh, 720px);
+      --fade: linear-gradient(to bottom, #000 62%, transparent 99%), linear-gradient(to right, transparent 6%, #000 36%, #000 70%, transparent 96%);
     }
     .hero__text {
-      position: absolute; left: max(var(--gutter), calc((100vw - var(--max)) / 2)); bottom: 64px;
-      width: min(32vw, 440px);
+      position: absolute; margin: 0; bottom: clamp(40px, 6svh, 72px);
+      left: max(var(--gutter), calc((100vw - var(--max)) / 2));
+      width: min(30vw, 520px);
     }
-    .hero__name { font-size: 1.125rem; }
-    .hero__role { font-size: 1.125rem; }
-    .hero__h1 { font-size: clamp(2.25rem, 3.4vw, 3.25rem); max-width: none; margin-top: var(--s-4); }
-    .hero__support { font-size: 1.0625rem; margin-top: var(--s-4); }
-    .hero__ctas { margin-top: var(--s-5); }
-    .hero__rail {
-      position: absolute; right: max(var(--gutter), calc((100vw - var(--max)) / 2)); bottom: 64px; margin: 0;
-      width: min(18vw, 240px); grid-template-columns: 1fr; gap: var(--s-5);
+    .hero__h1 { max-width: none; }
+    .hero__proof {
+      position: absolute; margin: 0; bottom: clamp(40px, 6svh, 72px);
+      right: max(var(--gutter), calc((100vw - var(--max)) / 2));
+      width: min(22vw, 320px);
     }
-    .hero__stat { padding-top: var(--s-3); }
-    .hero__stat dt { font-size: clamp(1.75rem, 2.6vw, 2.5rem); }
-    .hero__stat dd { font-size: 0.9375rem; margin-top: var(--s-2); }
-  }
-  @media (min-width: 1024px) and (max-width: 1279px) {
-    .hero__portrait { left: 58%; height: min(62svh, 500px); }
-    .hero__text { width: min(36vw, 370px); }
-    .hero__rail { width: min(21vw, 210px); }
+    .hero__stat { display: grid; gap: var(--s-1); padding-block: var(--s-4); }
+    .hero__stat dd { text-align: start; }
   }
   @media (min-width: 1024px) and (max-height: 820px) {
-    .hero__h1 { font-size: clamp(2rem, 2.9vw, 2.75rem); }
-    .hero__support { font-size: 1rem; }
+    .hero__h1 { font-size: clamp(2.25rem, 3.4vw, 3.5rem); }
+    .hero__stat { padding-block: var(--s-3); }
   }
 </style>

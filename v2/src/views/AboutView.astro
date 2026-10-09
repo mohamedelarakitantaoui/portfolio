@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
 import Rich from '../components/Rich.astro';
-import portrait from '../assets/portrait-2026-10.png';
+import portrait from '../assets/portrait-studio.png';
 import { about, now, person, spoken } from '../data/site';
 import { cvLink } from '../lib/cv';
 import { type Lang, t } from '../i18n/ui';
@@ -31,11 +31,11 @@ const cv = cvLink(lang);
         <p>{about.how[lang]}</p>
         <div class="about__ctas">
           <a class="btn btn--primary" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
-          <a class="btn" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
+          <a class="link" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
         </div>
       </div>
       <figure class="about__photo">
-        <Image src={portrait} alt={fr ? 'Portrait de Mamoun El Araki' : 'Portrait of Mamoun El Araki'} widths={[360, 540, 720]} sizes="(min-width: 1024px) 400px, 80vw" format="webp" loading="lazy" />
+        <Image src={portrait} alt={fr ? 'Mamoun El Araki, portrait en studio' : 'Mamoun El Araki, studio portrait'} widths={[360, 540, 720]} sizes="(min-width: 1024px) 400px, 80vw" format="webp" quality={72} loading="eager" />
       </figure>
     </div>
   </section>
@@ -61,14 +61,13 @@ const cv = cvLink(lang);
 </Base>
 
 <style>
-  .about { padding-top: 0; }
   .about__grid { row-gap: var(--s-7); align-items: start; }
   .about__text { display: grid; gap: var(--s-4); font-size: var(--fs-lede); line-height: 1.55; }
   .about__text p:first-child { color: var(--text); }
   .about__text p + p { color: var(--text-muted); }
-  .about__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-3); }
-  .about__photo { max-width: 400px; border-radius: var(--r-lg); overflow: hidden; background: var(--bg-band); border: 1px solid var(--line); }
-  .about__photo :global(img) { width: 100%; height: auto; }
+  .about__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-3); }
+  .about__photo { max-width: 400px; border-radius: var(--r-img); overflow: hidden; aspect-ratio: 3 / 4; background: var(--surface); }
+  .about__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
   .about__now > li, .about__lang-list > li { padding-block: var(--s-4); color: var(--text-muted); }
   .about__now :global(strong) { color: var(--text); font-weight: 600; }
   .about__col .h2 { margin-bottom: var(--s-5); max-width: 20ch; }

@@ -17,7 +17,7 @@ const { items } = Astro.props;
   @media (min-width: 768px) { .stats { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); } }
   .stat { border-top: 1px solid var(--line-strong); padding-top: var(--s-3); }
   .stat__value {
-    font-family: var(--font-display); font-weight: 600; letter-spacing: -0.04em; line-height: 1;
+    font-weight: 700; letter-spacing: var(--track-h); line-height: 1; color: var(--heading);
     font-size: clamp(1.5rem, 3vw, 2.5rem); color: var(--text); text-wrap: balance;
   }
   .stat__caption { margin-top: var(--s-2); font-size: var(--fs-small); color: var(--text-muted); line-height: 1.4; }

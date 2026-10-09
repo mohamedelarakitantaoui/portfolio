@@ -1,6 +1,5 @@
 ---
-// Two audiences, two doors. One primary button in the section (Download CV).
-import CopyEmail from '../CopyEmail.astro';
+// Two audiences, two doors, split by one hairline. Employers: CV + LinkedIn. Clients: services + email.
 import { doors, person } from '../../data/site';
 import { cvLink } from '../../lib/cv';
 import { type Lang, lp, t } from '../../i18n/ui';
@@ -8,47 +7,43 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
 const cv = cvLink(lang);
+const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 ---
-<section class="doors section" aria-labelledby="doors-h2">
-  <div class="wrap">
-    <p class="label">{fr ? 'Travailler ensemble' : 'Work with me'}</p>
-    <h2 class="h2 doors__h2" id="doors-h2" data-reveal-lines>{fr ? 'Un poste à temps plein, ou un projet au périmètre fixe.' : 'A full-time role, or a project with a fixed scope.'}</h2>
-    <div class="doors__grid">
-      <div class="door">
-        <p class="mono door__label">{doors.employers.label[lang]}</p>
-        <h3 class="door__title">{doors.employers.title[lang]}</h3>
-        <p class="door__text">{doors.employers.text[lang]}</p>
-        <div class="door__ctas">
-          <a class="btn btn--primary" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
-          <a class="btn" href={person.linkedin} target="_blank" rel="me noopener">{t(lang, 'cta.linkedin')}<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
-          <CopyEmail lang={lang} />
-        </div>
+<section class="doors" aria-label={fr ? 'Travailler ensemble' : 'Work with me'}>
+  <div class="wrap doors__grid">
+    <div class="door" data-reveal>
+      <p class="label">{fr ? 'Recruteurs' : 'Employers'}</p>
+      <h2 class="h2 door__title">{doors.employers.title[lang]}</h2>
+      <p class="door__text">{doors.employers.text[lang]}</p>
+      <div class="door__ctas">
+        <a class="btn btn--primary" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
+        <a class="link" href={person.linkedin} target="_blank" rel="me noopener">{t(lang, 'cta.linkedin')}<span class="sr-only"> ({newTab})</span></a>
       </div>
-      <div class="door">
-        <p class="mono door__label">{doors.clients.label[lang]}</p>
-        <h3 class="door__title">{doors.clients.title[lang]}</h3>
-        <p class="door__text">{doors.clients.text[lang]}</p>
-        <div class="door__ctas">
-          <a class="btn" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}<span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn" href={`mailto:${person.email}?subject=${encodeURIComponent(fr ? 'Projet' : 'Project')}`}>{t(lang, 'cta.emailMe')}</a>
-        </div>
+    </div>
+    <div class="door" data-reveal>
+      <p class="label">{fr ? 'Clients' : 'Clients'}</p>
+      <h2 class="h2 door__title">{doors.clients.title[lang]}</h2>
+      <p class="door__text">{doors.clients.text[lang]}</p>
+      <div class="door__ctas">
+        <a class="btn" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}</a>
+        <a class="link" href={`mailto:${person.email}?subject=${encodeURIComponent(fr ? 'Projet' : 'Project')}`}>{t(lang, 'cta.emailMe')}</a>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .doors__h2 { max-width: 22ch; margin-bottom: var(--s-7); }
-  .doors__grid { display: grid; border-top: 1px solid var(--line); }
-  .door { padding-block: var(--s-6); display: grid; gap: var(--s-4); align-content: start; }
+  .doors { border-top: 1px solid var(--line); }
+  .doors__grid { display: grid; }
+  .door { padding-block: var(--section-y); display: grid; gap: var(--s-5); align-content: start; }
   .door + .door { border-top: 1px solid var(--line); }
+  .door .label { margin-bottom: 0; }
+  .door__title { max-width: 12ch; }
+  .door__text { color: var(--text-muted); max-width: 44ch; font-size: var(--fs-lede); line-height: 1.6; }
+  .door__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-2); }
   @media (min-width: 900px) {
     .doors__grid { grid-template-columns: 1fr 1fr; }
-    .door { padding-inline-end: var(--s-7); }
-    .door + .door { border-top: 0; border-inline-start: 1px solid var(--line); padding-inline: var(--s-7) 0; }
+    .door { padding-inline-end: var(--s-8); }
+    .door + .door { border-top: 0; border-inline-start: 1px solid var(--line); padding-inline: var(--s-8) 0; }
   }
-  .door__label { color: var(--accent); }
-  .door__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; max-width: 24ch; }
-  .door__text { color: var(--text-muted); max-width: 48ch; }
-  .door__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
 </style>

@@ -27,7 +27,7 @@ const L = fr
     lede={fr
       ? 'Pour les équipes qui copient des données à la main ou ont besoin d’une application qui marche avant la prochaine réunion. Tout projet plus gros commence par un appel.'
       : 'For teams that copy data by hand, or need a working app before the next meeting. Anything bigger starts with a call.'}
-    word="PACKS"
+   
   />
 
   <section class="section packs-sec" aria-label={fr ? 'Offres' : 'Packs'}>
@@ -36,15 +36,15 @@ const L = fr
         {services.map((s) => (
           <li class="pack">
             <div class="pack__head">
-              <span class="mono pack__n">[{s.n}]</span>
+              <span class="meta pack__n">[{s.n}]</span>
               <h2 class="pack__name">{s.name[lang]}</h2>
             </div>
             <dl class="pack__facts">
-              <div><dt class="mono">{L.scope}</dt><dd><Rich text={s.scope[lang]} /></dd></div>
-              <div><dt class="mono">{L.deliverable}</dt><dd>{s.deliverable[lang]}</dd></div>
-              {shows(s.timeline[lang]) && <div><dt class="mono">{L.timeline}</dt><dd><Rich text={s.timeline[lang]} /></dd></div>}
-              <div><dt class="mono">{L.price}</dt><dd class="pack__price">{s.price[lang]}</dd></div>
-              <div><dt class="mono">{L.proof}</dt><dd><a href={lp(lang, `/work/${s.proof.slug}`)}>{s.proof.label} <span aria-hidden="true">→</span></a></dd></div>
+              <div><dt class="meta">{L.scope}</dt><dd><Rich text={s.scope[lang]} /></dd></div>
+              <div><dt class="meta">{L.deliverable}</dt><dd>{s.deliverable[lang]}</dd></div>
+              {shows(s.timeline[lang]) && <div><dt class="meta">{L.timeline}</dt><dd><Rich text={s.timeline[lang]} /></dd></div>}
+              <div><dt class="meta">{L.price}</dt><dd class="pack__price">{s.price[lang]}</dd></div>
+              <div><dt class="meta">{L.proof}</dt><dd><a href={lp(lang, `/work/${s.proof.slug}`)}>{s.proof.label} <span aria-hidden="true">→</span></a></dd></div>
             </dl>
             <a class="btn btn--primary pack__cta" href={lp(lang, '/contact') + `?for=project&pack=${s.n}`}>{t(lang, 'cta.start')}<span class="arrow" aria-hidden="true">→</span></a>
           </li>
@@ -60,7 +60,7 @@ const L = fr
       <ol class="steps">
         {process.map((p) => (
           <li class="step">
-            <span class="mono step__n">{p.n}</span>
+            <span class="meta step__n">{p.n}</span>
             <h3 class="step__title">{p.title[lang]}</h3>
             <Rich as="p" class="step__text" text={p.text[lang]} />
           </li>
@@ -93,11 +93,11 @@ const L = fr
   @media (min-width: 1024px) { .pack { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto; gap: var(--s-7); align-items: start; } }
   .pack__head { display: grid; gap: var(--s-2); }
   .pack__n { color: var(--accent); }
-  .pack__name { font-family: var(--font-display); font-weight: 650; font-size: clamp(2rem, 4.2vw, 3.75rem); letter-spacing: var(--track-display); line-height: 0.95; }
+  .pack__name { font-family: var(--font-body); font-weight: 700; font-size: clamp(2rem, 4.2vw, 3.75rem); letter-spacing: var(--track-display); line-height: 0.95; }
   .pack__facts > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); }
   .pack__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
   .pack__facts dd { color: var(--text-muted); }
-  .pack__facts a { color: var(--text); text-decoration-color: var(--accent-wall); }
+  .pack__facts a { color: var(--text); text-decoration-color: var(--accent); }
   .pack__price { color: var(--text) !important; font-weight: 600; }
   .pack__cta { justify-self: start; }
   .sec-h2 { max-width: 16ch; margin-bottom: var(--s-7); }
@@ -106,7 +106,7 @@ const L = fr
   @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
   .step { border-top: 1px solid var(--line-strong); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
   .step__n { color: var(--accent); }
-  .step__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; }
+  .step__title { font-family: var(--font-body); font-size: var(--fs-sub); font-weight: 600; letter-spacing: -0.03em; }
   .step__text { color: var(--text-muted); }
   .faq-grid { display: grid; gap: var(--s-6); }
   @media (min-width: 1024px) { .faq-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); } }
@@ -114,11 +114,11 @@ const L = fr
   .faq__item:last-child { border-bottom: 1px solid var(--line); }
   .faq__item summary {
     display: flex; justify-content: space-between; gap: var(--s-4); align-items: center; min-height: 64px; cursor: pointer;
-    font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; list-style: none;
+    font-family: var(--font-body); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; list-style: none;
   }
   .faq__item summary::-webkit-details-marker { display: none; }
   .faq__icon { position: relative; width: 14px; height: 14px; flex: none; }
-  .faq__icon::before, .faq__icon::after { content: ''; position: absolute; inset: 6px 0 auto; height: 2px; background: var(--accent-wall); transition: transform var(--dur-1) var(--ease-out); }
+  .faq__icon::before, .faq__icon::after { content: ''; position: absolute; inset: 6px 0 auto; height: 2px; background: var(--accent); transition: transform var(--dur-1) var(--ease-out); }
   .faq__icon::after { transform: rotate(90deg); }
   .faq__item[open] .faq__icon::after { transform: rotate(0); }
   .faq__a { color: var(--text-muted); padding-bottom: var(--s-5); max-width: 60ch; }

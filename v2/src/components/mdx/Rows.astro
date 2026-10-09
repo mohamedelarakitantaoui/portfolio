@@ -5,7 +5,7 @@ const { items } = Astro.props;
 <ol class="rows nrows">
   {items.map(([n, name, text]) => (
     <li>
-      <span class="nrows__n mono">[{n}]</span>
+      <span class="nrows__n meta">[{n}]</span>
       <span class="nrows__name">{name}</span>
       <span class="nrows__text">{text}</span>
     </li>
@@ -21,7 +21,7 @@ const { items } = Astro.props;
   .nrows li::before { display: none; }
   @media (min-width: 900px) { .nrows li { grid-template-columns: 3.2rem minmax(0, 15rem) 1fr; align-items: baseline; } }
   .nrows__n { color: var(--accent); }
-  .nrows__name { font-family: var(--font-mono); font-size: 0.875rem; color: var(--text); overflow-wrap: anywhere; }
+  .nrows__name { font-family: var(--font-body); font-size: 0.875rem; color: var(--text); overflow-wrap: anywhere; }
   .nrows__text { grid-column: 2; color: var(--text-muted); font-size: 0.9375rem; }
   @media (min-width: 900px) { .nrows__text { grid-column: 3; } }
 </style>

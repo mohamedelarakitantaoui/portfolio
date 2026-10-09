@@ -5,7 +5,7 @@ import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CommandPalette from '../components/CommandPalette.astro';
-import Star from '../components/Star.astro';
+import dmSans from '../assets/fonts/dm-sans-wght-subset.woff2?url';
 import { type Lang, swapLangPath, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { plain } from '../lib/rich';
@@ -58,7 +58,7 @@ const jsonLd = [
 ];
 ---
 <!doctype html>
-<html lang={lang} dir="ltr" data-theme="dark">
+<html lang={lang} dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,7 +69,8 @@ const jsonLd = [
     <link rel="alternate" hreflang="en" href={new URL(enPath, site).href} />
     <link rel="alternate" hreflang="fr" href={new URL(frPath, site).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(enPath, site).href} />
-    <meta name="theme-color" content="#111111" />
+    <meta name="theme-color" content="#0c0c0c" />
+    <link rel="preload" href={dmSans} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -91,23 +92,13 @@ const jsonLd = [
     <meta name="twitter:image" content={ogImage} />
 
     <script is:inline>
-      // Before paint: theme choice, JS flag, first-visit preloader (CSS-only, <= 0.9 s, never gates content).
-      (function () {
-        var d = document.documentElement;
-        d.classList.add('js');
-        try { var th = localStorage.getItem('theme'); if (th === 'light' || th === 'dark') { d.setAttribute('data-theme', th); if (th === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f4f1'); } } catch (e) {}
-        try {
-          var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (!reduce && !sessionStorage.getItem('seen')) d.classList.add('is-preloading');
-          sessionStorage.setItem('seen', '1');
-        } catch (e) {}
-      })();
+      // Before paint: a JS flag only. No preloader, no theme switch: the first screen is static HTML.
+      document.documentElement.classList.add('js');
     </script>
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>
   <body class={bodyClass}>
-    <div class="preloader" aria-hidden="true"><Star class="preloader__star" weight={4} draw /></div>
     <a class="skip-link" href="#main">{t(lang, 'skip')}</a>
     <Header lang={lang} enPath={enPath} frPath={frPath} />
     <main id="main" tabindex="-1">
@@ -122,15 +113,5 @@ const jsonLd = [
 </html>
 
 <style is:global>
-  .preloader { display: none; }
-  .is-preloading .preloader {
-    display: grid; place-items: center; position: fixed; inset: 0; z-index: 200;
-    background: var(--bg); pointer-events: none;
-    animation: preloader-out 0.25s var(--ease-out) 0.65s forwards;
-  }
-  .preloader__star { width: 72px; height: 72px; color: var(--accent-wall); }
-  .preloader__star polygon { stroke-dasharray: 1; stroke-dashoffset: 1; animation: star-draw 0.6s var(--ease-out) forwards; }
-  @keyframes star-draw { to { stroke-dashoffset: 0; } }
-  @keyframes preloader-out { to { opacity: 0; visibility: hidden; } }
   main:focus { outline: none; }
 </style>

@@ -29,7 +29,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
       <source src={`${dir}/aneuxplain-loop.webm`} type="video/webm" />
       <source src={`${dir}/aneuxplain-loop.mp4`} type="video/mp4" />
     </video>
-    <button class="app__toggle mono" type="button" data-loop-toggle hidden
+    <button class="app__toggle meta" type="button" data-loop-toggle hidden
       data-play={fr ? 'Lire la boucle' : 'Play loop'} data-pause={fr ? 'Pause' : 'Pause'}>
       <svg class="app__icon" viewBox="0 0 16 16" aria-hidden="true"><path class="app__icon-play" d="M4 2.5v11l9.5-5.5z" /><path class="app__icon-pause" d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z" /></svg>
       <span data-loop-label>{fr ? 'Lire la boucle' : 'Play loop'}</span>
@@ -48,7 +48,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
     <li>
       <a class="strip__item" href={`${walk}#t=${s.t}`} data-walk={s.t}>
         <Image src={s.img} alt={s.alt} widths={[400, 640, 960]} sizes="(min-width: 1024px) 14vw, (min-width: 640px) 18vw, 100vw" format="webp" class="strip__img" loading="lazy" decoding="async" />
-        <span class="strip__cap mono">
+        <span class="strip__cap meta">
           <span><span class="strip__n">{String(i + 1).padStart(2, '0')}</span> {s.cap}</span>
           <span class="strip__t">{mmss(s.t)}</span>
         </span>
@@ -59,7 +59,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
 
 <dialog class="walk" data-walk-dialog aria-labelledby="walk-title" data-lenis-prevent>
   <div class="walk__head">
-    <p class="walk__title mono" id="walk-title">{fr ? 'AneuXplain · démonstration complète, 2 min 29, sans son' : 'AneuXplain · full walkthrough, 2:29, no sound'}</p>
+    <p class="walk__title meta" id="walk-title">{fr ? 'AneuXplain · démonstration complète, 2 min 29, sans son' : 'AneuXplain · full walkthrough, 2:29, no sound'}</p>
     <button class="walk__close" type="button" data-walk-close aria-label={fr ? 'Fermer' : 'Close'}>
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" /></svg>
     </button>
@@ -75,7 +75,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
   .app__frame { position: relative; }
   .app__loop {
     display: block; width: 100%; height: auto; aspect-ratio: 1280 / 690;
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-img);
   }
   .app__toggle {
     position: absolute; inset-inline-start: var(--s-3); inset-block-end: var(--s-3);
@@ -91,7 +91,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
   .app__toggle.is-big {
     inset: 50% auto auto 50%; transform: translate(-50%, -50%);
     min-height: 64px; padding: 0 var(--s-6); font-size: 0.875rem;
-    background: var(--accent-fill); color: var(--accent-fill-ink); border-color: transparent;
+    background: var(--accent); color: var(--accent-ink); border-color: transparent;
   }
   .app__toggle.is-big .app__icon { width: 16px; height: 16px; }
   .app__cap {
@@ -105,7 +105,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
   .strip__item { display: grid; gap: var(--s-2); text-decoration: none; color: var(--text); }
   .strip__img {
     width: 100%; height: auto; aspect-ratio: 1600 / 862; object-fit: cover;
-    border: 1px solid var(--line); border-radius: calc(var(--r-lg) / 2); background: var(--surface);
+    border: 1px solid var(--line); border-radius: calc(var(--r-img) / 2); background: var(--surface);
     transition: border-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
   }
   .strip__item:hover .strip__img { border-color: var(--accent); transform: translateY(-2px); }
@@ -117,7 +117,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
 
   .walk {
     width: min(1100px, calc(100% - 32px)); max-height: calc(100% - 32px); margin: auto;
-    padding: 0; border: 1px solid var(--line-input); border-radius: var(--r-lg);
+    padding: 0; border: 1px solid var(--line-input); border-radius: var(--r-img);
     background: var(--surface); color: var(--text); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
   }
   .walk::backdrop { background: rgba(17, 17, 17, 0.75); }

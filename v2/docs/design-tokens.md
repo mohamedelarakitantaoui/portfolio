@@ -1,5 +1,44 @@
 # design-tokens.md
 
+> ## v4, 2026-10-09: "Calm dark editorial" (supersedes everything below)
+> Branch `v4-design`. The quality level of a designer-made dark portfolio, built from measured numbers and our own
+> layout. No star mark anywhere (logo, favicon "ME", bullets, 404, OG images); no light theme; no preloader;
+> no smooth-scroll library; one font family.
+>
+> **Colour** (contrast measured, WCAG AA everywhere)
+>
+> | Token | Value | on page `#0C0C0C` · panel `#111111` · surface `#181818` |
+> |---|---|---|
+> | headings | `#FFFFFF` | 19.56 · 18.88 · 17.76 |
+> | text | `#EFEFEF` | 17.01 · 16.42 · 15.44 |
+> | muted | `#B3B3B3` | 9.33 · 9.01 · 8.47 |
+> | quiet (darkest grey allowed) | `#A6A6A6` | 8.04 · 7.76 · 7.29 |
+> | accent: primary button, small labels, one highlight per screen | `#F2A900` | 9.73 · 9.40 · 8.84 |
+> | outline pills, inputs | `#6B6B6B` | 3.67 · 3.54 · 3.33 (UI, ≥ 3:1) |
+> | hairlines | `rgba(255,255,255,.10)` | decorative |
+> | ink on accent / page ink on white pill | | 9.73 / 19.56 |
+>
+> **Type:** DM Sans only (self-hosted subset, 400/500/600/700). JetBrains Mono survives only inside the ask-mamoun
+> terminal screen. Display 92 / 700 / 0.94 / −0.065em · h2 72 / 700 / 1.02 / −0.05em · statement 64 / 700 / 1.2 ·
+> card 34 / 500 / 1.2 · rows 22 / 500 · sub-heads 28 / 700 · lead 20 / 500 / 1.7 · body 16 / 500 / 1.6 / −0.02em ·
+> label 13–14 / 600 / uppercase / 0.02em + ↗ · capability numbers 28 / 400 / muted. Everything clamps down to
+> ≈ 48–56 display, 40 h2, 16 body at 390px.
+>
+> **Layout:** 1750px container, 24px column gap. Side padding 24px on phones, `clamp(12px, 2.6vw, 48px)` from 1024px,
+> 12px at ≥ 1920 (the measured value; at 1440 a 12px page edge was too tight, so it scales). Sections
+> `clamp(72px, 7.5vw, 144px)`. Work: 4/12 sticky column + 7/12 cards from column 6.
+>
+> **Shape:** images 10px radius, pills 999px. Primary = saffron pill; secondary = text link + ↗; header CTA = white pill.
+>
+> **Motion:** a 16px fade-rise once per block below the fold (IntersectionObserver, skipped under reduced motion,
+> visible without JS, in print and after any jump); 1.03 image scale on hover. No preloader, no scroll-jacking,
+> no letter animation.
+>
+> **Card media rule:** a real app loop or screenshot; if none exists yet, the project's two real numbers as a
+> before/after bar pair (DCE Scraper 2h30 → 15 min, PitchPoint ECE 0.0464 → 0.0038). Never an illustration.
+
+## History: Saffron (2026-10-05)
+
 > ## Rebrand 2026-10-05: "Saffron" (supersedes the colour and symbol sections below)
 > The clay orange on cream and the filled 8-point star read too close to Claude/Anthropic's brand, so both
 > were replaced everywhere: tokens, logo, favicon, preloader, bullets, dividers, 404, OG images, light theme.

@@ -1,7 +1,6 @@
 ---
-// Static proof row (v3): institutions and the venue as mono wordmarks. No logos, no motion.
+// Static proof row (v4): where I studied, worked and published, as plain text wordmarks. No logos, no motion.
 import { proof } from '../../data/site';
-import { starSvg } from '../../lib/rich';
 import type { Lang } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -9,20 +8,25 @@ const { lang } = Astro.props;
 <section class="proof" aria-label={lang === 'fr' ? 'Où j’ai étudié, travaillé et publié' : 'Where I studied, worked and published'}>
   <div class="wrap">
     <ul class="proof__list">
-      {proof.map((p, i) => (
-        <li>{i > 0 && <span class="proof__sep" aria-hidden="true" set:html={starSvg()} />}<span>{p}</span></li>
-      ))}
+      {proof.map((p) => <li>{p}</li>)}
     </ul>
   </div>
 </section>
 
 <style>
-  .proof { border-block: 1px solid var(--line); background: var(--bg-band); }
-  .proof__list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) 0; list-style: none; padding-block: var(--s-5); }
+  .proof { border-block: 1px solid var(--line); }
+  .proof__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; }
   .proof__list li {
-    display: inline-flex; align-items: center; font-family: var(--font-mono); font-size: clamp(0.75rem, 1.1vw, 0.9375rem);
-    letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center; text-align: center; min-height: 88px; padding: var(--s-4);
+    font-size: clamp(1rem, 0.9rem + 0.45vw, 1.375rem); font-weight: 600; letter-spacing: var(--track-h); line-height: 1.2;
+    color: var(--text-muted);
   }
-  .proof__sep { display: inline-flex; margin-inline: var(--s-4); }
-  .proof__sep :global(.star-glyph) { width: 11px; height: 11px; }
+  .proof__list li:nth-child(odd) { border-inline-end: 1px solid var(--line); }
+  .proof__list li:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+  @media (min-width: 900px) {
+    .proof__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .proof__list li { min-height: 120px; }
+    .proof__list li:nth-child(-n + 2) { border-bottom: 0; }
+    .proof__list li:not(:last-child) { border-inline-end: 1px solid var(--line); }
+  }
 </style>

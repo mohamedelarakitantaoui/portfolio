@@ -10,7 +10,6 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
 const featured = (await getCollection('projects', (p) => p.data.lang === lang && p.data.tier === 'featured')).sort((a, b) => a.data.order - b.data.order);
-const [first, ...rest] = featured;
 ---
 <Base
   lang={lang}
@@ -24,15 +23,14 @@ const [first, ...rest] = featured;
     label={fr ? 'Projets' : 'Work'}
     title={fr ? 'Projets' : 'Work'}
     lede={fr
-      ? 'Trois projets en détail, puis les plus petits. Chaque carte montre ce que j’ai construit, ce qui a changé et mon point de départ.'
-      : 'Three projects in depth, then the smaller ones. Each card shows what I built, what changed, and what I started from.'}
-    word="WORK"
+      ? 'Trois projets en détail, chacun avec son chiffre, puis les plus petits.'
+      : 'Three projects in depth, each with its number, then the smaller ones.'}
+   
   />
 
   <section class="section work-list" aria-label={fr ? 'Projets choisis' : 'Selected projects'}>
     <div class="wrap work-grid">
-      <ProjectCard project={first} lang={lang} large headingLevel="h2" />
-      {rest.map((p) => <ProjectCard project={p} lang={lang} headingLevel="h2" />)}
+      {featured.map((p) => <ProjectCard project={p} lang={lang} headingLevel="h2" />)}
     </div>
   </section>
 
@@ -44,10 +42,12 @@ const [first, ...rest] = featured;
 </Base>
 
 <style>
-  .work-list { padding-top: 0; }
-  .work-grid { display: grid; gap: var(--s-9) var(--grid-gap); }
-  @media (min-width: 900px) {
-    .work-grid { grid-template-columns: 1fr 1fr; align-items: start; }
-    .work-grid > :global(.pcard--large) { grid-column: 1 / -1; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-7); }
+  .work-grid { display: grid; }
+  .work-grid > :global(.pcard) { padding-block: var(--s-8); border-top: 1px solid var(--line); }
+  .work-grid > :global(.pcard:first-child) { border-top: 0; padding-top: 0; }
+  @media (min-width: 1024px) {
+    .work-grid > :global(.pcard) { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); align-items: start; }
+    .work-grid > :global(.pcard) > :global(.pcard__media) { grid-column: 1 / span 7; }
+    .work-grid > :global(.pcard) > :global(.pcard__body) { grid-column: 9 / -1; }
   }
 </style>

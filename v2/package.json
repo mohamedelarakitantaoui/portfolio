@@ -14,14 +14,11 @@
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
     "@astrojs/sitemap": "^3.7.4",
-    "@fontsource-variable/bricolage-grotesque": "latest",
     "@fontsource-variable/dm-sans": "latest",
     "@fontsource-variable/jetbrains-mono": "latest",
-    "@fontsource/bricolage-grotesque": "latest",
+    "@fontsource/dm-sans": "^5.3.0",
     "@fontsource/ibm-plex-sans-arabic": "latest",
     "astro": "^7.3.5",
-    "gsap": "^3.15.0",
-    "lenis": "^1.3.26",
     "satori": "latest",
     "sharp": "latest"
   },

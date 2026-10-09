@@ -33,8 +33,8 @@ const chunks: Chunk[] = [
   },
   {
     id: 'education-aui', tags: 'education degree university study studied school aui al akhawayn ifrane bachelor computer science diplôme université études licence',
-    en: { title: 'Education: Al Akhawayn', text: 'B.S. in Computer Science with a minor in Communication Studies, Al Akhawayn University, Ifrane, 2021–2026. Capstone: AneuXplain (spring 2026).', answer: 'B.S. Computer Science (minor in Communication Studies) at Al Akhawayn University in Ifrane, 2021–2026. My capstone was AneuXplain.' },
-    fr: { title: 'Formation : Al Akhawayn', text: 'Licence (B.S.) en informatique, mineure en communication, Université Al Akhawayn, Ifrane, 2021–2026. Projet de fin d’études : AneuXplain (printemps 2026).', answer: 'Licence (B.S.) en informatique, mineure en communication, à l’Université Al Akhawayn d’Ifrane, 2021–2026. Projet de fin d’études : AneuXplain.' },
+    en: { title: 'Education: Al Akhawayn', text: 'BSc in Computer Science with a minor in Communication Studies, Al Akhawayn University, Ifrane, September 2021 to July 2026. Capstone: AneuXplain (spring 2026).', answer: 'BSc Computer Science (minor in Communication Studies) at Al Akhawayn University in Ifrane, 2021–2026. My capstone was AneuXplain.' },
+    fr: { title: 'Formation : Al Akhawayn', text: 'Licence (BSc) en informatique, mineure en communication, Université Al Akhawayn, Ifrane, de septembre 2021 à juillet 2026. Projet de fin d’études : AneuXplain (printemps 2026).', answer: 'Licence (BSc) en informatique, mineure en communication, à l’Université Al Akhawayn d’Ifrane, 2021–2026. Projet de fin d’études : AneuXplain.' },
   },
   {
     id: 'education-bogazici', tags: 'exchange istanbul turkey bogazici boğaziçi abroad semester échange turquie semestre',
@@ -43,8 +43,8 @@ const chunks: Chunk[] = [
   },
   {
     id: 'intelcia', tags: 'intelcia internship intern 2025 build built work did chatbot dataset llm training stage construit fait',
-    en: { title: 'Intelcia internship', text: 'Software development intern at Intelcia Solutions in Rabat, June–August 2025. Built the DCE Scraper, which collects public-procurement documents (DCE) from marchespublics.gov.ma, marocao.com and Intelcia’s internal purchasing portal into an LLM training dataset for an AI chatbot: 90% less processing time (2h30 → 15 min), 10+ hours saved per week.', answer: 'At Intelcia (summer 2025) I built the DCE Scraper: it collects public-procurement documents from three portals into an LLM training dataset for an AI chatbot. Processing time fell by 90%, from 2h30 to 15 min, saving 10+ hours a week.' },
-    fr: { title: 'Stage chez Intelcia', text: 'Stagiaire en développement logiciel chez Intelcia Solutions à Rabat, juin–août 2025. Conception du DCE Scraper, qui collecte des documents de marchés publics (DCE) sur marchespublics.gov.ma, marocao.com et le portail d’achats interne d’Intelcia pour un jeu de données d’entraînement de chatbot IA : 90 % de temps de traitement en moins (2 h 30 → 15 min), plus de 10 heures gagnées par semaine.', answer: 'Chez Intelcia (été 2025), j’ai construit le DCE Scraper : il collecte des documents de marchés publics sur trois portails pour le jeu de données d’entraînement d’un chatbot IA. Le temps de traitement a baissé de 90 %, de 2 h 30 à 15 min, soit plus de 10 heures gagnées par semaine.' },
+    en: { title: 'Intelcia internship', text: 'Software Engineer Intern at Intelcia Solutions in Rabat, June–August 2025. Built the DCE Scraper, which collects public-procurement documents (DCE) from marchespublics.gov.ma, marocao.com and Intelcia’s internal purchasing portal into an LLM training dataset for an AI chatbot: 90% less processing time (2h30 → 15 min), 10+ hours saved per week.', answer: 'At Intelcia (summer 2025) I built the DCE Scraper: it collects public-procurement documents from three portals into an LLM training dataset for an AI chatbot. Processing time fell by 90%, from 2h30 to 15 min, saving 10+ hours a week.' },
+    fr: { title: 'Stage chez Intelcia', text: 'Stagiaire ingénieur logiciel chez Intelcia Solutions à Rabat, juin–août 2025. Conception du DCE Scraper, qui collecte des documents de marchés publics (DCE) sur marchespublics.gov.ma, marocao.com et le portail d’achats interne d’Intelcia pour un jeu de données d’entraînement de chatbot IA : 90 % de temps de traitement en moins (2 h 30 → 15 min), plus de 10 heures gagnées par semaine.', answer: 'Chez Intelcia (été 2025), j’ai construit le DCE Scraper : il collecte des documents de marchés publics sur trois portails pour le jeu de données d’entraînement d’un chatbot IA. Le temps de traitement a baissé de 90 %, de 2 h 30 à 15 min, soit plus de 10 heures gagnées par semaine.' },
   },
   {
     id: 'dce-numbers', tags: 'numbers result results faster speed performance metrics microservices monolith impact chiffres résultats vitesse',
@@ -62,9 +62,9 @@ const chunks: Chunk[] = [
     fr: { title: 'Stage chez ITS Elaraki', text: 'Stagiaire en applications web chez ITS Elaraki School à Marrakech, juin–août 2024. Conception de Preparia, plateforme de préparation aux examens sur WordPress et H5P : plus de 30 modules interactifs sur 6 matières du baccalauréat, plus de 150 élèves et 12 enseignants formés. En ligne sur preparia.ma.', answer: 'À l’été 2024, j’ai construit Preparia pour ITS Elaraki School : plus de 30 modules interactifs sur 6 matières du baccalauréat, sur WordPress et H5P. J’ai assuré la formation de plus de 150 élèves et 12 enseignants.' },
   },
   {
-    id: 'mentor', tags: 'mentor mentoring compete aui 2023 leadership tutorat',
-    en: { title: 'Mentoring', text: 'Mentor at AUI Compete Organisation, January–May 2023: academic planning and competition readiness.', answer: 'From January to May 2023 I mentored peers at AUI Compete Organisation on academic planning and competition readiness.' },
-    fr: { title: 'Mentorat', text: 'Mentor à AUI Compete Organisation, janvier–mai 2023 : planification académique et préparation aux compétitions.', answer: 'De janvier à mai 2023, j’ai accompagné des étudiants à AUI Compete Organisation sur leur planification académique et leur préparation aux compétitions.' },
+    id: 'mentor', tags: 'mentor mentoring compete aui algorithms algorithmic problem solving competitive programming leadership tutorat algorithmique',
+    en: { title: 'Mentoring', text: 'Mentor with the AUI Compete Organisation: algorithmic problem solving.', answer: 'I mentor students with the AUI Compete Organisation in algorithmic problem solving.' },
+    fr: { title: 'Mentorat', text: 'Mentor à l’AUI Compete Organisation : résolution de problèmes algorithmiques.', answer: 'J’accompagne des étudiants de l’AUI Compete Organisation en résolution de problèmes algorithmiques.' },
   },
   {
     id: 'aneu-what', tags: 'research paper aneuxplain aneurysm medical capstone publication icoa explainable ai recherche article anévrisme',
@@ -116,12 +116,6 @@ const chunks: Chunk[] = [
     id: 'mini-private-cloud', tags: 'mini private cloud docker orchestration cli devops containers infra nginx yaml scaling load balancing self-healing conteneurs',
     en: { title: 'Mini Private Cloud', text: 'Mini Private Cloud (2026): a Python CLI that drives the Docker Engine. Declarative YAML provisioning, isolated container networking, persistent volumes, an Nginx gateway, horizontal scaling, load balancing, monitoring and self-healing services.', answer: 'Mini Private Cloud is a Python CLI that drives the Docker Engine: you declare services in YAML, and it provisions, scales and load-balances them behind an Nginx gateway, with self-healing services.' },
     fr: { title: 'Mini Private Cloud', text: 'Mini Private Cloud (2026) : un CLI Python qui pilote le Docker Engine. Provisionnement déclaratif en YAML, réseaux de conteneurs isolés, volumes persistants, passerelle Nginx, montée en charge horizontale, répartition de charge, supervision et services auto-réparateurs.', answer: 'Mini Private Cloud est un CLI Python qui pilote le Docker Engine : on déclare les services en YAML, et il les provisionne, les fait monter en charge et répartit la charge derrière une passerelle Nginx, avec des services auto-réparateurs.' },
-  },
-
-  {
-    id: 'aui-devops', tags: 'al akhawayn aui it devops team job work experience last semester infrastructure équipe expérience',
-    en: { title: 'AUI IT / DevOps', text: 'Six months on the IT / DevOps team at Al Akhawayn University in Ifrane, during the last semester.', answer: 'In my last semester I spent six months on the IT / DevOps team at Al Akhawayn University.' },
-    fr: { title: 'IT / DevOps à AUI', text: 'Six mois dans l’équipe IT / DevOps de l’Université Al Akhawayn à Ifrane, pendant le dernier semestre.', answer: 'Pendant mon dernier semestre, j’ai passé six mois dans l’équipe IT / DevOps de l’Université Al Akhawayn.' },
   },
   {
     id: 'skills-code', tags: 'programming languages code coding skills python javascript typescript kotlin java c sql dart langages',

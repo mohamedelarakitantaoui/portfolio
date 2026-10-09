@@ -1,6 +1,7 @@
 // Site copy. Facts come only from the brief, the repo, the Intelcia internship report and the
 // AneuXplain capstone report. Missing facts are [[todo:…]] markers: shown in `astro dev`, removed from
-// production builds, excluded from the ask-mamoun corpus. ✦ renders as the khatam star glyph. **x** renders bold.
+// production builds, excluded from the ask-mamoun corpus. **x** renders bold.
+// Facts follow the three CVs dated 7 Oct 2026 (public/cv/) and decisions recorded since.
 import type { Lang } from '../i18n/ui';
 
 export type L<T = string> = Record<Lang, T>;
@@ -15,7 +16,7 @@ export const person = {
   linkedin: 'https://www.linkedin.com/in/mohamed-al-mamoun-t-el-araki-27ab042a3',
   role: { en: 'AI and software engineer', fr: 'Ingénieur IA et logiciel' } as L,
   jobTitle: 'AI and Software Engineer',
-  location: { en: 'Based in Morocco · remote worldwide', fr: 'Basé au Maroc · à distance partout' } as L,
+  location: { en: 'Based in Morocco · open to remote and relocation', fr: 'Basé au Maroc · ouvert au travail à distance et à la relocalisation' } as L,
 };
 
 export const status = {
@@ -34,20 +35,23 @@ export const hero = {
     en: 'I build ML that explains itself, and the software that ships it.',
     fr: 'Je construis du ML qui s’explique, et le logiciel qui le met en production.',
   } as L,
-  support: {
-    en: 'Computer science, Al Akhawayn University (2026). Paper accepted at ICOA 2026. Based in Morocco, open to remote and relocation. [[todo:graduation wording; add “(visa sponsorship required)” or not]]',
-    fr: 'Informatique, Université Al Akhawayn (2026). Article accepté à ICOA 2026. Basé au Maroc, ouvert au travail à distance et à la relocalisation. [[todo:intitulé du diplôme ; ajouter « (parrainage de visa nécessaire) » ou non]]',
-  } as L,
   stats: [
     { value: { en: '90%', fr: '90 %' } as L, label: { en: 'less processing time at Intelcia', fr: 'de temps de traitement en moins chez Intelcia' } as L },
-    { value: { en: '0.834', fr: '0,834' } as L, label: { en: 'ROC-AUC, AneuXplain internal test', fr: 'ROC-AUC, test interne d’AneuXplain' } as L },
+    { value: { en: '0.83', fr: '0,83' } as L, label: { en: 'AUC, AneuXplain', fr: 'AUC, AneuXplain' } as L },
     { value: { en: 'ICOA 2026', fr: 'ICOA 2026' } as L, label: { en: 'paper accepted', fr: 'article accepté' } as L },
   ],
 };
 
-export const statement: L = {
-  en: "I studied computer science in Ifrane and Istanbul. I build models that show their reasoning, and the software that keeps them running when nobody's watching.",
-  fr: 'J’ai étudié l’informatique à Ifrane et à Istanbul. Je construis des modèles qui montrent leur raisonnement, et le logiciel qui les fait tourner quand personne ne regarde.',
+// Home "About" statement: one claim (≤ 3 lines at 64px), one lead (≤ 3 lines), then a link to /about.
+export const aboutStatement = {
+  h: {
+    en: 'I measure before I trust a model, and I make its failures visible.',
+    fr: 'Je mesure avant de faire confiance à un modèle, et je rends ses échecs visibles.',
+  } as L,
+  lead: {
+    en: 'At Intelcia that meant retries and health checks instead of silent gaps. In AneuXplain, an “out of distribution” warning instead of a confident wrong answer.',
+    fr: 'Chez Intelcia, des reprises et des contrôles de santé plutôt que des trous silencieux. Dans AneuXplain, un avertissement « hors distribution » plutôt qu’une mauvaise réponse sûre d’elle.',
+  } as L,
 };
 
 export const proof = ['Al Akhawayn University', 'Boğaziçi University', 'Intelcia Solutions', 'ICOA 2026'];
@@ -55,30 +59,30 @@ export const proof = ['Al Akhawayn University', 'Boğaziçi University', 'Intelc
 export const capabilities = [
   {
     n: '01',
-    title: { en: 'Data collection and automation', fr: 'Collecte de données et automatisation' } as L,
+    title: { en: 'Automation & data pipelines', fr: 'Automatisation & pipelines de données' } as L,
     text: {
-      en: 'Bots that log in, fill forms, download files and report every failure.',
-      fr: 'Des robots qui se connectent, remplissent les formulaires, téléchargent les fichiers et signalent chaque échec.',
+      en: 'Python services that collect, clean and reconcile data from web portals, with retries, health checks and a log line for every failure.',
+      fr: 'Des services Python qui collectent, nettoient et rapprochent les données de portails web, avec reprises, contrôles de santé et une trace pour chaque échec.',
     } as L,
-    stack: ['Python', 'Selenium', 'YAML config', 'Worker pools'],
+    stack: ['Python', 'Selenium', 'YAML config', 'Worker pools', 'ETL'],
   },
   {
     n: '02',
-    title: { en: 'Machine learning that explains itself', fr: 'Du machine learning qui s’explique' } as L,
+    title: { en: 'Machine learning & evaluation', fr: 'Machine learning & évaluation' } as L,
     text: {
-      en: 'Models that return a reason with each prediction, served through an API.',
-      fr: 'Des modèles qui donnent une raison avec chaque prédiction, servis par une API.',
+      en: 'The evaluation harness comes first: calibration, out-of-distribution holdouts and significance tests. Then a model that explains each prediction.',
+      fr: 'Le banc d’évaluation d’abord : calibration, jeux hors distribution et tests de significativité. Puis un modèle qui explique chaque prédiction.',
     } as L,
-    stack: ['PyTorch', 'scikit-learn', 'LightGBM', 'FastAPI'],
+    stack: ['PyTorch', 'scikit-learn', 'LightGBM', 'Calibration', 'FastAPI'],
   },
   {
     n: '03',
-    title: { en: 'Web and mobile apps', fr: 'Applications web et mobiles' } as L,
+    title: { en: 'Full-stack products', fr: 'Produits full-stack' } as L,
     text: {
-      en: 'The app people open: auth, dashboards, chat and 3D views in the browser.',
-      fr: 'L’application que les gens ouvrent : authentification, tableaux de bord, chat et vues 3D dans le navigateur.',
+      en: 'The app people open: a React front end on a FastAPI or Flask API, with auth, dashboards and 3D views, shipped in Docker.',
+      fr: 'L’application que les gens ouvrent : une interface React sur une API FastAPI ou Flask, avec authentification, tableaux de bord et vues 3D, livrée dans Docker.',
     } as L,
-    stack: ['React', 'TypeScript', 'Flask', 'Three.js', 'Docker', 'Kubernetes'],
+    stack: ['React', 'TypeScript', 'FastAPI', 'Flask', 'Three.js', 'Docker', 'Kubernetes'],
   },
 ];
 
@@ -98,19 +102,17 @@ export const now = {
 
 export const doors = {
   employers: {
-    label: { en: 'For employers', fr: 'Pour les recruteurs' } as L,
-    title: { en: 'Hiring a junior AI, ML or software engineer?', fr: 'Vous recrutez un ingénieur junior en IA, ML ou logiciel ?' } as L,
+    title: { en: 'Hiring?', fr: 'Vous recrutez ?' } as L,
     text: {
-      en: "I'm looking for a first full-time role where the work ships. Remote, or relocating.",
-      fr: 'Je cherche un premier poste à temps plein où le travail part en production. À distance, ou en me relocalisant.',
+      en: 'Junior AI, ML or software engineering. I want a first full-time role where the work ships. Based in Morocco, open to remote and relocation.',
+      fr: 'Ingénieur junior en IA, ML ou logiciel. Je cherche un premier poste à temps plein où le travail part en production. Basé au Maroc, ouvert au travail à distance et à la relocalisation.',
     } as L,
   },
   clients: {
-    label: { en: 'For clients', fr: 'Pour les clients' } as L,
-    title: { en: 'Need data collected or an MVP built?', fr: 'Des données à collecter ou un MVP à construire ?' } as L,
+    title: { en: 'Need something built?', fr: 'Un projet à construire ?' } as L,
     text: {
-      en: 'Two fixed-scope packs, each with a deliverable and a timeline.',
-      fr: 'Deux offres au périmètre fixe, chacune avec un livrable et un délai.',
+      en: 'A bot that collects your data from web portals, or a web app MVP. Two fixed-scope packs, each with a deliverable and a timeline.',
+      fr: 'Un robot qui collecte vos données sur des portails web, ou un MVP d’application web. Deux offres au périmètre fixe, chacune avec un livrable et un délai.',
     } as L,
   },
 };
@@ -121,7 +123,7 @@ export const experience = [
     home: true,
     year: '2025',
     span: { en: 'Jun–Aug', fr: 'juin–août' } as L,
-    role: { en: 'Software Development Intern', fr: 'Stagiaire en développement logiciel' } as L,
+    role: { en: 'Software Engineer Intern', fr: 'Stagiaire ingénieur logiciel' } as L,
     org: 'Intelcia Solutions',
     orgUrl: 'https://www.intelcia.com',
     location: 'Rabat',
@@ -135,18 +137,6 @@ export const experience = [
     } as L,
     tags: ['Python', 'Selenium', 'Microservices'],
     href: '/work/dce-scraper',
-  },
-  {
-    home: true,
-    year: '2026',
-    span: { en: '[[todo:months]]', fr: '[[todo:mois]]' } as L,
-    role: { en: 'IT / DevOps team [[todo:exact title]]', fr: 'Équipe IT / DevOps [[todo:intitulé exact]]' } as L,
-    org: 'Al Akhawayn University',
-    orgUrl: 'https://www.aui.ma',
-    location: 'Ifrane',
-    line: { en: '[[todo:one result, with a number]]', fr: '[[todo:un résultat, avec un chiffre]]' } as L,
-    result: { en: '[[todo:what you ran or shipped, with one number]]', fr: '[[todo:ce que vous avez géré ou livré, avec un chiffre]]' } as L,
-    tags: [] as string[],
   },
   {
     home: true,
@@ -168,15 +158,16 @@ export const experience = [
   },
   {
     home: false,
-    year: '2023',
-    span: { en: 'Jan–May', fr: 'janv.–mai' } as L,
+    // The CVs list mentoring under Activities, without dates.
+    year: '',
+    span: { en: 'Activity', fr: 'Activité' } as L,
     role: { en: 'Mentor', fr: 'Mentor' } as L,
     org: 'AUI Compete Organisation',
     location: 'Ifrane',
-    line: { en: 'Mentored peers on academic planning and competition readiness.', fr: 'Accompagnement d’étudiants dans leur planification académique et leur préparation aux compétitions.' } as L,
+    line: { en: 'Mentored students in algorithmic problem solving.', fr: 'Mentorat d’étudiants en résolution de problèmes algorithmiques.' } as L,
     result: {
-      en: 'Mentored peers on academic planning and competition readiness.',
-      fr: 'Accompagnement d’étudiants dans leur planification académique et leur préparation aux compétitions.',
+      en: 'Mentored students in algorithmic problem solving.',
+      fr: 'Mentorat d’étudiants en résolution de problèmes algorithmiques.',
     } as L,
     tags: [] as string[],
   },
@@ -187,19 +178,19 @@ export const experience = [
 
 export const education = [
   {
-    dates: { en: '2021–2026', fr: '2021–2026' } as L,
+    dates: { en: 'Sep 2021 – Jul 2026', fr: 'sept. 2021 – juil. 2026' } as L,
     school: 'Al Akhawayn University, Ifrane',
-    short: { en: 'Al Akhawayn University, B.S. Computer Science (2021–2026)', fr: 'Université Al Akhawayn, licence (B.S.) en informatique (2021–2026)' } as L,
+    short: { en: 'Al Akhawayn University, BSc Computer Science (2021–2026)', fr: 'Université Al Akhawayn, licence (BSc) en informatique (2021–2026)' } as L,
     degree: {
-      en: 'B.S. Computer Science, minor in Communication Studies. Capstone: AneuXplain (spring 2026). [[todo:exact graduation wording]]',
-      fr: 'Licence (B.S.) en informatique, mineure en communication. Projet de fin d’études : AneuXplain (printemps 2026). [[todo:intitulé exact du diplôme]]',
+      en: 'BSc in Computer Science, minor in Communication Studies. Capstone: AneuXplain (spring 2026).',
+      fr: 'Licence (BSc) en informatique, mineure en communication. Projet de fin d’études : AneuXplain (printemps 2026).',
     } as L,
   },
   {
     dates: { en: 'Fall 2024', fr: 'automne 2024' } as L,
     school: 'Boğaziçi University, Istanbul',
     short: { en: 'Boğaziçi University exchange (Fall 2024)', fr: 'Échange à l’Université Boğaziçi (automne 2024)' } as L,
-    degree: { en: 'Exchange student, Computer Engineering.', fr: 'Étudiant en échange, génie informatique.' } as L,
+    degree: { en: 'Exchange program in Computer Engineering.', fr: 'Programme d’échange en génie informatique.' } as L,
   },
 ];
 
@@ -284,10 +275,11 @@ export const skills = [
 ];
 
 // "More projects": one row each (title · one line · year · links). Home page, /work and the CV.
-export interface MoreProject { key: string; title: string; year: string; line: L; caseStudy?: string; links: { label: string; href: string }[] }
+export interface MoreProject { key: string; title: string; year: string; line: L; home?: boolean; caseStudy?: string; links: { label: string; href: string }[] }
 export const moreProjects: MoreProject[] = [
   {
     key: 'esaha',
+    home: true,
     title: 'eSaha',
     year: '2025',
     line: {
@@ -298,6 +290,7 @@ export const moreProjects: MoreProject[] = [
   },
   {
     key: 'mini-private-cloud',
+    home: true,
     title: 'Mini Private Cloud',
     year: '2026',
     line: {
@@ -308,6 +301,7 @@ export const moreProjects: MoreProject[] = [
   },
   {
     key: 'preparia',
+    home: true,
     title: 'Preparia',
     year: '2024',
     line: {

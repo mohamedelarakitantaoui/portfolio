@@ -16,7 +16,7 @@ const projects = defineCollection({
       // featured = one of the three cards on the home page and /work; more = a one-line row.
       tier: z.enum(['featured', 'more']).default('more'),
       year: z.string(),
-      // Mono meta line on cards and the case-study header, e.g. "Research · Capstone · 2026".
+      // Small uppercase meta line on cards and the case-study header, e.g. "Research · Capstone · 2026".
       meta: z.string(),
       // One sentence: what changed.
       outcome: z.string(),
@@ -32,6 +32,14 @@ const projects = defineCollection({
       // The one big number on the card. Omit it until there is a real result (then `progress` shows instead).
       number: z.object({ value: z.string(), caption: z.string() }).optional(),
       progress: z.string().optional(),
+      // Featured cards: one metric line under the outcome, e.g. "0.83 AUC · 85% accuracy, patient-level split".
+      metric: z.string().optional(),
+      // No screenshot yet: a before/after bar panel drawn from the two real numbers stands in as the card media.
+      bars: z.object({
+        title: z.string(),
+        before: z.object({ label: z.string(), value: z.number(), text: z.string() }),
+        after: z.object({ label: z.string(), value: z.number(), text: z.string() }),
+      }).optional(),
       constraint: z.string(),
       tags: z.array(z.string()).max(4),
       cover: image().optional(),

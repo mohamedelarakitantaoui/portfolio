@@ -1,4 +1,4 @@
-# TODO(user): what the site still needs from you (v3)
+# TODO(user): what the site still needs from you (v4)
 
 Every item below shows as a dashed `TODO(user):` tag in `npm run dev` only. Production builds drop it, and
 `npm run build` fails if one ever reaches a public page. Until you fill an item, its field, row or chapter is
@@ -6,10 +6,10 @@ simply not shown on the live site. EN and FR versions sit side by side in the sa
 
 ## Highest impact
 1. **CV PDFs.** AI-ML, Data and Software are in `public/cv/` (copied 2026-10-08 from Downloads) but still say "95 %": replace them with the corrected LaTeX exports before publishing. `-Conseil.pdf` (FR, /fr/cv only) is still missing; its button stays hidden until the file exists.
-2. **Screenshots** for the DCE Scraper (terminal run or output folder, no client data) and PitchPoint (the pitch UI). Add as `cover` + `coverAlt` in the project's MDX frontmatter (both languages). Until then those two cards show no image.
+2. **Screenshots** for the DCE Scraper (terminal run or output folder, no client data) and PitchPoint (the pitch UI). Add as `cover` + `coverAlt` in the project's MDX frontmatter (both languages). Until then those two cards (and case-study headers) show a before/after bar panel drawn from their real numbers.
 3. **PitchPoint:** competitions and seasons, one observed failure mode, role, repo link. → `src/content/projects/{en,fr}/pitchpoint.mdx`. (Metric done: ECE 0.0464 → 0.0038.)
-4. **Visa wording** in the hero and status lines ("visa sponsorship required" or nothing), and **graduation wording**. → `src/data/site.ts` (`hero.support`, `status.employers`, `education`)
-5. **AUI IT / DevOps team**: exact title, months, one result with a number. → `site.ts` `experience`
+4. **Visa wording** in the status line ("visa sponsorship required" or nothing). → `src/data/site.ts` `status.employers`
+5. *(removed in v4: the AUI IT / DevOps line is off the site and out of the ask-mamoun notes.)*
 
 ## Case studies
 6. AneuXplain: full ICOA author list; proceedings link / DOI once published.
@@ -32,7 +32,9 @@ simply not shown on the live site. EN and FR versions sit side by side in the sa
 19. Creative: confirm the "Journey Through the Lens" title; more photos if you have them.
 20. Review the French copy (`site.ts` `fr` strings, `src/i18n/ui.ts`, `src/content/projects/fr/`).
 
-## Decided (2026-10-07 / 08)
+## Decided (2026-10-07 / 08 / 09)
+- v4 (2026-10-09): AUI IT / DevOps removed everywhere. Intelcia title "Software Engineer Intern". Mentoring = "algorithmic problem solving" (AUI Compete Organisation, no dates, as on the CVs). Degree wording from the CVs: BSc Computer Science, minor in Communication Studies, Sep 2021 – Jul 2026.
+- v4: no star mark, no Bricolage, no light theme, no preloader; favicon "ME".
 - Intelcia result is "90% less processing time (2h30 → 15 min), 10+ hours saved per week". Never 95%.
 - Site facts follow the 7 Oct 2026 CVs (AI-ML, Data, Software). No Supabase anywhere.
 - Brand name "Mamoun El Araki"; legal name "Mohamed Al Mamoun Tantaoui El Araki" (JSON-LD `alternateName`).

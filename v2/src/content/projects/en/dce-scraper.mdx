@@ -13,13 +13,15 @@ tldr:
   - "**Built:** seven services, a pool of up to 10 Selenium browsers, YAML config per portal, and retries plus health checks."
   - "**Result:** **90% less processing time** (2h30 → 15 min for 300 consultations), 10+ hours saved per week, and every failure retried or reported."
 status: Delivered, summer 2025 [[todo:still in use?]]
-role: Software development intern
+role: Software Engineer Intern
 timeline: Jun–Aug 2025
 team: "[[todo:solo or team of N?]]"
 stack: [Python 3.12, Selenium WebDriver 4.15+, YAML config, Threading + async, Click CLI]
 links: []
 codeNote: "Code private (Intelcia company work). Walkthrough on request."
 number: { value: "90%", caption: "less processing time: 2h30 → 15 min for 300 consultations; 10+ hours saved per week" }
+metric: "90% less processing time · 2h30 → 15 min for 300 consultations"
+bars: { title: "Processing time for 300 consultations", before: { label: "Before: one 3,643-line script", value: 150, text: "2h30" }, after: { label: "After: 7 services", value: 15, text: "15 min" } }
 constraint: Started from a single 3,643-line script; one summer to rebuild it.
 tags: [Python, Selenium, Microservices, Worker pool]
 diagram: dce

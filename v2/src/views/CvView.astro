@@ -24,7 +24,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
     : 'CV of Mamoun El Araki, AI and software engineer: Intelcia, ITS Elaraki, Al Akhawayn and Boğaziçi universities, projects and skills.'}
   ogKey="cv"
 >
-  <PageIntro label={fr ? 'Curriculum vitae' : 'Curriculum vitae'} title="CV" word="CV">
+  <PageIntro label={fr ? 'Curriculum vitae' : 'Curriculum vitae'} title="CV">
     {ready.length > 0 && (
       <ul class="downloads rows" aria-label={fr ? 'Versions PDF' : 'PDF versions'}>
         {ready.map((d) => (
@@ -44,7 +44,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
       <article class="paper">
         <header class="paper__head">
           <h2 class="paper__name">{person.name}</h2>
-          <p class="paper__role">{person.role[lang]} · {person.location[lang]}</p>
+          <p class="paper__role">{person.role[lang]}</p>
           <p class="paper__contact">
             <a href={`mailto:${person.email}`}>{person.email}</a>
             <span aria-hidden="true"> · </span>
@@ -127,21 +127,21 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
   .dl__label { font-weight: 500; }
   .paper { max-width: 880px; }
   .paper__head { padding-bottom: var(--s-6); border-bottom: 1px solid var(--line-strong); }
-  .paper__name { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 650; letter-spacing: var(--track-display); line-height: 1; }
+  .paper__name { font-family: var(--font-body); font-size: var(--fs-h2); font-weight: 700; letter-spacing: var(--track-display); line-height: 1; }
   .paper__role { margin-top: var(--s-2); color: var(--text-muted); }
   .paper__contact { margin-top: var(--s-3); color: var(--text-muted); }
-  .paper__contact a { color: var(--text); text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 10px; }
+  .paper__contact a { color: var(--text); text-decoration-color: var(--accent); display: inline-block; padding-block: 10px; }
   .paper__status { margin-top: var(--s-3); color: var(--text-muted); }
   .paper__sec { padding-block: var(--s-6); border-bottom: 1px solid var(--line); }
-  .paper__h { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: var(--s-3); }
+  .paper__h { font-size: var(--fs-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: var(--s-3); }
   .paper__rows { list-style: none; }
   .paper__item { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-3); }
   .paper__rows > .paper__item + .paper__item { border-top: 1px solid var(--line); }
   @media (min-width: 640px) { .paper__item { grid-template-columns: 9rem minmax(0, 1fr); } }
-  .paper__when { display: flex; flex-direction: column; color: var(--text-quiet); padding-top: 0.15em; font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.04em; }
+  .paper__when { display: flex; flex-direction: column; color: var(--text-quiet); padding-top: 0.15em; font-family: var(--font-body); font-size: var(--fs-label); letter-spacing: 0.04em; }
   .paper__year { color: var(--text); }
   .paper__item h4 { font-weight: 600; font-size: 1.0625rem; }
-  .paper__item h4 a { text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 11px; margin-block: -11px; }
+  .paper__item h4 a { text-decoration-color: var(--accent); display: inline-block; padding-block: 11px; margin-block: -11px; }
   .paper__item p { color: var(--text-muted); }
   .paper__tags { margin-top: var(--s-2); }
 </style>

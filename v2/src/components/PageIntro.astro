@@ -1,13 +1,9 @@
 ---
-// Inner-page opener: label + h1 + lede, with an optional small sandwich (word behind the star).
-import Star from './Star.astro';
-interface Props { label: string; title: string; lede?: string; word?: string }
-const { label, title, lede, word } = Astro.props;
+// Inner-page opener: label ↗ + display h1 (92px at desktop) + lede, on the hero panel colour.
+interface Props { label: string; title: string; lede?: string }
+const { label, title, lede } = Astro.props;
 ---
 <section class="intro">
-  {word && (
-    <p class="intro__word" aria-hidden="true"><span>{word}</span><Star class="intro__star" weight={5} /></p>
-  )}
   <div class="wrap intro__inner">
     <p class="label">{label}</p>
     <h1 class="h1 intro__h1">{title}</h1>
@@ -17,19 +13,8 @@ const { label, title, lede, word } = Astro.props;
 </section>
 
 <style>
-  .intro { position: relative; overflow-x: clip; padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-7); }
-  @media (min-width: 1024px) { .intro { padding-top: calc(var(--header-h) + var(--s-9)); padding-bottom: var(--s-8); } }
-  .intro__inner { position: relative; z-index: 1; }
-  .intro__h1 { max-width: 14ch; }
-  .intro__lede { margin-top: var(--s-5); }
-  .intro__word {
-    position: absolute; right: calc(-1 * var(--s-6)); top: calc(var(--header-h) + var(--s-4)); margin: 0;
-    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.06em; line-height: 0.8;
-    font-size: clamp(6rem, 22vw, 20rem); color: transparent; -webkit-text-stroke: 1px var(--line-strong);
-    white-space: nowrap; user-select: none; pointer-events: none; font-variation-settings: 'opsz' 96;
-  }
-  .intro__word :global(.intro__star) {
-    position: absolute; width: 0.34em; height: 0.34em; left: 38%; top: 40%; color: var(--accent-wall); opacity: 0.9;
-  }
-  @media (max-width: 767px) { .intro__word { opacity: 0.6; } }
+  .intro { background: var(--bg-band); padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-8); border-bottom: 1px solid var(--line); }
+  @media (min-width: 1024px) { .intro { padding-top: calc(var(--header-h) + var(--s-10)); padding-bottom: var(--s-9); } }
+  .intro__h1 { max-width: 16ch; }
+  .intro__lede { margin-top: var(--s-6); }
 </style>

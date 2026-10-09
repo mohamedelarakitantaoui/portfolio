@@ -19,9 +19,7 @@ const pill = $<HTMLButtonElement>('.menu-pill');
 function openMenu() {
   if (!menu) return;
   menu.showModal();
-  window.__lenis?.stop();
 }
-menu?.addEventListener('close', () => window.__lenis?.start());
 $$('[data-menu-open]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); openMenu(); }));
 $$('[data-menu-close]').forEach((b) => b.addEventListener('click', () => menu?.close()));
 $$('a', menu ?? document.createElement('div')).forEach((a) => a.addEventListener('click', () => menu?.close()));
@@ -97,7 +95,6 @@ if (palette && pdata) {
   async function run(it: PItem) {
     palette!.close();
     if (it.action === 'copy-email') { await copyText('elaraki48@gmail.com'); return; }
-    if (it.action === 'toggle-theme') { toggleTheme(); return; }
     if (it.action === 'ask') {
       const term = $('[data-terminal]');
       if (term) { term.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); $<HTMLInputElement>('.term__input', term)?.focus({ preventScroll: true }); }
@@ -115,10 +112,8 @@ if (palette && pdata) {
     active = 0;
     render();
     palette!.showModal();
-    window.__lenis?.stop();
     input.focus();
   }
-  palette.addEventListener('close', () => window.__lenis?.start());
   palette.addEventListener('click', (e) => { if (e.target === palette) palette.close(); });
   input.addEventListener('input', () => { active = 0; render(); });
   input.addEventListener('keydown', (e) => {
@@ -131,18 +126,6 @@ if (palette && pdata) {
   });
   $$('[data-palette-open]').forEach((b) => b.addEventListener('click', open));
 }
-
-/* ---------------- theme ---------------- */
-function toggleTheme() {
-  const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-  root.setAttribute('data-theme', next);
-  try { localStorage.setItem('theme', next); } catch {}
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'light' ? '#f4f4f1' : '#111111');
-}
-$$('[data-theme-toggle]').forEach((b) => {
-  b.removeAttribute('hidden');
-  b.addEventListener('click', toggleTheme);
-});
 
 /* ---------------- ask-mamoun terminal ---------------- */
 const term = $('[data-terminal]');
@@ -238,7 +221,6 @@ if (filters.length) {
       if (show) n++;
     });
     if (status) status.textContent = (status.dataset.template ?? '{n}').replace('{n}', String(n));
-    window.__st?.refresh();
   }));
 }
 
@@ -318,7 +300,6 @@ if (walk && walkVideo) {
     e.preventDefault();
     const t = Number(a.dataset.walk) || 0;
     walk.showModal();
-    window.__lenis?.stop();
     // Before metadata, a #t fragment is the reliable way to start mid-video; after, just seek.
     if (walkVideo.readyState >= 1) walkVideo.currentTime = t;
     else walkVideo.src = t ? `${base}#t=${t}` : base;
@@ -326,16 +307,22 @@ if (walk && walkVideo) {
   }));
   $('[data-walk-close]', walk)?.addEventListener('click', () => walk.close());
   walk.addEventListener('click', (e) => { if (e.target === walk) walk.close(); });
-  walk.addEventListener('close', () => { walkVideo.pause(); window.__lenis?.start(); });
+  walk.addEventListener('close', () => walkVideo.pause());
 }
 
-/* ---------------- motion (last, optional) ---------------- */
-if (!reduce) {
-  const start = () => import('./motion').then((m) => m.init()).catch(() => {});
-  const idle = (cb: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 200));
-  if (document.readyState === 'complete') idle(start); else window.addEventListener('load', () => idle(start), { once: true });
-}
-
-declare global {
-  interface Window { __lenis?: { stop(): void; start(): void; scrollTo(t: Element | number, o?: object): void }; __st?: { refresh(): void } }
+/* ---------------- scroll reveal (last, optional) ---------------- */
+// Fade + 16px rise, once, for blocks marked [data-reveal] that start below the fold. Anything already on screen
+// at load stays as it is, so nothing visible ever blinks out. Skipped entirely under reduced motion.
+if (!reduce && 'IntersectionObserver' in window) {
+  const blocks = $$('[data-reveal]').filter((el) => el.getBoundingClientRect().top > window.innerHeight);
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('is-in');
+    io.unobserve(e.target);
+  }), { rootMargin: '0px 0px -8% 0px' });
+  blocks.forEach((el) => { el.classList.add('is-pending'); io.observe(el); });
+  // Fail-safe: anything still waiting after a jump (anchor, find-in-page, history restore) shows once the page is scrolled past it.
+  window.addEventListener('scroll', () => {
+    for (const el of blocks) if (!el.classList.contains('is-in') && el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-in');
+  }, { passive: true });
 }

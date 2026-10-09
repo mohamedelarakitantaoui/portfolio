@@ -4,13 +4,13 @@ const { cite } = Astro.props;
 ---
 <figure class="pq">
   <blockquote><slot /></blockquote>
-  <figcaption class="mono">{cite}</figcaption>
+  <figcaption class="meta">{cite}</figcaption>
 </figure>
 
 <style>
-  .pq { margin: var(--s-4) 0 var(--s-7); padding-inline-start: var(--s-5); border-inline-start: 2px solid var(--accent-wall); }
+  .pq { margin: var(--s-4) 0 var(--s-7); padding-inline-start: var(--s-5); border-inline-start: 2px solid var(--accent); }
   blockquote {
-    margin: 0; font-family: var(--font-display); font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+    margin: 0; font-family: var(--font-body); font-size: clamp(1.25rem, 2.2vw, 1.75rem);
     font-weight: 500; letter-spacing: -0.03em; line-height: 1.2; color: var(--text); text-wrap: balance;
   }
   figcaption { margin-top: var(--s-3); color: var(--text-quiet); }

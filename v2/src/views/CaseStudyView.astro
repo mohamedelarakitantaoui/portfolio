@@ -8,7 +8,6 @@ import Diagram from '../components/Diagram.astro';
 import Flow from '../components/mdx/Flow.astro';
 import AneuApp from '../components/mdx/AneuApp.astro';
 import AneuReport from '../components/mdx/AneuReport.astro';
-import Star from '../components/Star.astro';
 import Chapter from '../components/mdx/Chapter.astro';
 import PullQuote from '../components/mdx/PullQuote.astro';
 import Stats from '../components/mdx/Stats.astro';
@@ -40,32 +39,34 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 ---
 <Base lang={lang} title={`${d.title} · ${t(lang, 'cs.label')} · ${person.name}`} description={d.description} ogKey={`work-${d.key}`}>
   <article class="cs">
-    <header class="cs__head wrap">
-      <nav class="crumbs mono" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
+    <div class="cs__head-band"><header class="cs__head wrap">
+      <nav class="crumbs meta" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
         <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
       </nav>
-      <p class="label">{d.meta}</p>
+      <p class="label label--plain">{d.meta}</p>
       <h1 class="h1 cs__title">{d.title}</h1>
       <p class="lede cs__outcome" set:html={rich(d.outcome)} />
+      {d.metric && <p class="cs__metric" set:html={rich(d.metric)} />}
     </header>
 
-    {(d.loop || d.cover) && (
+    {(d.loop || d.cover || d.bars) && (
       <div class="wrap cs__cover">
-        <ProjectMedia project={project} lang={lang} eager large />
+        <ProjectMedia project={project} lang={lang} eager />
       </div>
     )}
+    </div>
 
     <div class="wrap grid-12 cs__grid">
       <aside class="cs__side" aria-label={fr ? 'Fiche projet' : 'Project overview'}>
         <div class="cs__sticky">
-          <p class="mono cs__side-label"><Star class="cs__side-star" px={1.5} />{fr ? 'Fiche projet' : 'Overview'}</p>
+          <p class="label label--plain cs__side-label">{fr ? 'Fiche projet' : 'Overview'}</p>
           <dl class="cs__meta">
             {meta.filter(([, v]) => shows(v)).map(([k, v]) => (
-              <div><dt class="mono">{k}</dt><dd set:html={rich(v)} /></div>
+              <div><dt class="meta">{k}</dt><dd set:html={rich(v)} /></div>
             ))}
             {(d.links.length > 0 || d.codeNote) && (
               <div>
-                <dt class="mono">{t(lang, 'meta.links')}</dt>
+                <dt class="meta">{t(lang, 'meta.links')}</dt>
                 <dd>
                   {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => {
                     const ext = /^https?:/.test(l.href);
@@ -91,7 +92,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
       <div class="cs__body">
         {d.tldr && (
           <section class="tldr" aria-labelledby="tldr-h">
-            <h2 class="tldr__h mono" id="tldr-h">{t(lang, 'cs.tldr')}</h2>
+            <h2 class="tldr__h label label--plain" id="tldr-h">{t(lang, 'cs.tldr')}</h2>
             <ul class="tldr__list">
               {d.tldr.map((b) => <li set:html={rich(b)} />)}
             </ul>
@@ -104,8 +105,8 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
     {next && next.data.key !== d.key && (
       <a class="cs__next" href={lp(lang, `/work/${next.data.key}`)}>
         <span class="wrap cs__next-inner">
-          <span class="mono cs__next-label">{t(lang, 'cta.nextProject')} →</span>
-          <span class="cs__next-title">{next.data.title}<Star class="cs__next-star" weight={6} /></span>
+          <span class="label cs__next-label">{t(lang, 'cta.nextProject')}</span>
+          <span class="cs__next-title">{next.data.title}</span>
         </span>
       </a>
     )}
@@ -113,52 +114,51 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 </Base>
 
 <style>
-  .cs__head { padding-top: calc(var(--header-h) + var(--s-8)); }
-  .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-6); }
+  .cs__head-band { background: var(--bg-band); border-bottom: 1px solid var(--line); }
+  .cs__head { padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-8); }
+  @media (min-width: 1024px) { .cs__head { padding-top: calc(var(--header-h) + var(--s-9)); } }
+  .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-6); font-size: var(--fs-small); }
   .crumbs a { color: var(--text-muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
-  .crumbs a:hover { color: var(--text); }
+  .crumbs a:hover { color: var(--heading); }
   .crumbs span { display: inline-flex; align-items: center; }
-  .cs__outcome { margin-top: var(--s-5); color: var(--text); max-width: 46ch; }
-  .cs__cover { margin-top: var(--s-8); }
+  .cs__head .label { color: var(--text-quiet); }
+  .cs__outcome { margin-top: var(--s-6); color: var(--text); max-width: 46ch; }
+  .cs__metric { margin-top: var(--s-5); color: var(--heading); font-weight: 600; }
+  .cs__cover { padding-bottom: var(--s-8); }
   .cs__grid { row-gap: var(--s-8); padding-block: var(--s-9); }
   @media (min-width: 1024px) {
     .cs__side { grid-column: 1 / span 4; }
-    .cs__body { grid-column: 5 / -1; }
+    .cs__body { grid-column: 6 / -1; }
     .cs__sticky { position: sticky; top: var(--s-7); }
   }
   .cs__side { align-self: start; }
-  .cs__sticky { background: var(--bg-band); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); }
-  .cs__side-label { display: flex; gap: var(--s-2); align-items: center; color: var(--text-quiet); margin-bottom: var(--s-4); }
-  .cs__side-label :global(.cs__side-star) { width: 10px; height: 10px; color: var(--accent-wall); }
+  .cs__side-label { color: var(--text-quiet); margin-bottom: var(--s-3); }
   .cs__meta > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); font-size: var(--fs-small); }
-  .cs__meta dt { color: var(--text-quiet); padding-top: 0.2em; }
+  .cs__meta > div:last-child { border-bottom: 1px solid var(--line); }
+  .cs__meta dt { color: var(--text-quiet); }
   .cs__meta dd { color: var(--text); overflow-wrap: anywhere; }
   .cs__links { list-style: none; display: grid; gap: var(--s-1); }
-  .cs__links a { text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 10px; margin-block: -10px; }
+  .cs__links a { text-decoration-color: var(--accent); display: inline-block; padding-block: 10px; margin-block: -10px; }
   .cs__codenote { color: var(--text-muted); }
-  .cs__codenote a { color: var(--text); text-decoration-color: var(--accent-wall); white-space: nowrap; }
-  .cs__big { display: grid; gap: var(--s-1); margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
-  .cs__big-value { font-family: var(--font-display); font-weight: 650; font-size: var(--fs-stat); letter-spacing: -0.04em; line-height: 1; }
+  .cs__codenote a { color: var(--text); text-decoration-color: var(--accent); white-space: nowrap; }
+  .cs__big { display: grid; gap: var(--s-2); margin-top: var(--s-6); }
+  .cs__big-value { font-size: var(--fs-h2); font-weight: 700; letter-spacing: var(--track-h); line-height: 1; color: var(--heading); }
   .cs__big-caption { color: var(--text-muted); font-size: var(--fs-small); }
-  .cs__progress { display: flex; gap: var(--s-3); align-items: baseline; margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line-strong); font-size: var(--fs-small); }
-  .cs__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-wall); }
+  .cs__progress { display: flex; gap: var(--s-3); align-items: baseline; margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line); font-size: var(--fs-small); }
+  .cs__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
   .cs__body { min-width: 0; container-type: inline-size; }
-  .tldr { border: 1px solid var(--line-strong); border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-6); }
-  .tldr__h { color: var(--accent); font-weight: 500; margin-bottom: var(--s-3); }
-  .tldr__list { list-style: none; display: grid; gap: var(--s-3); }
-  .tldr__list li { position: relative; padding-inline-start: 1.4em; color: var(--text-muted); max-width: var(--measure); }
-  .tldr__list li::before {
-    content: ''; position: absolute; inset-inline-start: 0; width: 0.75em; height: 0.75em; top: 0.45em; background: var(--accent-wall);
-    -webkit-mask: var(--mark-mask) center / contain no-repeat; mask: var(--mark-mask) center / contain no-repeat;
-  }
-  .tldr__list :global(strong) { color: var(--text); font-weight: 600; }
-  .cs__next { display: block; text-decoration: none; border-top: 1px solid var(--line); padding-block: var(--s-8) var(--s-9); overflow-x: clip; }
-  .cs__next-inner { display: grid; gap: var(--s-3); }
-  .cs__next-label { color: var(--accent); }
+  .tldr { border-block: 1px solid var(--line-strong); padding-block: var(--s-6); margin-bottom: var(--s-6); }
+  .tldr__h { color: var(--accent); margin-bottom: var(--s-4); }
+  .tldr__list { list-style: none; display: grid; gap: var(--s-4); }
+  .tldr__list li { position: relative; padding-inline-start: 1.4em; color: var(--text-muted); max-width: var(--measure); font-size: var(--fs-lede); line-height: 1.6; }
+  .tldr__list li::before { content: ''; position: absolute; inset-inline-start: 0; top: 0.85em; width: 0.6em; height: 1px; background: var(--text-quiet); }
+  .tldr__list :global(strong) { color: var(--heading); font-weight: 600; }
+  .cs__next { display: block; text-decoration: none; background: var(--bg-band); border-top: 1px solid var(--line); padding-block: var(--s-9); overflow-x: clip; }
+  .cs__next-inner { display: grid; gap: var(--s-2); }
+  .cs__next-label { margin-bottom: 0; }
   .cs__next-title {
-    font-family: var(--font-display); font-weight: 650; letter-spacing: var(--track-display); line-height: 0.9;
-    font-size: clamp(3rem, 8vw, 7rem); text-wrap: balance; font-variation-settings: 'opsz' 96;
+    font-size: var(--fs-display); font-weight: 700; letter-spacing: var(--track-display); line-height: 0.94; color: var(--heading);
+    text-wrap: balance; transition: color var(--dur-1) var(--ease-out);
   }
-  .cs__next-title :global(.cs__next-star) { display: inline-block; width: 0.4em; height: 0.4em; margin-inline-start: 0.15em; color: var(--accent-wall); transition: transform var(--dur-3) var(--ease-out); }
-  .cs__next:hover :global(.cs__next-star) { transform: rotate(90deg); }
+  .cs__next:hover .cs__next-title { color: var(--accent); }
 </style>

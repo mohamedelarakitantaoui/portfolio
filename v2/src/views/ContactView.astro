@@ -21,7 +21,7 @@ const F = fr
     : 'Write to Mamoun El Araki: elaraki48@gmail.com. Based in Morocco (GMT+1), open to remote and relocation, for junior roles and freelance projects.'}
   ogKey="contact"
 >
-  <PageIntro label="Contact" title="Contact" word="SALAM">
+  <PageIntro label="Contact" title="Contact">
     <a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a>
     <div class="contact__actions"><CopyEmail lang={lang} /><a class="btn" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={lp(lang, '/cv')}>CV</a></div>
   </PageIntro>
@@ -30,9 +30,9 @@ const F = fr
     <div class="wrap contact__grid">
       <div class="contact__info">
         <dl class="contact__facts">
-          <div><dt class="mono">{fr ? 'Lieu' : 'Location'}</dt><dd>{fr ? 'Basé au Maroc (GMT+1), ouvert au travail à distance et à la relocalisation' : 'Based in Morocco (GMT+1), open to remote and relocation'}</dd></div>
-          <div><dt class="mono">{fr ? 'Recruteurs' : 'Employers'}</dt><dd><Rich text={status.employers[lang]} /></dd></div>
-          <div><dt class="mono">{fr ? 'Clients' : 'Clients'}</dt><dd>{status.clients[lang]} <a href={lp(lang, '/services')}>{fr ? 'Voir les services' : 'See services'} →</a></dd></div>
+          <div><dt class="meta">{fr ? 'Lieu' : 'Location'}</dt><dd>{fr ? 'Basé au Maroc (GMT+1), ouvert au travail à distance et à la relocalisation' : 'Based in Morocco (GMT+1), open to remote and relocation'}</dd></div>
+          <div><dt class="meta">{fr ? 'Recruteurs' : 'Employers'}</dt><dd><Rich text={status.employers[lang]} /></dd></div>
+          <div><dt class="meta">{fr ? 'Clients' : 'Clients'}</dt><dd>{status.clients[lang]} <a href={lp(lang, '/services')}>{fr ? 'Voir les services' : 'See services'} →</a></dd></div>
         </dl>
       </div>
 
@@ -67,9 +67,9 @@ const F = fr
 
 <style>
   .contact__email {
-    display: inline-block; margin-top: var(--s-6); font-family: var(--font-display); font-weight: 600;
+    display: inline-block; margin-top: var(--s-6); font-family: var(--font-body); font-weight: 600;
     font-size: clamp(1.75rem, 6vw, 4.5rem); letter-spacing: var(--track-display); line-height: 1; overflow-wrap: anywhere;
-    text-decoration-color: var(--accent-wall); text-decoration-thickness: 2px; text-underline-offset: 0.15em;
+    text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.15em;
   }
   .contact__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
   .contact__grid { display: grid; gap: var(--s-8); }
@@ -86,10 +86,10 @@ const F = fr
     border: 1px solid var(--line-input); background: var(--bg); color: var(--text); font: inherit;
   }
   .field textarea { resize: vertical; min-height: 140px; }
-  .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { outline: 2px solid var(--accent-wall); outline-offset: 1px; }
+  .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .field [aria-invalid='true'] { border-color: var(--accent); }
   .field__err { color: var(--accent-hover); font-size: var(--fs-small); min-height: 1em; }
   .cform .btn { justify-self: start; }
   .cform__note { color: var(--text-muted); font-size: var(--fs-small); }
-  .cform__msg { padding: var(--s-5); border: 1px solid var(--accent-wall); border-radius: var(--r-lg); }
+  .cform__msg { padding: var(--s-5); border: 1px solid var(--accent); border-radius: var(--r-img); }
 </style>

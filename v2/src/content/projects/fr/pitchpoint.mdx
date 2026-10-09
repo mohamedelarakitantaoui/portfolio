@@ -20,6 +20,8 @@ stack: [PyTorch, LightGBM, scikit-learn, FastAPI, React, SVG]
 links: []
 number: { value: "0,0038", caption: "erreur de calibration (ECE), contre 0,0464 au départ" }
 progress: "En cours : la démo web FastAPI + React."
+metric: "ECE 0,0038, contre 0,0464 · 444 tests au vert"
+bars: { title: "Erreur de calibration (ECE), plus bas c’est mieux", before: { label: "Avant", value: 0.0464, text: "0,0464" }, after: { label: "Après", value: 0.0038, text: "0,0038" } }
 constraint: Il doit tenir sur des données qu’il n’a jamais vues, pas seulement en validation croisée.
 tags: [xG, PyTorch, LightGBM, Calibration]
 next: preparia

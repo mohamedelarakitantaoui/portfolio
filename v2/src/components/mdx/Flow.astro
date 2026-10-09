@@ -1,9 +1,9 @@
 ---
-// A pipeline as one line of mono text. Wraps between steps, never inside one.
+// A pipeline as one line of text. Wraps between steps, never inside one.
 interface Props { steps: string[]; label: string }
 const { steps, label } = Astro.props;
 ---
-<ol class="flow mono" aria-label={label}>
+<ol class="flow meta" aria-label={label}>
   {steps.map((s) => <li>{s}</li>)}
 </ol>
 

@@ -1,5 +1,5 @@
 ---
-// Experience as scannable rows: dates left (mono), "Role · Company ↗" + one result line + tags right.
+// Experience rows (v4): date left · "Role · Company" + one result line right.
 import { education, experience } from '../../data/site';
 import { type Lang, lp, t } from '../../i18n/ui';
 import { rich, shows } from '../../lib/rich';
@@ -8,63 +8,52 @@ const { lang } = Astro.props;
 const fr = lang === 'fr';
 const rows = experience.filter((e) => e.home);
 ---
-<section class="exp section" aria-labelledby="exp-h2" id="experience">
+<section class="exp section band" aria-labelledby="exp-h2" id="experience">
   <div class="wrap grid-12">
     <div class="exp__head">
       <p class="label">{fr ? 'Expérience' : 'Experience'}</p>
-      <h2 class="h2" id="exp-h2" data-reveal-lines>{fr ? 'Deux stages qui ont livré, et un semestre sur l’infrastructure de l’université.' : 'Two internships that shipped, and a semester on university infrastructure.'}</h2>
+      <h2 class="h2" id="exp-h2">{fr ? 'Deux stages, et ce qui a changé après chacun.' : 'Two internships, and what changed after each.'}</h2>
     </div>
     <ol class="rows exp__rows">
       {rows.map((e) => (
-        <li class="exp__row">
-          <p class="exp__when mono"><span class="exp__year">{e.year}</span>{shows(e.span[lang]) && <span class="exp__span" set:html={rich(e.span[lang])} />}</p>
+        <li class="exp__row" data-reveal>
+          <p class="exp__when"><span class="exp__year">{e.year}</span>{shows(e.span[lang]) && <span set:html={rich(e.span[lang])} />}</p>
           <div class="exp__main">
             <h3 class="exp__title">
-              <span set:html={rich(e.role[lang])} />
-              <span class="exp__sep"> · </span>
-              {e.orgUrl
-                ? <a href={e.orgUrl} target="_blank" rel="noopener">{e.org}<span aria-hidden="true"> ↗</span><span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
-                : <span>{e.org}</span>}
+              <span set:html={rich(e.role[lang])} /><span class="exp__sep" aria-hidden="true"> · </span><span class="sr-only">, </span><span class="exp__org">{e.org}</span>
             </h3>
             {shows(e.line[lang]) && <p class="exp__line" set:html={rich(e.line[lang])} />}
-            {(e.tags.length > 0 || e.href) && (
-              <div class="exp__foot">
-                {e.tags.length > 0 && <ul class="tags">{e.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>}
-                {e.href && <a class="exp__cs" href={lp(lang, e.href)}>{t(lang, 'cta.caseStudy')}<span aria-hidden="true"> →</span></a>}
-              </div>
-            )}
+            {e.href && <a class="link exp__cs" href={lp(lang, e.href)}>{t(lang, 'cs.label')}<span class="sr-only">: {e.org}</span></a>}
           </div>
         </li>
       ))}
     </ol>
     <div class="exp__edu">
       <p class="exp__edu-line">{education.map((ed) => ed.short[lang]).join(' · ')}</p>
-      <a class="btn" href={lp(lang, '/cv')}>{t(lang, 'cta.fullCv')}<span class="arrow" aria-hidden="true">→</span></a>
+      <a class="link" href={lp(lang, '/cv')}>{t(lang, 'cta.fullCv')}</a>
     </div>
   </div>
 </section>
 
 <style>
-  .exp__head { margin-bottom: var(--s-7); }
-  .exp__head .h2 { max-width: 22ch; }
+  .exp__head { margin-bottom: var(--s-8); }
+  .exp__head .h2 { max-width: 16ch; }
   .exp__row { display: grid; gap: var(--s-2) var(--grid-gap); padding-block: var(--s-6); }
-  .exp__when { display: flex; gap: var(--s-3); align-items: baseline; color: var(--text-quiet); padding-top: 0.3em; }
-  .exp__year { color: var(--accent); }
-  .exp__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; }
-  .exp__title a { text-decoration-color: var(--accent-wall); text-underline-offset: 0.18em; }
-  .exp__sep { color: var(--text-quiet); }
+  .exp__when { display: flex; gap: var(--s-3); align-items: baseline; color: var(--text-quiet); font-size: var(--fs-small); }
+  .exp__year { color: var(--heading); font-weight: 600; }
+  .exp__title { font-size: var(--fs-row); font-weight: 500; letter-spacing: var(--track-h); line-height: 1.3; }
+  .exp__sep, .exp__org { color: var(--text-muted); }
   .exp__line { margin-top: var(--s-2); color: var(--text-muted); }
-  .exp__foot { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-5); align-items: center; margin-top: var(--s-3); }
-  .exp__cs { display: inline-flex; align-items: center; gap: 0.3em; min-height: 44px; font-weight: 500; text-decoration-color: var(--accent-wall); }
-  .exp__edu { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); align-items: center; justify-content: space-between; margin-top: var(--s-6); }
-  .exp__edu-line { color: var(--text-muted); }
+  .exp__cs { margin-top: var(--s-1); font-size: var(--fs-small); }
+  .exp__edu { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-6); align-items: center; justify-content: space-between; margin-top: var(--s-6); }
+  .exp__edu-line { color: var(--text-muted); font-size: var(--fs-small); }
   @media (min-width: 768px) {
-    .exp__row { grid-template-columns: 10rem minmax(0, 1fr); }
-    .exp__when { flex-direction: column; gap: var(--s-1); }
+    .exp__row { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); }
+    .exp__when { flex-direction: column; gap: 2px; padding-top: 0.25em; }
   }
   @media (min-width: 1024px) {
-    .exp__head { grid-column: 1 / span 8; }
-    .exp__rows, .exp__edu { grid-column: 1 / -1; }
-    .exp__row { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); }
+    .exp__row { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .exp__when { grid-column: 1 / span 4; }
+    .exp__main { grid-column: 6 / -1; }
   }
 </style>

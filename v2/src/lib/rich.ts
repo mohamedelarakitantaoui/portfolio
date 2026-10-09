@@ -1,13 +1,6 @@
 // Tiny inline formatter for data strings: escapes HTML, then
 //   [[todo:…]] -> TODO(user) marker in `astro dev`; removed entirely from production builds
 //   **x**      -> <strong>
-//   ✦          -> inline khatam star (aria-hidden)
-// The mark: one continuous {8/3} star polygon, stroke only (100-unit box, points inset to 10..90).
-export const STAR_POINTS = '50,10 78.3,78.3 10,50 78.3,21.7 50,90 21.7,21.7 90,50 21.7,78.3';
-
-// Inline glyph: non-scaling stroke so it never drops below 1.5px, whatever the text size.
-export const starSvg = (cls = 'star-glyph') =>
-  `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><polygon points="${STAR_POINTS}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></svg>`;
 
 const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -19,8 +12,7 @@ export function rich(input: string): string {
   const src = DEV ? input : input.replace(/\s*\[\[todo:.+?\]\]/g, '');
   return esc(src)
     .replace(/\[\[todo:(.+?)\]\]/g, (_m, t) => `<span class="todo">${t}</span>`)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/✦/g, starSvg());
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 }
 
 /** Plain text (for meta tags, JSON-LD, the terminal corpus): drops TODO markers and formatting. */
@@ -28,7 +20,6 @@ export function plain(input: string): string {
   return input
     .replace(/\s*\[\[todo:.+?\]\]/g, '')
     .replace(/\*\*(.+?)\*\*/g, '$1')
-    .replace(/\s*✦\s*/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim();
 }

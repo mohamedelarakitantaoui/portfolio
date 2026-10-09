@@ -1,0 +1,43 @@
+---
+// Card media for a project without a screenshot yet: its two real numbers as a before/after bar pair.
+// One series, so no legend; both values are labelled directly; a table carries the same data for screen readers.
+interface Bar { label: string; value: number; text: string }
+interface Props { title: string; before: Bar; after: Bar }
+const { title, before, after } = Astro.props;
+const max = Math.max(before.value, after.value);
+const frac = (v: number) => Math.max(0.02, v / max).toFixed(4);
+---
+<figure class="bars zoom" aria-label={title}>
+  <div class="bars__inner zoom__inner" aria-hidden="true">
+    <p class="bars__title meta">{title}</p>
+    <div class="bars__rows">
+      {[['before', before], ['after', after]].map(([k, b]) => (
+        <div class:list={['bars__row', `bars__row--${k}`]}>
+          <span class="bars__label">{(b as Bar).label}</span>
+          <span class="bars__track"><span class="bars__fill" style={`--f:${frac((b as Bar).value)}`}></span><span class="bars__value">{(b as Bar).text}</span></span>
+        </div>
+      ))}
+    </div>
+  </div>
+  <table class="sr-only">
+    <caption>{title}</caption>
+    <tbody>
+      <tr><th scope="row">{before.label}</th><td>{before.text}</td></tr>
+      <tr><th scope="row">{after.label}</th><td>{after.text}</td></tr>
+    </tbody>
+  </table>
+</figure>
+
+<style>
+  /* 2:1 from tablet up; on phones the panel takes the height its two rows need (overflow is clipped for the hover zoom). */
+  .bars { position: relative; display: grid; aspect-ratio: 2 / 1; background: var(--bg-band); border: 1px solid var(--line); }
+  @media (max-width: 767px) { .bars { aspect-ratio: auto; } }
+  .bars__inner { display: grid; gap: var(--s-6); align-content: space-between; padding: clamp(20px, 4%, 40px); }
+  .bars__rows { display: grid; gap: clamp(20px, 6%, 44px); }
+  .bars__row { display: grid; gap: var(--s-3); }
+  .bars__label { color: var(--text-muted); font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1rem); }
+  .bars__track { display: flex; font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem); align-items: center; gap: var(--s-3); }
+  .bars__fill { display: block; height: clamp(16px, 2.4vw, 32px); width: calc((100% - 4.5em) * var(--f)); flex: none; border-radius: 0 4px 4px 0; background: var(--line-input); }
+  .bars__row--after .bars__fill { background: var(--accent); }
+  .bars__value { flex: none; color: var(--heading); font-size: 1em; font-weight: 700; letter-spacing: var(--track-h); line-height: 1; }
+</style>

@@ -1,15 +1,15 @@
-// Build-time Open Graph images: the star + the page title, 1200x630, one per page per language.
+// Build-time Open Graph images: name, page title, one line, 1200x630, one per page per language. DM Sans only.
 import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import satori from 'satori';
 import sharp from 'sharp';
-import { STAR_POINTS, plain } from '../../lib/rich';
+import { plain } from '../../lib/rich';
 
 const pages: Record<string, { en: string; fr: string }> = {
   home: { en: 'I build ML that explains itself, and the software that ships it.', fr: 'Je construis du ML qui s’explique, et le logiciel qui le met en production.' },
-  work: { en: 'Three projects, with the numbers.', fr: 'Trois projets, avec les chiffres.' },
+  work: { en: 'Projects with numbers on them.', fr: 'Des projets, avec leurs chiffres.' },
   about: { en: 'About: AI and software engineer, Morocco.', fr: 'À propos : ingénieur IA et logiciel, Maroc.' },
   services: { en: 'From portal bots to working MVPs.', fr: 'Du robot de portail au MVP en ligne.' },
   cv: { en: 'CV', fr: 'CV' },
@@ -30,35 +30,32 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return out;
 };
 
-const fontDir = path.resolve('node_modules/@fontsource/bricolage-grotesque/files');
-let fonts: { name: string; data: Buffer; weight: 600 | 700; style: 'normal' }[] | null = null;
+const fontDir = path.resolve('node_modules/@fontsource/dm-sans/files');
+let fonts: { name: string; data: Buffer; weight: 500 | 700; style: 'normal' }[] | null = null;
 async function loadFonts() {
   if (fonts) return fonts;
   const f = (n: string) => fs.readFile(path.join(fontDir, n));
   fonts = [
-    { name: 'Bricolage', data: await f('bricolage-grotesque-latin-700-normal.woff'), weight: 700, style: 'normal' },
-    { name: 'Bricolage', data: await f('bricolage-grotesque-latin-ext-700-normal.woff'), weight: 700, style: 'normal' },
-    { name: 'Bricolage', data: await f('bricolage-grotesque-latin-600-normal.woff'), weight: 600, style: 'normal' },
-    { name: 'Bricolage', data: await f('bricolage-grotesque-latin-ext-600-normal.woff'), weight: 600, style: 'normal' },
+    { name: 'DM Sans', data: await f('dm-sans-latin-700-normal.woff'), weight: 700, style: 'normal' },
+    { name: 'DM Sans', data: await f('dm-sans-latin-ext-700-normal.woff'), weight: 700, style: 'normal' },
+    { name: 'DM Sans', data: await f('dm-sans-latin-500-normal.woff'), weight: 500, style: 'normal' },
+    { name: 'DM Sans', data: await f('dm-sans-latin-ext-500-normal.woff'), weight: 500, style: 'normal' },
   ];
   return fonts;
 }
 
-// Stroke-only {8/3} mark; weight in viewBox units (scales with the rendered size).
-const star = (color: string, weight: number) => `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="${STAR_POINTS}" fill="none" stroke="${color}" stroke-width="${weight}" stroke-linejoin="miter"/></svg>`).toString('base64')}`;
 const h = (type: string, style: Record<string, unknown>, children?: unknown) => ({ type, props: { style, children } });
 
 export const GET: APIRoute = async ({ props }) => {
   const { title, kicker } = props as { title: string; kicker: string };
   const size = title.length > 34 ? 76 : title.length > 18 ? 96 : 150;
-  const tree = h('div', { width: 1200, height: 630, display: 'flex', position: 'relative', background: '#111111', color: '#f2f0ea', fontFamily: 'Bricolage', padding: 72, flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }, [
-    { type: 'img', props: { src: star('#f2a900', 2.2), width: 560, height: 560, style: { position: 'absolute', right: -150, top: 40 } } },
-    h('div', { display: 'flex', alignItems: 'center', gap: 16, fontSize: 30, fontWeight: 600, letterSpacing: '-0.02em' }, [
-      { type: 'img', props: { src: star('#f2a900', 8), width: 34, height: 34 } },
-      'Mamoun El Araki',
+  const tree = h('div', { width: 1200, height: 630, display: 'flex', background: '#111111', color: '#ffffff', fontFamily: 'DM Sans', padding: 72, flexDirection: 'column', justifyContent: 'space-between' }, [
+    h('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 28, fontWeight: 700, letterSpacing: '-0.03em' }, [
+      h('div', { display: 'flex' }, 'Mamoun El Araki'),
+      h('div', { display: 'flex', width: 64, height: 4, background: '#f2a900' }),
     ]),
-    h('div', { display: 'flex', fontSize: size, fontWeight: 700, letterSpacing: '-0.05em', lineHeight: 0.95, maxWidth: 900 }, title),
-    h('div', { display: 'flex', fontSize: 26, fontWeight: 600, color: '#a3a39e', letterSpacing: '0.01em' }, kicker),
+    h('div', { display: 'flex', fontSize: size, fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 0.98, maxWidth: 980 }, title),
+    h('div', { display: 'flex', fontSize: 26, fontWeight: 500, color: '#b3b3b3', letterSpacing: '-0.01em', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.12)' }, kicker),
   ]);
   const svg = await satori(tree as never, { width: 1200, height: 630, fonts: await loadFonts() });
   const png = await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toBuffer();

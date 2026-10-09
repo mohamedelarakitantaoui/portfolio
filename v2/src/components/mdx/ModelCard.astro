@@ -16,16 +16,16 @@ const rows: [string, string][] = [
 ];
 ---
 <aside class="mcard" aria-label={fr ? 'Fiche du modèle' : 'Model card'}>
-  <p class="mcard__title mono">{fr ? 'Fiche du modèle' : 'Model card'}</p>
+  <p class="mcard__title meta">{fr ? 'Fiche du modèle' : 'Model card'}</p>
   <dl class="mcard__rows">
     {rows.filter(([, v]) => shows(v)).map(([k, v]) => (
-      <div><dt class="mono">{k}</dt><dd set:html={rich(v)} /></div>
+      <div><dt class="meta">{k}</dt><dd set:html={rich(v)} /></div>
     ))}
   </dl>
 </aside>
 
 <style>
-  .mcard { margin-block: var(--s-6); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--bg-band); padding: var(--s-5); }
+  .mcard { margin-block: var(--s-6); border: 1px solid var(--line-strong); border-radius: var(--r-img); background: var(--bg-band); padding: var(--s-5); }
   .mcard__title { color: var(--accent); margin-bottom: var(--s-3); }
   .mcard__rows > div { display: grid; gap: var(--s-1) var(--s-4); padding-block: var(--s-3); border-top: 1px solid var(--line); }
   @media (min-width: 640px) { .mcard__rows > div { grid-template-columns: 11rem minmax(0, 1fr); } }

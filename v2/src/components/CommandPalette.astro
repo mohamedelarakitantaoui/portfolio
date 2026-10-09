@@ -22,7 +22,6 @@ const items = [
   { kind: act, label: t(lang, 'cta.copyEmail'), action: 'copy-email', keys: `email mail ${person.email}` },
   ...(cv.download ? [{ kind: act, label: t(lang, 'cta.downloadCv') + ' (PDF)', href: cv.href, download: true, keys: 'cv pdf resume download télécharger' }] : []),
   { kind: act, label: t(lang, 'lang.switch'), href: lang === 'en' ? frPath : enPath, keys: 'language langue french english français anglais fr en' },
-  { kind: act, label: t(lang, 'theme.toggle'), action: 'toggle-theme', keys: 'theme dark light thème sombre clair' },
   { kind: act, label: 'LinkedIn', href: person.linkedin, external: true, keys: 'linkedin profile profil' },
   { kind: act, label: 'GitHub', href: person.github, external: true, keys: 'github code repos' },
   { kind: act, label: fr ? 'Interroger le terminal ask-mamoun' : 'Ask the ask-mamoun terminal', action: 'ask', keys: 'ask terminal question search demander' },
@@ -39,7 +38,7 @@ const items = [
     />
     <ul class="palette__list" id="palette-list" role="listbox" aria-label={t(lang, 'palette.title')}></ul>
     <p class="palette__empty" hidden>{t(lang, 'palette.empty')}</p>
-    <p class="palette__hint mono" aria-hidden="true">↑↓ · Enter · Esc</p>
+    <p class="palette__hint meta" aria-hidden="true">↑↓ · Enter · Esc</p>
   </div>
 </dialog>
 <script type="application/json" id="palette-data" set:html={JSON.stringify({ items, lang, home: lp(lang, '/') })} />
@@ -47,7 +46,7 @@ const items = [
 <style>
   .palette {
     width: min(640px, calc(100% - 32px)); max-height: min(560px, calc(100% - 64px)); margin: 10vh auto auto;
-    padding: 0; border: 1px solid var(--line-input); border-radius: var(--r-lg);
+    padding: 0; border: 1px solid var(--line-input); border-radius: var(--r-img);
     background: var(--surface); color: var(--text); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
   }
   .palette::backdrop { background: rgba(17, 17, 17, 0.6); }
@@ -63,8 +62,8 @@ const items = [
     display: flex; justify-content: space-between; gap: var(--s-4); align-items: center;
     min-height: 44px; padding: 0 var(--s-4); border-radius: 12px; cursor: pointer;
   }
-  .palette__list :global(li[aria-selected='true']) { background: var(--ink-1); outline: 1px solid var(--line-input); }
-  .palette__list :global(.palette__kind) { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-quiet); white-space: nowrap; }
+  .palette__list :global(li[aria-selected='true']) { background: var(--bg-band); outline: 1px solid var(--line-input); }
+  .palette__list :global(.palette__kind) { font-size: 0.75rem; font-weight: 600; letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-quiet); white-space: nowrap; }
   .palette__empty { padding: var(--s-4) var(--s-5); color: var(--text-muted); }
   .palette__hint { padding: var(--s-3) var(--s-5); border-top: 1px solid var(--line); color: var(--text-quiet); }
 </style>

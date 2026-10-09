@@ -1,4 +1,5 @@
 ---
+// Capabilities (v4): three hairline rows, [01]–[03] in 28px muted, title, two-line description, stack line.
 import { capabilities } from '../../data/site';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
@@ -8,33 +9,34 @@ const fr = lang === 'fr';
 <section class="caps section" aria-labelledby="caps-h2">
   <div class="wrap">
     <p class="label">{fr ? 'Ce que je fais' : 'What I do'}</p>
-    <h2 class="h2 caps__h2" id="caps-h2" data-reveal-lines>{fr ? 'Des pipelines de données, des modèles vérifiables, et les applications autour.' : 'Data pipelines, models you can check, and the apps around them.'}</h2>
+    <h2 class="h2 caps__h2" id="caps-h2">{fr ? 'Des pipelines de données, des modèles vérifiables, et les applications autour.' : 'Data pipelines, models you can check, and the apps around them.'}</h2>
     <ol class="rows caps__rows">
       {capabilities.map((c) => (
-        <li class="caps__row">
-          <span class="caps__n mono">[{c.n}]</span>
+        <li class="caps__row" data-reveal>
+          <span class="caps__n" aria-hidden="true">[{c.n}]</span>
           <h3 class="caps__title">{c.title[lang]}</h3>
-          <p class="caps__text">{c.text[lang]}</p>
-          <p class="caps__stack mono">{c.stack.join(' · ')}</p>
+          <div class="caps__body">
+            <p class="caps__text">{c.text[lang]}</p>
+            <p class="caps__stack">{c.stack.join(' · ')}</p>
+          </div>
         </li>
       ))}
     </ol>
-    <a class="btn caps__cta" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}<span class="arrow" aria-hidden="true">→</span></a>
+    <a class="link caps__cta" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}</a>
   </div>
 </section>
 
 <style>
-  .caps__h2 { max-width: 22ch; margin-bottom: var(--s-7); }
-  .caps__row { display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s-2) var(--s-4); padding-block: var(--s-6); transition: border-color var(--dur-1) var(--ease-out); }
-  .caps__n { color: var(--accent); padding-top: 0.5em; }
-  .caps__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
-  .caps__text, .caps__stack { grid-column: 2; }
-  .caps__text { color: var(--text-muted); max-width: var(--measure); }
-  .caps__stack { color: var(--text-quiet); text-transform: none; letter-spacing: 0.02em; font-size: var(--fs-label); line-height: 1.7; }
+  .caps__h2 { max-width: 20ch; margin-bottom: var(--s-8); }
+  .caps__row { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: var(--s-3) var(--s-4); padding-block: var(--s-6); }
+  .caps__n { font-size: var(--fs-sub); font-weight: 400; color: var(--text-muted); letter-spacing: -0.02em; line-height: 1.2; }
+  .caps__title { font-size: var(--fs-sub); letter-spacing: var(--track-h); line-height: 1.2; }
+  .caps__body { grid-column: 2; display: grid; gap: var(--s-3); }
+  .caps__text { color: var(--text-muted); max-width: 52ch; }
+  .caps__stack { color: var(--text); font-size: var(--fs-small); }
   @media (min-width: 1024px) {
-    .caps__row { grid-template-columns: 4rem minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr); align-items: baseline; gap: var(--s-6); }
-    .caps__text { grid-column: 3; }
-    .caps__stack { grid-column: 4; }
+    .caps__row { grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 6fr); gap: var(--grid-gap); align-items: baseline; padding-block: var(--s-7); }
+    .caps__body { grid-column: 3; }
   }
-  .caps__cta { margin-top: var(--s-7); }
+  .caps__cta { margin-top: var(--s-6); }
 </style>

@@ -13,13 +13,15 @@ tldr:
   - "**Construit :** sept services, un pool de jusqu’à 10 navigateurs Selenium, une configuration YAML par portail, des reprises et des contrôles de santé."
   - "**Résultat :** **90 % de temps de traitement en moins** (2 h 30 → 15 min pour 300 consultations), plus de 10 heures gagnées par semaine, et chaque échec réessayé ou signalé."
 status: Livré, été 2025 [[todo:toujours utilisé ?]]
-role: Stagiaire en développement logiciel
+role: Stagiaire ingénieur logiciel
 timeline: juin–août 2025
 team: "[[todo:seul ou équipe de N ?]]"
 stack: [Python 3.12, Selenium WebDriver 4.15+, Configuration YAML, Threading + async, CLI Click]
 links: []
 codeNote: "Code privé (travail pour Intelcia). Démonstration sur demande."
 number: { value: "90 %", caption: "de temps de traitement en moins : 2 h 30 → 15 min pour 300 consultations ; plus de 10 h gagnées par semaine" }
+metric: "90 % de temps de traitement en moins · 2 h 30 → 15 min pour 300 consultations"
+bars: { title: "Temps de traitement pour 300 consultations", before: { label: "Avant : un script de 3 643 lignes", value: 150, text: "2 h 30" }, after: { label: "Après : 7 services", value: 15, text: "15 min" } }
 constraint: Point de départ, un seul script de 3 643 lignes ; un été pour le reconstruire.
 tags: [Python, Selenium, Microservices, Pool de workers]
 diagram: dce

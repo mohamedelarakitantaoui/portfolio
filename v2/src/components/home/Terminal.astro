@@ -17,7 +17,7 @@ const label = fr ? 'démo de recherche côté client · pas de LLM · aucune don
 <div class="term" data-terminal data-lang={lang} data-src={lp(lang, '/knowledge.json')} data-lenis-prevent>
   <div class="term__bar">
     <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="term__title mono">ask-mamoun</span>
+    <span class="term__title">ask-mamoun</span>
     <span class="term__label">{label}</span>
   </div>
   <div class="term__screen" data-term-screen role="log" aria-live="polite" aria-label={fr ? 'Sortie du terminal' : 'Terminal output'} tabindex="0">
@@ -43,42 +43,47 @@ const label = fr ? 'démo de recherche côté client · pas de LLM · aucune don
 </div>
 
 <style>
+  /* Same tokens as the page. The mono face is used here, inside the terminal screen, and nowhere else. */
   .term {
-    border: 1px solid var(--line-input); border-radius: var(--r-lg); background: var(--surface);
-    font-family: var(--font-mono); font-size: 0.8125rem; overflow: hidden; display: grid;
+    border: 1px solid var(--line-strong); border-radius: var(--r-img); background: var(--bg);
+    overflow: hidden; display: grid;
   }
   .term__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3); padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line); }
   .term__dots { display: flex; gap: 6px; }
-  .term__dots i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line-input); }
-  .term__dots i:first-child { background: var(--accent-wall); border-color: var(--accent-wall); }
-  .term__title { color: var(--text); font-size: 0.75rem; }
-  .term__label { color: var(--text-muted); font-size: var(--fs-label); letter-spacing: 0.02em; }
-  .term__screen { min-height: 300px; max-height: 420px; overflow: auto; padding: var(--s-4); display: grid; gap: var(--s-4); align-content: start; line-height: 1.55; }
+  .term__dots i { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--line-input); }
+  .term__dots i:first-child { background: var(--accent); border-color: var(--accent); }
+  .term__title { color: var(--heading); font-size: var(--fs-small); font-weight: 600; }
+  .term__label { color: var(--text-muted); font-size: 0.8125rem; }
+  .term__screen {
+    min-height: 300px; max-height: 420px; overflow: auto; padding: var(--s-4); display: grid; gap: var(--s-4); align-content: start;
+    font-family: var(--font-code); font-size: 0.8125rem; letter-spacing: 0; line-height: 1.6; font-weight: 400;
+  }
   .term__screen:focus-visible { outline-offset: -3px; }
   .term__block { display: grid; gap: 2px; }
-  .term__ps { color: var(--accent-on-surface); margin-inline-end: var(--s-2); }
+  .term__ps { color: var(--accent); margin-inline-end: var(--s-2); }
   .term__dim { color: var(--text-quiet); }
   .term__hit { display: grid; grid-template-columns: 3.4em 9.5em 1fr; gap: var(--s-2); color: var(--text-muted); }
-  .term__score { color: var(--accent-on-surface); text-align: end; }
+  .term__score { color: var(--accent); text-align: end; }
   .term__id { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .term__snip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .term__answer { margin-top: var(--s-2); color: var(--text); font-family: var(--font-body); font-size: 0.9375rem; line-height: 1.5; }
-  .term__arrow { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-on-surface); margin-inline-end: var(--s-2); }
+  .term__answer { margin-top: var(--s-2); color: var(--heading); font-family: var(--font-body); font-size: 0.9375rem; font-weight: 500; letter-spacing: var(--track-body); line-height: 1.55; }
+  .term__arrow { font-family: var(--font-code); font-size: 0.75rem; color: var(--accent); margin-inline-end: var(--s-2); letter-spacing: 0; }
   .term__arrow::after { content: ' ─'; }
   @media (max-width: 600px) {
     .term__hit { grid-template-columns: 3.4em 1fr; }
     .term__snip { grid-column: 2; }
   }
-  .term__form { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); border-top: 1px solid var(--line); }
-  .term__input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 0.875rem; }
+  .term__form { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); border-top: 1px solid var(--line); font-family: var(--font-code); }
+  .term__input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--heading); font: inherit; font-size: 0.875rem; letter-spacing: 0; }
   .term__input::placeholder { color: var(--text-quiet); }
   .term__input:focus { outline: none; }
-  .term__form:focus-within { box-shadow: inset 0 0 0 2px var(--accent-wall); }
+  .term__form:focus-within { box-shadow: inset 0 0 0 2px var(--accent); }
+  .term__send { font-family: var(--font-body); }
   .term__chips { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0 var(--s-4) var(--s-4); list-style: none; }
   .term__chip {
-    min-height: 44px; padding: 0 var(--s-3); border: 1px solid var(--line-input); border-radius: var(--r-pill);
-    background: transparent; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+    min-height: 44px; padding: 0 var(--s-4); border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+    background: transparent; cursor: pointer; font-size: 0.8125rem; font-weight: 500; color: var(--text-muted);
   }
-  .term__chip:hover { color: var(--text); border-color: var(--text); }
-  .term__noscript { padding: 0 var(--s-4) var(--s-4); color: var(--text-muted); font-family: var(--font-body); }
+  .term__chip:hover { color: var(--heading); border-color: var(--heading); }
+  .term__noscript { padding: 0 var(--s-4) var(--s-4); color: var(--text-muted); }
 </style>

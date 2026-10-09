@@ -1,4 +1,4 @@
-"""Subset the three self-hosted fonts to the characters the site actually uses.
+"""Subset the two self-hosted fonts (DM Sans everywhere, JetBrains Mono for the terminal only) to the characters the site actually uses.
 
 Re-run after copy changes:  python scripts/subset-fonts.py   (needs: pip install fonttools brotli)
 Reads every text file in src/, keeps ASCII + every non-ASCII character found, preserves the variable
@@ -20,17 +20,15 @@ chars = {chr(c) for c in range(0x20, 0x7F)}
 for p in SRC.rglob('*'):
     if p.suffix in {'.ts', '.astro', '.mdx', '.md', '.json'} and 'assets' not in p.parts:
         chars |= set(p.read_text(encoding='utf-8'))
-chars |= set('’‘“”«»–—…·•→←↗✦   ')
+chars |= set('’‘“”«»–—…·•→←↗↘↓   ')
 text = ''.join(sorted(c for c in chars if c.isprintable() or c in '  '))
 
 FONTS = [
     # family, source file (latin subset), weight range, output name
-    ('Bricolage Grotesque Variable', NM / 'bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2', '200 800', 'bricolage-opsz-subset.woff2'),
     ('DM Sans Variable', NM / 'dm-sans/files/dm-sans-latin-wght-normal.woff2', '100 1000', 'dm-sans-wght-subset.woff2'),
     ('JetBrains Mono Variable', NM / 'jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2', '100 800', 'jetbrains-mono-wght-subset.woff2'),
 ]
 EXT = {
-    'Bricolage Grotesque Variable': NM / 'bricolage-grotesque/files/bricolage-grotesque-latin-ext-opsz-normal.woff2',
     'DM Sans Variable': NM / 'dm-sans/files/dm-sans-latin-ext-wght-normal.woff2',
     'JetBrains Mono Variable': NM / 'jetbrains-mono/files/jetbrains-mono-latin-ext-wght-normal.woff2',
 }
