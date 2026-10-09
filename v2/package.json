@@ -23,7 +23,8 @@
     "check:visual:update": "node scripts/visual.mjs --update",
     "check:perf": "node scripts/perf.mjs",
     "test:e2e": "playwright test --project=checks",
-    "types": "astro check"
+    "types": "astro check",
+    "prepare": "simple-git-hooks"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",
@@ -52,5 +53,9 @@
     "stylelint": "^17.16.0",
     "stylelint-declaration-strict-value": "^1.12.1",
     "typescript": "^6.0.3"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "cd v2 && npx lint-staged",
+    "pre-push": "cd v2 && npm run check"
   }
 }

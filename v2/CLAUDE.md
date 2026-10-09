@@ -46,7 +46,7 @@ must all pass (`docs/sops/release.md`).
   internal URL or hostname. Why: wrong or private. `scripts/check-banned.mjs` enforces it.
 - Demo or filler text ("Lorem", fake counters, "10+ years"), visible TODOs in production.
 - Copying another site's HTML, CSS or text (including loangoatinc.com and abdelilahnossair.com).
-- `git commit --no-verify` or `git push --no-verify`, or editing guardrail files (snapshots, `lighthouserc.cjs`,
+- `git commit --no-verify`, `git push --no-verify` or `SKIP_SIMPLE_GIT_HOOKS=1`, or editing guardrail files (snapshots, `lighthouserc.cjs`,
   `scripts/banned.json`, `.github/workflows/`) without Mamoun's OK. Why: checks must not be loosened quietly.
 
 ## Effects kill switch
