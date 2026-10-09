@@ -1,25 +1,25 @@
 ---
 key: esaha
 lang: en
-order: 4
+order: 5
 title: eSaha
-description: A privacy-first mental-health platform with secure auth, live chat with specialists, private journaling and appointments. React, TypeScript and Supabase.
-categories: [web]
-kind: Full-stack · health
+description: A mental-health platform with a GPT-powered assistant in 4 languages, built with React, TypeScript, Flask and MongoDB behind JWT auth.
+tier: more
+year: "2025"
+meta: Full-stack · Health · 2025
+outcome: A mental-health platform with a GPT-powered assistant in 4 languages.
+draft: true
 status: "[[todo:live, demo, or repo only?]]"
-summary: A privacy-first mental-health platform. Seven modules behind one login, nothing public by default.
 role: "[[todo:solo? course project or own initiative?]]"
-timeline: "[[todo:dates]]"
+timeline: "2025"
 team: "[[todo:team]]"
-platforms: Web (responsive)
-stack: [React, TypeScript, Vite, Tailwind CSS, React Router, Context API, Axios, Supabase (Auth, DB, Storage)]
+stack: [React, TypeScript, Flask, MongoDB, GPT API, JWT]
 links: []
 codeNote: "Code private (licensed). Walkthrough on request."
-number: { value: "7", caption: "modules in one Supabase-backed app" }
 constraint: Health data, so privacy-first and protected routes everywhere.
-tags: [React, TypeScript, Supabase, Real-time]
+tags: [React, TypeScript, Flask, MongoDB]
 diagram: esaha
-next: preparia
+next: aneuxplain
 ---
 
 <Chapter n="01" label="Problem" title="Asking for help shouldn't mean giving up your privacy.">
@@ -28,21 +28,18 @@ next: preparia
 
 </Chapter>
 
-<Chapter n="02" label="Approach" title="One login, seven places to go, nothing public by default.">
+<Chapter n="02" label="Approach" title="One login, four languages, an assistant that keeps its persona.">
 
-Every page sits behind authentication and protected routes. The seven modules:
+Every page sits behind JWT authentication. What the app does:
 
-- secure authentication;
-- a specialist directory to browse professionals;
-- real-time chat with providers;
-- a private journal for tracking progress;
-- appointment scheduling with a calendar;
-- emergency contacts;
-- a resources library, plus user settings.
+- dashboards and appointment booking;
+- a conversational assistant on the GPT-3.5 API, with one consistent persona across 4 languages;
+- sentiment analysis on the conversation;
+- an interface localised in 4 languages.
 
 </Chapter>
 
-<Chapter n="03" label="Architecture" title="A single-page app on top of Supabase.">
+<Chapter n="03" label="Architecture" title="A React front end on a Flask and MongoDB API.">
 
 <Diagram name="esaha" lang="en" />
 

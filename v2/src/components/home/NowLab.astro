@@ -1,33 +1,21 @@
 ---
 import Terminal from './Terminal.astro';
-import Star from '../Star.astro';
 import Rich from '../Rich.astro';
 import { now } from '../../data/site';
 import type { Lang } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
-const groups = [
-  { key: 'past', label: fr ? 'Avant' : 'Previously', items: now.previously },
-  { key: 'now', label: fr ? 'En cours' : 'In progress', items: now.inProgress },
-  { key: 'next', label: fr ? 'Ensuite' : 'Next', items: now.next },
-];
 ---
 <section class="lab section band" aria-labelledby="lab-h2" id="lab">
   <div class="wrap lab__grid">
     <div class="lab__left">
       <p class="label">{fr ? 'Maintenant' : 'Now'}</p>
-      <h2 class="h2" id="lab-h2" data-reveal-lines>{fr ? 'Un RAG gouvernemental, un modèle Kaggle, une idée football.' : 'A government RAG, a Kaggle knee model, a football idea.'}</h2>
-      <ol class="journey">
-        {groups.map((g) => (
-          <li class={`journey__group journey__group--${g.key}`}>
-            <p class="journey__label mono"><Star class="journey__star" />{g.label}</p>
-            <ul class="journey__items">
-              {g.items.map((it) => <li><Rich text={it[lang]} /></li>)}
-            </ul>
-          </li>
-        ))}
-      </ol>
+      <h2 class="h2" id="lab-h2" data-reveal-lines>{fr ? 'Un modèle xG pour le football, et un modèle Kaggle pour le genou.' : 'A football xG model and a Kaggle knee model.'}</h2>
+      <p class="lab__group mono">{fr ? 'En cours' : 'In progress'}</p>
+      <ul class="rows lab__items">
+        {now.inProgress.map((it) => <li><Rich text={it[lang]} /></li>)}
+      </ul>
     </div>
     <div class="lab__right">
       <p class="lab__intro">{fr
@@ -40,14 +28,9 @@ const groups = [
 
 <style>
   .lab__grid { display: grid; gap: var(--s-8); }
-  @media (min-width: 1024px) { .lab__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); align-items: start; } }
-  .journey { list-style: none; margin-top: var(--s-7); }
-  .journey__group { border-top: 1px solid var(--line); padding-block: var(--s-5); }
-  .journey__label { display: flex; align-items: center; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-3); }
-  .journey__label :global(.journey__star) { width: 10px; height: 10px; color: var(--line-input); }
-  .journey__group--now .journey__label { color: var(--accent); }
-  .journey__group--now .journey__label :global(.journey__star) { color: var(--accent-wall); }
-  .journey__items { list-style: none; display: grid; gap: var(--s-3); color: var(--text-muted); }
-  .journey__items :global(strong) { color: var(--text); font-weight: 600; }
+  @media (min-width: 1024px) { .lab__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--grid-gap) var(--s-8); align-items: start; } }
+  .lab__group { color: var(--accent); margin-top: var(--s-7); margin-bottom: var(--s-3); }
+  .lab__items > li { padding-block: var(--s-4); color: var(--text-muted); max-width: var(--measure); }
+  .lab__items :global(strong) { color: var(--text); font-weight: 600; }
   .lab__intro { color: var(--text-muted); margin-bottom: var(--s-5); max-width: 56ch; }
 </style>

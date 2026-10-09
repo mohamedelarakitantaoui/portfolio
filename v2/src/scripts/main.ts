@@ -137,7 +137,7 @@ function toggleTheme() {
   const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
   root.setAttribute('data-theme', next);
   try { localStorage.setItem('theme', next); } catch {}
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'light' ? '#ede6da' : '#0f0d0c');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', next === 'light' ? '#f4f4f1' : '#111111');
 }
 $$('[data-theme-toggle]').forEach((b) => {
   b.removeAttribute('hidden');
@@ -245,11 +245,6 @@ if (filters.length) {
 /* ---------------- contact form ---------------- */
 const form = $<HTMLFormElement>('[data-contact-form]');
 if (form) {
-  const params = new URLSearchParams(location.search);
-  const forParam = params.get('for');
-  const who = $<HTMLSelectElement>('select[name="who"]', form);
-  if (who && forParam === 'role') who.value = 'recruiter';
-  if (who && forParam === 'project') who.value = 'client';
   const success = $('[data-form-success]');
   const fallback = $('[data-form-fallback]');
   form.addEventListener('submit', async (e) => {
@@ -273,7 +268,7 @@ if (form) {
       success?.focus();
     } catch {
       // No form backend on this host: hand the message to the visitor's email app instead.
-      const subject = encodeURIComponent(`${data.get('who') ?? ''}: ${data.get('name') ?? ''}`);
+      const subject = encodeURIComponent(`Contact: ${data.get('name') ?? ''}`);
       const text = encodeURIComponent(`${data.get('message') ?? ''}\n\n${data.get('name') ?? ''} <${data.get('email') ?? ''}>`);
       fallback?.removeAttribute('hidden');
       fallback?.focus();
@@ -287,9 +282,51 @@ const loops = $$<HTMLVideoElement>('video[data-loop]');
 if (loops.length && !reduce) {
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target as HTMLVideoElement;
-    if (e.isIntersecting) v.play().catch(() => {}); else v.pause();
+    if (e.isIntersecting && !v.dataset.held) v.play().catch(() => {}); else v.pause();
   }), { threshold: 0.4 });
   loops.forEach((v) => io.observe(v));
+}
+
+// Play/pause button over a loop. Under reduced motion it is the only way to start it (big, centred).
+$$<HTMLButtonElement>('[data-loop-toggle]').forEach((btn) => {
+  const v = btn.parentElement?.querySelector<HTMLVideoElement>('video[data-loop]');
+  const label = $('[data-loop-label]', btn);
+  if (!v || !label) return;
+  const sync = () => {
+    const playing = !v.paused;
+    btn.setAttribute('aria-pressed', String(playing));
+    label.textContent = playing ? btn.dataset.pause! : btn.dataset.play!;
+  };
+  if (reduce) btn.classList.add('is-big');
+  v.addEventListener('play', sync);
+  v.addEventListener('pause', sync);
+  btn.addEventListener('click', () => {
+    btn.classList.remove('is-big');
+    if (v.paused) { delete v.dataset.held; v.play().catch(() => {}); } else { v.dataset.held = '1'; v.pause(); }
+  });
+  sync();
+  btn.removeAttribute('hidden');
+});
+
+/* ---------------- walkthrough dialog: [data-walk="<seconds>"] links open the full video there ---------------- */
+const walk = $<HTMLDialogElement>('[data-walk-dialog]');
+const walkVideo = walk && $<HTMLVideoElement>('video', walk);
+if (walk && walkVideo) {
+  const base = walkVideo.dataset.src!;
+  $$<HTMLAnchorElement>('[data-walk]').forEach((a) => a.addEventListener('click', (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    const t = Number(a.dataset.walk) || 0;
+    walk.showModal();
+    window.__lenis?.stop();
+    // Before metadata, a #t fragment is the reliable way to start mid-video; after, just seek.
+    if (walkVideo.readyState >= 1) walkVideo.currentTime = t;
+    else walkVideo.src = t ? `${base}#t=${t}` : base;
+    walkVideo.play().catch(() => {});
+  }));
+  $('[data-walk-close]', walk)?.addEventListener('click', () => walk.close());
+  walk.addEventListener('click', (e) => { if (e.target === walk) walk.close(); });
+  walk.addEventListener('close', () => { walkVideo.pause(); window.__lenis?.start(); });
 }
 
 /* ---------------- motion (last, optional) ---------------- */

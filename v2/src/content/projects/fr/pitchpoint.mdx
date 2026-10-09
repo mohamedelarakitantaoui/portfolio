@@ -1,0 +1,91 @@
+---
+key: pitchpoint
+lang: fr
+order: 3
+title: PitchPoint
+description: Un modèle xG entraîné sur plus de 99 000 événements, comparé au gradient boosting et à un modèle linéaire. Erreur de calibration 0,0038. Démo web en cours.
+tier: featured
+year: "2026"
+meta: ML · Football · 2026
+outcome: Les buts attendus à partir de la position de chaque joueur autour du tir, vérifiés par un banc d’évaluation construit avant tout modèle.
+tldr:
+  - "**Problème :** la probabilité qu’un tir devienne un but dépend de la position de tous les autres joueurs, pas seulement du tireur."
+  - "**Construit :** un encodeur d’ensembles à attention sur les positions des joueurs, mélangé 50/50 avec LightGBM, entraîné sur plus de 99 000 événements, et un banc d’évaluation construit avant tout modèle."
+  - "**Résultat :** erreur de calibration (ECE) passée de **0,0464 à 0,0038**, testée contre des références de gradient boosting et linéaire sur des données hors distribution, avec des tests de significativité par bootstrap et 444 tests au vert."
+status: Modèle et évaluation terminés ; démo web en cours, 2026.
+role: "[[todo:rôle (seul ?)]]"
+timeline: 2026, démo web en cours
+team: "[[todo:équipe]]"
+stack: [PyTorch, LightGBM, scikit-learn, FastAPI, React, SVG]
+links: []
+number: { value: "0,0038", caption: "erreur de calibration (ECE), contre 0,0464 au départ" }
+progress: "En cours : la démo web FastAPI + React."
+constraint: Il doit tenir sur des données qu’il n’a jamais vues, pas seulement en validation croisée.
+tags: [xG, PyTorch, LightGBM, Calibration]
+next: preparia
+---
+
+<Note>Démo web en cours. Le modèle et son évaluation sont terminés.</Note>
+
+<Chapter n="01" label="Problème" title="La valeur d’un tir dépend de tous les autres joueurs.">
+
+Les buts attendus (xG) sont la probabilité qu’un tir devienne un but. PitchPoint les apprend sur **plus de 99 000 événements StatsBomb** et regarde **où se trouvent les joueurs** au moment du tir, pas seulement le tireur.
+
+</Chapter>
+
+<Chapter n="02" label="Contraintes" title="Il doit marcher sur des matchs qu’il n’a jamais vus.">
+
+- **Données :** plus de 99 000 événements StatsBomb, avec la position des joueurs autour de chaque tir.
+- **Généralisation :** un bon score en validation croisée ne suffit pas ; le modèle doit tenir sur des données hors distribution.
+- **Les preuves d’abord :** le banc d’évaluation devait exister avant l’entraînement du premier modèle.
+
+<Todo>temps, puissance de calcul, et si vous l’avez construit seul</Todo>
+
+</Chapter>
+
+<Chapter n="03" label="Fonctionnement" title="Deux modèles, une prédiction, les mêmes tests pour tout.">
+
+1. **un encodeur d’ensembles à attention** lit les positions des joueurs comme un ensemble, sans dépendre de leur ordre ;
+2. **LightGBM**, un modèle d’arbres à gradient boosting, lit les caractéristiques du tir ;
+3. le xG final est un **mélange 50/50** des deux ;
+4. **un banc d’évaluation** vérifie chaque modèle de la même façon : validation croisée groupée, calibration, données hors distribution et tests de significativité par bootstrap groupé, avec **444 tests** au vert.
+
+</Chapter>
+
+<Chapter n="04" label="Décisions et compromis" title="J’ai construit les tests avant le modèle.">
+
+- **Le banc d’évaluation avant tout modèle.** Je l’ai construit en premier : l’encodeur et ses références, un gradient boosting et un modèle linéaire, ont tous été jugés par les mêmes tests.
+- **Un encodeur d’ensembles plutôt que des variables dans un ordre fixe.** Les joueurs autour d’un tir n’ont pas d’ordre naturel : j’ai choisi un modèle qui les lit de la même façon, quel que soit l’ordre.
+- **Un mélange 50/50 plutôt qu’un seul modèle.** Le mélange a fait mieux que chacun des deux, en validation croisée et hors distribution : j’ai gardé les deux plutôt que d’en choisir un.
+
+</Chapter>
+
+<Chapter n="05" label="Résultats" title="Erreur de calibration de 0,0464 à 0,0038.">
+
+<Stats items={[
+  { value: '0,0038', caption: 'erreur de calibration (ECE), contre 0,0464 au départ' },
+  { value: '99 000+', caption: 'événements dans les données d’entraînement' },
+  { value: '2', caption: 'références : gradient boosting et modèle linéaire' },
+  { value: '444', caption: 'tests au vert dans le banc d’évaluation' },
+]} />
+
+Le mélange 50/50 fait mieux que chaque modèle seul, en **validation croisée** comme sur des **données hors distribution**, et les écarts ont été vérifiés par des tests de significativité par bootstrap groupé.
+
+<ModelCard
+  use="Estimer la probabilité qu’un tir devienne un but, à partir du tir et de la position des joueurs autour."
+  outOfScope="Des données sans positions de joueurs, ou des données d’événements qui ne suivent pas le format StatsBomb."
+  data="Plus de 99 000 événements StatsBomb : les tirs et la position des joueurs autour. [[todo:compétitions et saisons]]"
+  evaluation="Validation croisée groupée, données hors distribution et tests de significativité par bootstrap groupé, contre des références de gradient boosting et linéaire. Erreur de calibration (ECE) 0,0464 → 0,0038. 444 tests au vert."
+  limitations="Mon hypothèse était fausse : je m’attendais à ce que l’attention se déplace vers les joueurs hors du cône de tir, et les tests d’occultation ont montré que non. La fiche de modèle du projet documente les autres."
+  failure="[[todo:un mode d’échec observé, par ex. un type de tir mal évalué]]"
+/>
+
+</Chapter>
+
+<Chapter n="06" label="Limites et suite" title="Mon hypothèse était fausse, et les tests l’ont montré.">
+
+Je m’attendais à ce que l’encodeur à attention se concentre davantage sur les joueurs **hors du cône de tir**. Les tests d’occultation, qui masquent les joueurs un par un et mesurent l’effet, ont montré que non. J’ai gardé le résultat et abandonné l’histoire.
+
+Ensuite : une démo full-stack. **FastAPI** sert le modèle, et une interface **React** affiche un **terrain en SVG** où l’on place les joueurs en glisser-déposer. <Todo>lien du dépôt, puis de la démo une fois en ligne</Todo>
+
+</Chapter>

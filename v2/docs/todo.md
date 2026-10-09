@@ -1,65 +1,41 @@
-# TODO(user): everything the site still needs from you
+# TODO(user): what the site still needs from you (v3)
 
-Each item shows on the live page as a dashed orange `TODO(user):` tag until you fill it.
-File paths say where to edit. EN and FR versions sit side by side.
+Every item below shows as a dashed `TODO(user):` tag in `npm run dev` only. Production builds drop it, and
+`npm run build` fails if one ever reaches a public page. Until you fill an item, its field, row or chapter is
+simply not shown on the live site. EN and FR versions sit side by side in the same files.
 
-## Blocking a good first impression (do these first)
-1. ~~Private repos~~ **Done (2026-10-05):** ScraperBot and eSaha show "Code private (…). Walkthrough on request."; AneuXplain links to AneuXplain-; Courses & Lessons links to my-courses-lessons-app; wellbeing-hub is not linked.
-2. **Domain.** Set `SITE_URL` (canonical, hreflang, sitemap and OG URLs currently use a placeholder Netlify URL). → `astro.config.mjs` / host env
-3. **Form service.** Netlify Forms (wired) or Formspree? Without a service, the form falls back to opening the visitor's email app. → `src/views/ContactView.astro`, `src/views/SimpleView.astro`
-4. **Availability wording.** Relocation vs remote-only for EU/US/CA from early 2027, and work-authorisation wording. → `src/data/site.ts` `status.employers`
-5. **Phone.** Show +212 691713525 publicly or not (hidden for now). → `src/views/ContactView.astro`
+## Highest impact
+1. **CV PDFs.** AI-ML, Data and Software are in `public/cv/` (copied 2026-10-08 from Downloads) but still say "95 %": replace them with the corrected LaTeX exports before publishing. `-Conseil.pdf` (FR, /fr/cv only) is still missing; its button stays hidden until the file exists.
+2. **Screenshots** for the DCE Scraper (terminal run or output folder, no client data) and PitchPoint (the pitch UI). Add as `cover` + `coverAlt` in the project's MDX frontmatter (both languages). Until then those two cards show no image.
+3. **PitchPoint:** competitions and seasons, one observed failure mode, role, repo link. → `src/content/projects/{en,fr}/pitchpoint.mdx`. (Metric done: ECE 0.0464 → 0.0038.)
+4. **Visa wording** in the hero and status lines ("visa sponsorship required" or nothing), and **graduation wording**. → `src/data/site.ts` (`hero.support`, `status.employers`, `education`)
+5. **AUI IT / DevOps team**: exact title, months, one result with a number. → `site.ts` `experience`
 
-## Facts to confirm
-6. Graduation wording for Al Akhawayn (B.S. CS, minor Communication Studies, 2021–2026). → `site.ts` `education`
-7. "Home is Marrakech" vs only "based in Marrakech". → `src/views/AboutView.astro`
-8. The four "How I work" principles are drawn from your projects. Are they yours? → `site.ts` `principles`
-9. Video title: the photo book opens on "Journey Through the Lens". Is that its name? → `src/views/CreativeView.astro`
-10. Code-size reduction from the repo notes (shown only as a TODO, not as a number). → `dce-scraper.mdx` chapter 04
-11. Repo-only stack details used on the site: Click CLI; Keycloak, Llama 3.2, Aya 8B, E5-Base, NGINX in Gov RAG. Confirm they're accurate and public.
+## Case studies
+6. AneuXplain: full ICOA author list; proceedings link / DOI once published.
+7. DCE Scraper: team size; still in use?; chapter 06 lesson (the chapter is hidden until written); confirm the code-size reduction note.
+8. Preparia: team; budget or what existed before; chapter 04 decisions and chapter 06 lesson. (Numbers done: 30+ modules, 6 subjects, 150+ students, 12 teachers.)
+9. eSaha (dev-only page, never built in production): who it's for, role, team, status, outcome, lesson. (Stack done: React, TypeScript, Flask, MongoDB, GPT API, JWT.)
+10. Mini Private Cloud (row only): role and the constraint it was built under.
+11. Quiz Game App and Courses & Lessons App: the year for each row.
 
-## DCE Scraper (`src/content/projects/{en,fr}/dce-scraper.mdx`)
-12. Team (solo or N people); still in use?; where it runs.
-13. Chapter 05: your one-line lesson + honest answer (prompts are on the page).
-14. Optional: a run-log screenshot or short terminal recording as a cover.
+## Services and contact
+12. Per pack: number of portals, timeline, and a "from" price in USD (the page shows "Price on request" now).
+13. Process: is the first call free? Support period after handover.
+14. FAQ: code ownership, NDA, payments, maintenance. Unanswered questions are hidden.
+15. Form service: Netlify Forms (wired) or Formspree.
+16. Email: switch to an @mamounelaraki.com address once the domain has mail (`person.email` in `site.ts`).
 
-## Secure Government RAG (`secure-gov-rag.mdx`)
-15. Your role, team, start date.
-16. What documents, which users, can the organisation be named; which screenshots are public.
-17. Done vs in progress; any eval numbers (answer accuracy, citation precision, latency).
-18. Chapter 05.
+## Other
+17. Kaggle profile link and score, if you want them shown.
+18. CV "updated" month.
+19. Creative: confirm the "Journey Through the Lens" title; more photos if you have them.
+20. Review the French copy (`site.ts` `fr` strings, `src/i18n/ui.ts`, `src/content/projects/fr/`).
 
-## AneuXplain (`aneuxplain.mdx`)
-19. Full author list; proceedings link / DOI when published.
-20. The external-test result and what it measures. **0.557 is deliberately not published** until you confirm it.
-21. Which deck slides may be exported as figures (heatmap, morphology report, 3D view).
-22. The deck's intro statistics stay off the site unless you give a source.
-
-## eSaha (`esaha.mdx`)
-23. Live, demo or repo only; role (solo? course project?); dates; team.
-24. Who it's for and why; one outcome number (testers, Lighthouse, …); screenshots.
-25. Chapter 05.
-
-## Preparia (`preparia.mdx`)
-26. Team; budget / what existed before; which exams, for whom; one number (exams, H5P activities or students).
-27. Chapter 05.
-
-## Archive and Now (`site.ts`)
-28. ~~Courses & Lessons App link~~ done.
-29. Kaggle profile link and current score, if you want them shown.
-
-## Services (`site.ts` `services`, `process`, `faq`)
-30. Per-pack: number of portals included, timeline, and later a "from" price (shows "Price on request" now).
-31. Process: is the first call free? Support period after handover.
-32. FAQ: code ownership, NDA, payments (deposit / milestones / currency), maintenance offer.
-
-## CV (`site.ts` `cvDownloads`, `src/views/CvView.astro`)
-33. Update month.
-34. PDFs for the AI/ML, Data and French "Conseil" tracks (only the software-engineering PDF exists).
-
-## Creative
-35. More photos, if you have them (the old site's 4 photo slots were empty files).
-36. The movie-poster PDF is 68 MB; it's linked as-is with its size shown. Want a compressed copy?
-
-## Translation
-37. Review the French copy (written by me from the English): `site.ts` `fr` strings, `src/i18n/ui.ts`, `src/content/projects/fr/`.
+## Decided (2026-10-07 / 08)
+- Intelcia result is "90% less processing time (2h30 → 15 min), 10+ hours saved per week". Never 95%.
+- Site facts follow the 7 Oct 2026 CVs (AI-ML, Data, Software). No Supabase anywhere.
+- Brand name "Mamoun El Araki"; legal name "Mohamed Al Mamoun Tantaoui El Araki" (JSON-LD `alternateName`).
+- Canonical domain https://mamounelaraki.com.
+- The capstone report (`public/research/aneuxplain-capstone-report.pdf`, compressed to 1.2 MB) is linked only from the AneuXplain case study, never as a CV.
+- AneuXplain numbers follow the capstone report: PR-AUC 0.626 (the old site said 0.93), cross-dataset ROC-AUC 0.557 explained in chapter 06.

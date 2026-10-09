@@ -1,0 +1,40 @@
+---
+// "More projects": one plain row each (title · one line · year · links). Home page and /work.
+import { moreProjects } from '../data/site';
+import { type Lang, lp } from '../i18n/ui';
+import { rich, shows } from '../lib/rich';
+interface Props { lang: Lang; heading?: 'h2' | 'h3'; id?: string }
+const { lang, heading: H = 'h3', id = 'more-projects' } = Astro.props;
+const fr = lang === 'fr';
+---
+<div class="more">
+  <H class="more__h" id={id}>{fr ? 'Autres projets' : 'More projects'}</H>
+  <ul class="rows more__rows" aria-labelledby={id}>
+    {moreProjects.map((p) => (
+      <li class="more__row">
+        <p class="more__title">{p.title}</p>
+        <p class="more__line" set:html={rich(p.line[lang])} />
+        <p class="more__year mono">{shows(p.year) ? <Fragment set:html={rich(p.year)} /> : ''}</p>
+        <p class="more__links">
+          {p.caseStudy && <a href={lp(lang, p.caseStudy)}>{fr ? 'Étude de cas' : 'Case study'}<span aria-hidden="true"> →</span><span class="sr-only">: {p.title}</span></a>}
+          {p.links.map((l) => <a href={l.href} target="_blank" rel="noopener">{l.label}<span aria-hidden="true"> ↗</span><span class="sr-only"> ({p.title}, {fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>)}
+        </p>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .more__h { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; margin-bottom: var(--s-4); }
+  .more__row { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-4); }
+  @media (min-width: 768px) {
+    .more__row { grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) 4rem minmax(0, 3fr); align-items: baseline; }
+  }
+  .more__title { font-weight: 600; color: var(--text); }
+  .more__line { color: var(--text-muted); }
+  @media (min-width: 768px) { .more__line { font-size: var(--fs-small); } }
+  .more__year { color: var(--text-quiet); }
+  .more__links { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); font-size: var(--fs-small); }
+  .more__links a { display: inline-flex; align-items: center; gap: 0.3em; min-height: 44px; text-decoration-color: var(--accent-wall); }
+  @media (min-width: 768px) { .more__links { justify-content: flex-end; } }
+</style>

@@ -1,27 +1,30 @@
 ---
 key: aneuxplain
 lang: fr
-order: 3
+order: 1
 title: AneuXplain
-description: IA explicable qui prédit le risque de rupture d’anévrismes intracrâniens à partir de la géométrie 3D des vaisseaux. Projet AUI, article ICOA 2026.
-categories: [research, ai]
-kind: Recherche · projet de fin d’études
-status: Article accepté à ICOA 2026 (paper ID 69)
-summary: Une prédiction du risque de rupture, trois explications qu’un clinicien peut vérifier. PointNet sur la géométrie 3D des vaisseaux.
-role: Auteur du projet de fin d’études ; co-auteur de l’article [[todo:liste complète des auteurs]]
+description: Une IA explicable qui prédit le risque de rupture d’anévrisme à partir de la géométrie 3D des vaisseaux. Projet AUI, article accepté à ICOA 2026.
+tier: featured
+year: "2026"
+meta: Recherche · Projet de fin d’études · 2026
+outcome: Prédit le risque de rupture d’un anévrisme à partir de la géométrie 3D des vaisseaux, et explique chaque prédiction de trois façons.
+tldr:
+  - "**Problème :** les modèles de risque de rupture renvoient un score qu’un clinicien ne peut pas vérifier, et sont rarement testés sur les examens d’un autre hôpital."
+  - "**Construit :** un modèle PointNet sur la géométrie 3D des vaisseaux, avec une carte de saillance par gradient et un rapport morphologique de 8 mesures, servi dans une application FastAPI + React + Three.js."
+  - "**Résultat :** **ROC-AUC de 0,834** et **85 % d’exactitude** avec un découpage par patient (16 patients mis de côté), et 48 sujets externes sur 50 traités de bout en bout. Article accepté à ICOA 2026."
+status: Article accepté à ICOA 2026 (paper ID 69). Prototype de recherche, pas un dispositif médical. [[todo:lien des actes / DOI une fois publié]]
+role: Seul auteur du projet de fin d’études ; co-auteur de l’article [[todo:liste complète des auteurs ICOA]]
 timeline: printemps 2026
-team: "[[todo:liste complète des auteurs]]"
-platforms: Prototype de recherche (Python)
-stack: [PyTorch, PointNet, DICOM, Marching cubes, Nuages de points 3D]
-venue: ICOA 2026, paper ID 69 [[todo:lien des actes / DOI une fois publié]]
-supervision: "Encadrant : Dr Oualid Kafi · Évaluatrice : Dr Lamiae Bouanane"
+team: "Seul, encadré par le Dr Oualid Kafi ; évalué par le Dr Lamiae Bouanane"
+stack: [PyTorch, PointNet, DICOM, Marching cubes, FastAPI, React, Three.js]
 links:
-  - { label: GitHub (AneuXplain-), href: "https://github.com/mohamedelarakitantaoui/AneuXplain-" }
-number: { value: "0,834", caption: "ROC-AUC sur le jeu de test interne" }
-constraint: "Un score brut est difficile à vérifier pour un médecin : chaque prédiction doit s’expliquer."
+  - { label: "GitHub (AneuXplain-)", href: "https://github.com/mohamedelarakitantaoui/AneuXplain-" }
+  - { label: "Lire le rapport de fin d’études complet (PDF, 53 pages, en anglais)", href: "/research/aneuxplain-capstone-report.pdf" }
+number: { value: "0,834", caption: "ROC-AUC sur 16 patients mis de côté (test interne)" }
+constraint: Un seul jeu de données public (103 patients), un semestre, et chaque prédiction devait pouvoir être vérifiée par un médecin.
 tags: [PyTorch, PointNet, Explicabilité, Imagerie médicale]
-diagram: aneu
-next: esaha
+loop: { webm: "/media/aneuxplain/aneuxplain-loop.webm", mp4: "/media/aneuxplain/aneuxplain-loop.mp4", poster: "/media/aneuxplain/aneuxplain-poster.webp", alt: "Boucle muette de l’application AneuXplain : reconstruction 3D, score de risque, carte de chaleur et mesures" }
+next: dce-scraper
 ---
 
 <Note>Prototype de recherche, pas un dispositif médical.</Note>
@@ -36,46 +39,72 @@ Les modèles de risque de rupture des anévrismes intracrâniens renvoient en g�
 
 </Chapter>
 
-<Chapter n="02" label="Approche" title="Une prédiction, trois explications.">
+<Chapter n="02" label="Contraintes" title="Un jeu de données public, un semestre, et un médecin qui doit pouvoir vérifier.">
 
-Chaque prédiction est rendue sous forme :
-
-1. **d’une probabilité de risque** entre 0 et 1 ;
-2. **d’une carte de chaleur** des zones du vaisseau qui pèsent dans la prédiction ;
-3. **d’un rapport morphologique** de 8 mesures : rapport dôme/collet, taille du collet, taille du dôme, indice de tortuosité, angle de bifurcation, indice de sphéricité, indice d’irrégularité et rapport d’aspect.
-
-Le modèle a été entraîné sur **IntrA** (2 012 échantillons 3D, 103 patients) et testé en externe sur **Lausanne TOF-MRA** (50 patients : 25 avec anévrisme, 25 sains).
+- **Données d’entraînement :** IntrA, 2 012 échantillons 3D de 103 patients, avec son propre procédé de maillage.
+- **Test externe :** la cohorte Lausanne TOF-MRA, 50 sujets (25 avec anévrisme, 25 sains), annotés par des sphères approximatives, pas par des contours exacts.
+- **Confiance :** un clinicien doit pouvoir vérifier chaque prédiction à partir d’éléments qu’il voit.
+- **Temps :** un semestre, seul, encadré par le Dr Oualid Kafi.
 
 </Chapter>
 
-<Chapter n="03" label="Architecture" title="D’un examen DICOM à un rapport en langage clair.">
+<Chapter n="03" label="Fonctionnement" title="D’un examen DICOM à un rapport lisible sans l’application.">
 
-<Diagram name="aneu" lang="fr" />
+<Flow label="Pipeline AneuXplain" steps={['DICOM', 'segmentation', 'maillage 3D', 'PointNet (2 048 pts)', 'carte de chaleur + risque + morphologie', 'rapport']} />
 
-Le classifieur est **PointNet** : 2 048 points échantillonnés sur la surface du vaisseau → max pooling → MLP → probabilité de risque.
+<AneuApp />
+
+Chaque prédiction est rendue de trois façons : une **probabilité de risque**, une **carte de saillance par gradient** des zones du vaisseau qui pèsent dans la prédiction, et un **rapport morphologique** de 8 mesures, du rapport dôme/collet au rapport d’aspect. Chaque analyse se termine par un PDF : le score d’abord, puis chaque mesure comparée à sa plage normale, puis un résumé en mots simples. Une analyse prend 13,9 s en moyenne : envoi, segmentation et analyse.
+
+<AneuReport />
 
 </Chapter>
 
-<Chapter n="04" label="Résultat" title="Solide sur les données qu’il connaît.">
+<Chapter n="04" label="Décisions et compromis" title="J’ai choisi le vérifiable plutôt que l’impressionnant.">
+
+- **Trois explications plutôt qu’un score.** J’ai choisi un score, une carte de chaleur et un rapport morphologique plutôt qu’une seule probabilité, parce qu’un médecin ne peut vérifier un score qu’à partir d’éléments. Quand les trois divergent, ce désaccord dit au clinicien de regarder de plus près.
+- **Un découpage par patient plutôt qu’un découpage aléatoire.** Une version antérieure découpait les échantillons au hasard : des morceaux du même patient se retrouvaient à la fois en entraînement et en validation. J’ai choisi un découpage 70/15/15 par patient, qui donne un chiffre plus bas mais honnête.
+- **Une seule correction de classes plutôt que deux.** Un échantillonneur pondéré plus une perte pondérée écrasaient toutes les prédictions vers 0,5. J’ai gardé une seule correction, baissé le taux d’apprentissage et attendu plus longtemps avant l’arrêt anticipé. Ce seul réentraînement a donné le 0,834.
+- **Une carte grisée plutôt qu’une valeur inventée.** Le rapport de taille a besoin du vaisseau porteur, que le prototype ne segmente pas encore. J’ai choisi d’afficher cette carte grisée avec une note plutôt qu’un chiffre que je ne pouvais pas calculer.
+
+</Chapter>
+
+<Chapter n="05" label="Résultats" title="0,834 sur des patients mis de côté, dans la fourchette publiée, avec un découpage plus strict.">
 
 <Stats items={[
-  { value: '0,834', caption: 'ROC-AUC, test interne' },
-  { value: '84,9 %', caption: 'exactitude, test interne' },
-  { value: '0,93', caption: 'PR-AUC, test interne' },
+  { value: '0,834', caption: 'ROC-AUC, 16 patients IntrA mis de côté (312 échantillons)' },
+  { value: '85 %', caption: 'exactitude au seuil 0,5, même découpage par patient' },
+  { value: '0,76', caption: 'sensibilité et spécificité au seuil équilibré (0,27)' },
+  { value: '48 / 50', caption: 'sujets externes de Lausanne traités de bout en bout' },
 ]} />
 
-Ce sont des résultats internes sur IntrA. Le test externe de Lausanne est là où se trouve le vrai problème ouvert (chapitre 05). <Todo>exporter les diapositives du support utilisables comme figures</Todo>
+Le 0,834 se situe dans la fourchette publiée pour les classifieurs PointNet sur IntrA (0,80 à 0,90). La plupart de ces chiffres viennent de découpages aléatoires, qui mélangent les patients entre entraînement et test ; le mien vient d’un découpage par patient.
+
+<ModelCard
+  use="Aide à la décision pour la recherche : aider un clinicien à lire la géométrie d’un anévrisme et à voir ce qui fait le score. Pas un diagnostic."
+  outOfScope="Diagnostic clinique ou décisions de traitement, et examens issus de scanners ou de chaînes de traitement sur lesquels il n’a pas été validé."
+  data="Entraîné sur IntrA : 2 012 échantillons 3D de 103 patients, découpés 70/15/15 par patient. Jeu externe : Lausanne TOF-MRA, 50 sujets (25 patients, 25 témoins)."
+  evaluation="Test IntrA mis de côté (16 patients) : ROC-AUC 0,834, PR-AUC 0,626, exactitude 85 % au seuil 0,5 (découpage par patient). Références : le hasard (0,5) et les classifieurs PointNet publiés sur IntrA (0,80 à 0,90). Entre jeux de données, sur Lausanne (48 sujets, patient contre témoin) : ROC-AUC 0,557."
+  limitations="Un seul jeu d’entraînement ; une petite cohorte externe aux annotations approximatives, sans suivi des ruptures ; des seuils morphologiques tirés de la littérature, non revus cas par cas par un clinicien."
+  failure="Sur les examens de Lausanne, l’application a signalé chaque sujet « Out of distribution » (score z de longueur d’arête du maillage autour de −116) : ma chaîne DICOM produit des maillages différents de ceux d’IntrA. Le badge s’affiche au lieu d’un score trop sûr de lui."
+/>
+
+[Lire le rapport de fin d’études complet (PDF, 53 pages, en anglais)](/research/aneuxplain-capstone-report.pdf)
 
 </Chapter>
 
-<Chapter n="05" label="Ce que je ferais autrement" title="Entraîner sur plusieurs hôpitaux dès le départ.">
+<Chapter n="06" label="Limites et suite" title="Il ne passe pas encore d’un hôpital à l’autre.">
 
-Le point faible, c’est la **généralisation d’un hôpital à l’autre** : la performance sur des examens venant d’un autre hôpital et d’un autre scanner. <Todo>le résultat du test externe et ce qu’il mesure, avant publication</Todo>
+Sur les examens d’un autre hôpital, traités par ma propre chaîne, la ROC-AUC tombe à **0,557**, à peine au-dessus du hasard. Le rapport en identifie deux causes :
+
+- **Des maillages différents.** IntrA fournit des maillages nettoyés ; les miens viennent de ma propre segmentation, donc chaque sujet de Lausanne est hors distribution.
+- **Un raccourci de coordonnées.** La chaîne ignore une partie des données d’orientation de l’examen : 21 % des patients ont eu besoin d’un recadrage de repli au centre du maillage plutôt que sur l’anévrisme.
 
 Prochaines étapes :
 
-- entraîner sur plusieurs hôpitaux et scanners ;
-- ajouter un assistant « pourquoi est-ce risqué ? » destiné aux médecins, au-dessus des trois explications ;
+- appliquer la transformation de coordonnées complète de l’examen pour que le recadrage tombe sur l’anévrisme ;
+- harmoniser les maillages, puis entraîner sur plusieurs hôpitaux et scanners ;
+- ajouter un assistant « pourquoi est-ce risqué ? » pour les médecins, au-dessus des trois explications ;
 - publier le code, le modèle et le protocole de validation.
 
 </Chapter>

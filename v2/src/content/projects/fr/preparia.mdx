@@ -1,57 +1,76 @@
 ---
 key: preparia
 lang: fr
-order: 5
+order: 6
 title: Preparia
-description: Une plateforme de préparation aux concours pour ITS Elaraki School, sur WordPress, Elementor et des exercices interactifs H5P. En ligne sur preparia.ma.
-categories: [web]
-kind: ITS Elaraki · stage
+description: "Une plateforme de préparation au bac pour ITS Elaraki School, sur WordPress et H5P : 30+ modules, 6 matières, 150+ élèves formés."
+tier: more
+year: "2024"
+meta: Stage · ITS Elaraki · 2024
+outcome: Une plateforme de préparation au baccalauréat avec plus de 30 modules interactifs sur 6 matières, utilisée par plus de 150 élèves.
+tldr:
+  - "**Problème :** l’école ITS Elaraki avait besoin d’une plateforme en ligne pour préparer ses élèves au baccalauréat, en français."
+  - "**Construit :** la plateforme sur WordPress et H5P : plus de 30 modules interactifs sur 6 matières du baccalauréat, et les bases d’une application mobile."
+  - "**Résultat :** **plus de 150 élèves et 12 enseignants** formés grâce à la documentation, au support et aux formations que j’ai assurés, sans support informatique ensuite. En ligne sur preparia.ma."
 status: En ligne sur preparia.ma
-summary: Une plateforme de préparation aux concours avec des exercices interactifs H5P, réalisée pendant un stage d’été.
-role: Stagiaire chef de projet
+role: Stagiaire en applications web
 timeline: juin–août 2024
 team: "[[todo:équipe]]"
-platforms: Web
 stack: [WordPress, Elementor, H5P]
-languages: Français
 links:
   - { label: preparia.ma, href: "https://preparia.ma/fr_fr" }
-number: { value: "En ligne", caption: "preparia.ma [[todo:un chiffre : concours couverts, activités H5P ou élèves]]" }
-constraint: Un été, sur WordPress + Elementor + H5P, avec les bases d’une application mobile. [[todo:budget ou existant]]
+number: { value: "150+", caption: "élèves formés, plus 12 enseignants" }
+constraint: Un été, sur WordPress + H5P, en français, pour des utilisateurs sans support informatique ensuite. [[todo:budget ou existant]]
 tags: [WordPress, Elementor, H5P]
 cover: ../../../assets/covers/preparia.png
 coverAlt: La page d’accueil de preparia.ma telle qu’elle est aujourd’hui, avec l’accroche de la plateforme et trois espaces de formation.
 diagram: preparia
-next: dce-scraper
+next: aneuxplain
 ---
 
-<Chapter n="01" label="Problème" title="Une préparation aux concours sur laquelle on s’entraîne, au lieu de la lire.">
+<Chapter n="01" label="Problème" title="Une préparation aux concours sur laquelle on s’entraîne, pas seulement qu’on lit.">
 
-<Todo>quels concours Preparia couvre, et pour qui</Todo>
-
-</Chapter>
-
-<Chapter n="02" label="Approche" title="Des exercices H5P interactifs dans un site WordPress.">
-
-J’ai livré la plateforme sur **WordPress + Elementor**, avec **H5P** pour le contenu interactif. J’ai aussi amélioré les visuels et préparé les bases d’une application mobile complémentaire.
+L’école ITS Elaraki, à Marrakech, avait besoin d’une plateforme en ligne pour préparer ses élèves au baccalauréat, en français, sur 6 matières.
 
 </Chapter>
 
-<Chapter n="03" label="Architecture" title="WordPress, Elementor et H5P sur un seul site.">
+<Chapter n="02" label="Contraintes" title="Un été, sur WordPress, en français.">
+
+- **Temps :** un stage d’été, de juin à août 2024.
+- **Stack :** WordPress et Elementor, avec H5P pour le contenu interactif.
+- **Langue :** la plateforme a été livrée en français, la langue que lisent ses élèves.
+- **Adoption :** élèves et enseignants devaient l’utiliser seuls, sans support informatique ensuite.
+
+</Chapter>
+
+<Chapter n="03" label="Fonctionnement" title="Des exercices H5P interactifs dans un site WordPress.">
 
 <Diagram name="preparia" lang="fr" />
 
-</Chapter>
-
-<Chapter n="04" label="Résultat" title="En ligne aujourd’hui sur preparia.ma.">
-
-La plateforme est en ligne sur [preparia.ma](https://preparia.ma/fr_fr). La capture ci-dessus montre le site tel qu’il est aujourd’hui, y compris d’éventuels changements faits après mon stage.
-
-<Todo>un chiffre : concours couverts, activités H5P ou élèves</Todo>
+J’ai construit la plateforme sur **WordPress**, avec **H5P** pour **plus de 30 modules interactifs** sur 6 matières du baccalauréat. J’ai aussi amélioré les visuels et préparé les bases d’une application mobile complémentaire.
 
 </Chapter>
 
-<Chapter n="05" label="Ce que je ferais autrement" title="[[todo:votre leçon en une ligne]]">
+<Chapter n="04" label="Décisions et compromis" title="[[todo:le choix principal, formulé comme une affirmation]]">
+
+<Todo>2 ou 3 décisions sous la forme « j’ai choisi X plutôt que Y parce que Z », par ex. H5P plutôt qu’un moteur de quiz maison</Todo>
+
+</Chapter>
+
+<Chapter n="05" label="Résultats" title="Plus de 150 élèves et 12 enseignants formés.">
+
+<Stats items={[
+  { value: '30+', caption: 'modules interactifs' },
+  { value: '6', caption: 'matières du baccalauréat' },
+  { value: '150+', caption: 'élèves formés' },
+  { value: '12', caption: 'enseignants formés' },
+]} />
+
+J’ai rédigé la documentation, assuré le support fonctionnel et formé les utilisateurs moi-même, pour qu’ils puissent travailler sans support informatique ensuite. La plateforme est en ligne sur [preparia.ma](https://preparia.ma/fr_fr). La capture ci-dessus montre le site tel qu’il est aujourd’hui, y compris d’éventuels changements faits après mon stage.
+
+</Chapter>
+
+<Chapter n="06" label="Limites et suite" title="[[todo:votre leçon en une ligne]]">
 
 <Todo>votre réponse honnête</Todo>
 

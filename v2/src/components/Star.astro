@@ -1,8 +1,10 @@
 ---
-// The khatam: 8-point star made of two overlapping squares. The site's one symbol.
-import { STAR_PATH } from '../lib/rich';
-interface Props { class?: string; label?: string; stroke?: boolean }
-const { class: cls = '', label, stroke = false } = Astro.props;
+// The mark: one continuous {8/3} star polygon, stroke only, never filled.
+// `weight` is the stroke in viewBox units, so it scales with the mark (default 8 = 1.76px at 22px).
+// `px` pins a minimum on-screen stroke instead (non-scaling), used for marks smaller than ~20px.
+import { STAR_POINTS } from '../lib/rich';
+interface Props { class?: string; label?: string; weight?: number; px?: number; draw?: boolean }
+const { class: cls = '', label, weight = 8, px, draw = false } = Astro.props;
 ---
 <svg
   class={cls}
@@ -11,8 +13,16 @@ const { class: cls = '', label, stroke = false } = Astro.props;
   aria-label={label}
   aria-hidden={label ? undefined : 'true'}
   focusable="false"
+  overflow="visible"
 >
-  {stroke
-    ? <path d={STAR_PATH} fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="miter" pathLength="1" />
-    : <path d={STAR_PATH} fill="currentColor" />}
+  <polygon
+    points={STAR_POINTS}
+    fill="none"
+    stroke="currentColor"
+    stroke-width={px ?? weight}
+    stroke-linejoin="miter"
+    stroke-miterlimit="4"
+    vector-effect={px ? 'non-scaling-stroke' : undefined}
+    pathLength={draw ? 1 : undefined}
+  />
 </svg>

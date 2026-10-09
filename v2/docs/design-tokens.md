@@ -1,4 +1,29 @@
-# design-tokens.md: Stage 5, "Marrakech editorial"
+# design-tokens.md
+
+> ## Rebrand 2026-10-05: "Saffron" (supersedes the colour and symbol sections below)
+> The clay orange on cream and the filled 8-point star read too close to Claude/Anthropic's brand, so both
+> were replaced everywhere: tokens, logo, favicon, preloader, bullets, dividers, 404, OG images, light theme.
+>
+> **Accent with a reason:** Taliouine saffron, the spice grown in the Souss south of Marrakech.
+> **Mark:** one continuous {8/3} star polygon, stroke only (`50,10 78.3,78.3 10,50 78.3,21.7 50,90 21.7,21.7 90,50 21.7,78.3`),
+> never filled. Stroke scales with size (`weight` in viewBox units); marks under ~20px use a 1.5px non-scaling stroke.
+> It still replaces the O in M A M _ U N.
+>
+> | Token | Dark | contrast (bg · band · surface) | Light | contrast |
+> |---|---|---|---|---|
+> | bg / band / surface | `#111111` / `#191919` / `#222222` | | `#F4F4F1` / `#EAEAE6` / `#FFFFFF` | |
+> | text | `#F2F0EA` | 16.57 · 15.43 · 13.96 | `#111111` | 17.14 · 15.66 · 18.88 |
+> | muted | `#A3A39E` (brief's `#8A8A85` = 4.59 on surface, lightened) | 7.45 · 6.94 · 6.28 | `#55554F` | 6.81 · 6.22 · 7.50 |
+> | quiet | `#9C9C97` | 6.85 · 6.38 · 5.77 | `#5E5E58` | 5.92 · 5.41 · 6.53 |
+> | unlit (large text only) | `#74746F` | 4.02 · 3.74 · 3.39 | `#84847E` | 3.41 · 3.12 · 3.76 |
+> | field/button outline | `#6E6E69` | 3.68 · 3.43 · 3.10 | `#7E7E78` | 3.71 · 3.39 · 4.08 |
+> | accent text, mark, focus | `#F2A900` | 9.40 · 8.75 · 7.92 | `#7F5900` (saffron darkened) | 5.72 · 5.23 · 6.30 |
+> | button fill / text | `#F2A900` / `#111111` | 9.40 | `#F2A900` / `#111111` | 9.40 |
+>
+> No cream or beige backgrounds and no orange anywhere. Verified on 26 pages × 2 widths × 2 themes:
+> axe 0 serious, 0 text pairs under AA.
+
+## Original v1 of this file: "Marrakech editorial"
 
 ## The accent, with its reason
 **Terracotta from the ramparts of Marrakech, *la ville rouge*.** The city's walls are

@@ -1,0 +1,34 @@
+---
+// Model card for ML case studies (chapter 05): intended use, out of scope, data, evaluation against a named
+// baseline, limitations, one observed failure mode. Rows that are only TODOs are dropped in production.
+import { rich, shows } from '../../lib/rich';
+import { langFromUrl } from '../../i18n/ui';
+interface Props { use: string; outOfScope: string; data: string; evaluation: string; limitations: string; failure: string }
+const p = Astro.props;
+const fr = langFromUrl(Astro.url) === 'fr';
+const rows: [string, string][] = [
+  [fr ? 'Usage prévu' : 'Intended use', p.use],
+  [fr ? 'Hors périmètre' : 'Out of scope', p.outOfScope],
+  [fr ? 'Données' : 'Training data', p.data],
+  [fr ? 'Évaluation' : 'Evaluation', p.evaluation],
+  [fr ? 'Limites' : 'Limitations', p.limitations],
+  [fr ? 'Mode d’échec observé' : 'Observed failure mode', p.failure],
+];
+---
+<aside class="mcard" aria-label={fr ? 'Fiche du modèle' : 'Model card'}>
+  <p class="mcard__title mono">{fr ? 'Fiche du modèle' : 'Model card'}</p>
+  <dl class="mcard__rows">
+    {rows.filter(([, v]) => shows(v)).map(([k, v]) => (
+      <div><dt class="mono">{k}</dt><dd set:html={rich(v)} /></div>
+    ))}
+  </dl>
+</aside>
+
+<style>
+  .mcard { margin-block: var(--s-6); border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: var(--bg-band); padding: var(--s-5); }
+  .mcard__title { color: var(--accent); margin-bottom: var(--s-3); }
+  .mcard__rows > div { display: grid; gap: var(--s-1) var(--s-4); padding-block: var(--s-3); border-top: 1px solid var(--line); }
+  @media (min-width: 640px) { .mcard__rows > div { grid-template-columns: 11rem minmax(0, 1fr); } }
+  .mcard dt { color: var(--text-quiet); padding-top: 0.2em; }
+  .mcard dd { color: var(--text); font-size: var(--fs-small); line-height: 1.55; }
+</style>

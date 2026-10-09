@@ -3,6 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // One MDX file per project per language: src/content/projects/<lang>/<key>.mdx (id = "<lang>/<key>").
+// Case study template (v3): header → overview sidebar → TL;DR (3 bullets) → chapters 01–06 → next project.
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
   schema: ({ image }) =>
@@ -12,26 +13,35 @@ const projects = defineCollection({
       order: z.number(),
       title: z.string(),
       description: z.string().max(155),
-      categories: z.array(z.enum(['ai', 'automation', 'web', 'research'])),
-      kind: z.string(),
+      // featured = one of the three cards on the home page and /work; more = a one-line row.
+      tier: z.enum(['featured', 'more']).default('more'),
+      year: z.string(),
+      // Mono meta line on cards and the case-study header, e.g. "Research · Capstone · 2026".
+      meta: z.string(),
+      // One sentence: what changed.
+      outcome: z.string(),
+      // Exactly three bullets: the problem, what I built, the result (with a number).
+      tldr: z.array(z.string()).length(3).optional(),
       status: z.string(),
-      summary: z.string(),
       role: z.string(),
       timeline: z.string(),
       team: z.string(),
-      platforms: z.string(),
       stack: z.array(z.string()),
-      languages: z.string().optional(),
-      venue: z.string().optional(),
-      supervision: z.string().optional(),
       links: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
       codeNote: z.string().optional(),
-      number: z.object({ value: z.string(), caption: z.string() }),
+      // The one big number on the card. Omit it until there is a real result (then `progress` shows instead).
+      number: z.object({ value: z.string(), caption: z.string() }).optional(),
+      progress: z.string().optional(),
       constraint: z.string(),
-      tags: z.array(z.string()),
+      tags: z.array(z.string()).max(4),
       cover: image().optional(),
       coverAlt: z.string().optional(),
-      diagram: z.enum(['dce', 'rag', 'aneu', 'esaha', 'preparia']),
+      // Real product loop for the card and case-study header (files in public/).
+      loop: z.object({ webm: z.string(), mp4: z.string(), poster: z.string(), alt: z.string() }).optional(),
+      diagram: z.enum(['dce', 'esaha', 'preparia']).optional(),
+      caseStudy: z.boolean().default(true),
+      // draft: the case-study page is built by `astro dev` only, never in production.
+      draft: z.boolean().default(false),
       next: z.string(),
     }),
 });

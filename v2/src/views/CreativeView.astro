@@ -1,4 +1,5 @@
 ---
+import Todo from '../components/mdx/Todo.astro';
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
@@ -22,7 +23,7 @@ const designs = [
 ---
 <Base
   lang={lang}
-  title={fr ? 'Créatif · Mamoun Tantaoui El Araki' : 'Creative · Mamoun Tantaoui El Araki'}
+  title={fr ? 'Créatif · Mamoun El Araki' : 'Creative · Mamoun El Araki'}
   description={fr
     ? 'Photographie et mise en page faites à côté du code : un livre photo sur deux projets de fin d’études, une série en six images, des projets XD, Photoshop et InDesign.'
     : 'Photography and layout made alongside the code: a photo book on two capstone projects, a six-frame series, and Adobe XD, Photoshop and InDesign work.'}
@@ -49,7 +50,7 @@ const designs = [
             </video>
           </div>
           <figcaption>
-            <strong>Journey Through the Lens</strong> <span class="todo">{fr ? 'confirmer le titre' : 'confirm title'}</span>
+            <strong>Journey Through the Lens</strong> <Todo>{fr ? 'confirmer le titre' : 'confirm title'}</Todo>
             <span class="photo__meta">{fr ? 'Livre photo qui suit les projets de fin d’études de deux étudiants, 2025.' : 'A photo book following two students’ capstone projects, 2025.'}</span>
             <a class="btn btn--sm" href="/media/journey-full.mp4">{fr ? 'Voir la vidéo complète (1 min 07, son, 2,1 Mo)' : 'Watch the full video (1:07, sound, 2.1 MB)'}</a>
           </figcaption>
@@ -62,7 +63,7 @@ const designs = [
           </figcaption>
         </figure>
       </div>
-      <p class="more"><span class="todo">{fr ? 'ajouter d’autres photos si vous en avez' : 'add more photos if you have them'}</span></p>
+      <Todo>{fr ? 'ajouter d’autres photos si vous en avez' : 'add more photos if you have them'}</Todo>
     </div>
   </section>
 

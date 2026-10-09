@@ -1,24 +1,27 @@
 ---
+// Two audiences, two doors. One primary button in the section (Download CV).
 import CopyEmail from '../CopyEmail.astro';
 import { doors, person } from '../../data/site';
+import { cvLink } from '../../lib/cv';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
+const cv = cvLink(lang);
 ---
 <section class="doors section" aria-labelledby="doors-h2">
   <div class="wrap">
     <p class="label">{fr ? 'Travailler ensemble' : 'Work with me'}</p>
-    <h2 class="h2 doors__h2" id="doors-h2" data-reveal-lines>{fr ? 'Recrutez-moi à Marrakech ou à distance, ou confiez-moi vos PDF.' : 'Hire me in Marrakech or remote, or hand me your PDFs.'}</h2>
+    <h2 class="h2 doors__h2" id="doors-h2" data-reveal-lines>{fr ? 'Un poste à temps plein, ou un projet au périmètre fixe.' : 'A full-time role, or a project with a fixed scope.'}</h2>
     <div class="doors__grid">
       <div class="door">
         <p class="mono door__label">{doors.employers.label[lang]}</p>
         <h3 class="door__title">{doors.employers.title[lang]}</h3>
         <p class="door__text">{doors.employers.text[lang]}</p>
         <div class="door__ctas">
-          <a class="btn btn--primary" href={person.cvHref} download>{t(lang, 'cta.downloadCv')}</a>
+          <a class="btn btn--primary" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
+          <a class="btn" href={person.linkedin} target="_blank" rel="me noopener">{t(lang, 'cta.linkedin')}<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
           <CopyEmail lang={lang} />
-          <a class="btn door__mail" href={`mailto:${person.email}?subject=${encodeURIComponent(fr ? 'Poste' : 'Role')}`}>{person.email}</a>
         </div>
       </div>
       <div class="door">
@@ -26,8 +29,8 @@ const fr = lang === 'fr';
         <h3 class="door__title">{doors.clients.title[lang]}</h3>
         <p class="door__text">{doors.clients.text[lang]}</p>
         <div class="door__ctas">
-          <a class="btn btn--primary" href={lp(lang, '/contact') + '?for=project'}>{t(lang, 'cta.start')}<span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}</a>
+          <a class="btn" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}<span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn" href={`mailto:${person.email}?subject=${encodeURIComponent(fr ? 'Projet' : 'Project')}`}>{t(lang, 'cta.emailMe')}</a>
         </div>
       </div>
     </div>
@@ -35,7 +38,7 @@ const fr = lang === 'fr';
 </section>
 
 <style>
-  .doors__h2 { max-width: 18ch; margin-bottom: var(--s-7); }
+  .doors__h2 { max-width: 22ch; margin-bottom: var(--s-7); }
   .doors__grid { display: grid; border-top: 1px solid var(--line); }
   .door { padding-block: var(--s-6); display: grid; gap: var(--s-4); align-content: start; }
   .door + .door { border-top: 1px solid var(--line); }
@@ -45,9 +48,7 @@ const fr = lang === 'fr';
     .door + .door { border-top: 0; border-inline-start: 1px solid var(--line); padding-inline: var(--s-7) 0; }
   }
   .door__label { color: var(--accent); }
-  .door__title { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.05; max-width: 20ch; }
+  .door__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; max-width: 24ch; }
   .door__text { color: var(--text-muted); max-width: 48ch; }
   .door__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
-  .door__mail { text-transform: none; }
-  :global(html.js) .door__mail { display: none; }
 </style>

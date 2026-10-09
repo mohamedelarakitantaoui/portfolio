@@ -55,6 +55,14 @@ export async function init() {
       const el = entry.target as HTMLElement;
       io.unobserve(el);
       const split = SplitText.create(el, { type: 'lines', mask: 'lines' });
+      // Display headings run at line-height ~0.95, so glyph tops and descenders overflow each line box.
+      // Give every mask wrapper room (padding cancelled by negative margin) and clip there, never on the section.
+      split.masks.forEach((m) => {
+        const s = (m as HTMLElement).style;
+        s.overflow = 'clip';
+        s.paddingBlock = '0.14em';
+        s.marginBlock = '-0.14em';
+      });
       el.classList.remove('rv-pending');
       gsap.from(split.lines, { yPercent: 100, duration: 0.8, ease, stagger: 0.08, onComplete: () => split.revert() });
     }

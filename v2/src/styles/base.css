@@ -40,7 +40,7 @@ dl, dd { margin: 0; }
   border-radius: 4px;
 }
 
-::selection { background: var(--accent); color: var(--accent-ink); }
+::selection { background: var(--accent-fill); color: var(--accent-fill-ink); }
 
 /* Long French/URL tokens never force sideways scroll; grid children may shrink below their content */
 p, li, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: break-word; }
@@ -53,8 +53,12 @@ p, li, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: break-wor
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
-.section { padding-block: var(--s-8); }
-@media (min-width: 1024px) { .section { padding-block: var(--s-9); } }
+.section { padding-block: var(--section-y); }
+/* 12-column grid: max 1200px content, 24px gap */
+.grid-12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); }
+.grid-12 > * { grid-column: 1 / -1; min-width: 0; }
+/* Readable measure: no paragraph wider than ~66 characters */
+main p { max-width: var(--measure); }
 .band { background: var(--bg-band); }
 
 .sr-only {
@@ -66,7 +70,7 @@ p, li, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: break-wor
 }
 .skip-link {
   position: absolute; left: var(--s-4); top: -100px; z-index: 100;
-  background: var(--accent); color: var(--accent-ink);
+  background: var(--accent-fill); color: var(--accent-fill-ink);
   padding: var(--s-3) var(--s-4); border-radius: var(--r-pill); font-weight: 600;
 }
 .skip-link:focus { top: var(--s-4); }
@@ -89,7 +93,7 @@ p, li, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: break-wor
   letter-spacing: -0.03em;
   line-height: 1.1;
 }
-.lede { font-size: var(--fs-lede); color: var(--text-muted); max-width: 60ch; line-height: 1.5; }
+.lede { font-size: var(--fs-lede); color: var(--text-muted); max-width: var(--measure); line-height: 1.5; }
 .muted { color: var(--text-muted); }
 .mono {
   font-family: var(--font-mono);
@@ -98,16 +102,17 @@ p, li, dd, dt, h1, h2, h3, h4, figcaption, blockquote { overflow-wrap: break-wor
   text-transform: uppercase;
   font-weight: 500;
 }
-.prose { max-width: 68ch; }
-.prose p + p { margin-top: 1em; }
+/* Text in prose keeps the measure; stats, model cards and media use the full column. */
+.prose > p, .prose li { max-width: var(--measure); }
+.prose p + p, .prose ul + p, .prose ol + p { margin-top: 1em; }
 .prose a { color: var(--text); text-decoration-color: var(--accent-wall); }
 .prose strong { font-weight: 600; color: var(--text); }
 .prose ul { list-style: none; display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .prose ul li { position: relative; padding-inline-start: 1.4em; }
 .prose ul li::before {
-  content: ''; position: absolute; inset-inline-start: 0; top: 0.55em;
-  width: 0.55em; height: 0.55em; background: var(--accent-wall);
-  clip-path: polygon(50% 0, 64.6% 14.6%, 85.4% 14.6%, 85.4% 35.4%, 100% 50%, 85.4% 64.6%, 85.4% 85.4%, 64.6% 85.4%, 50% 100%, 35.4% 85.4%, 14.6% 85.4%, 14.6% 64.6%, 0 50%, 14.6% 35.4%, 14.6% 14.6%, 35.4% 14.6%);
+  content: ''; position: absolute; inset-inline-start: 0;
+  width: 0.75em; height: 0.75em; top: 0.4em; background: var(--accent-wall);
+  -webkit-mask: var(--mark-mask) center / contain no-repeat; mask: var(--mark-mask) center / contain no-repeat;
 }
 
 /* Section label: "SELECTED WORK →" above every h2 */
@@ -134,15 +139,15 @@ html[dir='rtl'] .label::after { content: '←'; }
 .btn .arrow { transition: transform var(--dur-1) var(--ease-out); }
 .btn:hover .arrow { transform: translateX(4px); }
 html[dir='rtl'] .btn .arrow { transform: scaleX(-1); }
-.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn--primary { background: var(--accent-fill); border-color: var(--accent-fill); color: var(--accent-fill-ink); }
+.btn--primary:hover { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
 .btn--sm { min-height: 44px; padding: 0 var(--s-4); font-size: 0.875rem; }
 
 .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); list-style: none; }
 .tag {
   display: inline-flex; align-items: center; min-height: 28px; padding: 0 var(--s-3);
   border: 1px solid var(--line-strong); border-radius: var(--r-pill);
-  font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em;
+  font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
 }
 
@@ -151,7 +156,7 @@ html[dir='rtl'] .btn .arrow { transform: scaleX(-1); }
 .rows > li { border-top: 1px solid var(--line); }
 .rows > li:last-child { border-bottom: 1px solid var(--line); }
 
-/* Visible TODO(user) markers: unfinished content is shown, never invented */
+/* TODO(user) markers: rendered in `astro dev` only, never in a production build */
 .todo {
   display: inline;
   font-family: var(--font-mono); font-size: 0.8125rem; letter-spacing: 0.02em;

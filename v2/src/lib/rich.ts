@@ -1,18 +1,23 @@
 // Tiny inline formatter for data strings: escapes HTML, then
-//   [[todo:…]] -> visible TODO(user) marker
+//   [[todo:…]] -> TODO(user) marker in `astro dev`; removed entirely from production builds
 //   **x**      -> <strong>
 //   ✦          -> inline khatam star (aria-hidden)
-export const STAR_PATH =
-  'M50 0L64.64 14.64H85.36V35.36L100 50L85.36 64.64V85.36H64.64L50 100L35.36 85.36H14.64V64.64L0 50L14.64 35.36V14.64H35.36Z';
+// The mark: one continuous {8/3} star polygon, stroke only (100-unit box, points inset to 10..90).
+export const STAR_POINTS = '50,10 78.3,78.3 10,50 78.3,21.7 50,90 21.7,21.7 90,50 21.7,78.3';
 
+// Inline glyph: non-scaling stroke so it never drops below 1.5px, whatever the text size.
 export const starSvg = (cls = 'star-glyph') =>
-  `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path fill="currentColor" d="${STAR_PATH}"/></svg>`;
+  `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><polygon points="${STAR_POINTS}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter" vector-effect="non-scaling-stroke"/></svg>`;
 
 const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+// Dev shows what is missing; a production build never ships a TODO (see the guard in astro.config.mjs).
+export const DEV = import.meta.env.DEV;
+
 export function rich(input: string): string {
-  return esc(input)
+  const src = DEV ? input : input.replace(/\s*\[\[todo:.+?\]\]/g, '');
+  return esc(src)
     .replace(/\[\[todo:(.+?)\]\]/g, (_m, t) => `<span class="todo">${t}</span>`)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/✦/g, starSvg());
@@ -29,3 +34,9 @@ export function plain(input: string): string {
 }
 
 export const hasTodo = (s: string) => /\[\[todo:/.test(s);
+
+/** True when a value is nothing but TODO markers (an unknown fact). */
+export const todoOnly = (s: string) => plain(s) === '';
+
+/** Should this field render? Always in dev; in production only when it holds a real fact. */
+export const shows = (s?: string | null): s is string => !!s && (DEV || !todoOnly(s));

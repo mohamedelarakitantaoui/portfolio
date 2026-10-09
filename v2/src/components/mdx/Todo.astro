@@ -1,4 +1,5 @@
 ---
-// Visible placeholder for a fact only the site owner can supply. Never replaced by invented content.
+// Placeholder for a fact only the site owner can supply. Rendered by `astro dev` only:
+// production builds drop it (and the build fails if one slips through). Never replaced by invented content.
 ---
-<span class="todo"><slot /></span>
+{import.meta.env.DEV && <span class="todo"><slot /></span>}

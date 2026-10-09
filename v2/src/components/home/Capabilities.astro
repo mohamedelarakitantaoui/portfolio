@@ -8,7 +8,7 @@ const fr = lang === 'fr';
 <section class="caps section" aria-labelledby="caps-h2">
   <div class="wrap">
     <p class="label">{fr ? 'Ce que je fais' : 'What I do'}</p>
-    <h2 class="h2 caps__h2" id="caps-h2" data-reveal-lines>{fr ? 'Des scrapers, du RAG privé, et les applications par-dessus.' : 'Scrapers, private RAG, and the apps on top.'}</h2>
+    <h2 class="h2 caps__h2" id="caps-h2" data-reveal-lines>{fr ? 'Des pipelines de données, des modèles vérifiables, et les applications autour.' : 'Data pipelines, models you can check, and the apps around them.'}</h2>
     <ol class="rows caps__rows">
       {capabilities.map((c) => (
         <li class="caps__row">
@@ -24,13 +24,13 @@ const fr = lang === 'fr';
 </section>
 
 <style>
-  .caps__h2 { max-width: 16ch; margin-bottom: var(--s-7); }
+  .caps__h2 { max-width: 22ch; margin-bottom: var(--s-7); }
   .caps__row { display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s-2) var(--s-4); padding-block: var(--s-6); transition: border-color var(--dur-1) var(--ease-out); }
   .caps__n { color: var(--accent); padding-top: 0.5em; }
-  .caps__title { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.25rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.05; }
+  .caps__title { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
   .caps__text, .caps__stack { grid-column: 2; }
-  .caps__text { color: var(--text-muted); max-width: 52ch; }
-  .caps__stack { color: var(--text-quiet); text-transform: none; letter-spacing: 0.02em; font-size: 0.8125rem; line-height: 1.7; }
+  .caps__text { color: var(--text-muted); max-width: var(--measure); }
+  .caps__stack { color: var(--text-quiet); text-transform: none; letter-spacing: 0.02em; font-size: var(--fs-label); line-height: 1.7; }
   @media (min-width: 1024px) {
     .caps__row { grid-template-columns: 4rem minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr); align-items: baseline; gap: var(--s-6); }
     .caps__text { grid-column: 3; }

@@ -1,4 +1,5 @@
 ---
+import Todo from '../components/mdx/Todo.astro';
 // Privacy note and the form's no-JS "sent" page.
 import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
@@ -9,7 +10,7 @@ const fr = lang === 'fr';
 const copy = {
   privacy: {
     title: fr ? 'Confidentialité' : 'Privacy',
-    meta: fr ? 'Confidentialité · Mamoun Tantaoui El Araki' : 'Privacy · Mamoun Tantaoui El Araki',
+    meta: fr ? 'Confidentialité · Mamoun El Araki' : 'Privacy · Mamoun El Araki',
     desc: fr ? 'Ce site ne pose aucun cookie et ne fait aucune mesure d’audience. Ce que devient le formulaire de contact.' : 'This site sets no cookies and runs no analytics. What happens to the contact form.',
     body: fr
       ? ['Ce site ne pose aucun cookie et ne fait aucune mesure d’audience.', 'Vos choix de thème et de langue restent dans le stockage local de votre navigateur.', 'Le terminal ask-mamoun cherche dans un fichier JSON statique, dans votre navigateur : vos questions ne sont envoyées nulle part.', 'Le formulaire de contact envoie votre nom, votre e-mail et votre message pour que je puisse vous répondre, et à rien d’autre.']
@@ -18,7 +19,7 @@ const copy = {
   },
   sent: {
     title: fr ? 'Message envoyé' : 'Message sent',
-    meta: fr ? 'Message envoyé · Mamoun Tantaoui El Araki' : 'Message sent · Mamoun Tantaoui El Araki',
+    meta: fr ? 'Message envoyé · Mamoun El Araki' : 'Message sent · Mamoun El Araki',
     desc: fr ? 'Votre message est bien parti.' : 'Your message is on its way.',
     body: fr ? ['Merci, votre message est bien parti.'] : ['Thanks, your message is on its way.'],
     todo: '',
@@ -29,7 +30,7 @@ const copy = {
   <PageIntro label={copy.title} title={copy.title}>
     <div class="simple prose">
       {copy.body.map((p) => <p>{p}</p>)}
-      {copy.todo && <p><span class="todo">{copy.todo}</span></p>}
+      {copy.todo && <p><Todo>{copy.todo}</Todo></p>}
       <p><a href={lp(lang, '/')}>{t(lang, 'nav.home')} →</a></p>
     </div>
   </PageIntro>

@@ -1,0 +1,91 @@
+---
+key: pitchpoint
+lang: en
+order: 3
+title: PitchPoint
+description: A football xG model trained on 99,000+ events, benchmarked against gradient boosting and linear baselines. Calibration error 0.0038. Web demo in progress.
+tier: featured
+year: "2026"
+meta: ML · Football · 2026
+outcome: Expected goals from the positions of every player around the shot, checked by an evaluation harness built before any model.
+tldr:
+  - "**Problem:** a shot's chance of becoming a goal depends on where everyone else stands, not only on the shooter."
+  - "**Built:** an attention set encoder over player positions, blended 50/50 with LightGBM, trained on 99,000+ events, and an evaluation harness built before any model."
+  - "**Result:** calibration error (ECE) down from **0.0464 to 0.0038**, tested against gradient boosting and linear baselines on out-of-distribution holdouts, with bootstrap significance tests and 444 passing tests."
+status: Model and evaluation done; web demo in progress, 2026.
+role: "[[todo:role (solo?)]]"
+timeline: 2026, web demo in progress
+team: "[[todo:team]]"
+stack: [PyTorch, LightGBM, scikit-learn, FastAPI, React, SVG]
+links: []
+number: { value: "0.0038", caption: "calibration error (ECE), down from 0.0464" }
+progress: "In progress: the FastAPI + React web demo."
+constraint: It has to hold up on data it was not trained on, not only in cross-validation.
+tags: [xG, PyTorch, LightGBM, Calibration]
+next: preparia
+---
+
+<Note>Web demo in progress. The model and its evaluation are done.</Note>
+
+<Chapter n="01" label="Problem" title="A shot's value depends on everyone else on the pitch.">
+
+Expected goals (xG) is the probability that a shot becomes a goal. PitchPoint learns it from **99,000+ StatsBomb events** and looks at **where the players are** when the shot is taken, not only where the shooter stands.
+
+</Chapter>
+
+<Chapter n="02" label="Constraints" title="It has to work on matches it has never seen.">
+
+- **Data:** 99,000+ StatsBomb events, with the positions of the players around each shot.
+- **Generalisation:** a good cross-validation score is not enough; the model has to hold on out-of-distribution holdouts.
+- **Proof first:** the evaluation harness had to exist before the first model was trained.
+
+<Todo>time, compute, and whether you built it alone</Todo>
+
+</Chapter>
+
+<Chapter n="03" label="How it works" title="Two models, one prediction, one set of tests for everything.">
+
+1. **an attention-based set encoder** reads the player positions as a set, so their order does not matter;
+2. **LightGBM**, a gradient-boosted tree model, reads the shot's features;
+3. the final xG is a **50/50 blend** of the two;
+4. **an evaluation harness** checks every model the same way: grouped cross-validation, calibration, out-of-distribution holdouts and clustered bootstrap significance tests, with **444 tests** passing.
+
+</Chapter>
+
+<Chapter n="04" label="Key decisions and trade-offs" title="I built the tests before the model.">
+
+- **The evaluation harness before any model.** I built the harness first, so the set encoder and its baselines, gradient boosting and a linear model, were all judged by the same tests.
+- **A set encoder over fixed-order features.** The players around a shot have no natural order, so I chose a model that reads them the same way whatever order they arrive in.
+- **A 50/50 blend over either model alone.** The blend scored better than both models, in cross-validation and on out-of-distribution holdouts, so I kept both instead of picking one.
+
+</Chapter>
+
+<Chapter n="05" label="Results" title="Calibration error down from 0.0464 to 0.0038.">
+
+<Stats items={[
+  { value: '0.0038', caption: 'calibration error (ECE), down from 0.0464' },
+  { value: '99,000+', caption: 'events in the training data' },
+  { value: '2', caption: 'baselines: gradient boosting and a linear model' },
+  { value: '444', caption: 'tests passing in the evaluation harness' },
+]} />
+
+The 50/50 blend scores better than either model alone, in **cross-validation** and on **out-of-distribution holdouts**, and the differences were checked with clustered bootstrap significance tests.
+
+<ModelCard
+  use="Estimate the chance that a shot becomes a goal, from the shot and the positions of the players around it."
+  outOfScope="Data without player positions, or event data that doesn't follow the StatsBomb format."
+  data="99,000+ StatsBomb events: shots and the positions of the players around them. [[todo:competitions and seasons]]"
+  evaluation="Grouped cross-validation, out-of-distribution holdouts and clustered bootstrap significance tests, against gradient boosting and linear baselines. Calibration error (ECE) 0.0464 → 0.0038. 444 tests pass."
+  limitations="My own hypothesis was wrong: I expected the attention to shift toward players outside the shooting cone, and occlusion tests said it doesn't. The project's own model card documents the rest."
+  failure="[[todo:one observed failure mode, e.g. a shot type the model scores badly]]"
+/>
+
+</Chapter>
+
+<Chapter n="06" label="Limitations and what I'd do next" title="My hypothesis was wrong, and the tests said so.">
+
+I expected the attention encoder to pay more attention to players **outside the shooting cone**. Occlusion tests, which hide players one at a time and measure the change, said it doesn't. I kept the result and dropped the story.
+
+Next: a full-stack demo. **FastAPI** serves the model, and a **React** front end shows an **SVG pitch** where you drag the players into place. <Todo>repo link, and demo link once it is live</Todo>
+
+</Chapter>

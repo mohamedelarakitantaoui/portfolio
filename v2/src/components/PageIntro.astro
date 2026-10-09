@@ -6,7 +6,7 @@ const { label, title, lede, word } = Astro.props;
 ---
 <section class="intro">
   {word && (
-    <p class="intro__word" aria-hidden="true"><span>{word}</span><Star class="intro__star" /></p>
+    <p class="intro__word" aria-hidden="true"><span>{word}</span><Star class="intro__star" weight={5} /></p>
   )}
   <div class="wrap intro__inner">
     <p class="label">{label}</p>

@@ -4,6 +4,7 @@ import Hero from '../components/home/Hero.astro';
 import Statement from '../components/home/Statement.astro';
 import ProofStrip from '../components/home/ProofStrip.astro';
 import SelectedWork from '../components/home/SelectedWork.astro';
+import Experience from '../components/home/Experience.astro';
 import Capabilities from '../components/home/Capabilities.astro';
 import NowLab from '../components/home/NowLab.astro';
 import TwoDoors from '../components/home/TwoDoors.astro';
@@ -13,12 +14,12 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const meta = {
   en: {
-    title: 'Mamoun Tantaoui El Araki · AI & software engineer, Morocco',
-    description: 'Software engineer in Marrakech: Python automation that cut a 2.5 h procurement run to 15 min, on-prem RAG in Arabic, French and English, and web apps.',
+    title: 'Mamoun El Araki · AI and software engineer',
+    description: 'AI and software engineer: explainable aneurysm-risk AI (paper accepted at ICOA 2026), 90% less processing time at Intelcia, and a football xG model.',
   },
   fr: {
-    title: 'Mamoun Tantaoui El Araki · Ingénieur IA & logiciel, Maroc',
-    description: 'Ingénieur logiciel à Marrakech : automatisation Python (2 h 30 → 15 min sur 300 consultations), RAG on-premise en arabe, français, anglais, et applications web.',
+    title: 'Mamoun El Araki · Ingénieur IA et logiciel',
+    description: 'Ingénieur IA et logiciel : IA explicable du risque d’anévrisme (ICOA 2026), 90 % de temps de traitement en moins chez Intelcia, un modèle xG.',
   },
 }[lang];
 const portrait = await heroPortrait();
@@ -29,6 +30,7 @@ const portrait = await heroPortrait();
   <Statement lang={lang} />
   <ProofStrip lang={lang} />
   <SelectedWork lang={lang} />
+  <Experience lang={lang} />
   <Capabilities lang={lang} />
   <NowLab lang={lang} />
   <TwoDoors lang={lang} />

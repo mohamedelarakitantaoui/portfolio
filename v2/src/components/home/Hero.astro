@@ -1,96 +1,84 @@
 ---
+// Hero (v3): name, role, h1, one supporting line, one primary action + CV, three proofs. Nothing else.
+// Signature kept: giant M A M ✦ U N behind the cutout portrait.
 import { heroPortrait, PORTRAIT_SIZES } from '../../lib/portrait';
 import Star from '../Star.astro';
-import Rich from '../Rich.astro';
-import { type Lang, lp, t } from '../../i18n/ui';
+import { type Lang, t } from '../../i18n/ui';
 import { hero, person } from '../../data/site';
 import { rich } from '../../lib/rich';
+import { cvLink } from '../../lib/cv';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const letters = ['M', 'A', 'M', '*', 'U', 'N'];
 const img = await heroPortrait();
+const cv = cvLink(lang);
 ---
 <section class="hero" aria-labelledby="hero-h1">
-  <!-- Back layer: the giant word, star in place of the O (decorative) -->
-  <p class="hero__word" aria-hidden="true">
-    {letters.map((l) =>
-      l === '*'
-        ? <span class="hero__letter hero__letter--star"><Star class="hero__star" /></span>
-        : <span class="hero__letter">{l}</span>
-    )}
-  </p>
-
-  <!-- Middle layer: the cutout portrait -->
-  <div class="hero__portrait">
-    <picture>
-      <source type="image/avif" srcset={img.avif} sizes={PORTRAIT_SIZES} />
-      <source type="image/webp" srcset={img.webp} sizes={PORTRAIT_SIZES} />
-      <img
-        src={img.fallback}
-        width={img.width}
-        height={img.height}
-        alt={lang === 'fr' ? 'Mamoun Tantaoui El Araki, portrait' : 'Portrait of Mamoun Tantaoui El Araki'}
-        loading="eager"
-        fetchpriority="high"
-        decoding="sync"
-      />
-    </picture>
+  <div class="hero__stage">
+    <!-- Back layer: the giant word, star in place of the O (decorative) -->
+    <p class="hero__word" aria-hidden="true">
+      {letters.map((l) =>
+        l === '*'
+          ? <span class="hero__letter hero__letter--star"><Star class="hero__star" weight={6} /></span>
+          : <span class="hero__letter">{l}</span>
+      )}
+    </p>
+    <!-- Middle layer: the cutout portrait -->
+    <div class="hero__portrait">
+      <picture>
+        <source type="image/avif" srcset={img.avif} sizes={PORTRAIT_SIZES} />
+        <source type="image/webp" srcset={img.webp} sizes={PORTRAIT_SIZES} />
+        <img src={img.fallback} width={img.width} height={img.height} alt={lang === 'fr' ? 'Portrait de Mamoun El Araki' : 'Portrait of Mamoun El Araki'} loading="eager" fetchpriority="high" decoding="sync" />
+      </picture>
+    </div>
   </div>
 
-  <!-- Front layer: the poster corners -->
-  <div class="hero__left">
+  <!-- Front layer: the text corner -->
+  <div class="hero__text">
     <p class="hero__name">{person.name}</p>
-    <p class="hero__role mono">{person.role[lang]}</p>
+    <p class="hero__role">{person.role[lang]}</p>
     <h1 class="hero__h1" id="hero-h1">{hero.h1[lang]}</h1>
-    <p class="hero__sub">{hero.sub[lang]}</p>
+    <p class="hero__support" set:html={rich(hero.support[lang])} />
     <div class="hero__ctas">
-      <a class="btn btn--primary" href={lp(lang, '/work')}>{t(lang, 'cta.viewWork')}<span class="arrow" aria-hidden="true">→</span></a>
-      <a class="btn" href={person.cvHref} download>{t(lang, 'cta.downloadCv')}</a>
+      <a class="btn btn--primary" href="#work">{t(lang, 'cta.viewWork')}<span class="arrow" aria-hidden="true">↓</span></a>
+      <a class="btn" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
     </div>
   </div>
 
   <dl class="hero__rail">
     {hero.stats.map((s) => (
       <div class="hero__stat">
-        <dt>{s.value}</dt>
+        <dt>{s.value[lang]}</dt>
         <dd>{s.label[lang]}</dd>
       </div>
     ))}
   </dl>
-
-  <div class="hero__bottom">
-    <ul class="hero__socials">
-      <li><a href={person.github} rel="me noopener" target="_blank" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg></a></li>
-      <li><a href={`mailto:${person.email}`} aria-label={`Email ${person.email}`}><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></g></svg></a></li>
-      <li><a href={person.cvHref} download aria-label={`${t(lang, 'cta.downloadCv')} (PDF)`}><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14l3 3 3-3"/></g></svg></a></li>
-    </ul>
-    <p class="hero__route mono" set:html={rich(person.route)} />
-    <a class="hero__now" href={lp(lang, hero.now.href)}>
-      <span class="hero__now-mark"><Star class="hero__now-star" /></span>
-      <span class="hero__now-text"><small class="mono">{hero.now.label[lang]}</small><strong>{hero.now.title}</strong></span>
-      <span class="arrow" aria-hidden="true">→</span>
-    </a>
-  </div>
 </section>
 
 <style>
+  /* ---------- mobile first: text → photo with MAMOUN → rail ---------- */
   .hero {
     position: relative; overflow: clip;
-    min-height: 100svh;
-    padding: calc(var(--header-h) + var(--s-2)) var(--gutter) var(--s-5);
-    display: grid; grid-template-columns: 100%;
-    grid-template-areas: 'stage' 'left' 'bottom' 'rail';
-    align-content: start;
+    padding: calc(var(--header-h) + var(--s-2)) var(--gutter) var(--s-6);
+    display: grid; grid-template-columns: 100%; grid-template-areas: 'text' 'stage' 'rail';
   }
-  /* ---------- mobile-first stage: word + portrait share one cell ---------- */
-  .hero__word, .hero__portrait { grid-area: stage; }
+  .hero__text { grid-area: text; position: relative; z-index: 3; }
+  .hero__name { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.02em; }
+  .hero__role { color: var(--text-muted); font-size: 1rem; margin-top: 2px; }
+  .hero__h1 {
+    margin-top: var(--s-3); font-family: var(--font-display); font-weight: 650;
+    font-size: clamp(2rem, 8.4vw, 2.5rem); letter-spacing: -0.035em; line-height: 1.02;
+    text-wrap: balance; max-width: 18ch; font-variation-settings: 'opsz' 48;
+  }
+  .hero__support { margin-top: var(--s-3); color: var(--text-muted); font-size: 0.9375rem; line-height: 1.5; max-width: 46ch; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-4); }
+
+  .hero__stage { grid-area: stage; position: relative; display: grid; justify-items: center; height: 232px; margin-top: var(--s-4); }
   .hero__word {
-    position: relative; z-index: 1; margin: 0; align-self: start; justify-self: center;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-weight: 700; line-height: 0.8;
-    font-size: min(19vw, 12rem); letter-spacing: 0.08em; padding-inline-start: 0.08em;
-    font-variation-settings: 'opsz' 96; color: var(--text); opacity: 0.92; white-space: nowrap;
-    user-select: none; margin-top: var(--s-3);
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 1; margin: 0;
+    display: flex; align-items: center; font-family: var(--font-display); font-weight: 700; line-height: 0.8;
+    font-size: min(15vw, 5.5rem); letter-spacing: 0.1em; padding-inline-start: 0.1em;
+    font-variation-settings: 'opsz' 96; color: var(--text); opacity: 0.92; white-space: nowrap; user-select: none;
   }
   .hero__letter { display: inline-block; }
   .hero__letter--star { width: 0.72em; height: 0.72em; margin-inline: 0.04em; }
@@ -98,111 +86,67 @@ const img = await heroPortrait();
   @keyframes star-spin { to { transform: rotate(1turn); } }
 
   .hero__portrait {
-    position: relative; z-index: 2; justify-self: center; align-self: start;
-    margin-top: calc(min(19vw, 12rem) * 0.42);
-    width: min(100vw, 460px); margin-inline: calc(-1 * var(--gutter));
-    --fade: linear-gradient(to bottom, #000 46%, transparent 84%), linear-gradient(to right, transparent 2%, #000 24%, #000 74%, transparent 96%);
+    position: absolute; z-index: 2; left: 50%; bottom: 0; transform: translateX(-50%);
+    height: 210px; aspect-ratio: 1212 / 1156;
+    --fade: linear-gradient(to bottom, #000 50%, transparent 96%), linear-gradient(to right, transparent 4%, #000 28%, #000 72%, transparent 96%);
     -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in;
     mask-image: var(--fade); mask-composite: intersect;
   }
-  .hero__portrait :global(img) { width: 100%; height: auto; }
-
-  .hero__left { grid-area: left; position: relative; z-index: 3; margin-top: calc(-1 * var(--s-7)); }
-  .hero__name { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.02em; }
-  .hero__role { color: var(--text-muted); margin-top: var(--s-1); text-transform: none; letter-spacing: 0.02em; font-size: 0.75rem; }
-  .hero__h1 {
-    margin-top: var(--s-4); font-family: var(--font-display); font-weight: 650;
-    font-size: clamp(1.75rem, 7.4vw, 2.75rem); letter-spacing: -0.03em; line-height: 1;
-    text-wrap: balance; max-width: 16ch; font-variation-settings: normal;
-  }
-  .hero__sub { margin-top: var(--s-3); color: var(--text-muted); font-size: 1rem; line-height: 1.45; max-width: 38ch; }
-  .hero__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-5); }
-
-  .hero__bottom {
-    grid-area: bottom; position: relative; z-index: 3; margin-top: var(--s-6);
-    display: grid; grid-template-columns: auto 1fr; gap: var(--s-3); align-items: center;
-  }
-  .hero__socials { display: flex; gap: var(--s-2); list-style: none; }
-  .hero__socials a {
-    display: inline-grid; place-items: center; width: 44px; height: 44px;
-    border: 1px solid var(--line-input); border-radius: var(--r-pill); color: var(--text);
-  }
-  .hero__socials a:hover { border-color: var(--text); }
-  .hero__socials svg { width: 18px; height: 18px; }
-  .hero__route { display: none; color: var(--text-quiet); }
-  .hero__route :global(.star-glyph) { width: 0.8em; height: 0.8em; margin-inline: 0.5em; }
-  .hero__now {
-    justify-self: end; display: inline-flex; align-items: center; gap: var(--s-3);
-    min-height: 56px; padding: var(--s-2) var(--s-4) var(--s-2) var(--s-2); text-decoration: none;
-    border: 1px solid var(--line-input); border-radius: var(--r-pill); background: var(--surface);
-  }
-  .hero__now:hover { border-color: var(--accent-wall); }
-  .hero__now-mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--ink-1); }
-  .hero__now-mark :global(.hero__now-star) { width: 20px; height: 20px; color: var(--accent-wall); animation: star-spin 60s linear infinite; }
-  .hero__now-text { display: grid; line-height: 1.2; }
-  .hero__now-text small { color: var(--text-quiet); font-size: 0.6875rem; }
-  .hero__now-text strong { font-weight: 600; font-size: 0.9375rem; }
+  .hero__portrait :global(picture), .hero__portrait :global(img) { width: 100%; height: 100%; }
 
   .hero__rail {
-    grid-area: rail; position: relative; z-index: 3; margin-top: var(--s-7);
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4);
+    grid-area: rail; position: relative; z-index: 3; margin-top: calc(-1 * var(--s-7));
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3);
   }
-  .hero__stat { border-top: 1px solid var(--line-strong); padding-top: var(--s-3); }
-  .hero__stat dt { font-family: var(--font-display); font-weight: 650; font-size: clamp(1.5rem, 6vw, 2.25rem); letter-spacing: -0.04em; line-height: 1; }
-  .hero__stat dd { margin-top: var(--s-2); font-size: 0.8125rem; color: var(--text-muted); line-height: 1.35; }
+  .hero__stat { border-top: 1px solid var(--line-strong); padding-top: var(--s-2); }
+  .hero__stat dt { font-family: var(--font-display); font-weight: 650; font-size: clamp(1.25rem, 5.6vw, 2rem); letter-spacing: -0.04em; line-height: 1; white-space: nowrap; }
+  .hero__stat dd { margin-top: var(--s-1); font-size: 0.8125rem; color: var(--text-muted); line-height: 1.35; }
 
-  @media (max-width: 400px) {
-    .hero__bottom { grid-template-columns: 1fr; }
-    .hero__now { justify-self: start; }
-  }
   @media (min-width: 600px) and (max-width: 1023px) {
-    .hero__bottom { grid-template-columns: auto 1fr auto; }
-    .hero__route { display: block; text-align: center; }
+    .hero__stage { height: 360px; }
+    .hero__word { font-size: min(15vw, 8rem); }
+    .hero__portrait { height: 330px; }
+    .hero__h1 { font-size: clamp(2.5rem, 6vw, 3.25rem); }
+    .hero__support { font-size: 1rem; }
   }
 
-  /* ---------- desktop poster: every corner used ---------- */
+  /* ---------- desktop poster ---------- */
   @media (min-width: 1024px) {
     .hero {
-      height: 100svh; min-height: 720px; max-height: 1100px; padding: 0;
-      display: block;
+      display: block; height: 100svh; min-height: 720px; max-height: 1100px; padding: 0;
     }
+    .hero__stage { position: absolute; inset: 0; height: auto; margin: 0; display: block; }
     .hero__word {
-      position: absolute; left: 0; right: 0; top: calc(var(--header-h) + 5svh); margin: 0;
-      font-size: min(15.5vw, 25svh); letter-spacing: 0.18em; padding-inline-start: 0.18em;
+      top: calc(var(--header-h) + 3svh); font-size: min(14vw, 23svh); letter-spacing: 0.18em; padding-inline-start: 0.18em;
     }
     .hero__portrait {
-      position: absolute; left: 50%; bottom: 0; margin: 0; transform: translateX(-50%);
-      width: auto; height: min(76svh, 720px); aspect-ratio: 1212 / 1156;
-      --fade: linear-gradient(to bottom, #000 66%, transparent 97%), linear-gradient(to right, transparent 6%, #000 32%, #000 72%, transparent 94%);
+      left: 57%; height: min(68svh, 640px);
+      --fade: linear-gradient(to bottom, #000 66%, transparent 97%), linear-gradient(to right, transparent 8%, #000 34%, #000 72%, transparent 94%);
     }
-    .hero__portrait :global(picture), .hero__portrait :global(img) { width: 100%; height: 100%; }
-    .hero__left {
-      position: absolute; left: var(--gutter); bottom: 112px; margin: 0;
-      width: min(28vw, 400px);
+    .hero__text {
+      position: absolute; left: max(var(--gutter), calc((100vw - var(--max)) / 2)); bottom: 64px;
+      width: min(32vw, 440px);
     }
-    .hero__h1 { font-size: clamp(2rem, 2.9vw, 3rem); }
+    .hero__name { font-size: 1.125rem; }
+    .hero__role { font-size: 1.125rem; }
+    .hero__h1 { font-size: clamp(2.25rem, 3.4vw, 3.25rem); max-width: none; margin-top: var(--s-4); }
+    .hero__support { font-size: 1.0625rem; margin-top: var(--s-4); }
+    .hero__ctas { margin-top: var(--s-5); }
     .hero__rail {
-      position: absolute; right: var(--gutter); bottom: 112px; margin: 0;
-      width: min(24vw, 320px); grid-template-columns: 1fr; gap: var(--s-4);
+      position: absolute; right: max(var(--gutter), calc((100vw - var(--max)) / 2)); bottom: 64px; margin: 0;
+      width: min(18vw, 240px); grid-template-columns: 1fr; gap: var(--s-5);
     }
-    .hero__stat dt { font-size: clamp(2rem, 3vw, 3rem); }
-    .hero__stat dd { font-size: 0.875rem; }
-    .hero__bottom {
-      position: absolute; left: var(--gutter); right: var(--gutter); bottom: var(--s-5); margin: 0;
-      grid-template-columns: 1fr auto 1fr;
-    }
-    .hero__route { display: block; text-align: center; }
+    .hero__stat { padding-top: var(--s-3); }
+    .hero__stat dt { font-size: clamp(1.75rem, 2.6vw, 2.5rem); }
+    .hero__stat dd { font-size: 0.9375rem; margin-top: var(--s-2); }
   }
-  /* Narrow desktops: keep the shoulders out from under the text columns */
   @media (min-width: 1024px) and (max-width: 1279px) {
-    .hero__portrait {
-      height: min(64svh, 520px);
-      --fade: linear-gradient(to bottom, #000 66%, transparent 97%), linear-gradient(to right, transparent 12%, #000 38%, #000 66%, transparent 88%);
-    }
+    .hero__portrait { left: 58%; height: min(62svh, 500px); }
+    .hero__text { width: min(36vw, 370px); }
+    .hero__rail { width: min(21vw, 210px); }
   }
   @media (min-width: 1024px) and (max-height: 820px) {
-    .hero__h1 { font-size: clamp(1.75rem, 2.5vw, 2.5rem); }
-    .hero__sub { font-size: 0.9375rem; }
-    .hero__ctas { margin-top: var(--s-4); }
+    .hero__h1 { font-size: clamp(2rem, 2.9vw, 2.75rem); }
+    .hero__support { font-size: 1rem; }
   }
 </style>

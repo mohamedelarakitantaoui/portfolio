@@ -11,3 +11,40 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Removed project (unpublished on purpose): old links go to the work index.
+[[redirects]]
+  from = "/work/secure-gov-rag"
+  to = "/work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/work/secure-gov-rag/"
+  to = "/work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/work/secure-government-rag"
+  to = "/work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/fr/work/secure-gov-rag"
+  to = "/fr/work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/fr/work/secure-gov-rag/"
+  to = "/fr/work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/fr/work/secure-government-rag"
+  to = "/fr/work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/og/work-secure-gov-rag-*"
+  to = "/og/work-en.png"
+  status = 301
+  force = true

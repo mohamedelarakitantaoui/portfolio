@@ -1,5 +1,5 @@
 ---
-// Signature interaction: client-side RAG demo. Static example transcript is computed at build with the
+// Signature interaction: client-side retrieval demo. Static example transcript is computed at build with the
 // same BM25 code the browser runs, so the no-JS fallback shows real output.
 import { corpus, corpusSize } from '../../data/knowledge';
 import { buildIndex } from '../../lib/bm25';
@@ -10,9 +10,9 @@ const fr = lang === 'fr';
 const example = fr ? 'quelles langues ?' : 'which languages?';
 const hits = buildIndex(corpus(lang))(example);
 const chips = fr
-  ? ['qu’as-tu construit chez Intelcia ?', 'quelles langues ?', 'quelle stack pour le RAG ?', 'es-tu disponible ?', 'résultats d’AneuXplain ?']
-  : ['what did you build at Intelcia?', 'which languages?', 'what is the RAG stack?', 'are you available?', 'AneuXplain results?'];
-const label = fr ? 'démo RAG côté client · pas de LLM · aucune donnée ne quitte votre navigateur' : 'client-side RAG demo · no LLM · no data leaves your browser';
+  ? ['qu’as-tu construit chez Intelcia ?', 'quelles langues ?', 'c’est quoi PitchPoint ?', 'es-tu disponible ?', 'résultats d’AneuXplain ?']
+  : ['what did you build at Intelcia?', 'which languages?', 'what is PitchPoint?', 'are you available?', 'AneuXplain results?'];
+const label = fr ? 'démo de recherche côté client · pas de LLM · aucune donnée ne quitte votre navigateur' : 'client-side retrieval demo · no LLM · no data leaves your browser';
 ---
 <div class="term" data-terminal data-lang={lang} data-src={lp(lang, '/knowledge.json')} data-lenis-prevent>
   <div class="term__bar">
@@ -52,7 +52,7 @@ const label = fr ? 'démo RAG côté client · pas de LLM · aucune donnée ne q
   .term__dots i { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--line-input); }
   .term__dots i:first-child { background: var(--accent-wall); border-color: var(--accent-wall); }
   .term__title { color: var(--text); font-size: 0.75rem; }
-  .term__label { color: var(--text-muted); font-size: 0.6875rem; letter-spacing: 0.02em; }
+  .term__label { color: var(--text-muted); font-size: var(--fs-label); letter-spacing: 0.02em; }
   .term__screen { min-height: 300px; max-height: 420px; overflow: auto; padding: var(--s-4); display: grid; gap: var(--s-4); align-content: start; line-height: 1.55; }
   .term__screen:focus-visible { outline-offset: -3px; }
   .term__block { display: grid; gap: 2px; }

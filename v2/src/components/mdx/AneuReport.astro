@@ -1,0 +1,71 @@
+---
+// AneuXplain chapter 04: two pages of the PDF report the app generates, with numbered callouts.
+import { Image } from 'astro:assets';
+import { langFromUrl } from '../../i18n/ui';
+import cover from '../../assets/aneuxplain/06a-report-cover.webp';
+import findings from '../../assets/aneuxplain/06b-report-findings.webp';
+
+const fr = langFromUrl(Astro.url) === 'fr';
+// Pin positions are percentages of each page image, set on the target text.
+const notes = [
+  fr ? '67 % de probabilité de rupture' : '67% rupture probability',
+  fr ? 'chaque mesure comparée à une plage normale' : 'each measurement scored against a normal range',
+  fr ? 'un résumé en langage clair' : 'plain-language summary',
+];
+const sizes = '(min-width: 1024px) 34vw, 70vw';
+---
+<figure class="report">
+  <div class="report__pages">
+    <div class="report__page report__page--a">
+      <Image src={cover} alt={fr ? 'Page de couverture du rapport : évaluation du risque de rupture, 67 %, élevé' : 'Report cover page: rupture risk assessment, 67%, high'} widths={[480, 800, 1188]} sizes={sizes} format="webp" class="report__img" />
+      <span class="pin" style="--x: 35%; --y: 41.5%" aria-hidden="true">1</span>
+    </div>
+    <div class="report__page report__page--b">
+      <Image src={findings} alt={fr ? 'Page des constats cliniques : chaque mesure classée élevée ou modérée par rapport à sa plage, puis un résumé' : 'Clinical findings page: each measurement rated high or moderate against its range, then a summary'} widths={[480, 800, 1188]} sizes={sizes} format="webp" class="report__img" />
+      <span class="pin" style="--x: 37%; --y: 10.5%" aria-hidden="true">2</span>
+      <span class="pin" style="--x: 24%; --y: 92.5%" aria-hidden="true">3</span>
+    </div>
+  </div>
+  <figcaption>
+    <ol class="report__notes">
+      {notes.map((n, i) => <li><span class="pin pin--static" aria-hidden="true">{i + 1}</span><span>{n}</span></li>)}
+    </ol>
+  </figcaption>
+</figure>
+
+<p class="report__cta">
+  <a class="btn" href="/research/aneuxplain-capstone-report.pdf" target="_blank" rel="noopener">
+    {fr ? 'Lire le rapport de fin d’études complet (PDF, 53 pages, en anglais)' : 'Read the full capstone report (PDF, 53 pages)'} <span aria-hidden="true">↗</span>
+  </a>
+</p>
+
+<style>
+  .report { width: 100%; width: 100cqi; margin-block: var(--s-5) var(--s-5); }
+  .report__pages { display: grid; padding-block: var(--s-2) var(--s-4); }
+  .report__page {
+    grid-area: 1 / 1; position: relative; width: 70%;
+    background: #fff; border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.14);
+  }
+  .report__page--a { justify-self: start; transform: rotate(-1.5deg); }
+  .report__page--b { justify-self: end; margin-top: 12%; transform: rotate(1deg); }
+  @media (min-width: 640px) { .report__page { width: 62%; } }
+  .report__img { display: block; width: 100%; height: auto; border-radius: 4px; }
+
+  .pin {
+    position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+    display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none;
+    border-radius: 50%; background: var(--accent-fill); color: var(--accent-fill-ink);
+    font-family: var(--font-mono); font-size: 0.625rem; font-weight: 600;
+    box-shadow: 0 0 0 2px #fff;
+  }
+  @media (min-width: 640px) { .pin { width: 24px; height: 24px; font-size: 0.75rem; box-shadow: 0 0 0 3px #fff; } }
+  .pin.pin--static { position: static; transform: none; box-shadow: none; width: 24px; height: 24px; font-size: 0.75rem; }
+
+  .report__notes { list-style: none; display: grid; gap: var(--s-3); margin-top: var(--s-4); }
+  @media (min-width: 768px) { .report__notes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .report__notes li { display: flex; gap: var(--s-3); align-items: start; color: var(--text-muted); font-size: var(--fs-small); line-height: 1.45; }
+  .report__notes .pin { margin-top: -0.1em; }
+  .report__cta { margin-top: var(--s-5); }
+  .report__cta .btn { white-space: normal; text-align: start; line-height: 1.3; padding-block: var(--s-2); }
+</style>

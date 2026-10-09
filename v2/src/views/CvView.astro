@@ -1,36 +1,42 @@
 ---
+// Web CV in Experience-row format + PDF downloads. A PDF button appears only once its file exists in public/cv/.
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
-import Rich from '../components/Rich.astro';
-import { cvDownloads, education, experience, person, skills, spoken, status } from '../data/site';
+import Todo from '../components/mdx/Todo.astro';
+import { education, experience, moreProjects, person, skills, spoken, status } from '../data/site';
+import { cvFor } from '../lib/cv';
 import { type Lang, lp } from '../i18n/ui';
-import { rich } from '../lib/rich';
+import { rich, shows } from '../lib/rich';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
-const projects = (await getCollection('projects', (p) => p.data.lang === lang)).sort((a, b) => a.data.order - b.data.order);
+const featured = (await getCollection('projects', (p) => p.data.lang === lang && p.data.tier === 'featured')).sort((a, b) => a.data.order - b.data.order);
+const pdfs = cvFor(lang);
+const ready = pdfs.filter((d) => d.href);
+const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 ---
 <Base
   lang={lang}
-  title={fr ? 'CV · Mamoun Tantaoui El Araki' : 'CV · Mamoun Tantaoui El Araki'}
+  title={`CV · ${person.name}`}
   description={fr
-    ? 'CV de Mamoun Tantaoui El Araki, ingénieur logiciel IA & automatisation : expérience Intelcia et ITS Elaraki, formation Al Akhawayn et Boğaziçi, compétences, PDF.'
-    : 'CV of Mamoun Tantaoui El Araki, software engineer in AI & automation: Intelcia and ITS Elaraki experience, Al Akhawayn and Boğaziçi education, skills, PDF.'}
+    ? 'CV de Mamoun El Araki, ingénieur IA et logiciel : Intelcia, ITS Elaraki, Université Al Akhawayn et Boğaziçi, projets, compétences.'
+    : 'CV of Mamoun El Araki, AI and software engineer: Intelcia, ITS Elaraki, Al Akhawayn and Boğaziçi universities, projects and skills.'}
   ogKey="cv"
 >
   <PageIntro label={fr ? 'Curriculum vitae' : 'Curriculum vitae'} title="CV" word="CV">
-    <p class="cv__updated mono"><span>{fr ? 'Mis à jour' : 'Updated'}</span> <span class="todo">{fr ? 'mois de mise à jour, 2026' : 'update month, 2026'}</span></p>
-    <ul class="downloads rows">
-      {cvDownloads.map((d) => (
-        <li class="dl">
-          <span class="dl__label">{d.label[lang]}</span>
-          {d.href
-            ? <a class="btn btn--primary btn--sm" href={d.href} download>PDF · {d.size}</a>
-            : <span class="todo">{d.todo?.[lang]}</span>}
-        </li>
-      ))}
-    </ul>
+    {ready.length > 0 && (
+      <ul class="downloads rows" aria-label={fr ? 'Versions PDF' : 'PDF versions'}>
+        {ready.map((d) => (
+          <li class="dl">
+            <span class="dl__label">{d.label[lang]}</span>
+            <a class="btn btn--sm" href={d.href} download>PDF · {d.size}</a>
+          </li>
+        ))}
+      </ul>
+    )}
+    {pdfs.filter((d) => !d.href).map((d) => <p class="dl__todo"><Todo>{d.todo[lang]}</Todo></p>)}
+    <p class="cv__updated"><Todo>{fr ? 'mois de mise à jour, 2026' : 'update month, 2026'}</Todo></p>
   </PageIntro>
 
   <section class="section band" aria-label={fr ? 'CV en ligne' : 'Web CV'}>
@@ -38,47 +44,75 @@ const projects = (await getCollection('projects', (p) => p.data.lang === lang)).
       <article class="paper">
         <header class="paper__head">
           <h2 class="paper__name">{person.name}</h2>
-          <p class="paper__role">{person.role[lang]}</p>
-          <p class="paper__contact mono"><a href={`mailto:${person.email}`}>{person.email}</a> · <a href={person.github}>{person.githubLabel}</a></p>
-          <Rich as="p" class="paper__status" text={status.employers[lang]} />
+          <p class="paper__role">{person.role[lang]} · {person.location[lang]}</p>
+          <p class="paper__contact">
+            <a href={`mailto:${person.email}`}>{person.email}</a>
+            <span aria-hidden="true"> · </span>
+            <a href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({newTab})</span></a>
+            <span aria-hidden="true"> · </span>
+            <a href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> ({newTab})</span></a>
+          </p>
+          <p class="paper__status" set:html={rich(status.employers[lang])} />
         </header>
 
-        <section class="paper__sec">
-          <h3 class="paper__h">{fr ? 'Expérience' : 'Experience'}</h3>
-          {experience.map((e) => (
-            <div class="paper__item">
-              <p class="paper__when mono">{e.dates[lang]}</p>
-              <div><h4>{e.role[lang]}, {e.org}</h4><p>{e.result[lang]}</p></div>
-            </div>
-          ))}
+        <section class="paper__sec" aria-labelledby="cv-exp">
+          <h3 class="paper__h" id="cv-exp">{fr ? 'Expérience' : 'Experience'}</h3>
+          <ol class="paper__rows">
+            {experience.map((e) => (
+              <li class="paper__item">
+                <p class="paper__when"><span class="paper__year">{e.year}</span>{shows(e.span[lang]) && <span set:html={rich(e.span[lang])} />}</p>
+                <div>
+                  <h4 set:html={rich(`${e.role[lang]} · ${e.org}, ${e.location}`)} />
+                  {shows(e.result[lang]) && <p set:html={rich(e.result[lang])} />}
+                  {e.tags.length > 0 && <ul class="tags paper__tags">{e.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>}
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
 
-        <section class="paper__sec">
-          <h3 class="paper__h">{fr ? 'Projets' : 'Projects'}</h3>
-          {projects.map((p) => (
-            <div class="paper__item">
-              <p class="paper__when mono">{p.data.number.value}</p>
-              <div><h4><a href={lp(lang, `/work/${p.data.key}`)}>{p.data.title}</a></h4><p>{p.data.summary}</p></div>
-            </div>
-          ))}
+        <section class="paper__sec" aria-labelledby="cv-proj">
+          <h3 class="paper__h" id="cv-proj">{fr ? 'Projets' : 'Projects'}</h3>
+          <ol class="paper__rows">
+            {featured.map((p) => (
+              <li class="paper__item">
+                <p class="paper__when"><span class="paper__year">{p.data.year}</span>{p.data.number && <span>{p.data.number.value}</span>}</p>
+                <div>
+                  <h4><a href={lp(lang, `/work/${p.data.key}`)}>{p.data.title}</a></h4>
+                  <p set:html={rich(p.data.outcome)} />
+                </div>
+              </li>
+            ))}
+            {moreProjects.map((p) => (
+              <li class="paper__item">
+                <p class="paper__when">{shows(p.year) && <span class="paper__year" set:html={rich(p.year)} />}</p>
+                <div>
+                  <h4>{p.caseStudy ? <a href={lp(lang, p.caseStudy)}>{p.title}</a> : p.title}</h4>
+                  <p set:html={rich(p.line[lang])} />
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
 
-        <section class="paper__sec">
-          <h3 class="paper__h">{fr ? 'Formation' : 'Education'}</h3>
-          {education.map((e) => (
-            <div class="paper__item">
-              <p class="paper__when mono">{typeof e.dates === 'string' ? e.dates : e.dates[lang]}</p>
-              <div><h4>{e.school}</h4><p set:html={rich(e.degree[lang])} /></div>
-            </div>
-          ))}
+        <section class="paper__sec" aria-labelledby="cv-edu">
+          <h3 class="paper__h" id="cv-edu">{fr ? 'Formation' : 'Education'}</h3>
+          <ol class="paper__rows">
+            {education.map((e) => (
+              <li class="paper__item">
+                <p class="paper__when">{e.dates[lang]}</p>
+                <div><h4>{e.school}</h4><p set:html={rich(e.degree[lang])} /></div>
+              </li>
+            ))}
+          </ol>
         </section>
 
-        <section class="paper__sec">
-          <h3 class="paper__h">{fr ? 'Compétences' : 'Skills'}</h3>
+        <section class="paper__sec" aria-labelledby="cv-skills">
+          <h3 class="paper__h" id="cv-skills">{fr ? 'Compétences' : 'Skills'}</h3>
           {skills.map((s) => (
-            <div class="paper__item"><p class="paper__when mono">{s.group[lang]}</p><p>{s.items}</p></div>
+            <div class="paper__item"><p class="paper__when">{s.group[lang]}</p><p>{s.items}</p></div>
           ))}
-          <div class="paper__item"><p class="paper__when mono">{fr ? 'Langues' : 'Languages'}</p><p>{spoken[lang].join(', ')}</p></div>
+          <div class="paper__item"><p class="paper__when">{fr ? 'Langues' : 'Languages'}</p><p>{spoken[lang].join(', ')}</p></div>
         </section>
       </article>
     </div>
@@ -86,23 +120,28 @@ const projects = (await getCollection('projects', (p) => p.data.lang === lang)).
 </Base>
 
 <style>
-  .cv__updated { color: var(--text-quiet); margin-top: var(--s-5); display: flex; gap: var(--s-2); align-items: center; }
+  .cv__updated { color: var(--text-quiet); margin-top: var(--s-4); }
+  .dl__todo { margin-top: var(--s-2); }
   .downloads { margin-top: var(--s-6); max-width: 720px; }
   .dl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-3); padding-block: var(--s-3); min-height: 64px; }
   .dl__label { font-weight: 500; }
-  .paper { max-width: 880px; margin-inline: auto; }
+  .paper { max-width: 880px; }
   .paper__head { padding-bottom: var(--s-6); border-bottom: 1px solid var(--line-strong); }
-  .paper__name { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 650; letter-spacing: var(--track-display); line-height: 1; }
+  .paper__name { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 650; letter-spacing: var(--track-display); line-height: 1; }
   .paper__role { margin-top: var(--s-2); color: var(--text-muted); }
-  .paper__contact { margin-top: var(--s-3); text-transform: none; letter-spacing: 0.02em; color: var(--text-muted); }
-  .paper__contact a { color: var(--text); }
-  .paper__status { margin-top: var(--s-4); color: var(--text-muted); max-width: 64ch; }
+  .paper__contact { margin-top: var(--s-3); color: var(--text-muted); }
+  .paper__contact a { color: var(--text); text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 10px; }
+  .paper__status { margin-top: var(--s-3); color: var(--text-muted); }
   .paper__sec { padding-block: var(--s-6); border-bottom: 1px solid var(--line); }
-  .paper__h { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: var(--s-4); }
+  .paper__h { font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin-bottom: var(--s-3); }
+  .paper__rows { list-style: none; }
   .paper__item { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-3); }
-  @media (min-width: 640px) { .paper__item { grid-template-columns: 9rem 1fr; } }
-  .paper__when { color: var(--text-quiet); padding-top: 0.25em; text-transform: none; letter-spacing: 0.02em; }
+  .paper__rows > .paper__item + .paper__item { border-top: 1px solid var(--line); }
+  @media (min-width: 640px) { .paper__item { grid-template-columns: 9rem minmax(0, 1fr); } }
+  .paper__when { display: flex; flex-direction: column; color: var(--text-quiet); padding-top: 0.15em; font-family: var(--font-mono); font-size: var(--fs-label); letter-spacing: 0.04em; }
+  .paper__year { color: var(--text); }
   .paper__item h4 { font-weight: 600; font-size: 1.0625rem; }
   .paper__item h4 a { text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 11px; margin-block: -11px; }
   .paper__item p { color: var(--text-muted); }
+  .paper__tags { margin-top: var(--s-2); }
 </style>

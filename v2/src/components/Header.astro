@@ -12,16 +12,16 @@ const nav = [
   { href: lp(lang, '/about'), label: t(lang, 'nav.about') },
   { href: lp(lang, '/services'), label: t(lang, 'nav.services') },
   { href: lp(lang, '/cv'), label: t(lang, 'nav.cv') },
-  { href: lp(lang, '/creative'), label: t(lang, 'nav.creative') },
   { href: lp(lang, '/contact'), label: t(lang, 'nav.contact') },
 ];
+// Creative lives in the footer only (off-target for recruiters).
 const isCurrent = (href: string) => here === href || (href !== '/' && here.startsWith(href + '/'));
 ---
 <header class="site-header" id="site-header">
   <div class="site-header__inner wrap">
     <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}>
       <Star class="logo__star" />
-      <span class="logo__text">{person.short}</span>
+      <span class="logo__text">{person.name}</span>
     </a>
 
     <nav class="site-nav" aria-label={t(lang, 'nav.label')}>
@@ -36,15 +36,9 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
       <a class="lang-link mono" href={otherPath} hreflang={other} lang={other} title={t(lang, 'lang.switch')}>
         <span class="sr-only">{t(lang, 'lang.switch')}</span><span aria-hidden="true">{lang === 'en' ? 'EN' : 'FR'} <span class="lang-link__dim">/ {t(lang, 'lang.short')}</span></span>
       </a>
-      <button class="tool-btn" type="button" data-theme-toggle aria-label={t(lang, 'theme.toggle')} hidden>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
-      </button>
-      <button class="tool-btn kbd-pill mono" type="button" data-palette-open aria-label={t(lang, 'palette.open')} hidden>
-        <span aria-hidden="true" data-kbd>Ctrl K</span>
-      </button>
-      <a class="btn btn--primary btn--sm hire" href={lp(lang, '/contact') + '?for=role'}>{t(lang, 'cta.hire')}</a>
+      <a class="btn btn--primary btn--sm hire" href={`mailto:${person.email}`}>{t(lang, 'cta.emailMe')}</a>
       <a class="tool-btn menu-btn" href="#footer-nav" data-menu-open aria-haspopup="dialog">
-        <span>{t(lang, 'nav.menu')}</span><Star class="menu-btn__star" />
+        <span>{t(lang, 'nav.menu')}</span><Star class="menu-btn__star" px={1.5} />
       </a>
     </div>
   </div>
@@ -52,13 +46,13 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
 
 <!-- Floating pill after the hero (JS only; without JS the header and footer nav remain) -->
 <button class="menu-pill" type="button" data-menu-open aria-haspopup="dialog" hidden>
-  <span>{t(lang, 'nav.menu')}</span><Star class="menu-btn__star" />
+  <span>{t(lang, 'nav.menu')}</span><Star class="menu-btn__star" px={1.5} />
 </button>
 
 <dialog class="menu" id="site-menu" aria-label={t(lang, 'nav.menu')} data-lenis-prevent>
   <div class="menu__inner wrap">
     <div class="menu__top">
-      <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}><Star class="logo__star" /><span class="logo__text">{person.short}</span></a>
+      <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}><Star class="logo__star" /><span class="logo__text">{person.name}</span></a>
       <button class="tool-btn menu-close" type="button" data-menu-close>
         <span>{t(lang, 'nav.close')}</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" fill="none"/></svg>
@@ -75,7 +69,6 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
     <div class="menu__foot">
       <a class="menu__email" href={`mailto:${person.email}`}>{person.email}</a>
       <a class="mono" href={otherPath} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a>
-      <button class="tool-btn" type="button" data-theme-toggle hidden>{t(lang, 'theme.toggle')}</button>
     </div>
   </div>
 </dialog>
@@ -111,19 +104,19 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
   }
   .tool-btn:hover { border-color: var(--text); }
   .tool-btn svg { width: 18px; height: 18px; }
-  .kbd-pill { font-size: 0.6875rem; white-space: nowrap; }
-  @media (max-width: 767px) { .kbd-pill { display: none !important; } }
-  @media (max-width: 599px) { .site-header__tools > [data-theme-toggle] { display: none !important; } }
   .hire { display: none; }
   .menu-btn :global(.menu-btn__star), .menu-pill :global(.menu-btn__star) { width: 12px; height: 12px; color: var(--accent-wall); }
 
-  @media (min-width: 1100px) {
+  @media (min-width: 1024px) {
     .site-nav { display: block; }
     .hire { display: inline-flex; }
     .menu-btn { display: none; }
   }
   @media (max-width: 420px) {
     .logo__text { font-size: 0.9375rem; }
+  }
+  @media (max-width: 359px) {
+    .site-header__inner .logo__text { display: none; }
   }
 
   .menu-pill {
@@ -136,7 +129,7 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
     transition: opacity var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out);
   }
   .menu-pill.is-hidden { opacity: 0; transform: translate(-50%, 16px); pointer-events: none; }
-  @media (min-width: 1100px) {
+  @media (min-width: 1024px) {
     .menu-pill { left: auto; right: var(--gutter); top: var(--s-4); bottom: auto; transform: none; }
     .menu-pill.is-hidden { transform: translateY(-12px); }
   }

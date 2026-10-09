@@ -3,36 +3,36 @@ import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CopyEmail from '../components/CopyEmail.astro';
 import Rich from '../components/Rich.astro';
+import Todo from '../components/mdx/Todo.astro';
 import { person, status } from '../data/site';
 import { type Lang, lp } from '../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
 const F = fr
-  ? { name: 'Votre nom', email: 'Votre e-mail', who: 'Je suis…', recruiter: 'Recruteur ou recruteuse', client: 'Client avec un projet', other: 'Autre', msg: 'Message', send: 'Envoyer', errName: 'Indiquez votre nom.', errEmail: 'Indiquez une adresse e-mail valide.', errMsg: 'Écrivez quelques mots.', ok: 'Merci, votre message est bien parti.', fallback: 'Ce site n’a pas encore de service de formulaire : votre application e-mail va s’ouvrir avec le message prêt. Sinon, écrivez à elaraki48@gmail.com.', note: 'Votre nom, votre e-mail et votre message servent uniquement à vous répondre.' }
-  : { name: 'Your name', email: 'Your email', who: 'I am…', recruiter: 'A recruiter', client: 'A client with a project', other: 'Other', msg: 'Message', send: 'Send', errName: 'Please add your name.', errEmail: 'Please add a valid email address.', errMsg: 'Please write a few words.', ok: 'Thanks, your message is on its way.', fallback: 'This site has no form service yet, so your email app will open with the message ready. Otherwise, write to elaraki48@gmail.com.', note: 'Your name, email and message are only used to reply to you.' };
+  ? { name: 'Votre nom', email: 'Votre e-mail', msg: 'Message', send: 'Envoyer', errName: 'Indiquez votre nom.', errEmail: 'Indiquez une adresse e-mail valide.', errMsg: 'Écrivez quelques mots.', ok: 'Merci, votre message est bien parti.', fallback: 'Ce site n’a pas encore de service de formulaire : votre application e-mail va s’ouvrir avec le message prêt. Sinon, écrivez à elaraki48@gmail.com.', note: 'Votre nom, votre e-mail et votre message servent uniquement à vous répondre.' }
+  : { name: 'Your name', email: 'Your email', msg: 'Message', send: 'Send', errName: 'Please add your name.', errEmail: 'Please add a valid email address.', errMsg: 'Please write a few words.', ok: 'Thanks, your message is on its way.', fallback: 'This site has no form service yet, so your email app will open with the message ready. Otherwise, write to elaraki48@gmail.com.', note: 'Your name, email and message are only used to reply to you.' };
 ---
 <Base
   lang={lang}
-  title={fr ? 'Contact · Mamoun Tantaoui El Araki' : 'Contact · Mamoun Tantaoui El Araki'}
+  title={`Contact · ${person.name}`}
   description={fr
-    ? 'Écrivez à Mamoun Tantaoui El Araki : elaraki48@gmail.com. Marrakech, Maroc (GMT+1). Postes junior IA, data, logiciel et projets freelance.'
-    : 'Write to Mamoun Tantaoui El Araki: elaraki48@gmail.com. Marrakech, Morocco (GMT+1). Junior AI, data and software roles, and freelance projects.'}
+    ? 'Écrivez à Mamoun El Araki : elaraki48@gmail.com. Basé au Maroc (GMT+1), ouvert au travail à distance et à la relocalisation.'
+    : 'Write to Mamoun El Araki: elaraki48@gmail.com. Based in Morocco (GMT+1), open to remote and relocation, for junior roles and freelance projects.'}
   ogKey="contact"
 >
   <PageIntro label="Contact" title="Contact" word="SALAM">
     <a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a>
-    <div class="contact__actions"><CopyEmail lang={lang} /><a class="btn" href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> (opens in a new tab)</span></a><a class="btn" href={lp(lang, '/cv')}>CV</a></div>
+    <div class="contact__actions"><CopyEmail lang={lang} /><a class="btn" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={lp(lang, '/cv')}>CV</a></div>
   </PageIntro>
 
   <section class="section band" aria-label={fr ? 'Formulaire et disponibilités' : 'Form and availability'}>
     <div class="wrap contact__grid">
       <div class="contact__info">
         <dl class="contact__facts">
-          <div><dt class="mono">{fr ? 'Lieu' : 'Location'}</dt><dd>{fr ? 'Marrakech, Maroc (GMT+1)' : 'Marrakech, Morocco (GMT+1)'}</dd></div>
+          <div><dt class="mono">{fr ? 'Lieu' : 'Location'}</dt><dd>{fr ? 'Basé au Maroc (GMT+1), ouvert au travail à distance et à la relocalisation' : 'Based in Morocco (GMT+1), open to remote and relocation'}</dd></div>
           <div><dt class="mono">{fr ? 'Recruteurs' : 'Employers'}</dt><dd><Rich text={status.employers[lang]} /></dd></div>
-          <div><dt class="mono">{fr ? 'Clients' : 'Clients'}</dt><dd>{status.clients[lang]} <a href={lp(lang, '/services')}>{fr ? 'Voir les offres' : 'See the packs'} →</a></dd></div>
-          <div><dt class="mono">{fr ? 'Téléphone' : 'Phone'}</dt><dd><span class="todo">{fr ? 'afficher +212 691713525 ou non' : 'show +212 691713525 publicly or not'}</span></dd></div>
+          <div><dt class="mono">{fr ? 'Clients' : 'Clients'}</dt><dd>{status.clients[lang]} <a href={lp(lang, '/services')}>{fr ? 'Voir les services' : 'See services'} →</a></dd></div>
         </dl>
       </div>
 
@@ -51,20 +51,12 @@ const F = fr
             <p class="field__err" id="cf-email-err"></p>
           </div>
           <div class="field">
-            <label for="cf-who">{F.who}</label>
-            <select id="cf-who" name="who">
-              <option value="recruiter">{F.recruiter}</option>
-              <option value="client">{F.client}</option>
-              <option value="other">{F.other}</option>
-            </select>
-          </div>
-          <div class="field">
             <label for="cf-msg">{F.msg}</label>
             <textarea id="cf-msg" name="message" rows="6" required minlength="10" aria-describedby="cf-msg-err" data-error={F.errMsg}></textarea>
             <p class="field__err" id="cf-msg-err"></p>
           </div>
           <button class="btn btn--primary" type="submit">{F.send}<span class="arrow" aria-hidden="true">→</span></button>
-          <p class="cform__note">{F.note} <span class="todo">{fr ? 'choisir le service de formulaire (Netlify Forms ou Formspree)' : 'pick the form service (Netlify Forms or Formspree)'}</span></p>
+          <p class="cform__note">{F.note} <Todo>{fr ? 'choisir le service de formulaire (Netlify Forms ou Formspree)' : 'pick the form service (Netlify Forms or Formspree)'}</Todo></p>
         </form>
         <p class="cform__msg" data-form-success tabindex="-1" role="status" hidden>{F.ok}</p>
         <p class="cform__msg" data-form-fallback tabindex="-1" role="status" hidden>{F.fallback}</p>

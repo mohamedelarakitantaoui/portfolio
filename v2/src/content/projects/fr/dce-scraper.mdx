@@ -1,25 +1,29 @@
 ---
 key: dce-scraper
 lang: fr
-order: 1
+order: 2
 title: DCE Scraper
-description: Comment un scraper de 3 643 lignes est devenu 7 microservices et collecte 300 consultations en 15 minutes au lieu de 2 h 30, chez Intelcia.
-categories: [automation, ai]
-kind: Intelcia · stage
+description: Comment un scraper de 3 643 lignes est devenu 7 services et a collecté 300 consultations en 15 minutes au lieu de 2 h 30, chez Intelcia.
+tier: featured
+year: "2025"
+meta: Stage · Intelcia · 2025
+outcome: Une collecte de documents de 2 h 30 ramenée à 15 minutes pour 300 consultations de marchés publics.
+tldr:
+  - "**Problème :** un chatbot IA chez Intelcia avait besoin des dossiers d’appel d’offres de trois portails. Un script de 3 643 lignes mettait 2 h 30 pour 300 consultations et échouait en silence."
+  - "**Construit :** sept services, un pool de jusqu’à 10 navigateurs Selenium, une configuration YAML par portail, des reprises et des contrôles de santé."
+  - "**Résultat :** **90 % de temps de traitement en moins** (2 h 30 → 15 min pour 300 consultations), plus de 10 heures gagnées par semaine, et chaque échec réessayé ou signalé."
 status: Livré, été 2025 [[todo:toujours utilisé ?]]
-summary: Collecte des documents de marchés publics (DCE) sur trois portails pour constituer un jeu de données d’entraînement d’un chatbot IA.
 role: Stagiaire en développement logiciel
 timeline: juin–août 2025
 team: "[[todo:seul ou équipe de N ?]]"
-platforms: Outil en ligne de commande (Click) [[todo:où il tourne]]
-stack: [Python 3.12, Selenium WebDriver 4.15+, Configuration YAML, Threading + async, Click CLI]
+stack: [Python 3.12, Selenium WebDriver 4.15+, Configuration YAML, Threading + async, CLI Click]
 links: []
-codeNote: "Code privé (travail d’entreprise chez Intelcia). Démonstration sur demande."
-number: { value: "10×", caption: "plus rapide : 2 h 30 → 15 min pour 300 consultations" }
+codeNote: "Code privé (travail pour Intelcia). Démonstration sur demande."
+number: { value: "90 %", caption: "de temps de traitement en moins : 2 h 30 → 15 min pour 300 consultations ; plus de 10 h gagnées par semaine" }
 constraint: Point de départ, un seul script de 3 643 lignes ; un été pour le reconstruire.
-tags: [Python, Selenium, Microservices, 10 workers]
+tags: [Python, Selenium, Microservices, Pool de workers]
 diagram: dce
-next: secure-gov-rag
+next: pitchpoint
 ---
 
 <Chapter n="01" label="Problème" title="Un chatbot avait besoin des dossiers d’appel d’offres. Les portails les donnent un formulaire à la fois.">
@@ -32,16 +36,16 @@ La première version du collecteur tenait en un script de 3 643 lignes. Un passa
 
 <PullQuote cite="Titre de mon rapport de stage, Intelcia, été 2025">Automated Data Collection for AI Chatbot Training: Development of a DCE Web Scraping System</PullQuote>
 
-<Chapter n="02" label="Approche" title="Découper par tâche, puis lancer dix navigateurs à la fois.">
+<Chapter n="02" label="Contraintes" title="Trois portails, un été, et un script de 3 643 lignes comme point de départ.">
 
-- **Une responsabilité par service.** Le monolithe est devenu sept services, chacun responsable d’une étape : trouver les URL, remplir les formulaires, télécharger, classer, réessayer.
-- **Un pool de workers.** Jusqu’à 10 navigateurs Selenium en parallèle, réglés par configuration.
-- **De la configuration, pas du code, par portail.** Chaque source est décrite en YAML : un nouveau portail ou un sélecteur modifié, c’est une modification de configuration.
-- **Des échecs visibles.** Les reprises analysent le type d’échec avant de réessayer, et des contrôles de santé signalent ce qui échoue encore.
+- **Temps :** un stage d’été, de juin à août 2025.
+- **Point de départ :** un seul script de 3 643 lignes qui mettait 2 h 30 pour 300 consultations.
+- **Sources :** trois portails aux pages et formulaires différents, dont le portail d’achats interne d’Intelcia.
+- **Confidentialité :** un travail d’entreprise, donc le code et les documents restent privés.
 
 </Chapter>
 
-<Chapter n="03" label="Architecture" title="Sept services, un orchestrateur.">
+<Chapter n="03" label="Fonctionnement" title="Sept services, un orchestrateur, dix navigateurs au maximum.">
 
 <Diagram name="dce" lang="fr" />
 
@@ -57,10 +61,19 @@ La première version du collecteur tenait en un script de 3 643 lignes. Un passa
 
 </Chapter>
 
-<Chapter n="04" label="Résultat" title="Les mêmes 300 consultations, le temps d’un café au lieu d’un après-midi.">
+<Chapter n="04" label="Décisions et compromis" title="J’ai choisi la configuration et les échecs visibles plutôt que le code astucieux.">
+
+- **Des services plutôt qu’un script.** J’ai découpé le monolithe par tâche (trouver les URL, remplir les formulaires, télécharger, classer, réessayer), parce que dans un script de 3 643 lignes chaque étape était mêlée à toutes les autres.
+- **Du YAML par portail plutôt que des sélecteurs dans le code.** Chaque source est décrite en configuration, parce que les portails changent : un nouveau portail ou un sélecteur modifié, c’est une modification de configuration, pas de code.
+- **Un pool de jusqu’à 10 navigateurs plutôt qu’un passage séquentiel.** Un seul navigateur mettait 2 h 30 pour 300 consultations ; je les ai lancés en parallèle, avec une taille de pool réglée en configuration.
+- **Des reprises qui analysent l’échec plutôt que des reprises aveugles.** Les anciens échecs étaient silencieux : le service de reprise regarde comment un téléchargement a échoué avant de réessayer, et des contrôles de santé signalent ce qui échoue encore.
+
+</Chapter>
+
+<Chapter n="05" label="Résultats" title="Les mêmes 300 consultations, le temps d’un café au lieu d’un après-midi.">
 
 <Stats items={[
-  { value: '2 h 30 → 15 min', caption: '300 consultations par passage (10× plus rapide)' },
+  { value: '2 h 30 → 15 min', caption: '300 consultations par passage : 90 % de temps de traitement en moins, plus de 10 h gagnées par semaine' },
   { value: '3 643 → 7', caption: 'lignes d’un script → services ciblés' },
   { value: '10', caption: 'navigateurs en parallèle, au maximum' },
   { value: '0', caption: 'échec silencieux grâce aux reprises et contrôles de santé' },
@@ -70,7 +83,7 @@ Chaque échec est désormais réessayé ou signalé : un document manquant devie
 
 </Chapter>
 
-<Chapter n="05" label="Ce que je ferais autrement" title="[[todo:votre leçon en une ligne]]">
+<Chapter n="06" label="Limites et suite" title="[[todo:votre leçon en une ligne]]">
 
 <Todo>votre réponse honnête. Pistes : des tests avant le découpage ? une file (Redis/RQ) au lieu de threads ? des logs structurés et un tableau de bord ?</Todo>
 

@@ -1,25 +1,29 @@
 ---
 key: dce-scraper
 lang: en
-order: 1
+order: 2
 title: DCE Scraper
-description: How a 3,643-line scraper became 7 microservices and collected 300 procurement consultations in 15 minutes instead of 2.5 hours, at Intelcia.
-categories: [automation, ai]
-kind: Intelcia · internship
+description: How a 3,643-line scraper became 7 services and collected 300 procurement consultations in 15 minutes instead of 2.5 hours, at Intelcia.
+tier: featured
+year: "2025"
+meta: Internship · Intelcia · 2025
+outcome: Cut a 2.5-hour document run to 15 minutes for 300 procurement consultations.
+tldr:
+  - "**Problem:** an AI chatbot at Intelcia needed tender documents from three portals. One 3,643-line script took 2.5 hours per 300 consultations and failed silently."
+  - "**Built:** seven services, a pool of up to 10 Selenium browsers, YAML config per portal, and retries plus health checks."
+  - "**Result:** **90% less processing time** (2h30 → 15 min for 300 consultations), 10+ hours saved per week, and every failure retried or reported."
 status: Delivered, summer 2025 [[todo:still in use?]]
-summary: Collected public-procurement documents (DCE) from three portals into an LLM training dataset for an AI chatbot.
 role: Software development intern
 timeline: Jun–Aug 2025
 team: "[[todo:solo or team of N?]]"
-platforms: Command-line tool (Click) [[todo:where it runs]]
 stack: [Python 3.12, Selenium WebDriver 4.15+, YAML config, Threading + async, Click CLI]
 links: []
 codeNote: "Code private (Intelcia company work). Walkthrough on request."
-number: { value: "10×", caption: "faster: 2.5 h → 15 min for 300 consultations" }
+number: { value: "90%", caption: "less processing time: 2h30 → 15 min for 300 consultations; 10+ hours saved per week" }
 constraint: Started from a single 3,643-line script; one summer to rebuild it.
-tags: [Python, Selenium, Microservices, 10 workers]
+tags: [Python, Selenium, Microservices, Worker pool]
 diagram: dce
-next: secure-gov-rag
+next: pitchpoint
 ---
 
 <Chapter n="01" label="Problem" title="A chatbot needed tender documents. The portals hand them out one form at a time.">
@@ -32,16 +36,16 @@ The first version of the collector was one 3,643-line script. A run over 300 con
 
 <PullQuote cite="Title of my internship report, Intelcia, summer 2025">Automated Data Collection for AI Chatbot Training: Development of a DCE Web Scraping System</PullQuote>
 
-<Chapter n="02" label="Approach" title="Split it by job, then run ten browsers at once.">
+<Chapter n="02" label="Constraints" title="Three portals, one summer, and a 3,643-line starting point.">
 
-- **One responsibility per service.** The monolith became seven services, each owning one step: find the URLs, fill the forms, download, file, retry.
-- **A worker pool.** Up to 10 Selenium browsers run in parallel, scaled by configuration.
-- **Config, not code, per portal.** Each source is described in YAML, so a new portal or a changed selector is a config edit.
-- **Loud failure.** Retries look at the failure pattern before trying again, and health checks flag anything that still fails.
+- **Time:** one summer internship, June to August 2025.
+- **Starting point:** a single 3,643-line script that took 2.5 hours per 300 consultations.
+- **Sources:** three portals with different pages and forms, one of them Intelcia's internal purchasing portal.
+- **Privacy:** company work, so the code and the documents stay private.
 
 </Chapter>
 
-<Chapter n="03" label="Architecture" title="Seven services, one orchestrator.">
+<Chapter n="03" label="How it works" title="Seven services, one orchestrator, ten browsers at most.">
 
 <Diagram name="dce" lang="en" />
 
@@ -57,10 +61,19 @@ The first version of the collector was one 3,643-line script. A run over 300 con
 
 </Chapter>
 
-<Chapter n="04" label="Outcome" title="Same 300 consultations, a coffee break instead of an afternoon.">
+<Chapter n="04" label="Key decisions and trade-offs" title="I chose config and loud failures over clever code.">
+
+- **Services over one script.** I split the monolith by job (find the URLs, fill the forms, download, file, retry), because in one 3,643-line script every step was tangled with every other.
+- **YAML per portal over hard-coded selectors.** Each source is described in config, because portals change: a new portal or a changed selector is a config edit, not a code change.
+- **A pool of up to 10 browsers over a sequential run.** One browser working through 300 consultations took 2.5 hours, so I ran them in parallel, with the pool size set in config.
+- **Pattern-aware retries over blind retries.** The old failures were silent, so the retry service looks at how a download failed before trying again, and health checks flag anything that still fails.
+
+</Chapter>
+
+<Chapter n="05" label="Results" title="Same 300 consultations, a coffee break instead of an afternoon.">
 
 <Stats items={[
-  { value: '2.5 h → 15 min', caption: '300 consultations per run (10× faster)' },
+  { value: '2h30 → 15 min', caption: '300 consultations per run: 90% less processing time, 10+ hours saved per week' },
   { value: '3,643 → 7', caption: 'lines of one script → focused services' },
   { value: '10', caption: 'browsers in parallel, at most' },
   { value: '0', caption: 'silent failures after retries + health checks' },
@@ -70,7 +83,7 @@ Every failure is now retried or reported, so a missing document is a logged even
 
 </Chapter>
 
-<Chapter n="05" label="What I'd do differently" title="[[todo:your one-line lesson]]">
+<Chapter n="06" label="Limitations and what I'd do next" title="[[todo:your one-line lesson]]">
 
 <Todo>your honest answer. Prompts: tests before the refactor? a queue (Redis/RQ) instead of threads? structured logs and a dashboard?</Todo>
 

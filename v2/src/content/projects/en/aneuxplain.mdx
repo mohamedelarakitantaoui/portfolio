@@ -1,27 +1,30 @@
 ---
 key: aneuxplain
 lang: en
-order: 3
+order: 1
 title: AneuXplain
-description: Explainable AI for intracranial aneurysm rupture-risk prediction from 3D vascular geometry. AUI capstone; paper accepted at ICOA 2026.
-categories: [research, ai]
-kind: Research · AUI capstone
-status: Paper accepted at ICOA 2026 (paper ID 69)
-summary: One rupture-risk prediction, three explanations a clinician can check. PointNet on 3D vessel geometry.
-role: Capstone author; paper co-author [[todo:full author list]]
+description: Explainable AI that predicts aneurysm rupture risk from 3D vessel geometry and shows its reasoning. AUI capstone; paper accepted at ICOA 2026.
+tier: featured
+year: "2026"
+meta: Research · Capstone · 2026
+outcome: Predicts aneurysm rupture risk from 3D vessel geometry and explains each prediction three ways.
+tldr:
+  - "**Problem:** rupture-risk models return one score a clinician can't check, and they are rarely tested on another hospital's scans."
+  - "**Built:** a PointNet risk model on 3D vessel geometry with a gradient-saliency heatmap and an 8-measurement morphology report, served in a FastAPI + React + Three.js app."
+  - "**Result:** **0.834 ROC-AUC** and **85% accuracy** on a patient-level split (16 held-out patients), and 48 of 50 external subjects processed end to end. Paper accepted at ICOA 2026."
+status: Paper accepted at ICOA 2026 (paper ID 69). Research prototype, not a medical device. [[todo:proceedings link / DOI once published]]
+role: Sole author of the capstone; paper co-author [[todo:full ICOA author list]]
 timeline: Spring 2026
-team: "[[todo:full author list]]"
-platforms: Research prototype (Python)
-stack: [PyTorch, PointNet, DICOM, Marching cubes, 3D point clouds]
-venue: ICOA 2026, paper ID 69 [[todo:proceedings link / DOI once published]]
-supervision: "Supervisor: Dr. Oualid Kafi · Evaluator: Dr. Lamiae Bouanane"
+team: "Solo, supervised by Dr. Oualid Kafi; evaluated by Dr. Lamiae Bouanane"
+stack: [PyTorch, PointNet, DICOM, Marching cubes, FastAPI, React, Three.js]
 links:
-  - { label: GitHub (AneuXplain-), href: "https://github.com/mohamedelarakitantaoui/AneuXplain-" }
-number: { value: "0.834", caption: "ROC-AUC on the internal test set" }
-constraint: A bare score is hard for a doctor to verify, so every prediction has to explain itself.
+  - { label: "GitHub (AneuXplain-)", href: "https://github.com/mohamedelarakitantaoui/AneuXplain-" }
+  - { label: "Read the full capstone report (PDF, 53 pages)", href: "/research/aneuxplain-capstone-report.pdf" }
+number: { value: "0.834", caption: "ROC-AUC on 16 held-out patients (internal test)" }
+constraint: One public training set (103 patients), one semester, and every prediction had to be checkable by a doctor.
 tags: [PyTorch, PointNet, Explainability, Medical imaging]
-diagram: aneu
-next: esaha
+loop: { webm: "/media/aneuxplain/aneuxplain-loop.webm", mp4: "/media/aneuxplain/aneuxplain-loop.mp4", poster: "/media/aneuxplain/aneuxplain-poster.webp", alt: "Silent loop of the AneuXplain app: 3D vessel reconstruction, risk score, heatmap and measurements" }
+next: dce-scraper
 ---
 
 <Note>Research prototype, not a medical device.</Note>
@@ -36,45 +39,71 @@ Rupture-risk models for intracranial aneurysms usually return one number. Three 
 
 </Chapter>
 
-<Chapter n="02" label="Approach" title="One prediction, three explanations.">
+<Chapter n="02" label="Constraints" title="One public dataset, one semester, and a doctor who has to check the answer.">
 
-Each prediction is returned as:
-
-1. **a risk probability** between 0 and 1;
-2. **a heatmap** of the vessel regions driving the prediction;
-3. **a morphology report** of 8 measurements: dome-to-neck ratio, neck size, dome size, tortuosity index, branching angle, sphericity index, irregularity index and aspect ratio.
-
-The model was trained on **IntrA** (2,012 3D samples from 103 patients) and tested externally on **Lausanne TOF-MRA** (50 patients: 25 with an aneurysm, 25 healthy).
+- **Training data:** IntrA, 2,012 3D samples from 103 patients, with its own meshing process.
+- **External test:** the Lausanne TOF-MRA cohort, 50 subjects (25 with an aneurysm, 25 healthy), labelled with rough spheres, not exact outlines.
+- **Trust:** a clinician must be able to check every prediction against evidence they can see.
+- **Time:** one semester, working alone, supervised by Dr. Oualid Kafi.
 
 </Chapter>
 
-<Chapter n="03" label="Architecture" title="From a DICOM scan to a plain-language report.">
+<Chapter n="03" label="How it works" title="From a DICOM scan to a report a clinician can read without the app.">
 
-<Diagram name="aneu" lang="en" />
+<Flow label="AneuXplain pipeline" steps={['DICOM', 'segmentation', '3D mesh', 'PointNet (2,048 pts)', 'heatmap + risk + morphology', 'report']} />
 
-The classifier is **PointNet**: 2,048 points sampled on the vessel surface → max pool → MLP → risk probability.
+<AneuApp />
+
+Each prediction comes back three ways: a **risk probability**, a **gradient-saliency heatmap** of the vessel regions driving it, and a **morphology report** of 8 measurements, from dome-to-neck ratio to aspect ratio. Every analysis ends in a PDF: the risk score first, then each measurement against its normal range, then a summary in plain words. One run takes 13.9 s on average: upload, segmentation and analysis.
+
+<AneuReport />
 
 </Chapter>
 
-<Chapter n="04" label="Outcome" title="Strong on the data it learned from.">
+<Chapter n="04" label="Key decisions and trade-offs" title="I chose checkable over impressive.">
+
+- **Three explanations over one score.** I chose a score, a heatmap and a morphology report over a single probability, because a doctor can only audit a score against evidence. When the three disagree, that disagreement tells the clinician to look closer.
+- **A patient-level split over a random split.** An earlier version split samples at random, so pieces of the same patient landed in both training and validation. I chose a 70/15/15 split by patient, which gives a lower but honest number.
+- **One class correction over two.** A weighted sampler plus a weighted loss squeezed every prediction toward 0.5. I kept one correction, lowered the learning rate and waited longer before early stopping. That single retrain produced the 0.834.
+- **A greyed-out card over a made-up value.** The size ratio needs the parent vessel, which the prototype doesn't segment yet. I chose to show that card greyed out with a note rather than display a number I couldn't compute.
+
+</Chapter>
+
+<Chapter n="05" label="Results" title="0.834 on held-out patients, in the published range, under a stricter split.">
 
 <Stats items={[
-  { value: '0.834', caption: 'ROC-AUC, internal test' },
-  { value: '84.9%', caption: 'accuracy, internal test' },
-  { value: '0.93', caption: 'PR-AUC, internal test' },
+  { value: '0.834', caption: 'ROC-AUC, 16 held-out IntrA patients (312 samples)' },
+  { value: '85%', caption: 'accuracy at threshold 0.5, same patient-level split' },
+  { value: '0.76', caption: 'sensitivity and specificity at the balanced threshold (0.27)' },
+  { value: '48 / 50', caption: 'external Lausanne subjects processed end to end' },
 ]} />
 
-These are internal results on IntrA. The external Lausanne test is where the open problem lives (chapter 05). <Todo>export the deck slides you may show as figures</Todo>
+The 0.834 sits inside the published range for PointNet classifiers on IntrA (0.80 to 0.90). Most of those numbers come from random splits, which leak patients between training and test; mine comes from a split by patient.
+
+<ModelCard
+  use="Research decision support: help a clinician read an aneurysm's geometry and see what drives the score. Not diagnosis."
+  outOfScope="Clinical diagnosis or treatment decisions, and scans from scanners or pipelines it has not been validated on."
+  data="Trained on IntrA: 2,012 3D samples from 103 patients, split 70/15/15 by patient. External set: Lausanne TOF-MRA, 50 subjects (25 patients, 25 controls)."
+  evaluation="Held-out IntrA test (16 patients): ROC-AUC 0.834, PR-AUC 0.626, accuracy 85% at threshold 0.5 (patient-level split). Baselines: chance (0.5) and published PointNet classifiers on IntrA (0.80 to 0.90). Cross-dataset on Lausanne (48 subjects, patient vs control): ROC-AUC 0.557."
+  limitations="One training dataset; a small external cohort with rough sphere labels and no rupture follow-up; morphology thresholds taken from the literature, not reviewed case by case by a clinician."
+  failure="On the Lausanne scans the app flagged every subject “Out of distribution” (mesh edge-length z-score around −116): my DICOM pipeline builds meshes unlike IntrA's. The badge appears instead of a confident score."
+/>
+
+[Read the full capstone report (PDF, 53 pages)](/research/aneuxplain-capstone-report.pdf)
 
 </Chapter>
 
-<Chapter n="05" label="What I'd do differently" title="Train across hospitals from day one.">
+<Chapter n="06" label="Limitations and what I'd do next" title="It doesn't travel to another hospital yet.">
 
-The weak point is **cross-hospital generalisation**: performance on scans from a different hospital and scanner. <Todo>the external-test result and what it measures, before it is published</Todo>
+On another hospital's scans, run through my own pipeline, the ROC-AUC drops to **0.557**, barely above chance. The report traces two causes:
+
+- **Different meshes.** IntrA ships cleaned meshes; mine come from my own segmentation, so every Lausanne subject is out of distribution.
+- **A coordinate shortcut.** The pipeline skips the scan's full orientation data, so 21% of patients needed a fallback crop at the mesh centre instead of on the aneurysm.
 
 Next steps:
 
-- train across several hospitals and scanners;
+- apply the scan's full coordinate transform so the crop lands on the aneurysm;
+- harmonise the meshes, then train across several hospitals and scanners;
 - add a doctor-facing “why is this risky?” assistant on top of the three explanations;
 - release the code, the model and the validation protocol.
 

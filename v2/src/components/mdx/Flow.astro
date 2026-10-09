@@ -1,0 +1,18 @@
+---
+// A pipeline as one line of mono text. Wraps between steps, never inside one.
+interface Props { steps: string[]; label: string }
+const { steps, label } = Astro.props;
+---
+<ol class="flow mono" aria-label={label}>
+  {steps.map((s) => <li>{s}</li>)}
+</ol>
+
+<style>
+  .flow {
+    list-style: none; display: flex; flex-wrap: wrap; row-gap: var(--s-1);
+    margin-block: 0 var(--s-6); color: var(--text); font-size: 0.875rem; line-height: 1.6;
+  }
+  .flow li { white-space: nowrap; }
+  @media (max-width: 479px) { .flow li { white-space: normal; } }
+  .flow li + li::before { content: '→' / ''; margin-inline: 0.6em; color: var(--accent); }
+</style>

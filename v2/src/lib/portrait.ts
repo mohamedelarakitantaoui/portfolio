@@ -3,8 +3,8 @@
 import { getImage } from 'astro:assets';
 import portrait from '../assets/portrait-2026-10.png';
 
-// ≥1280: height min(76svh, 720px) → ≤755px wide · 1024–1279: height min(64svh, 520px) → ≤545px · <1024: min(100vw, 460px)
-export const PORTRAIT_SIZES = '(min-width: 1280px) 755px, (min-width: 1024px) 545px, min(100vw, 460px)';
+// ≥1280: height min(68svh, 640px) → ≤671px wide · 1024–1279: height min(62svh, 500px) → ≤524px · 600–1023: 346px · <600: 220px
+export const PORTRAIT_SIZES = '(min-width: 1280px) 671px, (min-width: 1024px) 524px, (min-width: 600px) 346px, 220px';
 const WIDTHS = [400, 560, 760, 1000, 1212];
 
 let cache: Promise<{ avif: string; webp: string; fallback: string; width: number; height: number }> | null = null;

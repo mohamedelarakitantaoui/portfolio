@@ -1,43 +1,45 @@
 ---
 import { getCollection } from 'astro:content';
 import ProjectCard from '../ProjectCard.astro';
+import MoreProjects from '../MoreProjects.astro';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
-const projects = (await getCollection('projects', (p) => p.data.lang === lang)).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects', (p) => p.data.lang === lang && p.data.tier === 'featured')).sort((a, b) => a.data.order - b.data.order);
 const [first, ...rest] = projects;
 const fr = lang === 'fr';
 ---
 <section class="work section band" aria-labelledby="work-h2" id="work">
-  <div class="wrap work__grid">
+  <div class="wrap grid-12 work__grid">
     <div class="work__head">
       <div class="work__sticky">
         <p class="label">{fr ? 'Projets choisis' : 'Selected work'}</p>
-        <h2 class="h2" id="work-h2" data-reveal-lines>{fr ? 'Des portails de marchés publics à la géométrie des anévrismes.' : 'From procurement portals to aneurysm geometry.'}</h2>
-        <p class="work__sub">{fr ? 'Pour chacun : ce que j’ai fait, le chiffre qui a changé, et le point de départ.' : 'Each one shows what I did, the number that changed, and what I started from.'}</p>
+        <h2 class="h2" id="work-h2" data-reveal-lines>{fr ? 'Trois projets, avec les chiffres.' : 'Three projects, with the numbers.'}</h2>
+        <p class="work__sub">{fr ? 'Ce que j’ai construit, ce qui a changé, et mon point de départ.' : 'What I built, what changed, and what I started from.'}</p>
         <a class="btn" href={lp(lang, '/work')}>{t(lang, 'cta.allProjects')}<span class="arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
     <div class="work__cards">
-      <ProjectCard project={first} lang={lang} index={1} large />
+      <ProjectCard project={first} lang={lang} large />
       <div class="work__pair">
-        {rest.map((p, i) => <ProjectCard project={p} lang={lang} index={i + 2} />)}
+        {rest.map((p) => <ProjectCard project={p} lang={lang} />)}
       </div>
+      <MoreProjects lang={lang} id="home-more" />
     </div>
   </div>
 </section>
 
 <style>
-  .work__grid { display: grid; gap: var(--s-7); }
+  .work__grid { row-gap: var(--s-7); }
   .work__sub { color: var(--text-muted); margin-block: var(--s-4) var(--s-5); max-width: 36ch; }
   .work__cards { display: grid; gap: var(--s-8); }
   .work__pair { display: grid; gap: var(--s-8); }
   @media (min-width: 768px) {
-    .work__pair { grid-template-columns: 1fr 1fr; gap: var(--s-8) var(--s-6); align-items: start; }
-    .work__pair > :global(:nth-child(even)) { margin-top: var(--s-9); }
+    .work__pair { grid-template-columns: 1fr 1fr; gap: var(--s-6); align-items: start; }
   }
   @media (min-width: 1024px) {
-    .work__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-8); }
+    .work__head { grid-column: 1 / span 4; }
+    .work__cards { grid-column: 5 / -1; }
     .work__sticky { position: sticky; top: var(--s-9); }
   }
 </style>

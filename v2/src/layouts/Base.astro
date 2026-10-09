@@ -34,18 +34,19 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: person.name,
+    alternateName: person.legalName,
     jobTitle: person.jobTitle,
     email: `mailto:${person.email}`,
     url: new URL('/', site).href,
     image: new URL('/og/home-en.png', site).href,
-    address: { '@type': 'PostalAddress', addressLocality: 'Marrakech', addressCountry: 'MA' },
+    address: { '@type': 'PostalAddress', addressCountry: 'MA' },
     alumniOf: [
       { '@type': 'CollegeOrUniversity', name: 'Al Akhawayn University' },
       { '@type': 'CollegeOrUniversity', name: 'Boğaziçi University' },
     ],
     knowsLanguage: ['en', 'fr', 'ar'],
-    knowsAbout: ['Retrieval-augmented generation', 'Python automation', 'Web scraping', 'Microservices', 'PointNet', 'React', 'FastAPI'],
-    sameAs: [person.github],
+    knowsAbout: ['Python automation', 'Web scraping', 'Microservices', 'Explainable AI', 'PointNet', 'Expected goals (xG)', 'LightGBM', 'React', 'FastAPI', 'Docker', 'Kubernetes'],
+    sameAs: [person.linkedin, person.github],
   },
   {
     '@context': 'https://schema.org',
@@ -68,7 +69,7 @@ const jsonLd = [
     <link rel="alternate" hreflang="en" href={new URL(enPath, site).href} />
     <link rel="alternate" hreflang="fr" href={new URL(frPath, site).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(enPath, site).href} />
-    <meta name="theme-color" content="#0f0d0c" />
+    <meta name="theme-color" content="#111111" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -94,7 +95,7 @@ const jsonLd = [
       (function () {
         var d = document.documentElement;
         d.classList.add('js');
-        try { var th = localStorage.getItem('theme'); if (th === 'light' || th === 'dark') { d.setAttribute('data-theme', th); if (th === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ede6da'); } } catch (e) {}
+        try { var th = localStorage.getItem('theme'); if (th === 'light' || th === 'dark') { d.setAttribute('data-theme', th); if (th === 'light') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f4f1'); } } catch (e) {}
         try {
           var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           if (!reduce && !sessionStorage.getItem('seen')) d.classList.add('is-preloading');
@@ -106,7 +107,7 @@ const jsonLd = [
     <slot name="head" />
   </head>
   <body class={bodyClass}>
-    <div class="preloader" aria-hidden="true"><Star class="preloader__star" stroke /></div>
+    <div class="preloader" aria-hidden="true"><Star class="preloader__star" weight={4} draw /></div>
     <a class="skip-link" href="#main">{t(lang, 'skip')}</a>
     <Header lang={lang} enPath={enPath} frPath={frPath} />
     <main id="main" tabindex="-1">
@@ -128,7 +129,7 @@ const jsonLd = [
     animation: preloader-out 0.25s var(--ease-out) 0.65s forwards;
   }
   .preloader__star { width: 72px; height: 72px; color: var(--accent-wall); }
-  .preloader__star path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: star-draw 0.6s var(--ease-out) forwards; }
+  .preloader__star polygon { stroke-dasharray: 1; stroke-dashoffset: 1; animation: star-draw 0.6s var(--ease-out) forwards; }
   @keyframes star-draw { to { stroke-dashoffset: 0; } }
   @keyframes preloader-out { to { opacity: 0; visibility: hidden; } }
   main:focus { outline: none; }

@@ -1,8 +1,13 @@
 ---
+// Case study template (v3): header (meta, title, outcome, real media) → overview sidebar (Role · Timeline · Team ·
+// Stack · Status · Links) → TL;DR (3 bullets) → chapters 01–06 → next project.
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import ProjectCover from '../components/ProjectCover.astro';
+import ProjectMedia from '../components/ProjectMedia.astro';
 import Diagram from '../components/Diagram.astro';
+import Flow from '../components/mdx/Flow.astro';
+import AneuApp from '../components/mdx/AneuApp.astro';
+import AneuReport from '../components/mdx/AneuReport.astro';
 import Star from '../components/Star.astro';
 import Chapter from '../components/mdx/Chapter.astro';
 import PullQuote from '../components/mdx/PullQuote.astro';
@@ -10,80 +15,100 @@ import Stats from '../components/mdx/Stats.astro';
 import Rows from '../components/mdx/Rows.astro';
 import Note from '../components/mdx/Note.astro';
 import Todo from '../components/mdx/Todo.astro';
+import ModelCard from '../components/mdx/ModelCard.astro';
 import { type Lang, lp, t } from '../i18n/ui';
-import { rich } from '../lib/rich';
+import { person } from '../data/site';
+import { rich, shows } from '../lib/rich';
 interface Props { project: CollectionEntry<'projects'>; lang: Lang }
 const { project, lang } = Astro.props;
 const d = project.data;
 const { Content } = await render(project);
+const published = (p: CollectionEntry<'projects'>) => p.data.caseStudy && (import.meta.env.DEV || !p.data.draft);
 const all = await getCollection('projects', (p) => p.data.lang === lang);
-const next = all.find((p) => p.data.key === d.next)!;
+// Follow the `next` chain until it lands on a page that exists in this build.
+let next = all.find((p) => p.data.key === d.next);
+for (let i = 0; next && !published(next) && i < all.length; i++) next = all.find((p) => p.data.key === next!.data.next);
 const fr = lang === 'fr';
-const meta: [string, string | undefined][] = [
+const meta: [string, string][] = [
   [t(lang, 'meta.role'), d.role],
   [t(lang, 'meta.timeline'), d.timeline],
   [t(lang, 'meta.team'), d.team],
+  [t(lang, 'meta.stack'), d.stack.filter((s) => shows(s)).join(', ')],
   [t(lang, 'meta.status'), d.status],
-  [t(lang, 'meta.venue'), d.venue],
-  [t(lang, 'meta.supervision'), d.supervision],
-  [t(lang, 'meta.platforms'), d.platforms],
-  [t(lang, 'meta.languages'), d.languages],
 ];
+const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 ---
-<Base lang={lang} title={`${d.title} · ${t(lang, 'cta.caseStudy')} · Mamoun Tantaoui El Araki`} description={d.description} ogKey={`work-${d.key}`}>
+<Base lang={lang} title={`${d.title} · ${t(lang, 'cs.label')} · ${person.name}`} description={d.description} ogKey={`work-${d.key}`}>
   <article class="cs">
     <header class="cs__head wrap">
       <nav class="crumbs mono" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
         <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
       </nav>
-      <p class="label">{d.kind}</p>
+      <p class="label">{d.meta}</p>
       <h1 class="h1 cs__title">{d.title}</h1>
-      <p class="lede cs__summary">{d.summary}</p>
-      <ul class="tags cs__tags">{d.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>
+      <p class="lede cs__outcome" set:html={rich(d.outcome)} />
     </header>
 
-    {d.cover && (
+    {(d.loop || d.cover) && (
       <div class="wrap cs__cover">
-        <ProjectCover project={project} lang={lang} eager large />
+        <ProjectMedia project={project} lang={lang} eager large />
       </div>
     )}
 
-    <div class="wrap cs__grid">
-      <aside class="cs__side" aria-label={fr ? 'Fiche projet' : 'Project info'}>
+    <div class="wrap grid-12 cs__grid">
+      <aside class="cs__side" aria-label={fr ? 'Fiche projet' : 'Project overview'}>
         <div class="cs__sticky">
-          <p class="mono cs__side-label"><Star class="cs__side-star" />{fr ? 'Fiche projet' : 'Project info'}</p>
+          <p class="mono cs__side-label"><Star class="cs__side-star" px={1.5} />{fr ? 'Fiche projet' : 'Overview'}</p>
           <dl class="cs__meta">
-            {meta.filter(([, v]) => v).map(([k, v]) => (
-              <div><dt class="mono">{k}</dt><dd set:html={rich(v!)} /></div>
+            {meta.filter(([, v]) => shows(v)).map(([k, v]) => (
+              <div><dt class="mono">{k}</dt><dd set:html={rich(v)} /></div>
             ))}
-            <div><dt class="mono">{t(lang, 'meta.stack')}</dt><dd>{d.stack.join(', ')}</dd></div>
-            <div>
-              <dt class="mono">{t(lang, 'meta.links')}</dt>
-              <dd>
-                {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => <li><a href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></li>)}</ul>}
-                {d.codeNote && <p class="cs__codenote">{d.codeNote} <a href={lp(lang, '/contact')}>{fr ? 'Me contacter' : 'Ask me'} →</a></p>}
-                {!d.links.length && !d.codeNote && <span class="todo">{fr ? 'liens publics (dépôt, démo, article)' : 'public links (repo, demo, paper)'}</span>}
-              </dd>
-            </div>
+            {(d.links.length > 0 || d.codeNote) && (
+              <div>
+                <dt class="mono">{t(lang, 'meta.links')}</dt>
+                <dd>
+                  {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => {
+                    const ext = /^https?:/.test(l.href);
+                    return <li><a href={l.href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
+                  })}</ul>}
+                  {d.codeNote && <p class="cs__codenote">{d.codeNote} <a href={lp(lang, '/contact')}>{fr ? 'Me contacter' : 'Ask me'} →</a></p>}
+                </dd>
+              </div>
+            )}
           </dl>
-          <div class="cs__big">
-            <span class="cs__big-value">{d.number.value}</span>
-            <span class="cs__big-caption" set:html={rich(d.number.caption)} />
-          </div>
+          {d.number ? (
+            <div class="cs__big">
+              <span class="cs__big-value">{d.number.value}</span>
+              <span class="cs__big-caption" set:html={rich(d.number.caption)} />
+            </div>
+          ) : null}
+          {d.progress && (
+            <p class="cs__progress"><span class="cs__dot" aria-hidden="true"></span><span set:html={rich(d.progress)} /></p>
+          )}
         </div>
       </aside>
 
       <div class="cs__body">
-        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram }} />
+        {d.tldr && (
+          <section class="tldr" aria-labelledby="tldr-h">
+            <h2 class="tldr__h mono" id="tldr-h">{t(lang, 'cs.tldr')}</h2>
+            <ul class="tldr__list">
+              {d.tldr.map((b) => <li set:html={rich(b)} />)}
+            </ul>
+          </section>
+        )}
+        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard }} />
       </div>
     </div>
 
-    <a class="cs__next" href={lp(lang, `/work/${next.data.key}`)}>
-      <span class="wrap cs__next-inner">
-        <span class="mono cs__next-label">{t(lang, 'cta.nextProject')} →</span>
-        <span class="cs__next-title">{next.data.title}<Star class="cs__next-star" /></span>
-      </span>
-    </a>
+    {next && next.data.key !== d.key && (
+      <a class="cs__next" href={lp(lang, `/work/${next.data.key}`)}>
+        <span class="wrap cs__next-inner">
+          <span class="mono cs__next-label">{t(lang, 'cta.nextProject')} →</span>
+          <span class="cs__next-title">{next.data.title}<Star class="cs__next-star" weight={6} /></span>
+        </span>
+      </a>
+    )}
   </article>
 </Base>
 
@@ -93,34 +118,46 @@ const meta: [string, string | undefined][] = [
   .crumbs a { color: var(--text-muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .crumbs a:hover { color: var(--text); }
   .crumbs span { display: inline-flex; align-items: center; }
-  .cs__title { font-size: clamp(3rem, 10vw, 9rem); }
-  .cs__summary { margin-top: var(--s-5); }
-  .cs__tags { margin-top: var(--s-5); }
+  .cs__outcome { margin-top: var(--s-5); color: var(--text); max-width: 46ch; }
   .cs__cover { margin-top: var(--s-8); }
-  .cs__grid { display: grid; gap: var(--s-8); padding-block: var(--s-9); }
-  @media (min-width: 1024px) { .cs__grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-9); } }
-  @media (min-width: 1024px) { .cs__sticky { position: sticky; top: var(--s-7); } }
+  .cs__grid { row-gap: var(--s-8); padding-block: var(--s-9); }
+  @media (min-width: 1024px) {
+    .cs__side { grid-column: 1 / span 4; }
+    .cs__body { grid-column: 5 / -1; }
+    .cs__sticky { position: sticky; top: var(--s-7); }
+  }
   .cs__side { align-self: start; }
   .cs__sticky { background: var(--bg-band); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); }
   .cs__side-label { display: flex; gap: var(--s-2); align-items: center; color: var(--text-quiet); margin-bottom: var(--s-4); }
   .cs__side-label :global(.cs__side-star) { width: 10px; height: 10px; color: var(--accent-wall); }
-  .cs__meta > div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); font-size: var(--fs-small); }
+  .cs__meta > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); font-size: var(--fs-small); }
   .cs__meta dt { color: var(--text-quiet); padding-top: 0.2em; }
-  .cs__meta dd { color: var(--text); }
+  .cs__meta dd { color: var(--text); overflow-wrap: anywhere; }
   .cs__links { list-style: none; display: grid; gap: var(--s-1); }
-  .cs__links a { text-decoration-color: var(--accent-wall); }
+  .cs__links a { text-decoration-color: var(--accent-wall); display: inline-block; padding-block: 10px; margin-block: -10px; }
   .cs__codenote { color: var(--text-muted); }
   .cs__codenote a { color: var(--text); text-decoration-color: var(--accent-wall); white-space: nowrap; }
   .cs__big { display: grid; gap: var(--s-1); margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line-strong); }
   .cs__big-value { font-family: var(--font-display); font-weight: 650; font-size: var(--fs-stat); letter-spacing: -0.04em; line-height: 1; }
   .cs__big-caption { color: var(--text-muted); font-size: var(--fs-small); }
-  .cs__body { min-width: 0; }
+  .cs__progress { display: flex; gap: var(--s-3); align-items: baseline; margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line-strong); font-size: var(--fs-small); }
+  .cs__dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-wall); }
+  .cs__body { min-width: 0; container-type: inline-size; }
+  .tldr { border: 1px solid var(--line-strong); border-radius: var(--r-lg); padding: var(--s-5); margin-bottom: var(--s-6); }
+  .tldr__h { color: var(--accent); font-weight: 500; margin-bottom: var(--s-3); }
+  .tldr__list { list-style: none; display: grid; gap: var(--s-3); }
+  .tldr__list li { position: relative; padding-inline-start: 1.4em; color: var(--text-muted); max-width: var(--measure); }
+  .tldr__list li::before {
+    content: ''; position: absolute; inset-inline-start: 0; width: 0.75em; height: 0.75em; top: 0.45em; background: var(--accent-wall);
+    -webkit-mask: var(--mark-mask) center / contain no-repeat; mask: var(--mark-mask) center / contain no-repeat;
+  }
+  .tldr__list :global(strong) { color: var(--text); font-weight: 600; }
   .cs__next { display: block; text-decoration: none; border-top: 1px solid var(--line); padding-block: var(--s-8) var(--s-9); overflow-x: clip; }
   .cs__next-inner { display: grid; gap: var(--s-3); }
   .cs__next-label { color: var(--accent); }
   .cs__next-title {
     font-family: var(--font-display); font-weight: 650; letter-spacing: var(--track-display); line-height: 0.9;
-    font-size: clamp(3rem, 9vw, 9rem); text-wrap: balance; font-variation-settings: 'opsz' 96;
+    font-size: clamp(3rem, 8vw, 7rem); text-wrap: balance; font-variation-settings: 'opsz' 96;
   }
   .cs__next-title :global(.cs__next-star) { display: inline-block; width: 0.4em; height: 0.4em; margin-inline-start: 0.15em; color: var(--accent-wall); transition: transform var(--dur-3) var(--ease-out); }
   .cs__next:hover :global(.cs__next-star) { transform: rotate(90deg); }
