@@ -1,0 +1,94 @@
+# Guardrail file: edit only with Mamoun's OK.
+# CI for the portfolio (v2/). Every push and pull request: npm run check, visual diffs in the Playwright image,
+# Lighthouse CI, and the CV text check. Branch protection on main requires all four (docs/sops/release.md).
+# Manual run with "update baselines" = true renders the visual baselines and uploads them as an artifact to review
+# and commit (there is no Docker on Mamoun's laptop, so baselines come from here).
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: Render new visual baselines (artifact "visual-baselines") instead of comparing
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    working-directory: v2
+
+env:
+  CI: '1'
+  SKIP_INSTALL_SIMPLE_GIT_HOOKS: '1'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm, cache-dependency-path: v2/package-lock.json }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run check
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: playwright-report, path: v2/qa/out/playwright-report, retention-days: 14 }
+
+  visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - run: npm ci
+      - run: npm run build
+      - name: Render baselines (manual run only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.update_baselines }}
+        run: npx playwright test --project=visual --update-snapshots
+      - name: Compare with committed baselines
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.update_baselines) }}
+        run: |
+          if [ ! -d tests/visual.spec.ts-snapshots ]; then
+            echo "::warning::No visual baselines committed yet. Run this workflow manually with update baselines = true, review the artifact, commit tests/visual.spec.ts-snapshots/."
+            exit 0
+          fi
+          npx playwright test --project=visual
+      - if: ${{ github.event_name == 'workflow_dispatch' && inputs.update_baselines }}
+        uses: actions/upload-artifact@v4
+        with: { name: visual-baselines, path: v2/tests/visual.spec.ts-snapshots, retention-days: 30 }
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: visual-diffs, path: v2/qa/out, retention-days: 14 }
+
+  perf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm, cache-dependency-path: v2/package-lock.json }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run check:perf
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: lighthouse, path: v2/qa/out/lhci, retention-days: 14 }
+
+  cv:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm, cache-dependency-path: v2/package-lock.json }
+      - run: npm ci
+      - run: npm run check:cv
