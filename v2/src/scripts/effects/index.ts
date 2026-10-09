@@ -21,7 +21,8 @@ export async function start() {
   // positions. Keyboard scrolling, anchors and find-in-page keep working (Lenis listens to native scroll).
   if (fine) {
     const { default: Lenis } = await import('lenis');
-    const lenis = new Lenis({ duration: 1.1 });
+    // allowNestedScroll: a scrollable box (the terminal output) scrolls first, then the wheel goes back to the page.
+    const lenis = new Lenis({ duration: 1.1, allowNestedScroll: true });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);

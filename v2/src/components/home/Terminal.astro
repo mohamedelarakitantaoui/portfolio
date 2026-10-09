@@ -14,7 +14,7 @@ const chips = fr
   : ['what did you build at Intelcia?', 'which languages?', 'what is PitchPoint?', 'are you available?', 'AneuXplain results?'];
 const label = fr ? 'démo de recherche côté client · pas de LLM · aucune donnée ne quitte votre navigateur' : 'client-side retrieval demo · no LLM · no data leaves your browser';
 ---
-<div class="term" data-terminal data-lang={lang} data-src={lp(lang, '/knowledge.json')} data-lenis-prevent>
+<div class="term" data-terminal data-lang={lang} data-src={lp(lang, '/knowledge.json')}>
   <div class="term__bar">
     <span class="term__dots" aria-hidden="true"><i></i><i></i><i></i></span>
     <span class="term__title">ask-mamoun</span>
