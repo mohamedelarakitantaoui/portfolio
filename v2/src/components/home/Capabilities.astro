@@ -1,18 +1,26 @@
 ---
 // Capabilities (v4): three hairline rows, [01]–[03] in 28px muted, title, two-line description, stack line.
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import ProjectBars from '../ProjectBars.astro';
+import heatmap from '../../assets/aneuxplain/04-heatmap.webp';
+import mesh3d from '../../assets/aneuxplain/02-3d-reconstruction.webp';
 import { capabilities } from '../../data/site';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
+// Effect (src/scripts/effects/fx/caps-preview.ts): one real image per row, shown beside the cursor on hover.
+// [01] the DCE Scraper bar panel, [02] the AneuXplain heatmap, [03] the AneuXplain 3D reconstruction.
+const dce = (await getEntry('projects', `${lang}/dce-scraper`))?.data.bars;
 ---
-<section class="caps section" aria-labelledby="caps-h2">
+<section class="caps section" aria-labelledby="caps-h2" data-fx="caps-preview">
   <div class="wrap">
     <p class="label">{fr ? 'Ce que je fais' : 'What I do'}</p>
     <h2 class="h2 caps__h2" id="caps-h2">{fr ? 'Des pipelines de données, des modèles vérifiables, et les applications autour.' : 'Data pipelines, models you can check, and the apps around them.'}</h2>
     <ol class="rows caps__rows">
       {capabilities.map((c) => (
-        <li class="caps__row" data-reveal>
+        <li class="caps__row" data-reveal data-preview={c.n}>
           <span class="caps__n" aria-hidden="true">[{c.n}]</span>
           <h3 class="caps__title">{c.title[lang]}</h3>
           <div class="caps__body">
@@ -23,6 +31,11 @@ const fr = lang === 'fr';
       ))}
     </ol>
     <a class="link caps__cta" href={lp(lang, '/services')}>{t(lang, 'cta.packs')}</a>
+    <div class="caps__previews" aria-hidden="true">
+      <div class="caps__preview" data-preview-for="01">{dce && <ProjectBars {...dce} />}</div>
+      <div class="caps__preview" data-preview-for="02"><Image src={heatmap} alt="" widths={[400, 720]} sizes="360px" format="webp" loading="lazy" /></div>
+      <div class="caps__preview" data-preview-for="03"><Image src={mesh3d} alt="" widths={[400, 720]} sizes="360px" format="webp" loading="lazy" /></div>
+    </div>
   </div>
 </section>
 
@@ -39,4 +52,14 @@ const fr = lang === 'fr';
     .caps__body { grid-column: 3; }
   }
   .caps__cta { margin-top: var(--s-6); }
+  /* Hover previews: absent unless the effect runs on a wide screen with a mouse. */
+  .caps__previews { display: none; }
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    :global(html.fx-on) .caps__previews { display: block; position: fixed; left: 0; top: 0; z-index: 20; width: 360px; pointer-events: none; }
+  }
+  .caps__preview { position: absolute; inset: 0 auto auto 0; width: 100%; opacity: 0; transition: opacity var(--dur-2) var(--ease-out); }
+  .caps__preview.is-on { opacity: 1; }
+  .caps__preview :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-img); }
+  .caps__preview :global(.bars__track) { font-size: 1.5rem; }
+  .caps__preview :global(.bars__inner) { padding: var(--s-5); gap: var(--s-4); }
 </style>
