@@ -46,9 +46,12 @@ export async function start() {
       if (!entry.isIntersecting) continue;
       const el = entry.target as HTMLElement;
       io.unobserve(el);
-      const load = modules[`./fx/${el.dataset.fx}.ts`];
-      if (!load) continue;
-      load().then((m) => m.default(el, ctx)).then(() => ScrollTrigger.refresh()).catch(() => {});
+      // One element may carry several effects: data-fx="media-grow card-tilt".
+      for (const name of (el.dataset.fx ?? '').split(/\s+/).filter(Boolean)) {
+        const load = modules[`./fx/${name}.ts`];
+        if (!load) continue;
+        load().then((m) => m.default(el, ctx)).then(() => ScrollTrigger.refresh()).catch(() => {});
+      }
     }
   }, { rootMargin: '0px 0px 50% 0px' });
   document.querySelectorAll<HTMLElement>('[data-fx]').forEach((el) => io.observe(el));

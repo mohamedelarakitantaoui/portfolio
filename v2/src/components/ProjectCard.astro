@@ -13,13 +13,15 @@ const href = d.caseStudy && (import.meta.env.DEV || !d.draft) ? lp(lang, `/work/
 const linkMedia = href && !d.loop;
 // Effect: the AneuXplain video grows into its column on scroll (src/scripts/effects/fx/media-grow.ts).
 const grow = d.key === 'aneuxplain' ? 'media-grow' : undefined;
+// Effect: cursor light + small tilt on every card's media, mouse only (src/scripts/effects/fx/card-tilt.ts).
+const fx = [grow, 'card-tilt'].filter(Boolean).join(' ');
 const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}` : null);
 ---
 <article class="pcard" data-reveal>
   {linkMedia ? (
-    <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true" data-fx={grow}><ProjectMedia project={project} lang={lang} /></a>
+    <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true" data-fx={fx}><ProjectMedia project={project} lang={lang} /></a>
   ) : (
-    <div class="pcard__media" data-fx={grow}><ProjectMedia project={project} lang={lang} /></div>
+    <div class="pcard__media" data-fx={fx}><ProjectMedia project={project} lang={lang} /></div>
   )}
   <div class="pcard__body">
     <p class="meta">{d.meta}</p>
@@ -36,7 +38,13 @@ const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}
 
 <style>
   .pcard { display: grid; gap: var(--s-5); align-content: start; }
-  .pcard__media { display: block; text-decoration: none; color: inherit; }
+  .pcard__media { display: block; text-decoration: none; color: inherit; position: relative; }
+  .pcard__media :global(.pcard__glow) {
+    position: absolute; inset: 0; z-index: 1; border-radius: var(--r-img); pointer-events: none; opacity: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), #ffffff, transparent 42%);
+    transition: opacity var(--dur-2) var(--ease-out);
+  }
+  .pcard__media:hover :global(.pcard__glow) { opacity: 0.08; }
   .pcard__body { display: grid; gap: var(--s-3); align-content: start; }
   .pcard__title { font-size: var(--fs-card); font-weight: 500; letter-spacing: var(--track-h); line-height: 1.2; margin-top: calc(-1 * var(--s-1)); }
   .pcard__title a { text-decoration: none; }
