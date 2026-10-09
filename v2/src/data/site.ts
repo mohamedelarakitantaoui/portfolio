@@ -51,7 +51,17 @@ export const aboutStatement = {
   lead: {
     en: 'At Intelcia that meant retries and health checks instead of silent gaps. In AneuXplain, an “out of distribution” warning instead of a confident wrong answer.',
     fr: 'Chez Intelcia, des reprises et des contrôles de santé plutôt que des trous silencieux. Dans AneuXplain, un avertissement « hors distribution » plutôt qu’une mauvaise réponse sûre d’elle.',
-  } as L,
+  } as L,  // Rolling line under the claim. Each word has a project behind it: explainable (AneuXplain), calibrated
+  // (PitchPoint ECE 0.0038), tested (444 PitchPoint tests), shipped (DCE Scraper at Intelcia).
+  // Without JS or with reduced motion the full sentence shows; screen readers always get the sentence.
+  roll: {
+    lead: { en: 'I build models that are', fr: 'Je construis des modèles' } as L,
+    words: { en: ['explainable', 'calibrated', 'tested', 'shipped'], fr: ['explicables', 'calibrés', 'testés', 'livrés'] } as L<string[]>,
+    sentence: {
+      en: 'I build models that are explainable, calibrated, tested and shipped.',
+      fr: 'Je construis des modèles explicables, calibrés, testés et livrés.',
+    } as L,
+  },
 };
 
 export const proof = ['Al Akhawayn University', 'Boğaziçi University', 'Intelcia Solutions', 'ICOA 2026'];

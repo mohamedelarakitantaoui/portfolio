@@ -13,6 +13,7 @@ const fr = lang === 'fr';
     <div class="about__text" data-reveal>
       <p class="label">{fr ? 'À propos' : 'About'}</p>
       <h2 class="h-statement about__h" id="about-h">{aboutStatement.h[lang]}</h2>
+      <p class="about__roll" data-fx="roll-word" data-lead={aboutStatement.roll.lead[lang]} data-words={JSON.stringify(aboutStatement.roll.words[lang])}>{aboutStatement.roll.sentence[lang]}</p>
       <p class="lede about__lead">{aboutStatement.lead[lang]}</p>
       <a class="link about__more" href={lp(lang, '/about')}>{fr ? 'En savoir plus' : 'More about me'}</a>
     </div>
@@ -25,6 +26,10 @@ const fr = lang === 'fr';
 <style>
   .about__grid { row-gap: var(--s-8); align-items: end; }
   .about__h { max-width: 18ch; }
+  .about__roll { margin-top: var(--s-5); font-size: var(--fs-sub); font-weight: 700; letter-spacing: var(--track-h); line-height: 1.25; color: var(--heading); max-width: 32ch; }
+  /* Effect (src/scripts/effects/fx/roll-word.ts): the words share one grid cell, so the line never changes width. */
+  .about__roll :global(.roll) { display: inline-grid; vertical-align: bottom; overflow: clip; padding-block: 0.06em; margin-block: -0.06em; }
+  .about__roll :global(.roll__w) { grid-area: 1 / 1; color: var(--accent); white-space: nowrap; }
   .about__lead { margin-top: var(--s-6); max-width: 54ch; }
   .about__more { margin-top: var(--s-5); }
   .about__photo { max-width: 460px; border-radius: var(--r-img); overflow: hidden; aspect-ratio: 3 / 4; background: var(--surface); }
