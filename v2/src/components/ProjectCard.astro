@@ -11,13 +11,15 @@ const d = project.data;
 const href = d.caseStudy && (import.meta.env.DEV || !d.draft) ? lp(lang, `/work/${d.key}`) : null;
 // A loop carries its own play/pause button, so it is never wrapped in a link.
 const linkMedia = href && !d.loop;
+// Effect: the AneuXplain video grows into its column on scroll (src/scripts/effects/fx/media-grow.ts).
+const grow = d.key === 'aneuxplain' ? 'media-grow' : undefined;
 const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}` : null);
 ---
 <article class="pcard" data-reveal>
   {linkMedia ? (
-    <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true"><ProjectMedia project={project} lang={lang} /></a>
+    <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true" data-fx={grow}><ProjectMedia project={project} lang={lang} /></a>
   ) : (
-    <div class="pcard__media"><ProjectMedia project={project} lang={lang} /></div>
+    <div class="pcard__media" data-fx={grow}><ProjectMedia project={project} lang={lang} /></div>
   )}
   <div class="pcard__body">
     <p class="meta">{d.meta}</p>
