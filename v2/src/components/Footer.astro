@@ -49,7 +49,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
   </div>
 
   <div class="wrap">
-    <p class="site-footer__giant" aria-hidden="true">{person.name}</p>
+    <p class="site-footer__giant" aria-hidden="true" data-fx="footer-rise">{person.name}</p>
   </div>
 
   <div class="wrap site-footer__legal">
@@ -83,6 +83,9 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
     font-size: clamp(3rem, 9.6vw, 11.5rem); font-weight: 700; letter-spacing: var(--track-display); line-height: 0.9;
     padding-inline-end: 0.06em; white-space: nowrap; color: var(--heading);
   }
+  /* Effect (src/scripts/effects/fx/footer-rise.ts): each word rises inside its own mask. */
+  .site-footer__giant :global(.rise) { display: inline-block; overflow: clip; padding-block: 0.08em; margin-block: -0.08em; vertical-align: bottom; }
+  .site-footer__giant :global(.rise__w) { display: inline-block; }
   .site-footer__legal {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2) var(--s-5);
     margin-top: var(--s-6); padding-block: var(--s-5) var(--s-7); border-top: 1px solid var(--line);
