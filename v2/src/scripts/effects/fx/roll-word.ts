@@ -23,6 +23,8 @@ export default function rollWord(p: HTMLElement, { gsap, ScrollTrigger }: FxCont
     return s;
   });
   visual.append(`${lead} `, roll, '.');
+  // The static sentence can wrap to more lines than the rolling one: keep its height so nothing below moves.
+  p.style.minHeight = `${p.offsetHeight}px`;
   p.replaceChildren(sentence, visual);
 
   gsap.set(els.slice(1), { yPercent: 110 });
