@@ -7,9 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check",
+    "check": "node scripts/check.mjs",
     "check:copy": "node scripts/check-copy.mjs",
-    "qa": "node qa/v3.mjs",
     "lint:css": "stylelint \"src/**/*.{css,astro}\"",
     "check:banned": "node scripts/check-banned.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
@@ -18,7 +17,13 @@
     "check:seo": "node scripts/check-seo.mjs",
     "check:links": "node scripts/check-links.mjs",
     "check:html": "html-validate \"dist/**/*.html\"",
-    "check:cv": "node scripts/check-cv.mjs"
+    "check:cv": "node scripts/check-cv.mjs",
+    "check:fast": "node scripts/check.mjs --fast",
+    "check:visual": "node scripts/visual.mjs",
+    "check:visual:update": "node scripts/visual.mjs --update",
+    "check:perf": "node scripts/perf.mjs",
+    "test:e2e": "playwright test --project=checks",
+    "types": "astro check"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",

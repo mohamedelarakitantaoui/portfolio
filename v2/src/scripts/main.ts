@@ -5,6 +5,8 @@ import { EFFECTS_ENABLED } from '../config';
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll<T>(s));
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Kill switch for every motion effect (scroll reveal included): src/config.ts, or ?effects=off in the URL.
+const effectsOff = !EFFECTS_ENABLED || new URLSearchParams(location.search).get('effects') === 'off';
 const root = document.documentElement;
 const lang = root.lang === 'fr' ? 'fr' : 'en';
 if (!reduce) root.classList.add('motion-ok');
@@ -314,7 +316,7 @@ if (walk && walkVideo) {
 /* ---------------- scroll reveal (last, optional) ---------------- */
 // Fade + 16px rise, once, for blocks marked [data-reveal] that start below the fold. Anything already on screen
 // at load stays as it is, so nothing visible ever blinks out. Skipped entirely under reduced motion.
-if (!reduce && 'IntersectionObserver' in window) {
+if (!reduce && !effectsOff && 'IntersectionObserver' in window) {
   const blocks = $$('[data-reveal]').filter((el) => el.getBoundingClientRect().top > window.innerHeight);
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (!e.isIntersecting) return;
@@ -330,7 +332,6 @@ if (!reduce && 'IntersectionObserver' in window) {
 
 /* ---------------- effects (last, optional) ---------------- */
 // Off with the kill switch, with ?effects=off, or under reduced motion: the page stays in its static version.
-const effectsOff = !EFFECTS_ENABLED || new URLSearchParams(location.search).get('effects') === 'off';
 if (!reduce && !effectsOff) {
   const go = () => import('./effects').then((m) => m.start()).catch(() => {});
   const idle = (cb: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 200));

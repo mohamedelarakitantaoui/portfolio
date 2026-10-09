@@ -108,6 +108,8 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
     .menu-btn { display: none; }
   }
   @media (max-width: 380px) { .logo { font-size: var(--fs-nav); } .lang-pill { padding: 0 var(--s-3); } }
+  /* 320px phones: logo + EN/FR + Menu were 2px too wide; tighter gaps keep them on one line without sideways scroll. */
+  @media (max-width: 359px) { .site-header__inner { gap: var(--s-2); } .site-header__tools { gap: var(--s-1); } }
 
   .menu-pill {
     position: fixed; z-index: var(--z-pill); left: 50%; bottom: max(16px, env(safe-area-inset-bottom));
