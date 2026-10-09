@@ -39,7 +39,7 @@ const rows = experience.filter((e) => e.home);
   /* Effect (src/scripts/effects/fx/exp-light.ts): a paper layer fades in behind the content; the text colours swap
      while the content is briefly hidden, so no visible text ever sits on a mid-grey. */
   .exp { position: relative; isolation: isolate; }
-  .exp > .wrap { position: relative; z-index: 1; }
+  .exp > .wrap { position: relative; z-index: var(--z-raised); }
   .exp :global(.exp__paper) { position: absolute; inset: 0; background: var(--paper); opacity: 0; pointer-events: none; }
   .exp:global(.is-light) {
     --heading: var(--paper-ink); --text: var(--paper-ink); --text-muted: var(--paper-muted); --text-quiet: var(--paper-quiet);

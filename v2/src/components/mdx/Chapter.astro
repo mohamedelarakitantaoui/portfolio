@@ -30,6 +30,6 @@ const render = shows(title) && (import.meta.env.DEV || hasBody);
   }
   .chapter__body { color: var(--text-muted); }
   .chapter__body :global(ol:not([class])) { padding-inline-start: 1.3em; display: grid; gap: var(--s-2); margin-top: var(--s-4); }
-  .chapter__body :global(ol:not([class]) li::marker) { color: var(--accent); font-family: var(--font-body); font-size: 0.85em; }
+  .chapter__body :global(ol:not([class]) li::marker) { color: var(--accent); font-family: var(--font-body); font-size: var(--fs-marker); }
   .chapter__body :global(ul:not([class]) li) { max-width: var(--measure); }
 </style>

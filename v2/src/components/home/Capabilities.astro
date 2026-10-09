@@ -55,11 +55,11 @@ const dce = (await getEntry('projects', `${lang}/dce-scraper`))?.data.bars;
   /* Hover previews: absent unless the effect runs on a wide screen with a mouse. */
   .caps__previews { display: none; }
   @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-    :global(html.fx-on) .caps__previews { display: block; position: fixed; left: 0; top: 0; z-index: 20; width: 360px; pointer-events: none; }
+    :global(html.fx-on) .caps__previews { display: block; position: fixed; left: 0; top: 0; z-index: var(--z-preview); width: 360px; pointer-events: none; }
   }
   .caps__preview { position: absolute; inset: 0 auto auto 0; width: 100%; opacity: 0; transition: opacity var(--dur-2) var(--ease-out); }
   .caps__preview.is-on { opacity: 1; }
   .caps__preview :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-img); }
-  .caps__preview :global(.bars__track) { font-size: 1.5rem; }
+  .caps__preview :global(.bars__track) { font-size: var(--fs-xl); }
   .caps__preview :global(.bars__inner) { padding: var(--s-5); gap: var(--s-4); }
 </style>

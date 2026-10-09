@@ -81,7 +81,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
     position: absolute; inset-inline-start: var(--s-3); inset-block-end: var(--s-3);
     display: inline-flex; align-items: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-4);
     border: 1px solid var(--line-input); border-radius: var(--r-pill);
-    background: var(--bg); color: var(--text); font-size: 0.75rem; cursor: pointer;
+    background: var(--bg); color: var(--text); font-size: var(--fs-xs); cursor: pointer;
   }
   .app__toggle:hover { border-color: var(--text); }
   .app__icon { width: 12px; height: 12px; fill: currentColor; }
@@ -90,7 +90,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
   /* Reduced motion: poster + one big play button, no autoplay */
   .app__toggle.is-big {
     inset: 50% auto auto 50%; transform: translate(-50%, -50%);
-    min-height: 64px; padding: 0 var(--s-6); font-size: 0.875rem;
+    min-height: 64px; padding: 0 var(--s-6); font-size: var(--fs-small);
     background: var(--accent); color: var(--accent-ink); border-color: transparent;
   }
   .app__toggle.is-big .app__icon { width: 16px; height: 16px; }
@@ -109,7 +109,7 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
     transition: border-color var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
   }
   .strip__item:hover .strip__img { border-color: var(--accent); transform: translateY(-2px); }
-  .strip__cap { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); font-size: 0.75rem; line-height: 1.4; color: var(--text-muted); }
+  .strip__cap { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); font-size: var(--fs-xs); line-height: 1.4; color: var(--text-muted); }
   .strip__item:hover .strip__cap { color: var(--text); }
   .strip__n { color: var(--accent); }
   .strip__t { color: var(--text-quiet); flex: none; }
@@ -122,12 +122,12 @@ const mmss = (t: number) => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, 
   }
   .walk::backdrop { background: rgba(17, 17, 17, 0.75); }
   .walk__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-2) var(--s-2) var(--s-2) var(--s-4); }
-  .walk__title { font-size: 0.75rem; color: var(--text-muted); }
+  .walk__title { font-size: var(--fs-xs); color: var(--text-muted); }
   .walk__close {
     display: inline-grid; place-items: center; width: 44px; height: 44px; flex: none;
     border: 0; border-radius: var(--r-pill); background: transparent; color: var(--text); cursor: pointer;
   }
   .walk__close:hover { background: var(--bg-band); }
   .walk__close svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; }
-  .walk__video { display: block; width: 100%; height: auto; aspect-ratio: 1280 / 690; background: #000; }
+  .walk__video { display: block; width: 100%; height: auto; aspect-ratio: 1280 / 690; background: var(--black); }
 </style>

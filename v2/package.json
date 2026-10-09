@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "check:copy": "node scripts/check-copy.mjs",
-    "qa": "node qa/v3.mjs"
+    "qa": "node qa/v3.mjs",
+    "lint:css": "stylelint \"src/**/*.{css,astro}\""
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.2",

@@ -98,7 +98,7 @@ const L = fr
   .pack__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
   .pack__facts dd { color: var(--text-muted); }
   .pack__facts a { color: var(--text); text-decoration-color: var(--accent); }
-  .pack__price { color: var(--text) !important; font-weight: 600; }
+  .pack__facts dd.pack__price { color: var(--text); font-weight: 600; }
   .pack__cta { justify-self: start; }
   .sec-h2 { max-width: 16ch; margin-bottom: var(--s-7); }
   .steps { list-style: none; display: grid; gap: var(--s-6); }
@@ -114,7 +114,7 @@ const L = fr
   .faq__item:last-child { border-bottom: 1px solid var(--line); }
   .faq__item summary {
     display: flex; justify-content: space-between; gap: var(--s-4); align-items: center; min-height: 64px; cursor: pointer;
-    font-family: var(--font-body); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; list-style: none;
+    font-family: var(--font-body); font-size: var(--fs-lg); font-weight: 600; letter-spacing: -0.02em; list-style: none;
   }
   .faq__item summary::-webkit-details-marker { display: none; }
   .faq__icon { position: relative; width: 14px; height: 14px; flex: none; }

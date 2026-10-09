@@ -50,20 +50,20 @@ const cv = cvLink(lang);
   }
   .hero__stage { grid-area: stage; position: relative; height: clamp(250px, 66vw, 420px); margin-inline: calc(-1 * var(--gutter)); }
   .hero__word {
-    position: absolute; left: 50%; top: 4%; transform: translateX(-50%); z-index: 1; margin: 0; max-width: none;
-    font-size: 21.5vw; font-weight: 700; letter-spacing: -0.065em; line-height: 0.8; padding-inline-end: 0.065em;
+    position: absolute; left: 50%; top: 4%; transform: translateX(-50%); z-index: var(--z-raised); margin: 0; max-width: none;
+    font-size: var(--fs-hero-word); font-weight: 700; letter-spacing: -0.065em; line-height: 0.8; padding-inline-end: 0.065em;
     color: var(--heading); white-space: nowrap; user-select: none;
   }
   .hero__portrait {
-    position: absolute; z-index: 2; left: 50%; bottom: 0; transform: translateX(-50%);
+    position: absolute; z-index: var(--z-portrait); left: 50%; bottom: 0; transform: translateX(-50%);
     height: 92%; aspect-ratio: 1212 / 1156;
-    --fade: linear-gradient(to bottom, #000 62%, transparent 99%), linear-gradient(to right, transparent 2%, #000 24%, #000 76%, transparent 98%);
+    --fade: linear-gradient(to bottom, var(--mask-solid) 62%, transparent 99%), linear-gradient(to right, transparent 2%, var(--mask-solid) 24%, var(--mask-solid) 76%, transparent 98%);
     -webkit-mask-image: var(--fade); -webkit-mask-composite: source-in;
     mask-image: var(--fade); mask-composite: intersect;
   }
   .hero__portrait :global(picture), .hero__portrait :global(img) { width: 100%; height: 100%; }
 
-  .hero__text { grid-area: text; position: relative; z-index: 3; margin-top: var(--s-4); }
+  .hero__text { grid-area: text; position: relative; z-index: var(--z-hero-text); margin-top: var(--s-4); }
   .hero__role { margin-bottom: var(--s-3); }
   .hero__h1 {
     font-size: var(--fs-h1-hero); font-weight: 700; letter-spacing: var(--track-h); line-height: 1;
@@ -71,7 +71,7 @@ const cv = cvLink(lang);
   }
   .hero__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-5); }
 
-  .hero__proof { grid-area: proof; position: relative; z-index: 3; margin-top: var(--s-7); border-top: 1px solid var(--line); }
+  .hero__proof { grid-area: proof; position: relative; z-index: var(--z-hero-text); margin-top: var(--s-7); border-top: 1px solid var(--line); }
   .hero__stat { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-4); padding-block: var(--s-3); border-bottom: 1px solid var(--line); }
   .hero__stat dt { font-size: var(--fs-sub); font-weight: 700; letter-spacing: var(--track-h); line-height: 1.1; color: var(--heading); white-space: nowrap; }
   .hero__stat dd { color: var(--text-muted); font-size: var(--fs-small); text-align: end; }
@@ -83,7 +83,7 @@ const cv = cvLink(lang);
     .hero__word { top: calc(var(--header-h) + 6svh); font-size: min(24vw, 34svh, 30rem); }
     .hero__portrait {
       height: min(66svh, 720px);
-      --fade: linear-gradient(to bottom, #000 62%, transparent 99%), linear-gradient(to right, transparent 6%, #000 36%, #000 70%, transparent 96%);
+      --fade: linear-gradient(to bottom, var(--mask-solid) 62%, transparent 99%), linear-gradient(to right, transparent 6%, var(--mask-solid) 36%, var(--mask-solid) 70%, transparent 96%);
     }
     .hero__text {
       position: absolute; margin: 0; bottom: clamp(40px, 6svh, 72px);

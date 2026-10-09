@@ -57,6 +57,19 @@
   --fs-small: 0.875rem;                                     /* 14 */
   --fs-label: 0.8125rem;                                    /* 13 → 14 at desktop */
   --fs-giant: clamp(4.5rem, 24vw, 30rem);                   /* MAMOUN behind the portrait */
+  /* Fixed small sizes (UI chrome, captions, the terminal) */
+  --fs-2xs: 0.625rem;   /* 10: numbered pins on the report pages */
+  --fs-xs: 0.75rem;     /* 12: terminal prompt, video captions, palette kind */
+  --fs-tag: 0.8125rem;  /* 13: tags, toggles, terminal text */
+  --fs-nav: 0.9375rem;  /* 15: nav links, buttons */
+  --fs-md: 1.0625rem;   /* 17: logo, palette input, CV entry titles */
+  --fs-lg: 1.25rem;     /* 20: FAQ questions */
+  --fs-xl: 1.5rem;      /* 24: numbers in the capability previews */
+  --fs-marker: 0.85em;  /* list markers, relative to their text */
+  --fs-hero-word: 21.5vw; /* MAMOUN on phones (desktop: min(24vw, 34svh, 30rem) in Hero.astro) */
+  --fs-diagram-group: 10px; /* SVG diagram labels, in viewBox units */
+  --fs-diagram-title: 12.5px;
+  --fs-diagram-sub: 11px;
 
   --track-display: -0.065em;
   --track-h: -0.05em;
@@ -93,6 +106,22 @@
   --dur-3: 0.9s;
 
   --header-h: 76px;
+
+  /* Stacking */
+  --z-raised: 1;      /* content above a decorative layer in the same section */
+  --z-portrait: 2;    /* hero photo over the giant word */
+  --z-hero-text: 3;   /* hero text and proof over the photo */
+  --z-preview: 20;    /* capability hover previews */
+  --z-header: 30;
+  --z-pill: 40;       /* floating Menu pill */
+  --z-menu: 60;       /* full-screen menu */
+  --z-skip: 100;      /* skip link */
+
+  /* Fixed colours used outside the theme */
+  --black: #000000;       /* video letterbox */
+  --page-white: #ffffff;  /* printed report pages shown as images */
+  --mask-solid: #000000;  /* opaque stop in CSS masks (only alpha matters) */
+  --dur-instant: 0.01ms;  /* reduced motion: transitions end at once */
 }
 
 @media (min-width: 1024px) {

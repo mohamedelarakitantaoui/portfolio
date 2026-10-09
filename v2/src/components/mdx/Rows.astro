@@ -21,7 +21,7 @@ const { items } = Astro.props;
   .nrows li::before { display: none; }
   @media (min-width: 900px) { .nrows li { grid-template-columns: 3.2rem minmax(0, 15rem) 1fr; align-items: baseline; } }
   .nrows__n { color: var(--accent); }
-  .nrows__name { font-family: var(--font-body); font-size: 0.875rem; color: var(--text); overflow-wrap: anywhere; }
+  .nrows__name { font-family: var(--font-body); font-size: var(--fs-small); color: var(--text); overflow-wrap: anywhere; }
   .nrows__text { grid-column: 2; color: var(--text-muted); }
   @media (min-width: 900px) { .nrows__text { grid-column: 3; } }
 </style>

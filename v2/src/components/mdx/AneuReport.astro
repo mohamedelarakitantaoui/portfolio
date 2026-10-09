@@ -44,7 +44,7 @@ const sizes = '(min-width: 1024px) 34vw, 70vw';
   .report__pages { display: grid; padding-block: var(--s-2) var(--s-4); }
   .report__page {
     grid-area: 1 / 1; position: relative; width: 70%;
-    background: #fff; border-radius: 4px;
+    background: var(--page-white); border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.14);
   }
   .report__page--a { justify-self: start; transform: rotate(-1.5deg); }
@@ -56,11 +56,11 @@ const sizes = '(min-width: 1024px) 34vw, 70vw';
     position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
     display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none;
     border-radius: 50%; background: var(--accent); color: var(--accent-ink);
-    font-family: var(--font-body); font-size: 0.625rem; font-weight: 600;
-    box-shadow: 0 0 0 2px #fff;
+    font-family: var(--font-body); font-size: var(--fs-2xs); font-weight: 600;
+    box-shadow: 0 0 0 2px var(--page-white);
   }
-  @media (min-width: 640px) { .pin { width: 24px; height: 24px; font-size: 0.75rem; box-shadow: 0 0 0 3px #fff; } }
-  .pin.pin--static { position: static; transform: none; box-shadow: none; width: 24px; height: 24px; font-size: 0.75rem; }
+  @media (min-width: 640px) { .pin { width: 24px; height: 24px; font-size: var(--fs-xs); box-shadow: 0 0 0 3px var(--page-white); } }
+  .pin.pin--static { position: static; transform: none; box-shadow: none; width: 24px; height: 24px; font-size: var(--fs-xs); }
 
   .report__notes { list-style: none; display: grid; gap: var(--s-3); margin-top: var(--s-4); }
   @media (min-width: 768px) { .report__notes { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

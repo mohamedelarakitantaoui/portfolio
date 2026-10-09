@@ -53,15 +53,15 @@ const W = 420;
   .diagram { margin: var(--s-5) 0 var(--s-6); max-width: 560px; }
   svg { width: 100%; height: auto; overflow: visible; }
   .d-group rect { fill: none; stroke: var(--line-strong); stroke-dasharray: 4 5; }
-  .d-group-label { fill: var(--text-quiet); font-family: var(--font-body); font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
+  .d-group-label { fill: var(--text-quiet); font-family: var(--font-body); font-size: var(--fs-diagram-group); font-weight: 600; letter-spacing: 0.02em; }
   .d-node rect { fill: var(--surface); stroke: var(--line-input); stroke-width: 1; }
   .d-node--chip rect { fill: transparent; }
   .d-node--accent rect { stroke: var(--accent); stroke-width: 1.5; }
   .d-node--dashed rect { fill: transparent; stroke-dasharray: 5 4; }
   .d-node--out rect { fill: var(--accent); stroke: var(--accent); }
   .d-node--out .d-title, .d-node--out .d-sub { fill: var(--accent-ink); }
-  .d-title { fill: var(--text); font-family: var(--font-body); font-size: 12.5px; font-weight: 500; }
-  .d-sub { fill: var(--text-muted); font-family: var(--font-body); font-size: 11px; }
+  .d-title { fill: var(--text); font-family: var(--font-body); font-size: var(--fs-diagram-title); font-weight: 500; }
+  .d-sub { fill: var(--text-muted); font-family: var(--font-body); font-size: var(--fs-diagram-sub); }
   .d-edge { fill: none; stroke: var(--bone-2); stroke-width: 1.2; }
   .d-edge--dashed { stroke-dasharray: 4 4; }
   .d-arrowhead { fill: var(--bone-2); }
