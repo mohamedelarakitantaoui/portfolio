@@ -15,7 +15,7 @@ const { img, alt, caption, light = false } = Astro.props;
 <style>
   .fig { margin-block: var(--s-6); }
   .fig__img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--r-img); background: var(--surface); }
-  /* Light screenshots (Kaggle pages) get a quieter frame so they don't glare against the dark page. */
-  .fig__img--light { border-color: var(--line-strong); }
+  /* Light screenshots (Kaggle pages) are dimmed to 85% so they don't glare against the dark page. */
+  .fig__img--light { filter: var(--dim-screen); }
   .fig__cap { margin-top: var(--s-3); color: var(--text-muted); font-size: var(--fs-small); line-height: 1.45; max-width: var(--measure); }
 </style>

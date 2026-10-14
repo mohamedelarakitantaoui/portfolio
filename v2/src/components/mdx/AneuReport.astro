@@ -44,19 +44,19 @@ const sizes = '(min-width: 1024px) 34vw, 70vw';
   .report__pages { display: grid; padding-block: var(--s-2) var(--s-4); }
   .report__page {
     grid-area: 1 / 1; position: relative; width: 70%;
-    background: var(--page-white); border-radius: 4px;
+    background: var(--page-white); filter: var(--dim-screen);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.14);
   }
   .report__page--a { justify-self: start; transform: rotate(-1.5deg); }
   .report__page--b { justify-self: end; margin-top: 12%; transform: rotate(1deg); }
   @media (min-width: 640px) { .report__page { width: 62%; } }
-  .report__img { display: block; width: 100%; height: auto; border-radius: 4px; }
+  .report__img { display: block; width: 100%; height: auto; }
 
   .pin {
     position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
     display: inline-grid; place-items: center; width: 18px; height: 18px; flex: none;
     border-radius: 50%; background: var(--accent); color: var(--accent-ink);
-    font-family: var(--font-body); font-size: var(--fs-2xs); font-weight: 600;
+    font-family: var(--font-body); font-size: var(--fs-2xs); font-weight: var(--fw-regular);
     box-shadow: 0 0 0 2px var(--page-white);
   }
   @media (min-width: 640px) { .pin { width: 24px; height: 24px; font-size: var(--fs-xs); box-shadow: 0 0 0 3px var(--page-white); } }

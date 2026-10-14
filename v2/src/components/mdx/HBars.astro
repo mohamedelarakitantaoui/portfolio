@@ -57,12 +57,12 @@ const fmt = (i: Item) => i.text ?? i.value.toFixed(2);
 <style>
   .hb { margin-block: var(--s-6); padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-img); background: var(--bg-band); }
   .hb__cap { display: grid; gap: var(--s-1); margin-bottom: var(--s-5); }
-  .hb__title { color: var(--heading); font-weight: 600; }
+  .hb__title { color: var(--heading); font-weight: var(--fw-regular); }
   .hb__note { color: var(--text-muted); font-size: var(--fs-small); line-height: 1.4; }
   .hb__legend { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin: 0 0 var(--s-4); padding: 0; color: var(--text-muted); font-size: var(--fs-small); }
   .hb__legend li { display: inline-flex; align-items: center; gap: var(--s-2); padding: 0; }
   .hb__legend li::before { display: none; }
-  .hb__key { width: var(--s-3); height: var(--s-3); border-radius: 2px; background: var(--accent); }
+  .hb__key { width: var(--s-3); height: var(--s-3); background: var(--accent); }
   .hb__key--muted { background: var(--line-input); }
 
   /* Two columns: labels, then one track per row. The reference line sits in the track column across every row. */
@@ -71,9 +71,9 @@ const fmt = (i: Item) => i.text ?? i.value.toFixed(2);
   .hb__head { grid-column: 1; grid-row: 1; min-height: 1.4em; }
   .hb__label { grid-column: 1; color: var(--text-muted); font-size: var(--fs-small); line-height: 1.25; text-align: end; }
   .hb__track { grid-column: 2; display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
-  .hb__fill { display: block; flex: none; height: var(--s-3); width: calc((100% - 3.5em) * var(--f)); border-radius: 0 4px 4px 0; background: var(--accent); }
+  .hb__fill { display: block; flex: none; height: var(--s-3); width: calc((100% - 3.5em) * var(--f)); background: var(--accent); }
   .hb__fill--muted { background: var(--line-input); }
-  .hb__value { flex: none; color: var(--text); font-size: var(--fs-small); font-weight: 600; }
+  .hb__value { flex: none; color: var(--text); font-size: var(--fs-small); font-weight: var(--fw-regular); }
   .hb__ref { grid-column: 2; position: relative; align-self: stretch; pointer-events: none; }
   .hb__ref::before {
     content: ''; position: absolute; top: 1.4em; bottom: 0; left: calc((100% - 3.5em) * var(--f));

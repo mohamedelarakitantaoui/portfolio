@@ -1,6 +1,7 @@
 ---
+// v5 Work: the heading on the left, the intro on the right, then the featured projects as hairline rows.
 import { getCollection } from 'astro:content';
-import ProjectCard from '../ProjectCard.astro';
+import ProjectRow from '../ProjectRow.astro';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -11,8 +12,8 @@ const fr = lang === 'fr';
   <div class="wrap">
     <div class="work__head">
       <div>
-        <p class="label label--plain">01 / {fr ? 'Une sélection' : 'Selected work'}</p>
-        <h2 class="h2" id="work-h2">{fr ? 'Des modèles.' : 'Models.'}<br /><span>{fr ? 'Et leur application.' : 'And what they become.'}</span></h2>
+        <p class="label">01 / {fr ? 'Une sélection' : 'Selected work'}</p>
+        <h2 class="h2" id="work-h2">{fr ? 'Des modèles.' : 'Models.'} <span class="serif serif--line">{fr ? 'Et leur application.' : 'And what they become.'}</span></h2>
       </div>
       <div class="work__intro">
         <p>{fr
@@ -21,32 +22,21 @@ const fr = lang === 'fr';
         <a class="link" href={lp(lang, '/work')}>{t(lang, 'cta.allProjects')}</a>
       </div>
     </div>
-    {projects[0] && <div class="work__feature"><ProjectCard project={projects[0]} lang={lang} featured /></div>}
-    <div class="work__supporting">
-      {projects.slice(1).map((p, i) => (
-        <div class="work__project">
-          <p class="work__index meta"><span>0{i + 2}</span><span>{p.data.key === 'dce-scraper' ? (fr ? 'Automatisation / Intelcia' : 'Automation / Intelcia') : (fr ? 'Football / Machine learning' : 'Football / Machine learning')}</span></p>
-          <ProjectCard project={p} lang={lang} />
-        </div>
-      ))}
-    </div>
+    <ol class="work__rows">
+      {projects.map((p) => <ProjectRow project={p} lang={lang} />)}
+    </ol>
   </div>
 </section>
 
 <style>
   .work:focus { outline: none; }
-  .work__head { display: grid; gap: var(--s-6); align-items: end; margin-bottom: var(--s-8); }
+  .work__head { display: grid; gap: var(--s-5); align-items: end; margin-bottom: var(--s-7); }
   .work__head .h2 { max-width: 17ch; }
-  .work__head .h2 span { color: var(--text-muted); }
-  .work__intro p { max-width: 45ch; color: var(--text-muted); font-size: var(--fs-lede); }
-  .work__intro .link { margin-top: var(--s-5); }
-  .work__feature { padding-top: var(--s-6); border-top: 1px solid var(--accent-line); }
-  .work__supporting { display: grid; gap: var(--s-8); margin-top: var(--s-9); }
-  .work__index { display: flex; align-items: center; gap: var(--s-5); margin-bottom: var(--s-5); padding-block: var(--s-4); border-top: 1px solid var(--line); }
-  .work__index > span:first-child { color: var(--accent); }
-  @media (min-width: 1024px) {
-    .work__head { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--s-9); }
-    .work__supporting { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); }
-    .work__project:last-child { padding-top: var(--s-9); }
+  .work__intro p { max-width: 40ch; color: var(--text-muted); }
+  .work__intro .link { margin-top: var(--s-3); }
+  .work__rows { list-style: none; }
+  @media (min-width: 900px) {
+    .work__head { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--s-8); }
+    .work__intro { justify-self: end; }
   }
 </style>

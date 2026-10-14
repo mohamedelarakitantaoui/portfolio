@@ -78,7 +78,7 @@ const F = fr
 
 <style>
   .contact__email {
-    display: inline-block; margin-top: var(--s-6); font-family: var(--font-body); font-weight: 600;
+    display: inline-block; margin-top: var(--s-6); font-family: var(--font-body); font-weight: var(--fw-regular);
     font-size: clamp(1.75rem, 6vw, 4.5rem); letter-spacing: var(--track-display); line-height: 1; overflow-wrap: anywhere;
     text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.15em;
   }
@@ -93,9 +93,9 @@ const F = fr
   .contact__facts a { color: var(--text); }
   .cform { display: grid; gap: var(--s-5); }
   .field { display: grid; gap: var(--s-2); }
-  .field label { font-weight: 500; }
+  .field label { font-weight: var(--fw-regular); }
   .field input, .field textarea, .field select {
-    width: 100%; min-height: 48px; padding: var(--s-3) var(--s-4); border-radius: 12px;
+    width: 100%; min-height: 48px; padding: var(--s-3) var(--s-4); border-radius: var(--r-btn);
     border: 1px solid var(--line-input); background: var(--bg); color: var(--text); font: inherit;
   }
   .field textarea { resize: vertical; min-height: 140px; }

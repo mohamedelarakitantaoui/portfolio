@@ -2,6 +2,10 @@
 
 **When unsure how something should look, match `approved/`. Never match `dont/`.**
 
+> **v5 (2026-10-14):** the approved direction is now `v5-prototype.html` (black + champagne, Arik composition:
+> match its composition, not its pixel values or text). The images in `approved/` still show the previous look until
+> Mamoun approves the v5 visual diffs; then regenerate them with `node qa/design-refs.mjs`.
+
 - `tokens.md`: the measured system in plain words, plus the token table that `npm run check` compares with
   `src/styles/tokens.css` (they must agree).
 - `approved/`: the current approved pages, full page, effects off: `page-width-lang.png` for home, /work, the

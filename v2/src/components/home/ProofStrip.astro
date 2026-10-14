@@ -19,7 +19,7 @@ const { lang } = Astro.props;
   .proof__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; }
   .proof__list li {
     display: flex; align-items: center; justify-content: center; text-align: center; min-height: 88px; padding: var(--s-4);
-    font-size: clamp(1rem, 0.9rem + 0.45vw, 1.375rem); font-weight: 600; letter-spacing: var(--track-h); line-height: 1.2;
+    font-size: clamp(1rem, 0.9rem + 0.45vw, 1.375rem); font-weight: var(--fw-light); letter-spacing: var(--track-h); line-height: 1.2;
     color: var(--text-muted);
   }
   .proof__list li:nth-child(odd) { border-inline-end: 1px solid var(--line); }

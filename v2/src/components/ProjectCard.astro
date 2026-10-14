@@ -47,13 +47,13 @@ const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}
   }
   .pcard__media:hover :global(.pcard__glow) { opacity: 0.08; }
   .pcard__body { display: grid; gap: var(--s-3); align-content: start; }
-  .pcard__title { font-size: var(--fs-card); font-weight: 500; letter-spacing: var(--track-h); line-height: 1.2; margin-top: calc(-1 * var(--s-1)); }
+  .pcard__title { font-size: var(--fs-card); font-weight: var(--fw-light); letter-spacing: var(--track-h); line-height: 1.2; margin-top: calc(-1 * var(--s-1)); }
   .pcard__title a { text-decoration: none; }
   .pcard__title a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
   .pcard__outcome { color: var(--text-muted); max-width: 62ch; }
   .pcard__constraint { color: var(--text-muted); max-width: 62ch; font-size: var(--fs-small); }
   .pcard__constraint span { color: var(--heading); }
-  .pcard__metric { color: var(--heading); font-weight: 600; padding-block: var(--s-3); border-block: 1px solid var(--line); max-width: none; }
+  .pcard__metric { color: var(--heading); font-weight: var(--fw-regular); padding-block: var(--s-3); border-block: 1px solid var(--line); max-width: none; }
   .pcard__progress { display: flex; gap: var(--s-3); align-items: baseline; color: var(--text); margin-top: calc(-1 * var(--s-3)); padding-bottom: var(--s-3); border-bottom: 1px solid var(--line); max-width: none; }
   .pcard__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); transform: translateY(-1px); }
   .pcard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3) var(--s-5); margin-top: var(--s-1); }

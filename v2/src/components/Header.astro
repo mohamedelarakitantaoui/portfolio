@@ -17,7 +17,7 @@ const nav = [
 const isCurrent = (href: string) => here === href || (href !== '/' && here.startsWith(href + '/'));
 ---
 <header class="site-header" id="site-header">
-  <div class="site-header__inner wrap">
+  <div class="site-header__inner">
     <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}>{person.name}</a>
 
     <nav class="site-nav" aria-label={t(lang, 'nav.label')}>
@@ -29,26 +29,21 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
     </nav>
 
     <div class="site-header__tools">
-      <a class="pill lang-pill" href={otherPath} hreflang={other} lang={other}>
+      <a class="lang-pill" href={otherPath} hreflang={other} lang={other}>
         <span class="sr-only">{t(lang, 'lang.switch')}</span>
         <span aria-hidden="true"><span class:list={{ on: lang === 'en' }}>EN</span><span class="lang-pill__sep">/</span><span class:list={{ on: lang === 'fr' }}>FR</span></span>
       </a>
-      <a class="pill pill--light hire" href={`mailto:${person.email}`}>{t(lang, 'cta.emailMe')}</a>
-      <a class="pill menu-btn" href="#footer-nav" data-menu-open aria-haspopup="dialog">{t(lang, 'nav.menu')}</a>
+      <a class="btn btn--primary hire" href={`mailto:${person.email}`}>{t(lang, 'cta.emailMe')}</a>
+      <a class="btn menu-btn" href="#footer-nav" data-menu-open aria-haspopup="dialog">{t(lang, 'nav.menu')}</a>
     </div>
   </div>
 </header>
-
-<!-- Floating pill after the hero (JS only; without JS the header and footer nav remain) -->
-<button class="pill menu-pill" type="button" data-menu-open aria-haspopup="dialog" hidden>
-  <span class="menu-pill__bars" aria-hidden="true"></span>{t(lang, 'nav.menu')}
-</button>
 
 <dialog class="menu" id="site-menu" aria-label={t(lang, 'nav.menu')} data-lenis-prevent>
   <div class="menu__inner wrap">
     <div class="menu__top">
       <a class="logo" href={lp(lang, '/')} aria-label={t(lang, 'logo.label')}>{person.name}</a>
-      <button class="pill menu-close" type="button" data-menu-close>{t(lang, 'nav.close')}</button>
+      <button class="btn menu-close" type="button" data-menu-close>{t(lang, 'nav.close')}</button>
     </div>
     <nav aria-label={t(lang, 'nav.menu')}>
       <ol class="menu__list">
@@ -66,40 +61,42 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
 </dialog>
 
 <style>
-  .site-header { position: absolute; inset: 0 0 auto 0; z-index: var(--z-header); }
+  /* v5: a compact bar, fixed and centred: hairline border, panel colour at 82% over a backdrop blur. */
+  .site-header {
+    position: fixed; inset: 0 0 auto 0; z-index: var(--z-header);
+    display: flex; justify-content: center; padding: var(--s-4) var(--gutter) 0; pointer-events: none;
+  }
   .site-header__inner {
-    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--s-4);
-    min-height: var(--header-h);
+    pointer-events: auto; display: flex; align-items: center; gap: var(--s-5);
+    max-width: 100%; padding: var(--s-1) var(--s-1) var(--s-1) var(--s-4);
+    background: var(--nav-surface); border: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   }
   .logo {
     display: inline-flex; align-items: center; min-height: 44px; text-decoration: none;
-    font-size: var(--fs-md); font-weight: 600; letter-spacing: -0.03em; color: var(--heading); white-space: nowrap;
+    font-size: var(--fs-small); font-weight: var(--fw-regular); letter-spacing: 0.02em; color: var(--heading); white-space: nowrap;
   }
 
-  .site-nav { display: none; justify-self: center; }
+  .site-nav { display: none; }
   .site-nav ul { display: flex; gap: var(--s-1); list-style: none; }
   .site-nav a {
-    display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-3);
-    text-decoration: none; font-size: var(--fs-nav); font-weight: 500; color: var(--text-muted);
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2);
+    text-decoration: none; font-size: var(--fs-cap); font-weight: var(--fw-regular);
+    letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-muted);
     transition: color var(--dur-1) var(--ease-out);
   }
   .site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--heading); }
-  .site-nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 8px; }
+  .site-nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 6px; }
 
-  .site-header__tools { display: flex; align-items: center; gap: var(--s-2); justify-self: end; grid-column: 3; }
-  .pill {
-    display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
-    min-height: 44px; padding: 0 var(--s-4); border-radius: var(--r-pill);
-    border: 1px solid var(--line-input); background: transparent; color: var(--heading);
-    font-size: var(--fs-small); font-weight: 600; letter-spacing: -0.01em; text-decoration: none; cursor: pointer; white-space: nowrap;
-    transition: border-color var(--dur-1) var(--ease-out), background-color var(--dur-1) var(--ease-out);
+  .site-header__tools { display: flex; align-items: center; gap: var(--s-1); }
+  .lang-pill {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2);
+    font-size: var(--fs-cap); letter-spacing: var(--track-label); text-decoration: none; color: var(--text-quiet);
   }
-  .pill:hover { border-color: var(--heading); }
-  .pill--light { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-  .pill--light:hover { background: var(--accent-hover); }
-  .lang-pill { gap: 0; color: var(--text-quiet); }
   .lang-pill .on { color: var(--heading); }
+  .lang-pill:hover { color: var(--text); }
   .lang-pill__sep { margin-inline: 0.3em; }
+  .site-header__tools .btn { padding: 0 var(--s-4); }
   .hire { display: none; }
 
   @media (min-width: 1024px) {
@@ -107,22 +104,7 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
     .hire { display: inline-flex; }
     .menu-btn { display: none; }
   }
-  @media (max-width: 380px) { .logo { font-size: var(--fs-nav); } .lang-pill { padding: 0 var(--s-3); } }
-  /* 320px phones: logo + EN/FR + Menu were 2px too wide; tighter gaps keep them on one line without sideways scroll. */
-  @media (max-width: 359px) { .site-header__inner { gap: var(--s-2); } .site-header__tools { gap: var(--s-1); } }
-
-  .menu-pill {
-    position: fixed; z-index: var(--z-pill); left: 50%; bottom: max(16px, env(safe-area-inset-bottom));
-    transform: translate(-50%, 0); min-height: 48px; padding: 0 var(--s-5);
-    background: var(--surface); border-color: var(--line-strong);
-    transition: opacity var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
-  }
-  .menu-pill__bars { width: 14px; height: 7px; border-block: 1.5px solid currentColor; }
-  .menu-pill.is-hidden { opacity: 0; transform: translate(-50%, 16px); pointer-events: none; }
-  @media (min-width: 1024px) {
-    .menu-pill { left: auto; right: var(--gutter); top: var(--s-4); bottom: auto; transform: none; }
-    .menu-pill.is-hidden { transform: translateY(-12px); }
-  }
+  @media (max-width: 380px) { .site-header__inner { gap: var(--s-2); padding-inline-start: var(--s-3); } }
 
   .menu {
     position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
@@ -135,9 +117,9 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
   .menu__list li + li { border-top: 1px solid var(--line); }
   .menu__list a {
     display: block; text-decoration: none; color: var(--heading);
-    font-size: clamp(2.25rem, 7vw, 4.5rem); font-weight: 700; letter-spacing: var(--track-h); line-height: 1.1; padding-block: var(--s-2);
+    font-size: clamp(2.25rem, 7vw, 4.5rem); font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1.1; padding-block: var(--s-2);
   }
   .menu__list a:hover, .menu__list a[aria-current='page'] { color: var(--accent); }
   .menu__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-4); align-items: center; border-top: 1px solid var(--line); padding-top: var(--s-5); }
-  .menu__email { display: inline-flex; align-items: center; min-height: 44px; font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 600; letter-spacing: var(--track-h); text-decoration-color: var(--line-strong); }
+  .menu__email { display: inline-flex; align-items: center; min-height: 44px; font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: var(--fw-thin); text-decoration-color: var(--line-strong); }
 </style>

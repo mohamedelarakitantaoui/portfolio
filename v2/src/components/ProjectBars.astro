@@ -1,42 +1,79 @@
 ---
-// Card media for a project without a screenshot yet: its two real numbers as a before/after bar pair.
-// One series, so no legend; both values are labelled directly; a table carries the same data for screen readers.
+// A project's two real numbers as a before/after bar pair. One series, so no legend; both values are labelled
+// directly; a table carries the same data (with the full labels) for screen readers.
+// Default: a panel that stands in as card media (/work, case-study header). `flat`: the v5 home row version,
+// no panel, "Before / After" captions, the "before" bar in bone at 22%, the "after" bar in champagne, numbers
+// right-aligned in tabular figures.
 interface Bar { label: string; value: number; text: string }
-interface Props { title: string; before: Bar; after: Bar }
-const { title, before, after } = Astro.props;
+interface Props { title: string; before: Bar; after: Bar; flat?: boolean; lang?: 'en' | 'fr' }
+const { title, before, after, flat = false, lang = 'en' } = Astro.props;
 const max = Math.max(before.value, after.value);
 const frac = (v: number) => Math.max(0.02, v / max).toFixed(4);
+const short = lang === 'fr' ? { before: 'Avant', after: 'Après' } : { before: 'Before', after: 'After' };
 ---
-<figure class="bars zoom" aria-label={title} data-fx="result-bars">
-  <div class="bars__inner zoom__inner" aria-hidden="true">
-    <p class="bars__title meta">{title}</p>
-    <div class="bars__rows">
+{flat ? (
+  <figure class="fbars" aria-label={title} data-fx="result-bars">
+    <figcaption class="fbars__title meta" aria-hidden="true">{title}</figcaption>
+    <div class="fbars__rows" aria-hidden="true">
       {[['before', before], ['after', after]].map(([k, b]) => (
-        <div class:list={['bars__row', `bars__row--${k}`]}>
-          <span class="bars__label">{(b as Bar).label}</span>
-          <span class="bars__track"><span class="bars__fill" style={`--f:${frac((b as Bar).value)}`}></span><span class="bars__value">{(b as Bar).text}</span></span>
+        <div class:list={['fbars__row', `fbars__row--${k}`]}>
+          <span class="fbars__label">{short[k as 'before' | 'after']}</span>
+          <span class="fbars__track"><span class="bars__fill fbars__fill" style={`--f:${frac((b as Bar).value)}`}></span></span>
+          <span class="fbars__value">{(b as Bar).text}</span>
         </div>
       ))}
     </div>
-  </div>
-  <table class="sr-only">
-    <caption>{title}</caption>
-    <tbody>
-      <tr><th scope="row">{before.label}</th><td>{before.text}</td></tr>
-      <tr><th scope="row">{after.label}</th><td>{after.text}</td></tr>
-    </tbody>
-  </table>
-</figure>
+    <div class="sr-only"><table>
+      <caption>{title}</caption>
+      <tbody>
+        <tr><th scope="row">{before.label}</th><td>{before.text}</td></tr>
+        <tr><th scope="row">{after.label}</th><td>{after.text}</td></tr>
+      </tbody>
+    </table></div>
+  </figure>
+) : (
+  <figure class="bars zoom" aria-label={title} data-fx="result-bars">
+    <div class="bars__inner zoom__inner" aria-hidden="true">
+      <p class="bars__title meta">{title}</p>
+      <div class="bars__rows">
+        {[['before', before], ['after', after]].map(([k, b]) => (
+          <div class:list={['bars__row', `bars__row--${k}`]}>
+            <span class="bars__label">{(b as Bar).label}</span>
+            <span class="bars__track"><span class="bars__fill" style={`--f:${frac((b as Bar).value)}`}></span><span class="bars__value">{(b as Bar).text}</span></span>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="sr-only"><table>
+      <caption>{title}</caption>
+      <tbody>
+        <tr><th scope="row">{before.label}</th><td>{before.text}</td></tr>
+        <tr><th scope="row">{after.label}</th><td>{after.text}</td></tr>
+      </tbody>
+    </table></div>
+  </figure>
+)}
 
 <style>
-  /* Height = content: caption, then the two bars directly under it, 32px padding. No ratio, no dead space. */
-  .bars { position: relative; background: var(--accent-surface); border: 1px solid var(--accent-line); }
+  /* Panel (card media): height = content, no ratio, no dead space. */
+  .bars { position: relative; background: var(--surface); border: 1px solid var(--line); }
   .bars__inner { display: grid; gap: var(--s-6); padding: var(--s-7) var(--s-6); }
   .bars__rows { display: grid; gap: var(--s-5); }
   .bars__row { display: grid; gap: var(--s-3); }
   .bars__label { color: var(--text-muted); font-size: var(--fs-small); }
   .bars__track { display: flex; font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem); align-items: center; gap: var(--s-3); }
-  .bars__fill { display: block; height: clamp(16px, 2.4vw, 32px); width: calc((100% - 4.5em) * var(--f)); flex: none; border-radius: 0 4px 4px 0; background: var(--line-input); }
+  .bars__fill { display: block; height: clamp(10px, 1.6vw, 20px); width: calc((100% - 4.5em) * var(--f)); flex: none; background: var(--bar-before); }
   .bars__row--after .bars__fill { background: var(--accent); }
-  .bars__value { flex: none; color: var(--heading); font-size: 1em; font-weight: 700; letter-spacing: var(--track-h); line-height: 1; }
+  .bars__value { flex: none; color: var(--heading); font-size: 1em; font-weight: var(--fw-thin); line-height: 1; font-variant-numeric: tabular-nums; }
+
+  /* Flat (home rows) */
+  .fbars { display: grid; gap: var(--s-3); max-width: 520px; }
+  .fbars__title { color: var(--text-quiet); }
+  .fbars__rows { display: grid; gap: var(--s-2); }
+  .fbars__row { display: grid; grid-template-columns: 4rem minmax(0, 1fr) 5rem; align-items: center; gap: var(--s-3); }
+  .fbars__label { font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-muted); }
+  .fbars__track { display: block; min-width: 0; }
+  .fbars__fill { height: 10px; width: calc(100% * var(--f)); background: var(--bar-before); }
+  .fbars__row--after .fbars__fill { background: var(--accent); }
+  .fbars__value { text-align: end; font-size: var(--fs-small); font-weight: var(--fw-light); color: var(--text); font-variant-numeric: tabular-nums; }
 </style>

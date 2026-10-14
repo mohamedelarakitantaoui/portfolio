@@ -60,10 +60,10 @@ const items = [
   .palette__list { list-style: none; overflow: auto; padding: var(--s-2); }
   .palette__list :global(li) {
     display: flex; justify-content: space-between; gap: var(--s-4); align-items: center;
-    min-height: 44px; padding: 0 var(--s-4); border-radius: 12px; cursor: pointer;
+    min-height: 44px; padding: 0 var(--s-4); border-radius: var(--r-btn); cursor: pointer;
   }
   .palette__list :global(li[aria-selected='true']) { background: var(--bg-band); outline: 1px solid var(--line-input); }
-  .palette__list :global(.palette__kind) { font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-quiet); white-space: nowrap; }
+  .palette__list :global(.palette__kind) { font-size: var(--fs-xs); font-weight: var(--fw-regular); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-quiet); white-space: nowrap; }
   .palette__empty { padding: var(--s-4) var(--s-5); color: var(--text-muted); }
   .palette__hint { padding: var(--s-3) var(--s-5); border-top: 1px solid var(--line); color: var(--text-quiet); }
 </style>

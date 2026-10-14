@@ -31,7 +31,7 @@ const rows = homeOnly ? moreProjects.filter((p) => p.home) : moreProjects;
   @media (min-width: 768px) {
     .more__row { grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) 3.5rem minmax(0, 2.5fr); align-items: baseline; }
   }
-  .more__title { font-size: var(--fs-row); font-weight: 500; letter-spacing: var(--track-h); line-height: 1.2; color: var(--heading); }
+  .more__title { font-size: var(--fs-row); font-weight: var(--fw-light); letter-spacing: var(--track-h); line-height: 1.2; color: var(--heading); }
   .more__line { color: var(--text-muted); }
   .more__year { color: var(--text-quiet); font-size: var(--fs-small); }
   .more__links { display: flex; flex-wrap: wrap; gap: 0 var(--s-4); font-size: var(--fs-small); }

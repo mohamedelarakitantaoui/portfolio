@@ -22,7 +22,7 @@ import Base from '../layouts/Base.astro';
 <style>
   .nf { min-height: 100svh; display: grid; align-content: center; background: var(--bg-band); padding-block: calc(var(--header-h) + var(--s-7)) var(--s-9); }
   .nf__code::before { content: attr(data-code); }
-  .nf__code { font-size: clamp(6rem, 20vw, 16rem); font-weight: 700; letter-spacing: var(--track-display); line-height: 0.85; color: var(--line-strong); margin-bottom: var(--s-6); }
+  .nf__code { font-size: clamp(6rem, 20vw, 16rem); font-weight: var(--fw-thin); letter-spacing: var(--track-display); line-height: 0.85; color: var(--line-strong); margin-bottom: var(--s-6); }
   .nf__h1 { max-width: 12ch; }
   .nf__fr { margin-top: var(--s-3); }
   .nf__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-6); }

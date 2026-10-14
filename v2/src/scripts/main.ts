@@ -12,13 +12,12 @@ const lang = root.lang === 'fr' ? 'fr' : 'en';
 if (!reduce) root.classList.add('motion-ok');
 
 // JS-only controls start hidden so they never appear broken without JS
-$$('[data-palette-open], [data-copy], .menu-pill, [data-term-form], [data-term-chips], [data-js-show]').forEach((el) => el.removeAttribute('hidden'));
+$$('[data-palette-open], [data-copy], [data-term-form], [data-term-chips], [data-js-show]').forEach((el) => el.removeAttribute('hidden'));
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
 $$('[data-kbd]').forEach((el) => (el.textContent = isMac ? '⌘ K' : 'Ctrl K'));
 
-/* ---------------- menu + floating pill ---------------- */
+/* ---------------- menu ---------------- */
 const menu = $<HTMLDialogElement>('#site-menu');
-const pill = $<HTMLButtonElement>('.menu-pill');
 function openMenu() {
   if (!menu) return;
   menu.showModal();
@@ -26,19 +25,6 @@ function openMenu() {
 $$('[data-menu-open]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); openMenu(); }));
 $$('[data-menu-close]').forEach((b) => b.addEventListener('click', () => menu?.close()));
 $$('a', menu ?? document.createElement('div')).forEach((a) => a.addEventListener('click', () => menu?.close()));
-
-const heroEl = $('.hero');
-const hero = heroEl ?? $('#site-header');
-if (pill && hero) {
-  pill.classList.add('is-hidden');
-  pill.setAttribute('tabindex', '-1');
-  new IntersectionObserver(([entry]) => {
-    const show = !entry.isIntersecting;
-    pill.classList.toggle('is-hidden', !show);
-    pill.toggleAttribute('inert', !show);
-    pill.setAttribute('tabindex', show ? '0' : '-1');
-  }, { rootMargin: heroEl ? '-40% 0px 0px 0px' : '0px' }).observe(hero);
-}
 
 /* ---------------- copy email ---------------- */
 async function copyText(text: string) {
@@ -55,6 +41,24 @@ $$<HTMLButtonElement>('[data-copy]').forEach((btn) => {
     reset = setTimeout(() => label && (label.textContent = original), 2000);
   });
 });
+
+/* ---------------- Morocco clock (hero HUD) ---------------- */
+// Without JS the HUD shows "GMT+1" and no time. Text updates only, so it runs with effects off too.
+const clock = $('[data-clock]');
+const tz = $('[data-tz]');
+if (clock) {
+  const time = new Intl.DateTimeFormat('en-GB', { timeZone: 'Africa/Casablanca', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  const offset = new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Casablanca', timeZoneName: 'shortOffset' });
+  const tick = () => {
+    const d = new Date();
+    clock.textContent = time.format(d);
+    const z = offset.formatToParts(d).find((p) => p.type === 'timeZoneName');
+    if (tz && z) tz.textContent = z.value;
+  };
+  tick();
+  clock.removeAttribute('hidden');
+  setInterval(tick, 1000);
+}
 
 /* ---------------- command palette ---------------- */
 interface PItem { kind: string; label: string; href?: string; action?: string; keys?: string; download?: boolean; external?: boolean }

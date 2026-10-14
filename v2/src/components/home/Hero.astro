@@ -1,106 +1,134 @@
 ---
+// v5 hero (Arik composition): the portrait's head sits above the headline, in the top third, and the centred copy
+// starts at chin level, over the toned shoulders. Portrait: desaturated, darkened, warm duotone toward bone, faded
+// into the page with a radial mask. The bottom HUD row: three stats, a scroll cue, and a live Morocco clock (static
+// "GMT+1" without JS).
 import { heroPortrait, PORTRAIT_SIZES } from '../../lib/portrait';
 import { type Lang, lp, t } from '../../i18n/ui';
-import { person } from '../../data/site';
+import { hero, person, status } from '../../data/site';
 import { cvLink } from '../../lib/cv';
+import { rich } from '../../lib/rich';
+import { splitClause } from '../../lib/split';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
 const img = await heroPortrait();
 const cv = cvLink(lang);
+const [h1a, h1b] = splitClause(hero.h1[lang]);
 ---
 <section class="hero" aria-labelledby="hero-h1" data-fx="portrait-depth">
-  <div class="wrap hero__grid">
-    <div class="hero__text">
-      <p class="hero__eyebrow meta"><span class="hero__dash" aria-hidden="true"></span>{person.role[lang]}</p>
-      <h1 class="hero__h1" id="hero-h1"><span>Mamoun</span><span>El Araki<span class="hero__period">.</span></span></h1>
-      <div class="hero__intro-row">
-        <p class="hero__intro">{fr
-          ? 'De l’imagerie médicale en 3D aux modèles de football. Je construis les modèles et les logiciels qui les rendent utilisables.'
-          : 'From 3D medical imaging to football models. I build the models and the software that makes them usable.'}</p>
-        <a class="hero__work" href="#work" data-fx="magnetic-link">
-          <span aria-hidden="true">↘</span><span>{t(lang, 'cta.viewWork')}</span>
-        </a>
-      </div>
-      <a class="link hero__cv" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
-    </div>
-    <div class="hero__visual">
-      <div class="hero__frame">
-        <svg class="hero__contours" viewBox="0 0 500 600" fill="none" aria-hidden="true">
-          <ellipse cx="250" cy="310" rx="205" ry="270" />
-          <ellipse cx="250" cy="310" rx="150" ry="270" />
-          <ellipse cx="250" cy="310" rx="80" ry="270" />
-          <path d="M45 310h410M65 190h370M65 430h370" />
-        </svg>
-        <p class="hero__frame-label meta" aria-hidden="true">{fr ? 'Modèles / Code / Applications' : 'Models / Code / Applications'}</p>
-        <div class="hero__portrait">
-          <picture>
-            <source type="image/avif" srcset={img.avif} sizes={PORTRAIT_SIZES} />
-            <source type="image/webp" srcset={img.webp} sizes={PORTRAIT_SIZES} />
-            <img src={img.fallback} width={img.width} height={img.height} alt={fr ? 'Portrait de Mamoun El Araki' : 'Portrait of Mamoun El Araki'} loading="eager" fetchpriority="high" decoding="async" />
-          </picture>
-        </div>
-        <a class="hero__feature" href={lp(lang, '/work/aneuxplain')}>
-          <span class="hero__feature-label">{fr ? 'Mon projet de fin d’études' : 'My capstone project'}</span>
-          <span class="hero__feature-title">AneuXplain <span aria-hidden="true">↗</span></span>
-          <span class="hero__feature-note">{fr ? 'Article accepté · ICOA 2026' : 'Paper accepted · ICOA 2026'}</span>
-        </a>
+  <div class="hero__portrait">
+    <picture>
+      <source type="image/avif" srcset={img.avif} sizes={PORTRAIT_SIZES} />
+      <source type="image/webp" srcset={img.webp} sizes={PORTRAIT_SIZES} />
+      <img src={img.fallback} width={img.width} height={img.height} alt={fr ? 'Portrait de Mamoun El Araki' : 'Portrait of Mamoun El Araki'} loading="eager" fetchpriority="high" decoding="async" />
+    </picture>
+  </div>
+
+  <div class="wrap hero__inner">
+    <div class="hero__copy">
+      <p class="hero__role meta"><span class="hero__name">{person.name}</span><span class="hero__sep" aria-hidden="true">·</span><span class="sr-only">, </span><span class="hero__phrases"><span>{person.role[lang]}</span><span class="hero__sep" aria-hidden="true">·</span><span class="sr-only">, </span><span>{fr ? 'Basé au Maroc' : 'Based in Morocco'}</span></span></p>
+      <h1 class="hero__h1" id="hero-h1">{h1a}{h1b && <Fragment> <span class="serif serif--line">{h1b}</span></Fragment>}</h1>
+      <p class="hero__status" set:html={rich(status.employers[lang])} />
+      <div class="hero__btns">
+        <a class="btn btn--primary" href="#work">{t(lang, 'cta.viewWork')} <span class="btn__arrow" aria-hidden="true">→</span></a>
+        {cv.href && <a class="btn" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>}
       </div>
     </div>
-    <div class="hero__bottom">
-      <p>{person.location[lang]}</p>
-      <p class="hero__availability"><span aria-hidden="true"></span>{fr ? 'Ouvert aux postes junior et au freelance' : 'Open to junior roles & freelance projects'}</p>
-      <a href="#work" class="hero__scroll">{fr ? 'Explorer' : 'Scroll to explore'} <span aria-hidden="true">↓</span></a>
+
+    <div class="hero__hud">
+      <dl class="hero__stats">
+        {hero.stats.map((s) => (
+          <div><dt>{s.value[lang]}</dt><dd>{s.label[lang]}</dd></div>
+        ))}
+      </dl>
+      <a class="hero__cue meta" href="#work"><span class="hero__cue-line" aria-hidden="true"></span>{fr ? 'Défiler' : 'Scroll'}</a>
+      <div class="hero__time">
+        <p class="meta">{fr ? 'Maroc' : 'Morocco'} · <span data-tz>GMT+1</span></p>
+        <p class="hero__clock" data-clock hidden aria-hidden="true"></p>
+        <a class="hero__feature" href={lp(lang, '/work/aneuxplain')}>{fr ? 'Mon projet de fin d’études' : 'My capstone project'}: <span>AneuXplain</span> <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .hero { position: relative; overflow: clip; padding-top: calc(var(--header-h) + var(--s-7)); background: var(--bg-band); }
-  .hero__grid { display: grid; gap: var(--s-7) var(--s-8); align-items: center; }
-  .hero__text { position: relative; z-index: var(--z-raised); }
-  .hero__eyebrow { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-6); color: var(--text); }
-  .hero__dash { width: var(--s-6); height: 1px; background: var(--accent); flex: none; }
-  .hero__h1 { font-size: var(--fs-name); font-weight: 600; letter-spacing: var(--track-display); line-height: 0.86; text-transform: uppercase; }
-  .hero__h1 > span { display: block; white-space: nowrap; }
-  .hero__h1 > span + span { margin-top: var(--s-3); color: var(--accent); }
-  .hero__period { color: var(--heading); }
-  .hero__intro-row { display: flex; align-items: center; gap: var(--s-5); margin-top: var(--s-7); }
-  .hero__intro { max-width: 33ch; font-size: var(--fs-lede); color: var(--text-muted); line-height: 1.65; }
-  .hero__work { display: grid; place-content: center; gap: var(--s-2); text-align: center; flex: none; width: 120px; height: 120px; border: 1px solid var(--accent-line); border-radius: 50%; text-decoration: none; background: var(--accent); color: var(--accent-ink); font-size: var(--fs-small); }
-  .hero__work > span:first-child { font-size: var(--fs-sub); line-height: 1; }
-  .hero__work:hover { background: var(--accent-hover); }
-  .hero__cv { margin-top: var(--s-5); font-size: var(--fs-small); }
-  .hero__visual { min-width: 0; }
-  .hero__frame { position: relative; aspect-ratio: 1 / 1.07; background: var(--portrait-surface); border-radius: 48% 48% var(--r-img) var(--r-img); isolation: isolate; }
-  .hero__contours { position: absolute; inset: 0; width: 100%; height: 100%; stroke: var(--accent-line); stroke-width: 1; }
-  .hero__frame-label { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: var(--fs-xs); color: var(--accent); }
-  .hero__portrait { position: absolute; inset: 13% -5% 0; overflow: clip; }
-  .hero__portrait picture { display: block; height: 100%; }
-  .hero__portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; mask-image: linear-gradient(to bottom, var(--mask-solid) 75%, transparent); }
-  .hero__feature { position: absolute; inset: auto var(--s-5) var(--s-5); padding: var(--s-4) var(--s-5); background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--r-img); display: grid; gap: var(--s-1); text-decoration: none; transition: transform var(--dur-1) var(--ease-out); }
-  .hero__feature:hover { transform: translateY(-4px); border-color: var(--accent); }
-  .hero__feature-label, .hero__feature-note { color: var(--text-muted); font-size: var(--fs-small); }
-  .hero__feature-title { display: flex; justify-content: space-between; gap: var(--s-5); font-size: var(--fs-sub); letter-spacing: var(--track-h); color: var(--heading); }
-  .hero__feature-title > span { color: var(--accent); }
-  .hero__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-4) var(--s-6); border-top: 1px solid var(--line); padding-block: var(--s-5); font-size: var(--fs-small); color: var(--text-muted); }
-  .hero__availability { display: flex; align-items: center; gap: var(--s-2); }
-  .hero__availability > span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; }
-  .hero__scroll { display: inline-flex; min-height: 44px; gap: var(--s-5); align-items: center; text-decoration: none; }
-  .hero__scroll span { color: var(--accent); }
-  @media (min-width: 768px) {
-    .hero__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--s-7) var(--s-6); }
-    .hero__visual { padding-inline-start: var(--s-5); }
-    .hero__bottom { grid-column: 1 / -1; }
+  /* --pw: the portrait's rendered width. Its chin sits at 0.38 x --pw below its top (measured on the image), so the
+     copy starts there: head above the headline, h1 from chin level down. */
+  .hero {
+    --pw: min(450px, 86vw);
+    position: relative; overflow: clip; isolation: isolate;
+    min-height: 100svh; padding-top: var(--header-h);
+    background: var(--bg);
   }
-  @media (min-width: 1200px) { .hero__visual { padding-inline: var(--s-8) var(--s-5); } }
-  @media (max-width: 1023px) and (min-width: 768px) { .hero__work { width: 96px; height: 96px; } .hero__intro { font-size: var(--fs-body); } }
-  @media (max-width: 767px) {
-    .hero__h1 { font-size: clamp(3rem, 14vw, 6rem); }
-    .hero__intro-row { margin-top: var(--s-6); }
-    .hero__intro { font-size: var(--fs-body); }
-    .hero__work { width: 94px; height: 94px; font-size: var(--fs-xs); }
-    .hero__frame { max-width: 440px; margin-inline: auto; }
-    .hero__bottom { gap: var(--s-3); }
+  .hero__portrait {
+    position: absolute; inset: var(--header-h) 0 auto; z-index: var(--z-behind); display: flex; justify-content: center; pointer-events: none;
+  }
+  .hero__portrait picture { display: block; width: var(--pw); }
+  .hero__portrait img {
+    width: 100%; height: auto;
+    filter: grayscale(1) sepia(0.42) brightness(0.4) contrast(1.04);
+    mask-image: radial-gradient(ellipse 52% 62% at 50% 30%, var(--mask-solid) 34%, transparent 78%);
+  }
+  .hero__inner { display: grid; grid-template-rows: 1fr auto; min-height: calc(100svh - var(--header-h)); }
+  .hero__copy {
+    align-self: start; display: grid; justify-items: center; gap: var(--s-4); text-align: center;
+    padding-block: calc(var(--pw) * 0.38) var(--s-5);
+  }
+  .hero__role { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; color: var(--text-muted); }
+  .hero__name { color: var(--text); }
+  .hero__phrases { display: inline-flex; flex-wrap: wrap; justify-content: center; }
+  .hero__phrases > span { white-space: nowrap; }
+  .hero__sep { margin-inline: 0.7em; }
+  .hero__h1 {
+    font-size: var(--fs-h1-hero); font-weight: var(--fw-thin); line-height: 0.96;
+    letter-spacing: var(--track-display); max-width: 15ch; text-wrap: balance;
+  }
+  .hero__status { max-width: 62ch; color: var(--text-muted); }
+  .hero__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); }
+
+  /* HUD row: stats | scroll cue | Morocco clock, over a hairline */
+  .hero__hud {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: var(--s-5);
+    border-top: 1px solid var(--line); padding-block: var(--s-5);
+  }
+  .hero__stats { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); }
+  .hero__stats div { display: grid; gap: var(--s-1); }
+  .hero__stats dt { font-size: var(--fs-stat); font-weight: var(--fw-thin); line-height: 1; color: var(--heading); font-variant-numeric: tabular-nums; }
+  .hero__stats dd {
+    font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase;
+    color: var(--text-muted); line-height: 1.5; max-width: 24ch;
+  }
+  .hero__cue { display: grid; justify-items: center; gap: var(--s-2); min-height: 44px; text-decoration: none; color: var(--text-muted); }
+  .hero__cue:hover { color: var(--text); }
+  .hero__cue-line { display: block; width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent); transform-origin: top; }
+  .fx-on .hero__cue-line { animation: cue 2.4s var(--ease-out) infinite; }
+  @keyframes cue {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+  .hero__time { display: grid; justify-items: end; gap: var(--s-1); text-align: end; }
+  .hero__time .meta { color: var(--text-muted); }
+  .hero__clock { font-size: var(--fs-lg); font-weight: var(--fw-light); letter-spacing: 0.04em; color: var(--text); font-variant-numeric: tabular-nums; }
+  .hero__feature {
+    display: inline-flex; align-items: center; gap: 0.35em; min-height: 44px;
+    font-size: var(--fs-small); color: var(--text-muted); text-decoration: none;
+  }
+  .hero__feature span:first-child { color: var(--text); }
+  .hero__feature span:last-child { color: var(--accent); }
+  .hero__feature:hover span:first-child { text-decoration: underline; text-decoration-color: var(--accent); }
+
+  /* Phones: name on line 1, role + location on line 2 (wrapping only at the " · " between whole phrases). */
+  @media (max-width: 599px) {
+    .hero__role { flex-direction: column; align-items: center; font-size: var(--fs-cap); letter-spacing: 0.12em; }
+    .hero__role > .hero__sep { display: none; }
+    .hero__sep { margin-inline: 0.5em; }
+  }
+  @media (max-width: 819px) {
+    .hero__hud { grid-template-columns: minmax(0, 1fr); gap: var(--s-5); }
+    .hero__cue { display: none; }
+    .hero__time { justify-items: start; text-align: start; }
   }
 </style>

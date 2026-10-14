@@ -5,7 +5,7 @@ import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CommandPalette from '../components/CommandPalette.astro';
-import dmSans from '../assets/fonts/dm-sans-wght-subset.woff2?url';
+import jost from '../assets/fonts/jost-wght-subset.woff2?url';
 import { type Lang, swapLangPath, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { plain } from '../lib/rich';
@@ -69,8 +69,8 @@ const jsonLd = [
     <link rel="alternate" hreflang="en" href={new URL(enPath, site).href} />
     <link rel="alternate" hreflang="fr" href={new URL(frPath, site).href} />
     <link rel="alternate" hreflang="x-default" href={new URL(enPath, site).href} />
-    <meta name="theme-color" content="#0c0c0c" />
-    <link rel="preload" href={dmSans} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#070605" />
+    <link rel="preload" href={jost} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

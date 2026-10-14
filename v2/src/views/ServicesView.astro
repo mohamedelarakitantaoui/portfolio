@@ -95,12 +95,12 @@ const L = fr
   @media (min-width: 1024px) { .packs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .pack__head { display: grid; gap: var(--s-2); }
   .pack__n { color: var(--accent); }
-  .pack__name { font-family: var(--font-body); font-weight: 700; font-size: var(--fs-statement); letter-spacing: var(--track-display); line-height: 1.05; }
+  .pack__name { font-family: var(--font-body); font-weight: var(--fw-thin); font-size: var(--fs-statement); letter-spacing: var(--track-display); line-height: 1.05; }
   .pack__facts > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); }
   .pack__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
   .pack__facts dd { color: var(--text-muted); }
   .pack__facts a { color: var(--text); text-decoration-color: var(--accent); }
-  .pack__facts dd.pack__price { color: var(--text); font-weight: 600; }
+  .pack__facts dd.pack__price { color: var(--text); font-weight: var(--fw-regular); }
   .pack__cta { justify-self: start; align-self: end; }
   @media (max-width: 639px) { .packs > .pack { padding: var(--s-5); } .pack__facts > div { grid-template-columns: 1fr; gap: var(--s-2); } }
   .sec-h2 { max-width: 16ch; margin-bottom: var(--s-7); }
@@ -109,7 +109,7 @@ const L = fr
   @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
   .step { border-top: 1px solid var(--line-strong); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
   .step__n { color: var(--accent); }
-  .step__title { font-family: var(--font-body); font-size: var(--fs-sub); font-weight: 600; letter-spacing: -0.03em; }
+  .step__title { font-family: var(--font-body); font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); }
   .step__text { color: var(--text-muted); }
   .faq-grid { display: grid; gap: var(--s-6); }
   @media (min-width: 1024px) { .faq-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); } }
@@ -117,7 +117,7 @@ const L = fr
   .faq__item:last-child { border-bottom: 1px solid var(--line); }
   .faq__item summary {
     display: flex; justify-content: space-between; gap: var(--s-4); align-items: center; min-height: 64px; cursor: pointer;
-    font-family: var(--font-body); font-size: var(--fs-lg); font-weight: 600; letter-spacing: -0.02em; list-style: none;
+    font-family: var(--font-body); font-size: var(--fs-lg); font-weight: var(--fw-light); letter-spacing: var(--track-h); list-style: none;
   }
   .faq__item summary::-webkit-details-marker { display: none; }
   .faq__icon { position: relative; width: 14px; height: 14px; flex: none; }

@@ -1,7 +1,6 @@
 ---
-// About statement (v4): label, one claim (≤ 3 lines), one lead (≤ 3 lines), a link to /about; one real photo on the right.
-import { Image } from 'astro:assets';
-import photo from '../../assets/portrait-studio.png';
+// About statement (v5): centred label, claim, lead and link (no photo: the hero portrait is the only one). The claim's words scrub from
+// dim to bone with the scroll (effect word-scrub, off with the kill switch and under reduced motion).
 import { aboutStatement } from '../../data/site';
 import { type Lang, lp } from '../../i18n/ui';
 interface Props { lang: Lang }
@@ -9,33 +8,22 @@ const { lang } = Astro.props;
 const fr = lang === 'fr';
 ---
 <section class="about section" aria-labelledby="about-h">
-  <div class="wrap grid-12 about__grid">
-    <div class="about__text" data-reveal>
-      <p class="label label--plain">02 / {fr ? 'Ma façon de travailler' : 'How I work'}</p>
-      <h2 class="h-statement about__h" id="about-h">{fr ? 'Un score ne raconte pas toute l’histoire.' : 'There’s more to a model than its score.'}</h2>
+  <div class="wrap about__grid">
+    <div class="about__text">
+      <p class="label">02 / {fr ? 'Ma façon de travailler' : 'How I work'}</p>
+      <h2 class="h-statement about__h" id="about-h" data-fx="word-scrub">{fr ? 'Un score ne raconte pas toute l’histoire.' : 'There’s more to a model than its score.'}</h2>
       <p class="lede about__lead">{aboutStatement.lead[lang]}</p>
       <a class="link about__more" href={lp(lang, '/about')}>{fr ? 'En savoir plus' : 'More about me'}</a>
     </div>
-    <figure class="about__photo" data-reveal>
-      <Image src={photo} alt={fr ? 'Mamoun El Araki, portrait en studio' : 'Mamoun El Araki, studio portrait'} widths={[360, 540, 720, 960]} sizes="(min-width: 1024px) 30vw, 80vw" format="webp" quality={72} loading="lazy" />
-    </figure>
   </div>
 </section>
 
 <style>
-  .about { background: var(--accent-surface); border-block: 1px solid var(--accent-line); }
-  .about__grid { row-gap: var(--s-8); align-items: end; }
-  .about__h { max-width: 19ch; font-size: var(--fs-h2); line-height: 1.06; }
-  .about__roll { margin-top: var(--s-5); font-size: var(--fs-sub); font-weight: 700; letter-spacing: var(--track-h); line-height: 1.25; color: var(--heading); max-width: 32ch; }
-  /* Effect (src/scripts/effects/fx/roll-word.ts): the words share one grid cell, so the line never changes width. */
-  .about__roll :global(.roll) { display: inline-grid; vertical-align: bottom; overflow: clip; padding-block: 0.06em; margin-block: -0.06em; }
-  .about__roll :global(.roll__w) { grid-area: 1 / 1; color: var(--accent); white-space: nowrap; }
-  .about__lead { margin-top: var(--s-6); max-width: 54ch; }
-  .about__more { margin-top: var(--s-5); }
-  .about__photo { max-width: 460px; border-radius: var(--r-img); overflow: hidden; aspect-ratio: 3 / 4; background: var(--surface); }
-  .about__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  @media (min-width: 1024px) {
-    .about__text { grid-column: 1 / span 7; }
-    .about__photo { grid-column: 9 / -1; justify-self: end; width: 100%; transform: rotate(3deg); }
-  }
+  .about { text-align: center; }
+  .about__grid { display: grid; justify-items: center; }
+  .about__text { display: grid; justify-items: center; }
+  .about__h { max-width: 22ch; margin-inline: auto; }
+  .about__h :global(.w) { display: inline-block; }
+  .about__lead { margin-top: var(--s-6); max-width: 52ch; margin-inline: auto; }
+  .about__more { margin-top: var(--s-4); }
 </style>

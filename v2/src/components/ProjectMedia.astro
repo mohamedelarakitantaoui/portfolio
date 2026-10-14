@@ -32,13 +32,15 @@ const sizes = '(min-width: 1024px) 58vw, 100vw';
 ) : null}
 
 <style>
-  .media { position: relative; aspect-ratio: var(--ratio); border-radius: var(--r-img); overflow: hidden; background: var(--surface); }
-  .media__el { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  /* v5: real product media sits in a 1px --line frame on --surface, dimmed to 85% so a light app screen never
+     outshines the page. */
+  .media { position: relative; aspect-ratio: var(--ratio); border-radius: var(--r-img); overflow: hidden; background: var(--surface); border: 1px solid var(--line); }
+  .media__el { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; filter: var(--dim-screen); }
   .media--missing { display: grid; place-items: center; padding: var(--s-5); border: 1px dashed var(--line-strong); }
   .media__toggle {
     position: absolute; right: var(--s-3); bottom: var(--s-3); min-height: 44px; min-width: 44px; padding: 0 var(--s-4);
     border-radius: var(--r-pill); border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(12, 12, 12, 0.78); color: var(--white);
-    font-size: var(--fs-tag); font-weight: 600; cursor: pointer;
+    font-size: var(--fs-tag); font-weight: var(--fw-regular); cursor: pointer;
   }
   .media__toggle:hover { border-color: var(--white); }
   .media__toggle.is-big { inset: 50% auto auto 50%; transform: translate(-50%, -50%); min-height: 56px; padding: 0 var(--s-6); background: var(--accent); color: var(--accent-ink); border-color: transparent; }

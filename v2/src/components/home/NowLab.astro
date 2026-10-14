@@ -10,11 +10,10 @@ const fr = lang === 'fr';
 <section class="lab section band" aria-labelledby="lab-h2" id="lab">
   <div class="wrap grid-12 lab__grid">
     <div class="lab__left">
-      <p class="label label--plain">04 / {fr ? 'Maintenant' : 'Now'}</p>
+      <p class="label">04 / {fr ? 'Maintenant' : 'Now'}</p>
       <h2 class="h2" id="lab-h2">{fr ? 'Sur mon bureau.' : 'On my desk.'}</h2>
-      <p class="lab__group meta">{fr ? 'En cours' : 'In progress'}</p>
       <ul class="rows lab__items">
-        {now.inProgress.map((it) => <li><Rich text={it[lang]} /></li>)}
+        {now.inProgress.map((it) => <li><span class="lab__status">{fr ? 'En cours' : 'In progress'}</span><Rich text={it[lang]} /></li>)}
       </ul>
     </div>
     <details class="lab__right" data-terminal-disclosure>
@@ -34,11 +33,17 @@ const fr = lang === 'fr';
     .lab__left { grid-column: 1 / span 5; }
     .lab__right { grid-column: 7 / -1; }
   }
-  .lab__group { margin-top: var(--s-7); margin-bottom: var(--s-3); }
-  .lab__items > li { padding-block: var(--s-4); color: var(--text-muted); max-width: var(--measure); }
-  .lab__items :global(strong) { color: var(--heading); font-weight: 600; }
+  .lab__items { margin-top: var(--s-7); }
+  .lab__items > li { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-5); color: var(--text-muted); }
+  @media (min-width: 600px) { .lab__items > li { grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; } }
+  .lab__status { font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--accent); }
+  .lab__items :global(strong) { color: var(--heading); font-weight: var(--fw-regular); }
   .lab__intro { color: var(--text-muted); margin-bottom: var(--s-5); max-width: 56ch; }
   .lab__right { min-width: 0; border-block: 1px solid var(--line); padding-block: var(--s-4); }
-  .lab__right summary { cursor: pointer; min-height: 44px; padding-block: var(--s-3); font-weight: 500; }
+  .lab__right summary {
+    cursor: pointer; min-height: 44px; padding-block: var(--s-3);
+    font-size: var(--fs-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text);
+  }
+  .lab__right summary:hover { color: var(--accent); }
   .lab__right[open] summary { margin-bottom: var(--s-5); }
 </style>

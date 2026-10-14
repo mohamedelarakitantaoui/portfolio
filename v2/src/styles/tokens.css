@@ -1,32 +1,35 @@
-/* V2 visual refresh: DM Sans, charcoal and ice blue from Mamoun's portrait. */
+/* v5 "black + champagne" (2026-10-14): near-black with bone text and a desaturated champagne accent used on thin
+   lines and small text, never as a big bright fill. Jost for display and UI, Cormorant Garamond Italic only for the
+   second clause of a heading. Contrast on --bg / --surface in design-references/tokens.md. */
 :root {
   color-scheme: dark;
 
-  /* Neutrals */
-  --ink-0: #0c0c0c; /* page */
-  --ink-1: #111111; /* hero panel, bands */
-  --ink-2: #181818; /* raised surface: media frames, terminal */
-  --white: #ffffff; /* headings: 19.6 page · 18.9 panel · 17.8 surface */
-  --bone-0: #efefef; /* text: 17.0 · 16.4 · 15.4 */
-  --bone-1: #b3b3b3; /* muted: 9.3 · 9.0 · 8.5 */
-  --bone-2: #a6a6a6; /* quietest allowed: 8.0 · 7.8 · 7.3 */
-  --line: rgba(255, 255, 255, 0.1);
-  --line-strong: rgba(255, 255, 255, 0.2);
-  --line-input: #6b6b6b; /* UI boundaries (inputs, outline pills): 3.7 · 3.5 · 3.3 */
+  /* Neutrals (warm) */
+  --ink-0: #070605; /* page */
+  --ink-1: #0b0a08; /* bands */
+  --ink-2: #0f0d0b; /* panels: service cards, the two doors, media frames, terminal */
+  --white: #f2ebdd; /* headings: 17.1 page · 16.4 panel */
+  --bone-0: #e9dfcc; /* text: 15.3 · 14.7 */
+  --bone-1: #beb4a3; /* muted: 9.9 · 9.5 */
+  --bone-2: #b0a696; /* quietest allowed, at or above the #A6A6A6 luminance floor: 8.6 · 8.2 */
+  --line: rgba(233, 223, 204, 0.12);
+  --line-strong: rgba(233, 223, 204, 0.22);
+  --line-input: #75695a; /* UI boundaries (inputs, secondary buttons): 3.8 · 3.6 */
 
-  /* Ice blue echoes the real portrait; dark ink keeps button text legible. */
-  --accent: #a7c7ff;
-  --accent-hover: #c4d9ff;
-  --accent-ink: #0c0c0c;
-  --accent-surface: #182333;
-  --portrait-surface: #263449;
-  --accent-line: rgba(167, 199, 255, 0.3);
-  --fs-name: clamp(3.5rem, 9.2vw, 10.5rem);
+  /* Champagne: thin lines, small text, the "after" bar, a button fill on hover only. */
+  --accent: #c8b07e; /* 9.6 · 9.2 */
+  --accent-hover: #d9c49a;
+  --accent-ink: #0a0907; /* text on a champagne fill: 9.5 */
+  --accent-surface: #13110d;
+  --portrait-surface: #1a1611;
+  --accent-line: rgba(200, 176, 126, 0.35);
+  --bar-before: rgba(233, 223, 204, 0.22); /* the "before" result bar */
+  --dim-screen: brightness(0.85); /* light screenshots and app recordings: never the brightest thing on a page */
+  --fs-name: clamp(3.375rem, 13vw, 13.125rem);   /* footer giant name: 210 → 54 */
   --fs-feature: clamp(2.75rem, 4.5vw, 5rem);
   --fs-index: clamp(3rem, 5vw, 6rem);
 
-  /* Paper: the light state of the Experience section (effect 6). Contrast on #F2F0EA: ink 16.6, muted 7.8, quiet 6.1,
-     accent 6.1 (saffron itself is only 1.76 on paper, so labels darken), input outline 3.0. */
+  /* Paper: the light state of the Experience section (effect 6, not mounted). Kept for its tokens only. */
   --paper: #f2f0ea;
   --paper-ink: #111111;
   --paper-muted: #4a4a45;
@@ -44,15 +47,21 @@
   --heading: var(--white);
   --text-muted: var(--bone-1);
   --text-quiet: var(--bone-2);
+  --nav-surface: rgba(15, 13, 11, 0.82); /* the floating nav bar, over a backdrop blur */
 
-  /* Type: DM Sans only. The mono exists for the ask-mamoun terminal and nothing else. */
-  --font-body: 'DM Sans Variable', 'DM Sans Fallback', 'Segoe UI', Arial, sans-serif;
+  /* Type: Jost (200-400) for everything; Cormorant Garamond Italic 400 only for a heading's second clause.
+     The mono exists for the ask-mamoun terminal and nothing else. */
+  --font-body: 'Jost Variable', 'Jost Fallback', 'Century Gothic', 'Segoe UI', Arial, sans-serif;
+  --font-accent: 'Cormorant Garamond Variable', 'Cormorant Fallback', Georgia, 'Times New Roman', serif;
   --font-code: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', Consolas, monospace;
   --font-arabic: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  --fw-thin: 200;  /* display headings */
+  --fw-light: 300; /* body, sub-headings */
+  --fw-regular: 400; /* labels, buttons, emphasis (the heaviest weight shipped) */
 
   /* Scale, measured at 1920 and clamped down to 390 */
   --fs-display: clamp(3.25rem, 1.6rem + 3.9vw, 5.75rem);   /* 92 → 52 */
-  --fs-h1-hero: clamp(2.5rem, 1.2rem + 2.6vw, 4rem);       /* 64 → 40 */
+  --fs-h1-hero: clamp(2.5rem, 1rem + 4.4vw, 5rem);         /* 80 → 40: the centred home hero, below the portrait's head */
   --fs-h2: clamp(2.5rem, 1.2rem + 3.2vw, 4.5rem);          /* 72 → 40 */
   --fs-statement: clamp(2.125rem, 1rem + 2.8vw, 4rem);     /* 64 → 34 */
   --fs-card: clamp(1.625rem, 1.2rem + 0.9vw, 2.125rem);    /* 34 → 26 */
@@ -61,26 +70,29 @@
   --fs-lede: clamp(1.125rem, 1.05rem + 0.2vw, 1.25rem);    /* 20 → 18 */
   --fs-body: 1rem;                                          /* 16 */
   --fs-small: 0.875rem;                                     /* 14 */
-  --fs-label: 0.8125rem;                                    /* 13 → 14 at desktop */
+  --fs-label: 0.6875rem;                                    /* 11: uppercase labels, meta, buttons */
   --fs-giant: clamp(4.5rem, 24vw, 30rem);                   /* MAMOUN behind the portrait */
   /* Fixed small sizes (UI chrome, captions, the terminal) */
   --fs-2xs: 0.625rem;   /* 10: numbered pins on the report pages */
   --fs-xs: 0.75rem;     /* 12: terminal prompt, video captions, palette kind */
-  --fs-tag: 0.8125rem;  /* 13: tags, toggles, terminal text */
+  --fs-tag: 0.8125rem;  /* 13: toggles, terminal text */
+  --fs-cap: 0.65625rem; /* 10.5: nav links, tags, row status columns (uppercase) */
   --fs-nav: 0.9375rem;  /* 15: nav links, buttons */
   --fs-md: 1.0625rem;   /* 17: logo, palette input, CV entry titles */
   --fs-lg: 1.25rem;     /* 20: FAQ questions */
   --fs-xl: 1.5rem;      /* 24: numbers in the capability previews */
+  --fs-stat: 1.875rem;  /* 30: hero HUD numbers, project facts (Jost 200) */
   --fs-marker: 0.85em;  /* list markers, relative to their text */
+  --fs-serif: 1.02em;   /* Cormorant clause: optically matches Jost's size */
   --fs-hero-word: 21.5vw; /* MAMOUN on phones (desktop: min(24vw, 34svh, 30rem) in Hero.astro) */
   --fs-diagram-group: 10px; /* SVG diagram labels, in viewBox units */
   --fs-diagram-title: 12.5px;
   --fs-diagram-sub: 11px;
 
-  --track-display: -0.065em;
-  --track-h: -0.05em;
-  --track-body: -0.02em;
-  --track-label: 0.02em;
+  --track-display: -0.02em;
+  --track-h: -0.02em;
+  --track-body: 0;
+  --track-label: 0.2em; /* uppercase labels, nav, buttons */
 
   /* Space: 4 8 12 16 24 32 48 64 96 128 */
   --s-1: 4px;
@@ -101,19 +113,22 @@
   --section-y: clamp(72px, 7.5vw, 144px);
   --measure: 60ch;
 
-  /* Shape */
-  --r-pill: 999px;
-  --r-img: 10px;
+  /* Shape: sharp. No pills, no rounded cards (v5). */
+  --r-btn: 0;
+  --r-img: 0;
 
   /* Motion: subtle only */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-1: 0.3s;
   --dur-2: 0.6s;
   --dur-3: 0.9s;
+  --dur-btn: 0.35s; /* button fill and arrow nudge */
+  --dur-row: 0.7s;  /* champagne hairline across a project row */
 
   --header-h: 76px;
 
   /* Stacking */
+  --z-behind: -1;     /* the hero portrait, behind the hero copy (inside an isolated stacking context) */
   --z-raised: 1;      /* content above a decorative layer in the same section */
   --z-portrait: 2;    /* hero photo over the giant word */
   --z-hero-text: 3;   /* hero text and proof over the photo */
@@ -131,17 +146,25 @@
 }
 
 @media (min-width: 1024px) {
-  :root { --gutter: clamp(12px, 2.6vw, 48px); --fs-label: 0.875rem; }
+  :root { --gutter: clamp(12px, 2.6vw, 48px); }
 }
 @media (min-width: 1920px) {
   :root { --gutter: 12px; }
 }
 
-/* Size-adjusted fallback so the swap to DM Sans barely moves text */
+/* Size-adjusted fallbacks so the swap to the web fonts barely moves text */
 @font-face {
-  font-family: 'DM Sans Fallback';
+  font-family: 'Jost Fallback';
   src: local('Arial');
-  size-adjust: 99%;
-  ascent-override: 98%;
-  descent-override: 31%;
+  size-adjust: 96%;
+  ascent-override: 112%;
+  descent-override: 39%;
+}
+@font-face {
+  font-family: 'Cormorant Fallback';
+  font-style: italic;
+  src: local('Georgia Italic'), local('Georgia');
+  size-adjust: 84%;
+  ascent-override: 110%;
+  descent-override: 34%;
 }

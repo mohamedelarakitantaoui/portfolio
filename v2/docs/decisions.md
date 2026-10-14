@@ -4,6 +4,31 @@ Facts on the site come only from the three current CV PDFs in `public/cv/` (date
 When the two disagree, this file wins and the CV gets re-exported (see `docs/sops/update-cv.md`).
 Newest first. Each line: date, decision, and where it shows.
 
+## 2026-10-14 (v5 champagne)
+- Visual redesign v5, "black + champagne" (Arik direction, prototype `design-references/v5-prototype.html`), on branch
+  `v5-champagne` from `1c4ca62` (the ice-blue snapshot on `refine-personal-portfolio`). Design only: content,
+  routes, i18n, case studies and checks unchanged. Supersedes the ice-blue palette and "one font family, DM Sans".
+- Palette: bg `#070605`, band `#0B0A08`, surface `#0F0D0B`; heading `#F2EBDD`, text `#E9DFCC`, muted `#BEB4A3`,
+  quiet `#B0A696` (kept at or above the `#A6A6A6` luminance floor; the prompt's `#ADA393` fell just below it);
+  champagne `#C8B07E`, hover `#D9C49A`, ink on champagne `#0A0907`; lines bone at 12% / 22%; UI borders `#75695A`.
+- Type: Jost 200–400 (display + UI), Cormorant Garamond Italic 400 only for a heading's second clause, split in
+  markup at the first comma (no natural split = all Jost). Both self-hosted and subset; only Jost is preloaded.
+  Weights above 400 in old styles render at 400 (`font-synthesis-weight: none`), never as a fake bold.
+- Shapes: sharp. Buttons: 1px champagne border, 44px, 11px uppercase .2em, champagne fill on hover (0.35s);
+  secondary: hairline border turning bone. Panels only for service cards and the two doors. No film grain.
+- Home kept its current structure (Hero → Work → About → Experience → Now → Doors; no proof strip or Capabilities).
+  Hero: the h1 is `hero.h1` split "…itself," + Cormorant "and the software that ships it."; label "Mamoun El Araki ·
+  AI and software engineer · Based in Morocco" (phones: name on line 1, role + location on line 2); the portrait's
+  head sits above the headline, toned (grayscale, warm sepia, brightness 0.4) and masked; HUD row with the three
+  stats, a scroll cue and a live Africa/Casablanca clock, plus "My capstone project: AneuXplain ↗".
+- Home Work = hairline rows (meta + title + tags | media or flat before/after bars + outcome + champagne metric |
+  "Case study →"); /work keeps its card layout. About = centred statement, no photo (the hero portrait is the only
+  one on the home page). Header: fixed centred bar, all five links + EN/FR + "Email me"; the floating Menu pill is gone.
+- Light screenshots and app recordings (project media, AneuXplain loop and stills, report pages, Kaggle figures):
+  1px `--line` frame on `--surface`, dimmed to 85%. Creative photography is not dimmed.
+- Motion added (behind the kill switch and reduced motion): champagne hairline across a project row on hover,
+  4px arrow nudge on buttons, About word scrub (opacity). The visual test masks the live clock.
+
 ## 2026-10-14 (Kaggle: RSNA knee MRI)
 - New "More projects" row + case study `/work/rsna-knee-mri` (EN/FR), from the user's case-study kit. Shown while the
   competition is still open (closes 22 Oct 2026); add the private-leaderboard result after that date.

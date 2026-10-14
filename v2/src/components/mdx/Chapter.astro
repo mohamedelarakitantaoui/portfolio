@@ -25,7 +25,7 @@ const render = shows(title) && (import.meta.env.DEV || hasBody);
   .chapter__n { color: var(--accent); }
   .chapter__title {
     font-size: clamp(2rem, 1.2rem + 2vw, 3.25rem);
-    font-weight: 700; letter-spacing: var(--track-h); line-height: 1.08; max-width: 22ch;
+    font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1.08; max-width: 22ch;
     margin-bottom: var(--s-5); text-wrap: balance;
   }
   .chapter__body { color: var(--text-muted); }

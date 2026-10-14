@@ -3,8 +3,8 @@
 import { getImage } from 'astro:assets';
 import portrait from '../assets/portrait-2026-10.png';
 
-// Split desktop composition; stacked portrait on narrow screens. Shared with the preload hint.
-export const PORTRAIT_SIZES = '(min-width: 1024px) min(44vw, 700px), (min-width: 768px) 44vw, 90vw';
+// v5: centred above the hero copy, min(450px, 86vw) wide (--pw in Hero.astro). Shared with the preload hint.
+export const PORTRAIT_SIZES = '(min-width: 524px) 450px, 86vw';
 const WIDTHS = [400, 560, 760, 1000, 1212];
 
 let cache: Promise<{ avif: string; webp: string; fallback: string; width: number; height: number }> | null = null;

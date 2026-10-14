@@ -1,5 +1,5 @@
 ---
-// Experience rows (v4): date left · "Role · Company" + one result line right.
+// Experience rows (v5): hairline rows, a champagne uppercase date column, then "Role · Company" + one result line.
 import { education, experience } from '../../data/site';
 import { type Lang, lp, t } from '../../i18n/ui';
 import { rich, shows } from '../../lib/rich';
@@ -11,7 +11,7 @@ const rows = experience.filter((e) => e.home);
 <section class="exp section band" aria-labelledby="exp-h2" id="experience">
   <div class="wrap grid-12">
     <div class="exp__head">
-      <p class="label label--plain">03 / {fr ? 'Expérience' : 'Experience'}</p>
+      <p class="label">03 / {fr ? 'Expérience' : 'Experience'}</p>
       <h2 class="h2" id="exp-h2">{fr ? 'Chez Intelcia et ITS Elaraki.' : 'At Intelcia and ITS Elaraki.'}</h2>
     </div>
     <ol class="rows exp__rows">
@@ -45,12 +45,15 @@ const rows = experience.filter((e) => e.home);
     --heading: var(--paper-ink); --text: var(--paper-ink); --text-muted: var(--paper-muted); --text-quiet: var(--paper-quiet);
     --accent: var(--paper-accent); --line: var(--paper-line); --line-strong: var(--paper-line-strong); --line-input: var(--paper-line-input);
   }
-  .exp__head { margin-bottom: var(--s-8); }
+  .exp__head { margin-bottom: var(--s-7); }
   .exp__head .h2 { max-width: 16ch; }
-  .exp__row { display: grid; gap: var(--s-2) var(--grid-gap); padding-block: var(--s-6); }
-  .exp__when { display: flex; gap: var(--s-3); align-items: baseline; color: var(--text-quiet); font-size: var(--fs-small); }
-  .exp__year { color: var(--heading); font-weight: 600; }
-  .exp__title { font-size: var(--fs-row); font-weight: 500; letter-spacing: var(--track-h); line-height: 1.3; }
+  .exp__row { display: grid; gap: var(--s-2) var(--grid-gap); padding-block: var(--s-5); }
+  .exp__when {
+    display: flex; gap: var(--s-2); align-items: baseline; color: var(--accent);
+    font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase;
+  }
+  .exp__year { color: var(--accent); }
+  .exp__title { font-size: var(--fs-row); font-weight: var(--fw-regular); letter-spacing: 0; line-height: 1.35; }
   .exp__sep, .exp__org { color: var(--text-muted); }
   .exp__line { margin-top: var(--s-2); color: var(--text-muted); }
   .exp__cs { margin-top: var(--s-1); font-size: var(--fs-small); }

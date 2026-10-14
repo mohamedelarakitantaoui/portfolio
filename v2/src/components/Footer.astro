@@ -19,38 +19,32 @@ const more = [
   { href: lp(lang, '/privacy'), label: t(lang, 'nav.privacy') },
 ];
 const year = new Date().getFullYear();
+// Giant name: the surname is the Cormorant clause ("Mamoun *El Araki*").
+const [first, ...rest] = person.name.split(' ');
+const last = rest.join(' ');
 const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 ---
 <footer class="site-footer" id="site-footer">
-  <div class="wrap site-footer__top">
-    <div class="site-footer__talk">
-      <p class="label">{t(lang, 'footer.talk')}</p>
-      <p class="site-footer__email-wrap"><a class="site-footer__email" href={`mailto:${person.email}`}>{person.email}</a></p>
-      <div class="site-footer__actions">
-        <a class="link" href={person.linkedin} rel="me noopener" target="_blank">LinkedIn<span class="sr-only"> ({newTab})</span></a>
-        <a class="link" href={person.github} rel="me noopener" target="_blank">{t(lang, 'footer.github')}<span class="sr-only"> ({newTab})</span></a>
-        <CopyEmail lang={lang} class="btn--sm" />
-      </div>
+  <div class="wrap site-footer__talk">
+    <p class="label label--plain">{t(lang, 'footer.talk')}</p>
+    <p class="site-footer__email-wrap"><a class="site-footer__email" href={`mailto:${person.email}`}>{person.email}</a></p>
+    <div class="site-footer__actions">
+      <CopyEmail lang={lang} class="btn--primary" />
+      <a class="link" href={person.linkedin} rel="me noopener" target="_blank">LinkedIn<span class="sr-only"> ({newTab})</span></a>
+      <a class="link" href={person.github} rel="me noopener" target="_blank">{t(lang, 'footer.github')}<span class="sr-only"> ({newTab})</span></a>
     </div>
-
-    <nav class="site-footer__nav" aria-label={fr ? 'Pied de page' : 'Footer'} id="footer-nav">
-      <div>
-        <p class="meta">{fr ? 'Pages' : 'Pages'}</p>
-        <ul>{pages.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
-      </div>
-      <div>
-        <p class="meta">{fr ? 'Plus' : 'More'}</p>
-        <ul>
-          {more.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          <li><a href={other === 'en' ? enPath : frPath} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a></li>
-        </ul>
-      </div>
-    </nav>
   </div>
 
   <div class="wrap">
-    <p class="site-footer__giant" aria-hidden="true" data-fx="footer-rise">{person.name}</p>
+    <p class="site-footer__giant" aria-hidden="true" data-fx="footer-rise"><span data-rise>{first}</span> <span class="serif" data-rise>{last}</span></p>
   </div>
+
+  <nav class="wrap site-footer__nav" aria-label={fr ? 'Pied de page' : 'Footer'} id="footer-nav">
+    <ul>
+      {[...pages, ...more].map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      <li><a href={other === 'en' ? enPath : frPath} hreflang={other} lang={other}>{t(lang, 'lang.switch')}</a></li>
+    </ul>
+  </nav>
 
   <div class="wrap site-footer__legal">
     <span>© {year} {person.name}</span>
@@ -60,35 +54,45 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 </footer>
 
 <style>
-  .site-footer { background: var(--bg-band); padding-top: var(--section-y); overflow-x: clip; border-top: 1px solid var(--line); }
-  .site-footer__top { display: grid; gap: var(--s-8); }
-  @media (min-width: 1024px) { .site-footer__top { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: calc(100% / 12); align-items: start; } }
+  /* v5 footer: centred talk block, giant two-face name, hairline nav row, hairline legal row. */
+  .site-footer { background: var(--bg); padding-top: var(--section-y); overflow-x: clip; border-top: 1px solid var(--line); text-align: center; }
+  .site-footer__talk { display: grid; justify-items: center; }
+  .site-footer__talk .label { margin-bottom: var(--s-4); }
   .site-footer__email-wrap { max-width: none; }
   .site-footer__email {
-    display: inline-block; font-size: clamp(1.75rem, 1rem + 2.4vw, 3rem); font-weight: 600; letter-spacing: var(--track-h); line-height: 1.15;
-    color: var(--heading); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.16em;
+    display: inline-block; font-size: clamp(1.625rem, 1rem + 2.6vw, 3rem); font-weight: var(--fw-thin); line-height: 1.15;
+    color: var(--heading); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em;
     text-decoration-color: var(--line-strong); overflow-wrap: anywhere;
     transition: text-decoration-color var(--dur-2) var(--ease-out);
   }
   .site-footer__email:hover, .site-footer__email:focus-visible { text-decoration-color: var(--accent); }
-  .site-footer__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-6); }
-  .site-footer__nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-6); }
-  .site-footer__nav .meta { margin-bottom: var(--s-3); }
-  .site-footer__nav ul { list-style: none; }
-  .site-footer__nav a { display: inline-flex; min-height: 40px; align-items: center; text-decoration: none; color: var(--text-muted); }
-  .site-footer__nav a:hover { color: var(--heading); }
+  .site-footer__actions { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-5); }
 
   .site-footer__giant {
-    margin-top: var(--s-9); max-width: none; text-align: end;
-    font-size: clamp(3rem, 9.6vw, 11.5rem); font-weight: 700; letter-spacing: var(--track-display); line-height: 0.9;
-    padding-inline-end: 0.06em; white-space: nowrap; color: var(--accent);
+    margin-top: var(--s-9); max-width: none; text-align: center;
+    font-size: var(--fs-name); font-weight: var(--fw-thin); letter-spacing: -0.035em; line-height: 0.92;
+    color: var(--heading);
   }
-  /* Effect (src/scripts/effects/fx/footer-rise.ts): each word rises inside its own mask. */
+  /* Each part stays whole: phones get "Mamoun" over "El Araki", never a split surname. */
+  .site-footer__giant [data-rise], .site-footer__giant :global(.rise) { white-space: nowrap; }
+  .site-footer__giant .serif { color: var(--accent); letter-spacing: -0.01em; }
+  /* Effect (src/scripts/effects/fx/footer-rise.ts): each part rises inside its own mask. */
   .site-footer__giant :global(.rise) { display: inline-block; overflow: clip; padding-block: 0.08em; margin-block: -0.08em; vertical-align: bottom; }
   .site-footer__giant :global(.rise__w) { display: inline-block; }
+
+  .site-footer__nav { margin-top: var(--s-8); }
+  .site-footer__nav ul {
+    list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--s-5);
+    border-top: 1px solid var(--line); padding-top: var(--s-3);
+  }
+  .site-footer__nav a {
+    display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; color: var(--text-muted);
+    font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase;
+  }
+  .site-footer__nav a:hover { color: var(--heading); }
   .site-footer__legal {
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2) var(--s-5);
-    margin-top: var(--s-6); padding-block: var(--s-5) var(--s-7); border-top: 1px solid var(--line);
-    color: var(--text-quiet); font-size: var(--fs-small);
+    margin-top: var(--s-3); padding-block: var(--s-4) var(--s-6); border-top: 1px solid var(--line);
+    color: var(--text-quiet); font-size: var(--fs-cap); letter-spacing: 0.12em; text-transform: uppercase; text-align: start;
   }
 </style>

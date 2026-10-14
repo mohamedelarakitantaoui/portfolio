@@ -2,7 +2,7 @@
 // Run only through `npm run check:visual` (Playwright Docker image, same fonts as the baselines). Update baselines
 // only after Mamoun has seen the diff images: `npm run check:visual:update`.
 // Stable by construction: effects off, reduced motion, fonts loaded, lazy images loaded, videos, the terminal and the
-// © year masked.
+// © year and the live Morocco clock masked.
 import { test, expect } from '@playwright/test';
 
 const PAGES: [string, string][] = [
@@ -28,7 +28,7 @@ for (const [name, path, w, h] of shots) {
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveScreenshot(`${name}.png`, {
       fullPage: true,
-      mask: [page.locator('video'), page.locator('.term'), page.locator('.site-footer__legal')],
+      mask: [page.locator('video'), page.locator('.term'), page.locator('.site-footer__legal'), page.locator('[data-clock]')],
     });
   });
 }

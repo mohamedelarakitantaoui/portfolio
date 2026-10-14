@@ -19,10 +19,12 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--fs-body);
-  font-weight: 500;
+  font-weight: var(--fw-light);
   letter-spacing: var(--track-body);
-  line-height: 1.6;
+  line-height: 1.65;
   font-optical-sizing: auto;
+  /* Jost ships 200-400 only: heavier weights render at 400 instead of a smeared fake bold. */
+  font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
@@ -33,15 +35,14 @@ a { color: inherit; text-underline-offset: 0.22em; text-decoration-thickness: 1p
 button { font: inherit; color: inherit; letter-spacing: inherit; }
 p, figure { margin: 0; }
 ul, ol { margin: 0; padding: 0; }
-h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--heading); }
+h1, h2, h3, h4 { margin: 0; font-weight: var(--fw-light); color: var(--heading); }
 dl, dd { margin: 0; }
 /* stylelint-disable-next-line declaration-no-important -- [hidden] must win over any component display rule */
 [hidden] { display: none !important; }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
 }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 
@@ -74,46 +75,51 @@ main p { max-width: var(--measure); }
 .skip-link {
   position: absolute; left: var(--s-4); top: -100px; z-index: var(--z-skip);
   background: var(--accent); color: var(--accent-ink);
-  padding: var(--s-3) var(--s-4); border-radius: var(--r-pill); font-weight: 600;
+  padding: var(--s-3) var(--s-4); border-radius: var(--r-btn); font-weight: var(--fw-regular);
 }
 .skip-link:focus { top: var(--s-4); }
 
-/* Type */
+/* Type: Jost thin/light headings; the second clause of a heading may be Cormorant italic (.serif), once at most. */
 .display, .h1 {
-  font-size: var(--fs-display); font-weight: 700; color: var(--heading);
-  letter-spacing: var(--track-display); line-height: 0.94; text-wrap: balance;
+  font-size: var(--fs-display); font-weight: var(--fw-thin); color: var(--heading);
+  letter-spacing: var(--track-display); line-height: 0.98; text-wrap: balance;
 }
 .h2 {
-  font-size: var(--fs-h2); font-weight: 700; color: var(--heading);
-  letter-spacing: var(--track-h); line-height: 1.02; text-wrap: balance;
+  font-size: var(--fs-h2); font-weight: var(--fw-thin); color: var(--heading);
+  letter-spacing: var(--track-h); line-height: 1; text-wrap: balance;
 }
 .h-statement {
-  font-size: var(--fs-statement); font-weight: 700; color: var(--heading);
-  letter-spacing: var(--track-h); line-height: 1.2; text-wrap: balance;
+  font-size: var(--fs-statement); font-weight: var(--fw-thin); color: var(--heading);
+  letter-spacing: var(--track-h); line-height: 1.12; text-wrap: balance;
 }
 .h3, .h-sub {
-  font-size: var(--fs-sub); font-weight: 700; color: var(--heading);
+  font-size: var(--fs-sub); font-weight: var(--fw-light); color: var(--heading);
   letter-spacing: var(--track-h); line-height: 1.2;
 }
+.serif {
+  font-family: var(--font-accent); font-style: italic; font-weight: var(--fw-regular);
+  letter-spacing: 0; font-size: var(--fs-serif);
+}
+/* A split heading puts its serif clause on its own line. */
+.serif--line { display: block; }
 .lede { font-size: var(--fs-lede); line-height: 1.7; color: var(--text-muted); max-width: var(--measure); }
 .muted { color: var(--text-muted); }
 
-/* Small uppercase label, followed by ↗ when it opens a section */
+/* Small uppercase label: Jost 400, 11px, .2em. An opening label carries a short champagne rule before it. */
 .label, .meta {
-  font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--track-label);
-  text-transform: uppercase; line-height: 1.4;
+  font-size: var(--fs-label); font-weight: var(--fw-regular); letter-spacing: var(--track-label);
+  text-transform: uppercase; line-height: 1.5;
 }
-.label { display: inline-flex; align-items: center; gap: 0.4em; color: var(--accent); margin-bottom: var(--s-5); }
-.label::after { content: '↗' / ''; font-weight: 500; }
-.label--plain::after { content: none; }
+.label { display: inline-flex; align-items: center; gap: var(--s-3); color: var(--text-muted); margin-bottom: var(--s-5); }
+.label::before { content: ''; width: 28px; height: 1px; flex: none; background: var(--accent); }
+.label--plain::before { content: none; }
 .meta { color: var(--text-quiet); }
-html[dir='rtl'] .label::after { content: '↖' / ''; }
 
 /* Prose (case studies) */
 .prose > p, .prose li { max-width: var(--measure); }
 .prose p + p, .prose ul + p, .prose ol + p { margin-top: 1em; }
 .prose a { color: var(--text); text-decoration-color: var(--accent); }
-.prose strong { font-weight: 600; color: var(--heading); }
+.prose strong { font-weight: var(--fw-regular); color: var(--heading); }
 .prose ul { list-style: none; display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .prose ul li { position: relative; padding-inline-start: 1.25em; }
 .prose ul li::before {
@@ -121,40 +127,47 @@ html[dir='rtl'] .label::after { content: '↖' / ''; }
   width: 0.55em; height: 1px; background: var(--text-quiet);
 }
 
-/* Buttons: primary = accent pill; secondary = text link + ↗ */
+/* Buttons: sharp rectangles, 11px uppercase. Primary = champagne border that fills on hover;
+   plain .btn = secondary, a hairline border that turns bone on hover. An arrow (.btn__arrow) nudges 4px. */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.45em;
-  min-height: 48px; padding: 0 var(--s-5);
-  border-radius: var(--r-pill); border: 1px solid var(--line-input);
-  font-size: var(--fs-nav); font-weight: 600; letter-spacing: -0.01em; line-height: 1;
-  text-decoration: none; cursor: pointer; background: transparent; color: var(--heading);
-  transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-3);
+  min-height: 44px; padding: 0 22px;
+  border-radius: var(--r-btn); border: 1px solid var(--line);
+  font-size: var(--fs-label); font-weight: var(--fw-regular); letter-spacing: var(--track-label); line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none; cursor: pointer; background: transparent; color: var(--text);
+  transition: background-color var(--dur-btn) var(--ease-out), border-color var(--dur-btn) var(--ease-out), color var(--dur-btn) var(--ease-out);
   white-space: nowrap;
 }
-.btn:hover { border-color: var(--heading); }
-.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-.btn--sm { min-height: 44px; padding: 0 var(--s-4); font-size: var(--fs-small); }
+.btn:hover { border-color: var(--text); color: var(--heading); }
+.btn--primary { border-color: var(--accent); }
+.btn--primary:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn--sm { min-height: 44px; padding: 0 var(--s-4); }
+.btn__arrow { display: inline-block; }
+.fx-on .btn__arrow { transition: transform var(--dur-btn) var(--ease-out); }
+.fx-on .btn:hover .btn__arrow { transform: translateX(4px); }
 
 .link {
   display: inline-flex; align-items: center; gap: 0.35em; min-height: 44px;
-  font-weight: 600; color: var(--heading); text-decoration: none;
+  font-weight: var(--fw-regular); color: var(--heading); text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-size: 0 1px; background-repeat: no-repeat; background-position: 0 calc(50% + 0.75em);
   transition: background-size var(--dur-2) var(--ease-out);
 }
 .link:hover, .link:focus-visible { background-size: 100% 1px; }
-.link::after { content: '↗' / ''; font-weight: 500; transition: transform var(--dur-1) var(--ease-out); }
+.link::after { content: '↗' / ''; transition: transform var(--dur-1) var(--ease-out); }
 .link:hover::after { transform: translate(2px, -2px); }
 .link--down::after { content: '↓' / ''; }
 .link--down:hover::after { transform: translateY(2px); }
 
-.tags { display: flex; flex-wrap: wrap; gap: var(--s-2); list-style: none; }
+/* Tags: small uppercase words separated by a middle dot, no pills. */
+.tags { display: flex; flex-wrap: wrap; gap: var(--s-1) 0; list-style: none; }
 .tag {
-  display: inline-flex; align-items: center; min-height: 30px; padding: 0 var(--s-3);
-  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
-  font-size: var(--fs-tag); font-weight: 500; letter-spacing: 0; color: var(--text-muted); white-space: nowrap;
+  display: inline-flex; align-items: center;
+  font-size: var(--fs-cap); font-weight: var(--fw-regular); letter-spacing: var(--track-label);
+  text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
 }
+.tag + .tag::before { content: '·' / ''; margin-inline: 0.7em; color: var(--text-quiet); }
 
 /* Hairline rows */
 .rows { list-style: none; }
@@ -165,11 +178,11 @@ html[dir='rtl'] .label::after { content: '↖' / ''; }
 .todo {
   display: inline;
   font-size: var(--fs-tag); letter-spacing: 0;
-  color: var(--accent); border: 1px dashed var(--accent); border-radius: 6px;
+  color: var(--accent); border: 1px dashed var(--accent);
   padding: 0.1em 0.45em; line-height: 1.8;
   -webkit-box-decoration-break: clone; box-decoration-break: clone;
 }
-.todo::before { content: 'TODO(user): '; font-weight: 600; }
+.todo::before { content: 'TODO(user): '; font-weight: var(--fw-regular); }
 
 /* Scroll reveal: fade + 16px rise, once. Content is visible without JS and under reduced motion. */
 [data-reveal].is-pending { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out); }
