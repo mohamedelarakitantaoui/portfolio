@@ -13,8 +13,8 @@ const copy = {
     meta: fr ? 'Confidentialité · Mamoun El Araki' : 'Privacy · Mamoun El Araki',
     desc: fr ? 'Ce site ne pose aucun cookie et ne fait aucune mesure d’audience. Ce que devient le formulaire de contact.' : 'This site sets no cookies and runs no analytics. What happens to the contact form.',
     body: fr
-      ? ['Ce site ne pose aucun cookie et ne fait aucune mesure d’audience.', 'Vos choix de thème et de langue restent dans le stockage local de votre navigateur.', 'Le terminal ask-mamoun cherche dans un fichier JSON statique, dans votre navigateur : vos questions ne sont envoyées nulle part.', 'Le formulaire de contact envoie votre nom, votre e-mail et votre message pour que je puisse vous répondre, et à rien d’autre.']
-      : ['This site sets no cookies and runs no analytics.', 'Your theme and language choices stay in your browser’s local storage.', 'The ask-mamoun terminal searches a static JSON file inside your browser: your questions are not sent anywhere.', 'The contact form sends your name, email and message so I can reply, and for nothing else.'],
+      ? ['Ce site ne pose aucun cookie et ne fait aucune mesure d’audience.', 'Les liens EN et FR permettent de choisir la langue de la page.', 'Le terminal ask-mamoun cherche dans un fichier JSON statique, dans votre navigateur : vos questions ne sont envoyées nulle part.', 'Le formulaire transmet le sujet, votre nom, votre e-mail et votre message uniquement pour que je puisse vous répondre.']
+      : ['This site sets no cookies and runs no analytics.', 'Use the EN and FR links to choose the page language.', 'The ask-mamoun terminal searches a static JSON file inside your browser: your questions are not sent anywhere.', 'The contact form sends the topic, your name, email and message only so I can reply.'],
     todo: fr ? 'nom du service de formulaire (Netlify Forms ou Formspree)' : 'name of the form service (Netlify Forms or Formspree)',
   },
   sent: {
@@ -27,7 +27,7 @@ const copy = {
 }[page];
 ---
 <Base lang={lang} title={copy.meta} description={copy.desc} ogKey={page === 'sent' ? 'contact' : 'privacy'} noindex={page === 'sent'}>
-  <PageIntro label={copy.title} title={copy.title}>
+  <PageIntro label={page === 'sent' ? 'Contact' : (fr ? 'Informations du site' : 'Site information')} title={copy.title}>
     <div class="simple prose">
       {copy.body.map((p) => <p>{p}</p>)}
       {copy.todo && <p><Todo>{copy.todo}</Todo></p>}

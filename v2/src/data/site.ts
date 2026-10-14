@@ -104,8 +104,8 @@ export const now = {
       fr: '**PitchPoint.** Fait : le modèle, un encodeur d’ensembles à attention sur les positions des joueurs, mélangé à 50/50 avec LightGBM. Ensuite : l’inférence FastAPI et un terrain en glisser-déposer en React.',
     },
     {
-      en: '**Kaggle, RSNA knee abnormality detection.** A lean model for the Efficiency track. [[todo:Kaggle profile link and current score, if you want them shown]]',
-      fr: '**Kaggle, détection d’anomalies du genou (RSNA).** Un modèle léger pour la catégorie Efficiency. [[todo:lien du profil Kaggle et score actuel, si vous voulez les afficher]]',
+      en: '**Kaggle, RSNA knee abnormality detection.** Done: my own models went from 0.825 to 0.877 public-leaderboard ROC-AUC. Next: one lean model for the Efficiency track. The competition closes on 22 Oct.',
+      fr: '**Kaggle, détection d’anomalies du genou (RSNA).** Fait : mes propres modèles sont passés de 0,825 à 0,877 de ROC-AUC au classement public. Ensuite : un seul modèle léger pour la catégorie Efficiency. La compétition se termine le 22 octobre.',
     },
   ] as L[],
 };
@@ -287,6 +287,18 @@ export const skills = [
 // "More projects": one row each (title · one line · year · links). Home page, /work and the CV.
 export interface MoreProject { key: string; title: string; year: string; line: L; home?: boolean; caseStudy?: string; links: { label: string; href: string }[] }
 export const moreProjects: MoreProject[] = [
+  {
+    key: 'rsna-knee-mri',
+    home: true,
+    title: 'Knee MRI Abnormality Detection',
+    year: '2026',
+    line: {
+      en: 'A Kaggle entry for RSNA 2026: raw knee MRI in, 12 abnormality scores out. My own models reached 0.877 ROC-AUC on the public leaderboard; the competition closes on 22 Oct.',
+      fr: 'Une participation Kaggle à RSNA 2026 : des IRM du genou brutes en entrée, 12 scores d’anomalies en sortie. Mes propres modèles atteignent 0,877 de ROC-AUC au classement public ; la compétition se termine le 22 octobre.',
+    },
+    caseStudy: '/work/rsna-knee-mri',
+    links: [{ label: 'Kaggle', href: 'https://www.kaggle.com/elaramamoun' }],
+  },
   {
     key: 'esaha',
     home: true,

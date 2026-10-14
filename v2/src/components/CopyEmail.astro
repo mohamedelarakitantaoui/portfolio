@@ -5,5 +5,5 @@ interface Props { lang: Lang; class?: string }
 const { lang, class: cls = '' } = Astro.props;
 ---
 <button class={`btn ${cls}`} type="button" data-copy={person.email} data-copied={t(lang, 'cta.copied')} hidden>
-  <span data-copy-label>{t(lang, 'cta.copyEmail')}</span>
+  <span data-copy-label aria-live="polite" aria-atomic="true">{t(lang, 'cta.copyEmail')}</span>
 </button>

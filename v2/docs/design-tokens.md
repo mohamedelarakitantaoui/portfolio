@@ -1,5 +1,12 @@
 # design-tokens.md
 
+## Current: 2026-10-14, charcoal and ice blue
+
+The user requested replacing the gold accent. The active palette and full token table
+are in [design-references/tokens.md](../design-references/tokens.md). Ice blue #A7C7FF
+replaces saffron; the working-method and portrait surfaces use #182333 and #263449.
+The entries below are historical and are superseded by that palette.
+
 > ## v4, 2026-10-09: "Calm dark editorial" (supersedes everything below)
 > Branch `v4-design`. The quality level of a designer-made dark portfolio, built from measured numbers and our own
 > layout. No star mark anywhere (logo, favicon "ME", bullets, 404, OG images); no light theme; no preloader;

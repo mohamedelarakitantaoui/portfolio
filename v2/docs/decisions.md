@@ -4,6 +4,28 @@ Facts on the site come only from the three current CV PDFs in `public/cv/` (date
 When the two disagree, this file wins and the CV gets re-exported (see `docs/sops/update-cv.md`).
 Newest first. Each line: date, decision, and where it shows.
 
+## 2026-10-14 (Kaggle: RSNA knee MRI)
+- New "More projects" row + case study `/work/rsna-knee-mri` (EN/FR), from the user's case-study kit. Shown while the
+  competition is still open (closes 22 Oct 2026); add the private-leaderboard result after that date.
+- Facts: 4,407 studies, 12 findings, macro ROC-AUC, 58 expert-labelled studies, 4,349 reports; first cache 21,137
+  series / 15.8 GiB in ~57 min on CPU; cache v2 = 150 mm crop, 288 px; parity 99/99; train 3,479 / val 870.
+  LLM labeller v3 (Gemini): 82% macro balanced accuracy, MCL sensitivity 1.00, ~5x cheaper without thinking tokens.
+  Own models, public LB: 0.825 (ResNet18) → 0.877 (ResNet18 + EfficientNet-B0). Best single model: EfficientNet-B0,
+  gold 0.859, val 0.848, 2 h 59 min on 2×T4. Public rank #1377 on 14 Oct (shown only in the screenshot caption).
+- Honesty rule: 0.954 is "a reproduced public ensemble (versia-5)", never "my model". 0.943 = reproduced jiweiliu
+  ensemble; 0.942 = my model blended into it (dropped). Final training used a public LLM-label dataset
+  (stevenleehans) after an SSD failure wiped the user's own labels.
+- No competition MRI images anywhere (competition rule 2.4.b). Only the user's charts and Kaggle screenshots.
+
+## 2026-10-14 (v2 visual refresh)
+- User requested a bolder UI, more effects and an alternative to black-and-gold. Implemented charcoal with
+  ice blue #A7C7FF, drawn from the portrait's blue shirt; this supersedes the earlier saffron choice.
+- The target remains portfolio/v2. Reference sites inform visual quality, not copied layouts or assets.
+- AneuXplain is the user's capstone and the project they are most proud of. The paper is accepted at ICOA 2026;
+  publication is still pending, as confirmed by the user in this conversation.
+- Keep native scrolling. Motion includes portrait depth, magnetic project link, result bars, media scale,
+  and footer reveal, all behind the effects and reduced-motion checks.
+
 ## 2026-10-09 (v4)
 - AUI IT / DevOps line removed everywhere (site, CV page, ask-mamoun notes).
 - Intelcia title: "Software Engineer Intern" (FR "Stagiaire ingénieur logiciel").

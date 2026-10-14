@@ -7,7 +7,7 @@ const { title, before, after } = Astro.props;
 const max = Math.max(before.value, after.value);
 const frac = (v: number) => Math.max(0.02, v / max).toFixed(4);
 ---
-<figure class="bars zoom" aria-label={title}>
+<figure class="bars zoom" aria-label={title} data-fx="result-bars">
   <div class="bars__inner zoom__inner" aria-hidden="true">
     <p class="bars__title meta">{title}</p>
     <div class="bars__rows">
@@ -30,8 +30,8 @@ const frac = (v: number) => Math.max(0.02, v / max).toFixed(4);
 
 <style>
   /* Height = content: caption, then the two bars directly under it, 32px padding. No ratio, no dead space. */
-  .bars { position: relative; background: var(--bg-band); border: 1px solid var(--line); }
-  .bars__inner { display: grid; gap: var(--s-5); padding: var(--s-6); }
+  .bars { position: relative; background: var(--accent-surface); border: 1px solid var(--accent-line); }
+  .bars__inner { display: grid; gap: var(--s-6); padding: var(--s-7) var(--s-6); }
   .bars__rows { display: grid; gap: var(--s-5); }
   .bars__row { display: grid; gap: var(--s-3); }
   .bars__label { color: var(--text-muted); font-size: var(--fs-small); }

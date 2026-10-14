@@ -24,13 +24,13 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
     : 'CV of Mamoun El Araki, AI and software engineer: Intelcia, ITS Elaraki, Al Akhawayn and Boğaziçi universities, projects and skills.'}
   ogKey="cv"
 >
-  <PageIntro label={fr ? 'Curriculum vitae' : 'Curriculum vitae'} title="CV">
+  <PageIntro label="Curriculum vitae" title={fr ? 'Parcours & compétences.' : 'Experience & skills.'} lede={fr ? 'Consultez mon parcours ci-dessous ou téléchargez le CV adapté au poste.' : 'Read my background below, or download the CV that fits the role.'}>
     {ready.length > 0 && (
       <ul class="downloads rows" aria-label={fr ? 'Versions PDF' : 'PDF versions'}>
         {ready.map((d) => (
           <li class="dl">
             <span class="dl__label">{d.label[lang]}</span>
-            <a class="btn btn--sm" href={d.href} download>PDF · {d.size}</a>
+            <a class="btn btn--sm" href={d.href} download aria-label={`${d.label[lang]} — PDF · ${d.size}`}>PDF · {d.size}</a>
           </li>
         ))}
       </ul>
@@ -40,7 +40,14 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
   </PageIntro>
 
   <section class="section band" aria-label={fr ? 'CV en ligne' : 'Web CV'}>
-    <div class="wrap">
+    <div class="wrap cv-layout">
+      <nav class="cv-index" aria-label={fr ? 'Sections du CV' : 'CV sections'}>
+        <p class="label label--plain">{fr ? 'Dans cette page' : 'On this page'}</p>
+        <a href="#cv-exp">01 <span>{fr ? 'Expérience' : 'Experience'}</span></a>
+        <a href="#cv-proj">02 <span>{fr ? 'Projets' : 'Projects'}</span></a>
+        <a href="#cv-edu">03 <span>{fr ? 'Formation' : 'Education'}</span></a>
+        <a href="#cv-skills">04 <span>{fr ? 'Compétences' : 'Skills'}</span></a>
+      </nav>
       <article class="paper">
         <header class="paper__head">
           <h2 class="paper__name">{person.name}</h2>
@@ -120,6 +127,13 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 </Base>
 
 <style>
+  .cv-layout { display: grid; gap: var(--s-7); }
+  .cv-index { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); align-content: start; }
+  .cv-index .label { flex-basis: 100%; }
+  .cv-index a { display: flex; gap: var(--s-4); min-height: 44px; align-items: center; color: var(--accent); text-decoration: none; }
+  .cv-index a span { color: var(--text); }
+  .cv-index a:hover span { text-decoration: underline; text-decoration-color: var(--accent); }
+  @media (min-width: 1024px) { .cv-layout { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--s-8); } .cv-index { display: grid; position: sticky; top: calc(var(--header-h) + var(--s-5)); align-self: start; } }
   .cv__updated { color: var(--text-quiet); margin-top: var(--s-4); }
   .dl__todo { margin-top: var(--s-2); }
   .downloads { margin-top: var(--s-6); max-width: 720px; }

@@ -2,10 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/home/Hero.astro';
 import About from '../components/home/About.astro';
-import ProofStrip from '../components/home/ProofStrip.astro';
 import SelectedWork from '../components/home/SelectedWork.astro';
 import Experience from '../components/home/Experience.astro';
-import Capabilities from '../components/home/Capabilities.astro';
 import NowLab from '../components/home/NowLab.astro';
 import TwoDoors from '../components/home/TwoDoors.astro';
 import type { Lang } from '../i18n/ui';
@@ -27,11 +25,9 @@ const portrait = await heroPortrait();
 <Base lang={lang} title={meta.title} description={meta.description} ogKey="home" bodyClass="page-home">
   <link slot="head" rel="preload" as="image" type="image/avif" imagesrcset={portrait.avif} imagesizes={PORTRAIT_SIZES} fetchpriority="high" />
   <Hero lang={lang} />
-  <About lang={lang} />
-  <ProofStrip lang={lang} />
   <SelectedWork lang={lang} />
+  <About lang={lang} />
   <Experience lang={lang} />
-  <Capabilities lang={lang} />
   <NowLab lang={lang} />
   <TwoDoors lang={lang} />
 </Base>

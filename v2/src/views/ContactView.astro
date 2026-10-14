@@ -21,7 +21,7 @@ const F = fr
     : 'Write to Mamoun El Araki: elaraki48@gmail.com. Based in Morocco (GMT+1), open to remote and relocation, for junior roles and freelance projects.'}
   ogKey="contact"
 >
-  <PageIntro label="Contact" title="Contact">
+  <PageIntro label="Contact" title={fr ? 'Un poste ou un projet ?' : 'A role or a project?'} lede={fr ? 'Écrivez-moi directement ou laissez quelques détails ci-dessous.' : 'Email me directly, or leave a few details below.'}>
     <a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a>
     <div class="contact__actions"><CopyEmail lang={lang} /><a class="btn" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={lp(lang, '/cv')}>CV</a></div>
   </PageIntro>
@@ -37,9 +37,19 @@ const F = fr
       </div>
 
       <div class="contact__formwrap">
-        <form class="cform" name="contact" method="POST" action={lp(lang, '/contact/sent')} data-netlify="true" netlify-honeypot="company" data-contact-form novalidate>
+        <h2 class="contact__formtitle">{fr ? 'Votre message' : 'Your message'}</h2>
+        <form class="cform" name="contact" method="POST" action={lp(lang, '/contact/sent')} data-netlify="true" netlify-honeypot="company" data-contact-form>
           <input type="hidden" name="form-name" value="contact" />
           <p class="sr-only"><label>Company <input type="text" name="company" tabindex="-1" autocomplete="off" /></label></p>
+          <div class="field">
+            <label for="cf-topic">{fr ? 'Sujet' : 'About'}</label>
+            <select id="cf-topic" name="topic">
+              <option value="general">{fr ? 'Une question ou une discussion' : 'A question or conversation'}</option>
+              <option value="role">{fr ? 'Un poste' : 'A role'}</option>
+              <option value="automation">{fr ? 'Automatisation et données' : 'Automation and data collection'}</option>
+              <option value="web-app">{fr ? 'Une application web' : 'A web application'}</option>
+            </select>
+          </div>
           <div class="field">
             <label for="cf-name">{F.name}</label>
             <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-err" data-error={F.errName} />
@@ -52,7 +62,8 @@ const F = fr
           </div>
           <div class="field">
             <label for="cf-msg">{F.msg}</label>
-            <textarea id="cf-msg" name="message" rows="6" required minlength="10" aria-describedby="cf-msg-err" data-error={F.errMsg}></textarea>
+            <textarea id="cf-msg" name="message" rows="6" required minlength="10" aria-describedby="cf-msg-err cf-msg-help" data-error={F.errMsg}></textarea>
+            <p class="cform__note" id="cf-msg-help">{fr ? 'Pour un poste : l’équipe et la mission. Pour un projet : le besoin, les données disponibles et vos délais.' : 'For a role: the team and position. For a project: the problem, available data and your timeline.'}</p>
             <p class="field__err" id="cf-msg-err"></p>
           </div>
           <button class="btn btn--primary" type="submit">{F.send}<span class="arrow" aria-hidden="true">→</span></button>
@@ -73,6 +84,8 @@ const F = fr
   }
   .contact__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
   .contact__grid { display: grid; gap: var(--s-8); }
+  .contact__formwrap { background: var(--accent-surface); padding: var(--s-6); border: 1px solid var(--accent-line); border-radius: var(--r-img); }
+  .contact__formtitle { font-size: var(--fs-sub); margin-bottom: var(--s-6); }
   @media (min-width: 1024px) { .contact__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
   .contact__facts > div { display: grid; gap: var(--s-1); padding-block: var(--s-4); border-top: 1px solid var(--line); }
   .contact__facts dt { color: var(--text-quiet); }

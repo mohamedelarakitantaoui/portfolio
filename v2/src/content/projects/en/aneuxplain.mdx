@@ -30,7 +30,7 @@ next: dce-scraper
 
 <Note>Research prototype, not a medical device.</Note>
 
-<Chapter n="01" label="Problem" title="A risk score a doctor can't check is a score a doctor won't use.">
+<Chapter n="01" label="Problem" title="Making a rupture-risk score easier to inspect.">
 
 Rupture-risk models for intracranial aneurysms usually return one number. Three things go wrong with that:
 
@@ -61,7 +61,7 @@ Each prediction comes back three ways: a **risk probability**, a **gradient-sali
 
 </Chapter>
 
-<Chapter n="04" label="Key decisions and trade-offs" title="I chose checkable over impressive.">
+<Chapter n="04" label="Key decisions and trade-offs" title="Patient-level evaluation and three views of each prediction.">
 
 - **Three explanations over one score.** I chose a score, a heatmap and a morphology report over a single probability, because a doctor can only audit a score against evidence. When the three disagree, that disagreement tells the clinician to look closer.
 - **A patient-level split over a random split.** An earlier version split samples at random, so pieces of the same patient landed in both training and validation. I chose a 70/15/15 split by patient, which gives a lower but honest number.

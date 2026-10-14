@@ -21,16 +21,20 @@ const featured = (await getCollection('projects', (p) => p.data.lang === lang &&
 >
   <PageIntro
     label={fr ? 'Projets' : 'Work'}
-    title={fr ? 'Projets' : 'Work'}
+    title={fr ? 'Projets choisis.' : 'Selected projects.'}
     lede={fr
-      ? 'Trois projets en détail, chacun avec son chiffre, puis les plus petits.'
-      : 'Three projects in depth, each with its number, then the smaller ones.'}
-   
-  />
+      ? 'De mon projet de fin d’études à l’automatisation chez Intelcia : ce que j’ai construit, les choix techniques et les limites.'
+      : 'From my capstone to automation at Intelcia: what I built, the technical decisions and the limitations.'}
+  >
+    <nav class="work-index" aria-label={fr ? 'Index des projets' : 'Project index'}>
+      {featured.map((p, i) => <a href={`#project-${p.data.key}`}><span class="meta">0{i + 1}</span>{p.data.title}<span aria-hidden="true">↓</span></a>)}
+      <a href="#work-more">{fr ? 'Autres projets' : 'More projects'}<span aria-hidden="true">↓</span></a>
+    </nav>
+  </PageIntro>
 
   <section class="section work-list" aria-label={fr ? 'Projets choisis' : 'Selected projects'}>
     <div class="wrap work-grid">
-      {featured.map((p) => <ProjectCard project={p} lang={lang} headingLevel="h2" />)}
+      {featured.map((p, i) => <div class="work-entry" id={`project-${p.data.key}`}><p class="work-entry__index meta" aria-hidden="true">0{i + 1}</p><ProjectCard project={p} lang={lang} headingLevel="h2" /></div>)}
     </div>
   </section>
 
@@ -43,11 +47,16 @@ const featured = (await getCollection('projects', (p) => p.data.lang === lang &&
 
 <style>
   .work-grid { display: grid; }
-  .work-grid > :global(.pcard) { padding-block: var(--s-8); border-top: 1px solid var(--line); }
-  .work-grid > :global(.pcard:first-child) { border-top: 0; padding-top: 0; }
+  .work-list { padding-top: var(--s-7); }
+  .work-index { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-7); margin-top: var(--s-7); border-top: 1px solid var(--line-strong); padding-top: var(--s-4); }
+  .work-index a { display: inline-flex; gap: var(--s-3); align-items: center; min-height: 44px; text-decoration: none; }
+  .work-index a:hover { color: var(--accent); }
+  .work-index .meta { color: var(--accent); }
+  .work-entry { padding-block: var(--s-7); border-top: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + var(--s-5)); }
+  .work-entry:first-child { border-top: 0; padding-top: 0; }
+  .work-entry__index { color: var(--accent); margin-bottom: var(--s-5); }
   @media (min-width: 1024px) {
-    .work-grid > :global(.pcard) { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-gap); align-items: start; }
-    .work-grid > :global(.pcard) > :global(.pcard__media) { grid-column: 1 / span 7; }
-    .work-grid > :global(.pcard) > :global(.pcard__body) { grid-column: 9 / -1; }
+    .work-entry > :global(.pcard) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-7); align-items: center; }
+    .work-entry:nth-child(2) > :global(.pcard) > :global(.pcard__media) { order: 2; }
   }
 </style>

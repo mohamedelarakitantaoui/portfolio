@@ -30,7 +30,7 @@ next: dce-scraper
 
 <Note>Prototype de recherche, pas un dispositif médical.</Note>
 
-<Chapter n="01" label="Problème" title="Un score qu’un médecin ne peut pas vérifier est un score qu’il n’utilisera pas.">
+<Chapter n="01" label="Problème" title="Rendre un score de risque de rupture plus facile à examiner.">
 
 Les modèles de risque de rupture des anévrismes intracrâniens renvoient en général un seul chiffre. Trois problèmes :
 
@@ -61,7 +61,7 @@ Chaque prédiction est rendue de trois façons : une **probabilité de risque**,
 
 </Chapter>
 
-<Chapter n="04" label="Décisions et compromis" title="J’ai choisi le vérifiable plutôt que l’impressionnant.">
+<Chapter n="04" label="Décisions et compromis" title="Une évaluation par patient et trois vues de chaque prédiction.">
 
 - **Trois explications plutôt qu’un score.** J’ai choisi un score, une carte de chaleur et un rapport morphologique plutôt qu’une seule probabilité, parce qu’un médecin ne peut vérifier un score qu’à partir d’éléments. Quand les trois divergent, ce désaccord dit au clinicien de regarder de plus près.
 - **Un découpage par patient plutôt qu’un découpage aléatoire.** Une version antérieure découpait les échantillons au hasard : des morceaux du même patient se retrouvaient à la fois en entraînement et en validation. J’ai choisi un découpage 70/15/15 par patient, qui donne un chiffre plus bas mais honnête.

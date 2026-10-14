@@ -22,7 +22,7 @@ for (const [k, v] of cssTokens) {
 for (const k of mdTokens.keys()) if (!cssTokens.has(k)) problems.push(`${k}: in tokens.md, not in tokens.css`);
 
 // The headline numbers in the prose must match the tokens too.
-const prose = [['#0c0c0c', '--ink-0'], ['#111111', '--ink-1'], ['#efefef', '--bone-0'], ['#b3b3b3', '--bone-1'], ['#a6a6a6', '--bone-2'], ['#f2a900', '--accent'], ['#f2f0ea', '--paper']];
+const prose = [['#0c0c0c', '--ink-0'], ['#111111', '--ink-1'], ['#efefef', '--bone-0'], ['#b3b3b3', '--bone-1'], ['#a6a6a6', '--bone-2'], ['#a7c7ff', '--accent'], ['#f2f0ea', '--paper']];
 for (const [hex, token] of prose) {
   if (cssTokens.get(token) !== hex) problems.push(`${token}: the plain-words section says ${hex}, tokens.css says ${cssTokens.get(token)}`);
 }

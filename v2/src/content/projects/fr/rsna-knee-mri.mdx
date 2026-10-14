@@ -1,0 +1,169 @@
+---
+key: rsna-knee-mri
+lang: fr
+order: 7
+title: Détection d’anomalies sur IRM du genou
+description: Un pipeline de deep learning qui lit des IRM du genou brutes et note 12 anomalies, sur les GPU gratuits de Kaggle, pour la compétition RSNA 2026.
+tier: more
+year: "2026"
+meta: Compétition Kaggle · RSNA · 2026
+outcome: Mes propres modèles d’IRM du genou sont passés de 0,825 à 0,877 de ROC-AUC au classement public, avec 58 labels d’experts et des GPU gratuits.
+tldr:
+  - "**Problème :** noter 12 anomalies du genou sur des IRM brutes, alors que seules 58 des 4 407 études d’entraînement ont des labels d’experts."
+  - "**Construit :** un cache DICOM de 21 137 séries, un étiqueteur LLM de comptes rendus vérifié sur les 58 études d’experts, et des modèles ResNet18 + EfficientNet-B0 entraînés en parallèle sur deux GPU T4 gratuits."
+  - "**Résultat :** mes propres modèles sont passés de **0,825 à 0,877** de ROC-AUC au classement public. Ma meilleure soumission, un ensemble public reproduit, obtient **0,954**. La compétition se termine le 22 octobre 2026."
+status: Compétition ouverte jusqu’au 22 octobre 2026 ; le résultat du classement privé est en attente.
+role: "Tout : pipeline de données, étiquetage, entraînement, inférence"
+timeline: Automne 2026
+team: Seul
+stack: [Python, PyTorch, timm, pydicom, OpenCV, pandas, scikit-learn, Gemini API, Kaggle Notebooks (2×T4)]
+links:
+  - { label: "Profil Kaggle", href: "https://www.kaggle.com/elaramamoun" }
+  - { label: "Page de la compétition", href: "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection" }
+codeNote: "Notebooks privés tant que la compétition est en cours. Démonstration sur demande."
+number: { value: "0,877", caption: "ROC-AUC au classement public de mes propres modèles (ResNet18 + EfficientNet-B0), contre 0,825 au départ" }
+progress: "En cours : la compétition se termine le 22 octobre 2026 ; le résultat du classement privé suivra."
+bars: { title: "Classement public, ROC-AUC macro : mes propres modèles", before: { label: "ResNet18 de base", value: 0.825, text: "0,825" }, after: { label: "Ensemble ResNet18 + EfficientNet-B0", value: 0.877, text: "0,877" } }
+constraint: 58 labels d’experts pour 4 407 études, uniquement des GPU gratuits, et des données de compétition qui ne quittent pas Kaggle.
+tags: [PyTorch, Imagerie médicale, Vision par ordinateur, Étiquetage LLM]
+next: preparia
+---
+import curves from '../../../assets/rsna-knee/training-curves.png';
+import submissions from '../../../assets/rsna-knee/kaggle-submissions.webp';
+import leaderboard from '../../../assets/rsna-knee/kaggle-leaderboard.webp';
+import notebook from '../../../assets/rsna-knee/kaggle-notebook.webp';
+
+<Note>Le règlement de la compétition interdit de publier ses données : cette page ne montre donc aucun examen, seulement mes propres journaux, graphiques et pages Kaggle.</Note>
+
+<Chapter n="01" label="Problème" title="58 labels d’experts pour 4 407 études : les labels avant le modèle.">
+
+Le challenge Kaggle 2026 de la RSNA demande 12 probabilités par examen IRM du genou : LCA, LLI, ménisques médial et latéral, trois compartiments d’arthrose (médial, latéral, fémoro-patellaire), épanchement, synovite, kyste de Baker, contusion et fracture. Le score est la ROC-AUC macro.
+
+Chaque étude est un dossier de fichiers DICOM bruts : jusqu’à six séries IRM sur trois plans (sagittal, coronal, axial), avec et sans saturation de graisse, de 20 à 40 coupes chacune.
+
+Un **compte rendu** de radiologie existe pour chaque étude d’entraînement ; des **labels** d’experts n’existent que pour 58. Le premier problème n’était donc pas le modèle : il fallait transformer les 4 349 autres comptes rendus en labels d’entraînement.
+
+</Chapter>
+
+<Chapter n="02" label="Contraintes" title="Des GPU gratuits, 58 labels, et des données qui restent sur Kaggle.">
+
+- **Labels :** 58 études étiquetées par des experts ; tout le reste est du texte de compte rendu.
+- **Calcul :** les notebooks Kaggle gratuits (2 GPU T4, avec un quota hebdomadaire) et Google Colab.
+- **Données :** les données de la compétition restent dans la compétition, aucune image d’examen sur cette page.
+- **Un accident :** en pleine compétition, une panne du SSD de mon ordinateur a effacé les labels LLM que j’avais stockés en local.
+
+</Chapter>
+
+<Chapter n="03" label="Fonctionnement" title="Du DICOM brut au fichier de soumission, sur du calcul gratuit.">
+
+<Flow label="Pipeline IRM du genou" steps={['DICOM brut', 'cache (recadrage 150 mm, 288 px)', 'labels des comptes rendus', 'ResNet18 / EfficientNet-B0', 'inférence hors ligne', 'submission.csv']} />
+
+**Labels des comptes rendus.** J’ai construit un étiqueteur sur l’API Gemini : un compte rendu de radiologie entre, un JSON binaire strict de 12 champs sort. J’ai écrit trois versions du prompt et noté chacune sur les 58 études d’experts. La version 3 atteint **82 % d’exactitude équilibrée macro**, avec 10 labels sur 12 fiables et une sensibilité de 1,00 sur le LLI. Désactiver les jetons de réflexion du modèle a divisé le coût de l’API par environ 5, et le script reprend après une coupure, avec un décompte des jetons par ligne.
+
+<HBars
+  title="Étiqueteur LLM face aux 58 études d’experts : exactitude équilibrée"
+  note="Quatre des 12 labels. En gris, les deux faibles, là où le texte du compte rendu ne suffit plus. Les barres partent de 0,5 (hasard)."
+  ref={{ value: 0.82, label: 'macro 0,82 (les 12)' }}
+  items={[
+    { label: 'LLI', value: 0.93, text: '0,93' },
+    { label: 'Fracture', value: 0.78, text: '0,78' },
+    { label: 'Synovite', value: 0.68, text: '0,68', muted: true },
+    { label: 'Épanchement', value: 0.65, text: '0,65', muted: true },
+  ]}
+/>
+
+**Le cache DICOM.** Pour chaque étude, le cache choisit les séries pour 3 plans × 2 contrastes, ordonne les coupes selon la position du patient, échantillonne 16 coupes, applique la pente et l’ordonnée de remise à l’échelle, inverse les images MONOCHROME1 et normalise par percentiles. Il a traité **4 407 études en 57 minutes environ** sur des notebooks CPU, sans toucher au quota GPU : **21 137 séries, 15,8 Gio**, enregistrées dans un jeu de données Kaggle privé. Deux études ont échoué, deux fichiers sources tronqués.
+
+**Cache v2.** Le premier cache écrasait l’image entière à 224 px : les petites structures comme les ménisques perdaient leurs détails. La version 2 trouve le genou par le centre de masse de son avant-plan (seuil d’Otsu), recadre une fenêtre fixe de **150 × 150 mm** grâce à l’espacement des pixels DICOM, puis redimensionne à 288 px : chaque genou à la même échelle réelle.
+
+**Entraînement.** Des modèles multi-labels ResNet18 et EfficientNet-B0, entraînés sur 3 479 études et validés sur 870, les 58 études d’experts étant mises de côté comme référence. Les labels d’entraînement viennent d’un jeu de labels LLM public construit de la même façon que le mien (le chapitre 04 explique pourquoi). Un petit lanceur démarre un entraînement par GPU : les deux modèles ont tourné en même temps sur les 2 T4 de Kaggle.
+
+<Figure img={curves} alt="Courbes de ROC-AUC macro par époque. EfficientNet-B0 culmine à 0,848 en validation et 0,859 sur la référence à l’époque 8 sur 10. ResNet18 plafonne vers 0,82 en validation et 0,84 sur la référence en 20 époques." caption="Les deux entraînements d’un seul notebook : 2 h 59 sur 2 T4. Traits pleins : validation (870 études) ; pointillés : les 58 études d’experts. Tracé à partir du journal knee-v2-train (graphique en anglais)." />
+
+**Inférence.** Le notebook de notation hors ligne reproduit le prétraitement octet pour octet, et un contrôle de parité le prouve : **99 séries sur 99** identiques entre le cache d’entraînement et le code de test.
+
+</Chapter>
+
+<Chapter n="04" label="Décisions et compromis" title="Un seuil réussite/échec, écrit avant chaque expérience.">
+
+J’écrivais le seuil d’abord, puis je lançais l’expérience, puis je suivais le seuil :
+
+<Rows items={[
+  ['01', '8 oct. · Mon modèle sur le cache v2', 'Il fallait ≥ 0,88 sur la référence pour continuer ; obtenu 0,83. Changement de stratégie.'],
+  ['02', '10 oct. · Mélanger mon modèle à un ensemble public à 0,943', 'Il fallait ≥ 0,945 ; obtenu 0,942. Mélange abandonné.'],
+  ['03', '12 oct. · Reproduire l’ensemble public versia-5', 'Il fallait dépasser 0,943 ; obtenu 0,954. Choix final.'],
+]} />
+
+- **Arrêter d’ajuster l’étiqueteur au plafond des données.** Les labels d’experts viennent des images ; mon étiqueteur lit le texte. Le volume d’épanchement et l’épaississement synovial se voient à l’IRM mais figurent rarement dans un compte rendu. J’ai essayé une correction du prompt pour chacun, les deux ont dégradé le résultat : j’ai figé la version 3 et noté pourquoi.
+- **Les 58 études d’experts comme repère local.** Leur score suivait le classement public à quelques points près : je vérifiais là avant de dépenser une soumission.
+- **Des labels publics après la panne du SSD.** J’ai entraîné sur un jeu de labels LLM public construit de la même façon ([stevenleehans/rsna-knee-llm-report-labels](https://www.kaggle.com/datasets/stevenleehans/rsna-knee-llm-report-labels)) et utilisé les résultats de mon étiqueteur sur la référence pour savoir à quels labels me fier.
+- **La vitesse seule ne pouvait pas gagner l’Efficiency Track.** J’ai dérivé le score pénalisé par le temps d’exécution : environ 0,01 d’AUC vaut environ 12 minutes d’exécution.
+
+</Chapter>
+
+<Chapter n="05" label="Résultats" title="De 0,825 à 0,877 avec mes modèles ; 0,954 avec un ensemble public reproduit.">
+
+<Stats items={[
+  { value: '0,877', caption: 'ROC-AUC au classement public, mon ensemble ResNet18 + EfficientNet-B0 (contre 0,825)' },
+  { value: '0,859', caption: 'meilleur modèle seul sur les 58 études d’experts (EfficientNet-B0, cache v2 ; validation 0,848)' },
+  { value: '0,954', caption: 'meilleure soumission : un ensemble public reproduit, pas mon modèle' },
+  { value: '99 / 99', caption: 'séries identiques à l’octet entre le cache d’entraînement et l’inférence' },
+]} />
+
+<HBars
+  title="Classement public, ROC-AUC macro, par soumission"
+  note="Les barres partent de 0,5 (hasard). En gris, des notebooks publics que j’ai reproduits, ou auxquels j’ai mélangé mon modèle."
+  legend={['Mes propres modèles', 'Notebooks publics (reproduits ou mélangés)']}
+  items={[
+    { label: 'ResNet18 de base', value: 0.825, text: '0,825' },
+    { label: 'ResNet18 + EfficientNet-B0', value: 0.877, text: '0,877' },
+    { label: 'Ensemble jiweiliu, reproduit', value: 0.943, text: '0,943', muted: true },
+    { label: 'Le même + mon modèle (abandonné)', value: 0.942, text: '0,942', muted: true },
+    { label: 'Ensemble versia-5, reproduit', value: 0.954, text: '0,954', muted: true },
+  ]}
+/>
+
+<HBars
+  title="Mon meilleur modèle, par anomalie : ROC-AUC sur les 58 études d’experts"
+  note="EfficientNet-B0 sur le cache v2. Les barres partent de 0,5 (hasard). Avec 58 études, chaque anomalie repose sur peu de cas positifs."
+  ref={{ value: 0.859, label: 'macro 0,859' }}
+  items={[
+    { label: 'Arthrose médiale', value: 0.97, text: '0,97' },
+    { label: 'Kyste de Baker', value: 0.95, text: '0,95' },
+    { label: 'Fracture', value: 0.92, text: '0,92' },
+    { label: 'Contusion', value: 0.91, text: '0,91' },
+    { label: 'Ménisque médial', value: 0.91, text: '0,91' },
+    { label: 'LLI', value: 0.90, text: '0,90' },
+    { label: 'LCA', value: 0.89, text: '0,89' },
+    { label: 'Épanchement', value: 0.83, text: '0,83' },
+    { label: 'Arthrose fémoro-patellaire', value: 0.82, text: '0,82' },
+    { label: 'Synovite', value: 0.78, text: '0,78' },
+    { label: 'Arthrose latérale', value: 0.77, text: '0,77' },
+    { label: 'Ménisque latéral', value: 0.65, text: '0,65' },
+  ]}
+/>
+
+<Figure img={submissions} light alt="Liste des soumissions Kaggle, cinq entrées avec leur score public : knee-base-versia5 0,954, knee-jiwei-blend-v2 0,942, knee-v0-sub v1 ensemble 0,877, knee-v0-sub v0 0,825, knee-base-jiwei-v11 0,943." caption="Mes cinq soumissions sur Kaggle. Les deux ensembles publics y sont indiqués comme des copies non modifiées." />
+
+<Figure img={leaderboard} light alt="Ligne du classement public Kaggle : rang 1377, Elara Mamoun, score 0,954, 5 soumissions." caption="Ma ligne au classement public le 14 octobre 2026 : 0,954, rang 1 377. Beaucoup d’équipes sont proches de ce score ; le classement privé tranchera après le 22 octobre." />
+
+<ModelCard
+  use="Une participation à une compétition : classer des IRM du genou selon la probabilité de 12 anomalies, notée en ROC-AUC macro. Pas un outil de diagnostic."
+  outOfScope="Tout usage clinique, et les examens d’appareils ou de protocoles absents des données de la compétition."
+  data="Données de la compétition RSNA 2026, 4 407 études : entraînement sur 3 479, validation sur 870, avec des labels LLM tirés des comptes rendus de radiologie (jeu de données public). Les 58 études étiquetées par des experts sont mises de côté comme référence."
+  evaluation="ROC-AUC macro sur 12 anomalies. Meilleur modèle seul : 0,859 sur les 58 études d’experts (validation 0,848). Classement public : 0,825 (ResNet18) → 0,877 (ResNet18 + EfficientNet-B0). Références : le hasard (0,5) et les ensembles publics à 0,943 et 0,954."
+  limitations="Les labels d’entraînement viennent du texte des comptes rendus : les anomalies rarement écrites (épanchement, synovite) sont bruitées. La référence ne compte que 58 études. Le résultat du classement privé est attendu après le 22 octobre 2026."
+  failure="Le ménisque latéral est resté l’anomalie la plus faible du début à la fin : 0,65 d’AUC sur les études d’experts, contre 0,91 pour le ménisque médial."
+/>
+
+<Figure img={notebook} light alt="Page du notebook Kaggle knee-v2-train : une cellule qui écrit le script d’entraînement, durée 2 h 59 min 53 s sur GPU T4 x2, entrées : la compétition, deux notebooks de cache et le jeu de données RSNA Knee LLM Report Labels." caption="Le notebook d’entraînement : une cellule écrit le script, un lanceur démarre un entraînement par GPU." />
+
+</Chapter>
+
+<Chapter n="06" label="La suite" title="Prochaine étape : un seul modèle léger qui garde la précision de l’ensemble.">
+
+- Pseudo-étiqueter le jeu d’entraînement avec l’ensemble le plus fort, puis le distiller dans un seul modèle léger pour l’Efficiency Track.
+- Entraîner les anomalies des ménisques sur un recadrage plus fin autour de l’interligne articulaire.
+- Remplacer les labels des comptes rendus pour l’épanchement et la synovite par des signaux tirés des images.
+
+</Chapter>

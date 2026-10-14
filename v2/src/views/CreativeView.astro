@@ -15,11 +15,11 @@ const fr = lang === 'fr';
 const posterSet = await Promise.all([480, 640, 960, 1280].map((w) => getImage({ src: poster, width: w, format: 'webp', quality: 68 })));
 const posterSrcset = posterSet.map((img, i) => `${img.src} ${[480, 640, 960, 1280][i]}w`).join(', ');
 const posterSizes = '(min-width: 1360px) 760px, (min-width: 1024px) 56vw, calc(100vw - 32px)';
-const designs = [
+const designs = await Promise.all([
   { img: xd, title: fr ? 'Application magazine' : 'Magazine app UI', tool: 'Adobe XD', note: fr ? 'Projet final, maquettes d’application mobile' : 'Final project, mobile app UI', href: '/creative/final-project-adobe-xd.pdf', size: '4.5 MB', alt: fr ? 'Première page du projet final Adobe XD : maquettes d’une application magazine' : 'First page of the Adobe XD final project: magazine app screens' },
   { img: moviePoster, title: fr ? 'Affiche de film' : 'Movie poster', tool: 'Photoshop', note: fr ? 'Concept d’affiche originale' : 'Original poster concept', href: '/creative/movie-poster-design.pdf', size: '68 MB', alt: fr ? 'Affiche de film réalisée dans Photoshop' : 'Movie poster made in Photoshop' },
   { img: newsletter, title: 'Newsletter', tool: 'InDesign', note: fr ? 'Mise en page éditoriale' : 'Editorial layout study', href: '/creative/newsletter-indesign.pdf', size: '0.2 MB', alt: fr ? 'Newsletter mise en page dans InDesign' : 'Newsletter laid out in InDesign' },
-];
+].map(async (design) => ({ ...design, preview: await getImage({ src: design.img, width: 1600, format: 'webp', quality: 80 }) })));
 ---
 <Base
   lang={lang}
@@ -32,15 +32,17 @@ const designs = [
   <link slot="head" rel="preload" as="image" type="image/webp" imagesrcset={posterSrcset} imagesizes={posterSizes} fetchpriority="high" />
   <PageIntro
     label={fr ? 'Créatif' : 'Creative'}
-    title={fr ? 'Créatif' : 'Creative'}
+    title={fr ? 'À côté du code.' : 'Outside the code.'}
     lede={fr ? 'Photographie et mise en page, faites à côté du code.' : 'Photography and layout work, made alongside the code.'}
    
-  />
+  >
+    <nav class="creative-index" aria-label={fr ? 'Collections' : 'Collections'}><a href="#photo-h2">01 — {fr ? 'Photographie' : 'Photography'} ↓</a><a href="#design-h2">02 — Design ↓</a></nav>
+  </PageIntro>
 
   <section class="section creative" aria-labelledby="photo-h2">
     <div class="wrap">
       <p class="label">{fr ? 'Photographie' : 'Photography'}</p>
-      <h2 class="h2 sec-h2" id="photo-h2">{fr ? 'Un livre photo et une série de six images.' : 'A photo book and a six-frame lab series.'}</h2>
+      <h2 class="h2 sec-h2" id="photo-h2">{fr ? 'La vie au campus, en images.' : 'Campus life, in frames.'}</h2>
       <div class="photo-grid">
         <figure class="photo photo--video">
           <div class="photo__frame">
@@ -70,19 +72,20 @@ const designs = [
   <section class="section band" aria-labelledby="design-h2">
     <div class="wrap">
       <p class="label">Design</p>
-      <h2 class="h2 sec-h2" id="design-h2">{fr ? 'Une appli, une affiche, une newsletter.' : 'An app, a poster, a newsletter.'}</h2>
+      <h2 class="h2 sec-h2" id="design-h2">{fr ? 'Mise en page & interfaces.' : 'Layout & interface studies.'}</h2>
       <ul class="design-grid">
         {designs.map((d) => (
           <li class="design">
-            <a class="design__link" href={d.href} target="_blank" rel="noopener">
+            <a class="design__link" href={d.preview.src} target="_blank" rel="noopener" aria-label={`${d.title} — ${fr ? 'agrandir, nouvel onglet' : 'view full image, opens in a new tab'}`}>
               <Image src={d.img} alt={d.alt} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, (min-width: 640px) 45vw, 100vw" format="webp" class="design__img" />
+              <span class="design__preview">{fr ? 'Agrandir l’image' : 'View full image'} <span aria-hidden="true">↗</span></span>
+            </a>
               <span class="design__body">
                 <span class="meta design__tool">{d.tool}</span>
                 <span class="design__title">{d.title}</span>
                 <span class="design__note">{d.note}</span>
-                <span class="design__pdf">PDF · {d.size} <span aria-hidden="true">↗</span><span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></span>
+                <a class="design__pdf" href={d.href} target="_blank" rel="noopener">PDF · {d.size} <span aria-hidden="true">↗</span><span class="sr-only"> — {d.title} ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
               </span>
-            </a>
           </li>
         ))}
       </ul>
@@ -91,6 +94,9 @@ const designs = [
 </Base>
 
 <style>
+  .creative-index { display: flex; flex-wrap: wrap; gap: var(--s-5); margin-top: var(--s-6); }
+  .creative-index a { display: inline-flex; align-items: center; min-height: 44px; text-decoration-color: var(--accent); }
+  .creative { padding-top: var(--s-7); }
   .sec-h2 { margin-bottom: var(--s-7); }
   .photo-grid { display: grid; gap: var(--s-7); }
   @media (min-width: 1024px) { .photo-grid { grid-template-columns: 7fr 5fr; align-items: start; } .photo:nth-child(2) { margin-top: var(--s-9); } }
@@ -106,11 +112,13 @@ const designs = [
   @media (min-width: 640px) { .design-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1024px) { .design-grid { grid-template-columns: repeat(3, 1fr); } .design:nth-child(2) { margin-top: var(--s-8); } }
   .design__link { display: grid; gap: var(--s-4); text-decoration: none; }
-  .design__img { width: 100%; height: auto; aspect-ratio: 1275 / 1650; object-fit: cover; border-radius: var(--r-img); border: 1px solid var(--line); }
-  .design__body { display: grid; gap: var(--s-1); }
+  .design__img { width: 100%; height: auto; aspect-ratio: 1275 / 1650; object-fit: contain; background: var(--accent-surface); border-radius: var(--r-img); border: 1px solid var(--line); transition: transform var(--dur-2) var(--ease-out); }
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) { .design__link:hover .design__img { transform: translateY(-4px); } }
+  .design__preview { color: var(--text-muted); font-size: var(--fs-small); }
+  .design__body { display: grid; gap: var(--s-1); margin-top: var(--s-5); }
   .design__tool { color: var(--accent); }
   .design__title { font-family: var(--font-body); font-size: var(--fs-sub); font-weight: 600; letter-spacing: -0.03em; }
   .design__note { color: var(--text-muted); }
-  .design__pdf { color: var(--text); font-size: var(--fs-small); margin-top: var(--s-1); }
-  .design__link:hover .design__title { text-decoration: underline; text-decoration-color: var(--accent); }
+  .design__pdf { color: var(--text); font-size: var(--fs-small); margin-top: var(--s-1); min-height: 44px; display: inline-flex; align-items: center; gap: var(--s-2); justify-self: start; text-decoration-color: var(--accent); }
+  .design__link:hover .design__preview { color: var(--accent); }
 </style>

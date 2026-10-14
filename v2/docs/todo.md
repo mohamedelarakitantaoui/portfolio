@@ -27,7 +27,7 @@ simply not shown on the live site. EN and FR versions sit side by side in the sa
 16. Email: switch to an @mamounelaraki.com address once the domain has mail (`person.email` in `site.ts`).
 
 ## Other
-17. Kaggle profile link and score, if you want them shown.
+17. Kaggle (RSNA knee MRI): after the competition closes on 22 Oct 2026, add the private-leaderboard score and rank to `src/content/projects/{en,fr}/rsna-knee-mri.mdx` (`status`, `progress`, chapter 05), the "Now" line and the `moreProjects` row in `site.ts`, and the `kaggle` note in `knowledge.ts`.
 18. CV "updated" month.
 19. Creative: confirm the "Journey Through the Lens" title; more photos if you have them.
 20. Review the French copy (`site.ts` `fr` strings, `src/i18n/ui.ts`, `src/content/projects/fr/`).

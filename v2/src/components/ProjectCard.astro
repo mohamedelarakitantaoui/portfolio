@@ -5,8 +5,8 @@ import type { CollectionEntry } from 'astro:content';
 import ProjectMedia from './ProjectMedia.astro';
 import { type Lang, lp, t } from '../i18n/ui';
 import { rich } from '../lib/rich';
-interface Props { project: CollectionEntry<'projects'>; lang: Lang; headingLevel?: 'h3' | 'h2' }
-const { project, lang, headingLevel: H = 'h3' } = Astro.props;
+interface Props { project: CollectionEntry<'projects'>; lang: Lang; headingLevel?: 'h3' | 'h2'; featured?: boolean }
+const { project, lang, headingLevel: H = 'h3', featured = false } = Astro.props;
 const d = project.data;
 const href = d.caseStudy && (import.meta.env.DEV || !d.draft) ? lp(lang, `/work/${d.key}`) : null;
 // A loop carries its own play/pause button, so it is never wrapped in a link.
@@ -14,10 +14,10 @@ const linkMedia = href && !d.loop;
 // Effect: the AneuXplain video grows into its column on scroll (src/scripts/effects/fx/media-grow.ts).
 const grow = d.key === 'aneuxplain' ? 'media-grow' : undefined;
 // Effect: cursor light + small tilt on every card's media, mouse only (src/scripts/effects/fx/card-tilt.ts).
-const fx = [grow, 'card-tilt'].filter(Boolean).join(' ');
+const fx = [grow, !d.loop && 'card-tilt'].filter(Boolean).join(' ');
 const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}` : null);
 ---
-<article class="pcard" data-reveal>
+<article class:list={['pcard', { 'pcard--featured': featured }]} data-reveal>
   {linkMedia ? (
     <a class="pcard__media" href={href} tabindex="-1" aria-hidden="true" data-fx={fx}><ProjectMedia project={project} lang={lang} /></a>
   ) : (
@@ -27,6 +27,7 @@ const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}
     <p class="meta">{d.meta}</p>
     <H class="pcard__title">{href ? <a href={href}>{d.title}</a> : d.title}</H>
     <p class="pcard__outcome" set:html={rich(d.outcome)} />
+    <p class="pcard__constraint"><span>{lang === 'fr' ? 'Le cadre : ' : 'The constraint: '}</span>{d.constraint}</p>
     {metric && <p class="pcard__metric" set:html={rich(metric)} />}
     {d.progress && <p class="pcard__progress"><span class="pcard__dot" aria-hidden="true"></span><span set:html={rich(d.progress)} /></p>}
     <div class="pcard__foot">
@@ -50,8 +51,18 @@ const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}
   .pcard__title a { text-decoration: none; }
   .pcard__title a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
   .pcard__outcome { color: var(--text-muted); max-width: 62ch; }
+  .pcard__constraint { color: var(--text-muted); max-width: 62ch; font-size: var(--fs-small); }
+  .pcard__constraint span { color: var(--heading); }
   .pcard__metric { color: var(--heading); font-weight: 600; padding-block: var(--s-3); border-block: 1px solid var(--line); max-width: none; }
   .pcard__progress { display: flex; gap: var(--s-3); align-items: baseline; color: var(--text); margin-top: calc(-1 * var(--s-3)); padding-bottom: var(--s-3); border-bottom: 1px solid var(--line); max-width: none; }
   .pcard__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); transform: translateY(-1px); }
   .pcard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3) var(--s-5); margin-top: var(--s-1); }
+  .pcard--featured { gap: var(--s-6); }
+  .pcard--featured .pcard__title { font-size: var(--fs-feature); }
+  .pcard--featured .pcard__outcome { font-size: var(--fs-lede); }
+  .pcard--featured .pcard__body { padding-block: var(--s-4); }
+  @media (min-width: 1200px) {
+    .pcard--featured { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); align-items: center; gap: var(--s-7); }
+    .pcard--featured .pcard__foot { display: grid; justify-items: start; gap: var(--s-5); }
+  }
 </style>

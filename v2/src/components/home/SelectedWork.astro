@@ -1,9 +1,6 @@
 ---
-// Work (v4): 4/12 sticky column (label, h2, one line, "All projects ↗") · 7/12 offset column of full-width cards,
-// then the "More projects" rows.
 import { getCollection } from 'astro:content';
 import ProjectCard from '../ProjectCard.astro';
-import MoreProjects from '../MoreProjects.astro';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -11,31 +8,45 @@ const projects = (await getCollection('projects', (p) => p.data.lang === lang &&
 const fr = lang === 'fr';
 ---
 <section class="work section" aria-labelledby="work-h2" id="work" tabindex="-1">
-  <div class="wrap grid-12 work__grid">
+  <div class="wrap">
     <div class="work__head">
-      <div class="work__sticky">
-        <p class="label">{fr ? 'Projets' : 'Work'}</p>
-        <h2 class="h2" id="work-h2">{fr ? 'Des projets, avec leurs chiffres.' : 'Projects with numbers on them.'}</h2>
-        <p class="work__sub">{fr ? 'Ce que j’ai construit, et ce qui a changé ensuite.' : 'What I built, and what changed after it shipped.'}</p>
+      <div>
+        <p class="label label--plain">01 / {fr ? 'Une sélection' : 'Selected work'}</p>
+        <h2 class="h2" id="work-h2">{fr ? 'Des modèles.' : 'Models.'}<br /><span>{fr ? 'Et leur application.' : 'And what they become.'}</span></h2>
+      </div>
+      <div class="work__intro">
+        <p>{fr
+          ? 'AneuXplain est mon projet de fin d’études et celui dont je suis le plus fier. L’article a été accepté à ICOA 2026 ; j’attends sa publication.'
+          : 'AneuXplain is my capstone and the project I’m most proud of. The paper was accepted at ICOA 2026; I’m waiting for its publication.'}</p>
         <a class="link" href={lp(lang, '/work')}>{t(lang, 'cta.allProjects')}</a>
       </div>
     </div>
-    <div class="work__cards">
-      {projects.map((p) => <ProjectCard project={p} lang={lang} />)}
-      <MoreProjects lang={lang} id="home-more" homeOnly />
+    {projects[0] && <div class="work__feature"><ProjectCard project={projects[0]} lang={lang} featured /></div>}
+    <div class="work__supporting">
+      {projects.slice(1).map((p, i) => (
+        <div class="work__project">
+          <p class="work__index meta"><span>0{i + 2}</span><span>{p.data.key === 'dce-scraper' ? (fr ? 'Automatisation / Intelcia' : 'Automation / Intelcia') : (fr ? 'Football / Machine learning' : 'Football / Machine learning')}</span></p>
+          <ProjectCard project={p} lang={lang} />
+        </div>
+      ))}
     </div>
   </div>
 </section>
 
 <style>
   .work:focus { outline: none; }
-  .work__grid { row-gap: var(--s-8); }
-  .work__head .h2 { max-width: 12ch; }
-  .work__sub { color: var(--text-muted); margin-block: var(--s-5) var(--s-4); max-width: 34ch; font-size: var(--fs-lede); line-height: 1.6; }
-  .work__cards { display: grid; gap: clamp(64px, 7vw, 120px); }
+  .work__head { display: grid; gap: var(--s-6); align-items: end; margin-bottom: var(--s-8); }
+  .work__head .h2 { max-width: 17ch; }
+  .work__head .h2 span { color: var(--text-muted); }
+  .work__intro p { max-width: 45ch; color: var(--text-muted); font-size: var(--fs-lede); }
+  .work__intro .link { margin-top: var(--s-5); }
+  .work__feature { padding-top: var(--s-6); border-top: 1px solid var(--accent-line); }
+  .work__supporting { display: grid; gap: var(--s-8); margin-top: var(--s-9); }
+  .work__index { display: flex; align-items: center; gap: var(--s-5); margin-bottom: var(--s-5); padding-block: var(--s-4); border-top: 1px solid var(--line); }
+  .work__index > span:first-child { color: var(--accent); }
   @media (min-width: 1024px) {
-    .work__head { grid-column: 1 / span 4; }
-    .work__cards { grid-column: 6 / -1; }
-    .work__sticky { position: sticky; top: var(--s-9); }
+    .work__head { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: var(--s-9); }
+    .work__supporting { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s-8); }
+    .work__project:last-child { padding-top: var(--s-9); }
   }
 </style>

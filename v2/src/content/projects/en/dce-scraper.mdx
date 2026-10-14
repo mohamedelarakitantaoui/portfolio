@@ -63,7 +63,7 @@ The first version of the collector was one 3,643-line script. A run over 300 con
 
 </Chapter>
 
-<Chapter n="04" label="Key decisions and trade-offs" title="I chose config and loud failures over clever code.">
+<Chapter n="04" label="Key decisions and trade-offs" title="Portal configuration, parallel browsers and visible failures.">
 
 - **Services over one script.** I split the monolith by job (find the URLs, fill the forms, download, file, retry), because in one 3,643-line script every step was tangled with every other.
 - **YAML per portal over hard-coded selectors.** Each source is described in config, because portals change: a new portal or a changed selector is a config edit, not a code change.
@@ -72,7 +72,7 @@ The first version of the collector was one 3,643-line script. A run over 300 con
 
 </Chapter>
 
-<Chapter n="05" label="Results" title="Same 300 consultations, a coffee break instead of an afternoon.">
+<Chapter n="05" label="Results" title="300 consultations in 15 minutes, down from 2.5 hours.">
 
 <Stats items={[
   { value: '2h30 → 15 min', caption: '300 consultations per run: 90% less processing time, 10+ hours saved per week' },

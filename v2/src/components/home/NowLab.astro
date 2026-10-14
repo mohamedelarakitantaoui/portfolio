@@ -10,19 +10,20 @@ const fr = lang === 'fr';
 <section class="lab section band" aria-labelledby="lab-h2" id="lab">
   <div class="wrap grid-12 lab__grid">
     <div class="lab__left">
-      <p class="label">{fr ? 'Maintenant' : 'Now'}</p>
-      <h2 class="h2" id="lab-h2">{fr ? 'Un modèle xG pour le football, et un modèle Kaggle pour le genou.' : 'A football xG model and a Kaggle knee model.'}</h2>
+      <p class="label label--plain">04 / {fr ? 'Maintenant' : 'Now'}</p>
+      <h2 class="h2" id="lab-h2">{fr ? 'Sur mon bureau.' : 'On my desk.'}</h2>
       <p class="lab__group meta">{fr ? 'En cours' : 'In progress'}</p>
       <ul class="rows lab__items">
         {now.inProgress.map((it) => <li><Rich text={it[lang]} /></li>)}
       </ul>
     </div>
-    <div class="lab__right" data-reveal>
+    <details class="lab__right" data-terminal-disclosure>
+      <summary>{fr ? 'Explorer mes notes : une petite démo' : 'Explore my notes: a small demo'}</summary>
       <p class="lab__intro">{fr
         ? 'Posez-moi une question. Ce terminal cherche dans mes notes avec BM25, directement dans votre navigateur, et montre ce qu’il a retrouvé avant de répondre.'
         : 'Ask me something. This terminal searches my notes with BM25, right in your browser, and shows what it retrieved before it answers.'}</p>
       <Terminal lang={lang} />
-    </div>
+    </details>
   </div>
 </section>
 
@@ -37,4 +38,7 @@ const fr = lang === 'fr';
   .lab__items > li { padding-block: var(--s-4); color: var(--text-muted); max-width: var(--measure); }
   .lab__items :global(strong) { color: var(--heading); font-weight: 600; }
   .lab__intro { color: var(--text-muted); margin-bottom: var(--s-5); max-width: 56ch; }
+  .lab__right { min-width: 0; border-block: 1px solid var(--line); padding-block: var(--s-4); }
+  .lab__right summary { cursor: pointer; min-height: 44px; padding-block: var(--s-3); font-weight: 500; }
+  .lab__right[open] summary { margin-bottom: var(--s-5); }
 </style>

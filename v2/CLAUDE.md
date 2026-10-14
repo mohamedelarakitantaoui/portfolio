@@ -6,7 +6,7 @@ Branch `v4-design` holds the current design; `redesign-2026` holds the v3 fallba
 
 ## Stack and commands
 Astro (static), content collections in MDX (`src/content/projects/{en,fr}/`), i18n EN at `/` and FR at `/fr/`.
-Lenis + GSAP only for the optional effects in `src/scripts/effects/` (kill switch below).
+GSAP only for the optional effects in `src/scripts/effects/` (kill switch below); scrolling is native.
 - `npm run dev`: local site with TODO(user) tags visible
 - `npm run build`: production build (fails on any TODO(user) left in a page)
 - `npm run check`: everything that must pass before a task is done (table printed at the end)
@@ -23,8 +23,8 @@ must all pass (`docs/sops/release.md`).
 - Colours, fonts, sizes, spacing, radii, z-index and durations come only from `src/styles/tokens.css`.
   Why: one source of truth; raw values drift and make the site look AI-made. Stylelint enforces it.
 - One font family, DM Sans (the mono exists only inside the ask-mamoun terminal). Why: the measured reference system.
-- Saffron `#F2A900` only for the primary button, small labels and one highlight per screen. Why: an accent everywhere
-  stops being an accent.
+- Ice blue `#A7C7FF` accompanies charcoal, with blue surfaces `#182333` and `#263449` (user-requested palette
+  refresh, 2026-10-14). Keep the portrait, project media and restrained accent hierarchy.
 - Muted text never darker than `#A6A6A6` on dark. Why: WCAG AA (contrast table in `design-references/tokens.md`).
 - Layouts are intrinsic: `clamp()`, `minmax()`, `flex-wrap`, `min-width: 0`. Add a breakpoint only when content
   actually breaks. Why: fewer breakpoints, fewer places to break.

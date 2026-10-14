@@ -52,7 +52,7 @@ export const GET: APIRoute = async ({ props }) => {
   const tree = h('div', { width: 1200, height: 630, display: 'flex', background: '#111111', color: '#ffffff', fontFamily: 'DM Sans', padding: 72, flexDirection: 'column', justifyContent: 'space-between' }, [
     h('div', { display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 28, fontWeight: 700, letterSpacing: '-0.03em' }, [
       h('div', { display: 'flex' }, 'Mamoun El Araki'),
-      h('div', { display: 'flex', width: 64, height: 4, background: '#f2a900' }),
+      h('div', { display: 'flex', width: 64, height: 4, background: '#a7c7ff' }),
     ]),
     h('div', { display: 'flex', fontSize: size, fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 0.98, maxWidth: 980 }, title),
     h('div', { display: 'flex', fontSize: 26, fontWeight: 500, color: '#b3b3b3', letterSpacing: '-0.01em', paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.12)' }, kicker),

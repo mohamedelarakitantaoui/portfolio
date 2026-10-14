@@ -11,9 +11,8 @@ const fr = lang === 'fr';
 <section class="about section" aria-labelledby="about-h">
   <div class="wrap grid-12 about__grid">
     <div class="about__text" data-reveal>
-      <p class="label">{fr ? 'À propos' : 'About'}</p>
-      <h2 class="h-statement about__h" id="about-h">{aboutStatement.h[lang]}</h2>
-      <p class="about__roll" data-fx="roll-word" data-lead={aboutStatement.roll.lead[lang]} data-words={JSON.stringify(aboutStatement.roll.words[lang])}>{aboutStatement.roll.sentence[lang]}</p>
+      <p class="label label--plain">02 / {fr ? 'Ma façon de travailler' : 'How I work'}</p>
+      <h2 class="h-statement about__h" id="about-h">{fr ? 'Un score ne raconte pas toute l’histoire.' : 'There’s more to a model than its score.'}</h2>
       <p class="lede about__lead">{aboutStatement.lead[lang]}</p>
       <a class="link about__more" href={lp(lang, '/about')}>{fr ? 'En savoir plus' : 'More about me'}</a>
     </div>
@@ -24,8 +23,9 @@ const fr = lang === 'fr';
 </section>
 
 <style>
+  .about { background: var(--accent-surface); border-block: 1px solid var(--accent-line); }
   .about__grid { row-gap: var(--s-8); align-items: end; }
-  .about__h { max-width: 18ch; }
+  .about__h { max-width: 19ch; font-size: var(--fs-h2); line-height: 1.06; }
   .about__roll { margin-top: var(--s-5); font-size: var(--fs-sub); font-weight: 700; letter-spacing: var(--track-h); line-height: 1.25; color: var(--heading); max-width: 32ch; }
   /* Effect (src/scripts/effects/fx/roll-word.ts): the words share one grid cell, so the line never changes width. */
   .about__roll :global(.roll) { display: inline-grid; vertical-align: bottom; overflow: clip; padding-block: 0.06em; margin-block: -0.06em; }
@@ -35,7 +35,7 @@ const fr = lang === 'fr';
   .about__photo { max-width: 460px; border-radius: var(--r-img); overflow: hidden; aspect-ratio: 3 / 4; background: var(--surface); }
   .about__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
   @media (min-width: 1024px) {
-    .about__text { grid-column: 1 / span 8; }
-    .about__photo { grid-column: 10 / -1; justify-self: end; width: 100%; }
+    .about__text { grid-column: 1 / span 7; }
+    .about__photo { grid-column: 9 / -1; justify-self: end; width: 100%; transform: rotate(3deg); }
   }
 </style>

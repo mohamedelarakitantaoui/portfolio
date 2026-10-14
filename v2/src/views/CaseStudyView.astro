@@ -15,6 +15,8 @@ import Rows from '../components/mdx/Rows.astro';
 import Note from '../components/mdx/Note.astro';
 import Todo from '../components/mdx/Todo.astro';
 import ModelCard from '../components/mdx/ModelCard.astro';
+import HBars from '../components/mdx/HBars.astro';
+import Figure from '../components/mdx/Figure.astro';
 import { type Lang, lp, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { rich, shows } from '../lib/rich';
@@ -36,10 +38,12 @@ const meta: [string, string][] = [
   [t(lang, 'meta.status'), d.status],
 ];
 const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
+const chapters = [...(project.body ?? '').matchAll(/<Chapter\s+n="([^"]+)"\s+label="([^"]+)"\s+title="([^"]+)"/g)]
+  .filter(([, , , title]) => shows(title));
 ---
 <Base lang={lang} title={`${d.title} · ${t(lang, 'cs.label')} · ${person.name}`} description={d.description} ogKey={`work-${d.key}`}>
   <article class="cs">
-    <div class="cs__head-band"><header class="cs__head wrap">
+    <div class="cs__head-band"><div class="wrap cs__hero"><header class="cs__head">
       <nav class="crumbs meta" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
         <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
       </nav>
@@ -50,11 +54,15 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
     </header>
 
     {(d.loop || d.cover || d.bars) && (
-      <div class="wrap cs__cover">
+      <div class="cs__cover">
         <ProjectMedia project={project} lang={lang} eager />
       </div>
     )}
-    </div>
+    </div></div>
+
+    {chapters.length > 0 && <nav class="cs__contents wrap" aria-label={fr ? 'Chapitres du projet' : 'Project chapters'}>
+      {chapters.map(([, n, label]) => <a href={`#ch-${n}`}><span>{n}</span>{label}</a>)}
+    </nav>}
 
     <div class="wrap grid-12 cs__grid">
       <aside class="cs__side" aria-label={fr ? 'Fiche projet' : 'Project overview'}>
@@ -98,7 +106,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
             </ul>
           </section>
         )}
-        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard }} />
+        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard, HBars, Figure }} />
       </div>
     </div>
 
@@ -115,8 +123,14 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 
 <style>
   .cs__head-band { background: var(--bg-band); border-bottom: 1px solid var(--line); }
-  .cs__head { padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-8); }
-  @media (min-width: 1024px) { .cs__head { padding-top: calc(var(--header-h) + var(--s-9)); } }
+  .cs__hero { display: grid; gap: var(--s-7); padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-7); }
+  .cs__head, .cs__cover { min-width: 0; }
+  .cs__title { font-size: var(--fs-feature); overflow-wrap: anywhere; }
+  @media (min-width: 1024px) { .cs__hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7); align-items: center; min-height: 640px; } }
+  .cs__contents { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-block: var(--s-5); border-bottom: 1px solid var(--line); }
+  .cs__contents a { display: inline-flex; align-items: center; min-height: 44px; gap: var(--s-2); font-size: var(--fs-small); text-decoration: none; }
+  .cs__contents a span { color: var(--accent); }
+  .cs__contents a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
   .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-6); font-size: var(--fs-small); }
   .crumbs a { color: var(--text-muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .crumbs a:hover { color: var(--heading); }
@@ -124,12 +138,11 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
   .cs__head .label { color: var(--text-quiet); }
   .cs__outcome { margin-top: var(--s-6); color: var(--text); max-width: 46ch; }
   .cs__metric { margin-top: var(--s-5); color: var(--heading); font-weight: 600; }
-  .cs__cover { padding-bottom: var(--s-8); }
-  .cs__grid { row-gap: var(--s-8); padding-block: var(--s-9); }
+  .cs__grid { row-gap: var(--s-8); padding-block: var(--s-7); }
   @media (min-width: 1024px) {
     .cs__side { grid-column: 1 / span 4; }
     .cs__body { grid-column: 6 / -1; }
-    .cs__sticky { position: sticky; top: var(--s-7); }
+    .cs__side { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
   }
   .cs__side { align-self: start; }
   .cs__side-label { color: var(--text-quiet); margin-bottom: var(--s-3); }

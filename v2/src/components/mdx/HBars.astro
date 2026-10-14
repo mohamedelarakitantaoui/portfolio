@@ -1,0 +1,83 @@
+---
+// Horizontal bars drawn from real logged numbers, with tokens (so the FR page gets French labels, unlike a PNG chart).
+// Bars start at `min`: for AUC and balanced accuracy that is 0.5 (chance), and the `note` says so.
+// Every bar carries its value as text; `muted` bars are the comparison group named in `legend`, so identity is
+// never colour alone. A table carries the same data for screen readers (wrapped: a table can't shrink to 1px).
+import { rich } from '../../lib/rich';
+interface Item { label: string; value: number; text?: string; muted?: boolean }
+interface Props {
+  title: string;
+  note?: string;
+  items: Item[];
+  min?: number;
+  max?: number;
+  ref?: { value: number; label: string };
+  legend?: [string, string];
+}
+const { title, note, items, min = 0.5, max = 1, ref, legend } = Astro.props;
+const frac = (v: number) => Math.min(1, Math.max(0.01, (v - min) / (max - min))).toFixed(4);
+const fmt = (i: Item) => i.text ?? i.value.toFixed(2);
+---
+<figure class="hb" aria-label={title}>
+  <figcaption class="hb__cap">
+    <span class="hb__title">{title}</span>
+    {note && <span class="hb__note" set:html={rich(note)} />}
+  </figcaption>
+  {legend && (
+    <ul class="hb__legend" aria-hidden="true">
+      <li><span class="hb__key"></span>{legend[0]}</li>
+      <li><span class="hb__key hb__key--muted"></span>{legend[1]}</li>
+    </ul>
+  )}
+  <div class="hb__plot" aria-hidden="true">
+    {ref && <span class="hb__head"></span>}
+    {items.map((i, n) => (
+      <Fragment>
+        <span class="hb__label" style={`grid-row:${n + (ref ? 2 : 1)}`}>{i.label}</span>
+        <span class="hb__track" style={`grid-row:${n + (ref ? 2 : 1)}`}>
+          <span class:list={['hb__fill', { 'hb__fill--muted': i.muted }]} style={`--f:${frac(i.value)}`}></span>
+          <span class="hb__value">{fmt(i)}</span>
+        </span>
+      </Fragment>
+    ))}
+    {ref && (
+      <span class="hb__ref" style={`--f:${frac(ref.value)}; grid-row: 1 / span ${items.length + 1}`}>
+        <span class="hb__ref-label">{ref.label}</span>
+      </span>
+    )}
+  </div>
+  <div class="sr-only"><table>
+    <caption>{title}{ref ? ` (${ref.label})` : ''}</caption>
+    <tbody>
+      {items.map((i) => <tr><th scope="row">{i.label}{i.muted && legend ? ` (${legend[1]})` : ''}</th><td>{fmt(i)}</td></tr>)}
+    </tbody>
+  </table></div>
+</figure>
+
+<style>
+  .hb { margin-block: var(--s-6); padding: var(--s-5); border: 1px solid var(--line); border-radius: var(--r-img); background: var(--bg-band); }
+  .hb__cap { display: grid; gap: var(--s-1); margin-bottom: var(--s-5); }
+  .hb__title { color: var(--heading); font-weight: 600; }
+  .hb__note { color: var(--text-muted); font-size: var(--fs-small); line-height: 1.4; }
+  .hb__legend { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin: 0 0 var(--s-4); padding: 0; color: var(--text-muted); font-size: var(--fs-small); }
+  .hb__legend li { display: inline-flex; align-items: center; gap: var(--s-2); padding: 0; }
+  .hb__legend li::before { display: none; }
+  .hb__key { width: var(--s-3); height: var(--s-3); border-radius: 2px; background: var(--accent); }
+  .hb__key--muted { background: var(--line-input); }
+
+  /* Two columns: labels, then one track per row. The reference line sits in the track column across every row. */
+  .hb__plot { position: relative; display: grid; grid-template-columns: minmax(0, 9.5rem) minmax(0, 1fr); gap: var(--s-2) var(--s-4); align-items: center; }
+  @media (max-width: 479px) { .hb__plot { grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr); gap: var(--s-2) var(--s-3); } }
+  .hb__head { grid-column: 1; grid-row: 1; min-height: 1.4em; }
+  .hb__label { grid-column: 1; color: var(--text-muted); font-size: var(--fs-small); line-height: 1.25; text-align: end; }
+  .hb__track { grid-column: 2; display: flex; align-items: center; gap: var(--s-2); min-width: 0; }
+  .hb__fill { display: block; flex: none; height: var(--s-3); width: calc((100% - 3.5em) * var(--f)); border-radius: 0 4px 4px 0; background: var(--accent); }
+  .hb__fill--muted { background: var(--line-input); }
+  .hb__value { flex: none; color: var(--text); font-size: var(--fs-small); font-weight: 600; }
+  .hb__ref { grid-column: 2; position: relative; align-self: stretch; pointer-events: none; }
+  .hb__ref::before {
+    content: ''; position: absolute; top: 1.4em; bottom: 0; left: calc((100% - 3.5em) * var(--f));
+    border-left: 1px dashed var(--text-quiet);
+  }
+  .hb__ref-label { position: absolute; top: 0; left: calc((100% - 3.5em) * var(--f)); transform: translateX(-50%); white-space: nowrap; color: var(--text-quiet); font-size: var(--fs-xs); }
+</style>

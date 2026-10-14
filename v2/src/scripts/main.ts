@@ -45,12 +45,14 @@ async function copyText(text: string) {
   try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
 }
 $$<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+  const label = $('[data-copy-label]', btn);
+  const original = label?.textContent ?? '';
+  let reset: ReturnType<typeof setTimeout>;
   btn.addEventListener('click', async () => {
-    const label = $('[data-copy-label]', btn);
-    const original = label?.textContent ?? '';
+    clearTimeout(reset);
     const ok = await copyText(btn.dataset.copy ?? '');
     if (label) label.textContent = ok ? btn.dataset.copied ?? 'Copied' : btn.dataset.copy ?? '';
-    setTimeout(() => label && (label.textContent = original), 2000);
+    reset = setTimeout(() => label && (label.textContent = original), 2000);
   });
 });
 
@@ -92,7 +94,8 @@ if (palette && pdata) {
   }
   function mark() {
     $$('li', list).forEach((li, i) => li.setAttribute('aria-selected', String(i === active)));
-    input.setAttribute('aria-activedescendant', shown.length ? `pal-${active}` : '');
+    if (shown.length) input.setAttribute('aria-activedescendant', `pal-${active}`);
+    else input.removeAttribute('aria-activedescendant');
     $(`#pal-${active}`, list)?.scrollIntoView({ block: 'nearest' });
   }
   async function run(it: PItem) {
@@ -100,7 +103,7 @@ if (palette && pdata) {
     if (it.action === 'copy-email') { await copyText('elaraki48@gmail.com'); return; }
     if (it.action === 'ask') {
       const term = $('[data-terminal]');
-      if (term) { term.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); $<HTMLInputElement>('.term__input', term)?.focus({ preventScroll: true }); }
+      if (term) { const disclosure = term.closest('details'); if (disclosure) disclosure.open = true; term.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); $<HTMLInputElement>('.term__input', term)?.focus({ preventScroll: true }); }
       else location.href = `${home === '/' ? '' : home}#lab`;
       return;
     }
@@ -113,8 +116,8 @@ if (palette && pdata) {
     if (palette!.open) return;
     input.value = '';
     active = 0;
-    render();
     palette!.showModal();
+    render();
     input.focus();
   }
   palette.addEventListener('click', (e) => { if (e.target === palette) palette.close(); });
@@ -122,6 +125,8 @@ if (palette && pdata) {
   input.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % Math.max(shown.length, 1); mark(); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + shown.length) % Math.max(shown.length, 1); mark(); }
+    else if (e.key === 'Home' && !input.value) { e.preventDefault(); active = 0; mark(); }
+    else if (e.key === 'End' && !input.value) { e.preventDefault(); active = Math.max(shown.length - 1, 0); mark(); }
     else if (e.key === 'Enter') { e.preventDefault(); if (shown[active]) run(shown[active]); }
   });
   document.addEventListener('keydown', (e) => {
@@ -232,17 +237,38 @@ const form = $<HTMLFormElement>('[data-contact-form]');
 if (form) {
   const success = $('[data-form-success]');
   const fallback = $('[data-form-fallback]');
+  const submit = $<HTMLButtonElement>('button[type="submit"]', form);
+  let submitting = false;
+  const topic = $<HTMLSelectElement>('#cf-topic', form);
+  const requestedPack = new URLSearchParams(location.search).get('pack');
+  if (topic && requestedPack === '01') topic.value = 'automation';
+  if (topic && requestedPack === '02') topic.value = 'web-app';
+  // Keep native validation available when JavaScript is disabled.
+  form.noValidate = true;
+  $$<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]', form).forEach((field) => {
+    field.addEventListener('input', () => {
+      if (field.getAttribute('aria-invalid') !== 'true' || !field.checkValidity()) return;
+      field.removeAttribute('aria-invalid');
+      const error = document.getElementById(field.getAttribute('aria-describedby')?.split(' ')[0] ?? '');
+      if (error) error.textContent = '';
+    });
+  });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitting) return;
     let firstBad: HTMLInputElement | null = null;
     $$<HTMLInputElement>('input[required], textarea[required]', form).forEach((f) => {
-      const err = document.getElementById(f.getAttribute('aria-describedby') ?? '');
+      const err = document.getElementById(f.getAttribute('aria-describedby')?.split(' ')[0] ?? '');
       const bad = !f.checkValidity();
       f.setAttribute('aria-invalid', String(bad));
       if (err) err.textContent = bad ? (f.dataset.error ?? '') : '';
       if (bad && !firstBad) firstBad = f;
     });
     if (firstBad) { (firstBad as HTMLInputElement).focus(); return; }
+    submitting = true;
+    form.setAttribute('aria-busy', 'true');
+    if (submit) submit.disabled = true;
+    fallback?.setAttribute('hidden', '');
     const data = new FormData(form);
     const body = new URLSearchParams(data as unknown as Record<string, string>).toString();
     try {
@@ -253,11 +279,15 @@ if (form) {
       success?.focus();
     } catch {
       // No form backend on this host: hand the message to the visitor's email app instead.
-      const subject = encodeURIComponent(`Contact: ${data.get('name') ?? ''}`);
+      const subject = encodeURIComponent(`${topic?.selectedOptions[0]?.textContent ?? 'Contact'}: ${data.get('name') ?? ''}`);
       const text = encodeURIComponent(`${data.get('message') ?? ''}\n\n${data.get('name') ?? ''} <${data.get('email') ?? ''}>`);
       fallback?.removeAttribute('hidden');
       fallback?.focus();
       location.href = `mailto:elaraki48@gmail.com?subject=${subject}&body=${text}`;
+    } finally {
+      submitting = false;
+      form.removeAttribute('aria-busy');
+      if (submit) submit.disabled = false;
     }
   });
 }

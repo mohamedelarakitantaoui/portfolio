@@ -2,12 +2,11 @@
 // About (v3): three short paragraphs (who, what I work on, how I work), the photo, Now, languages. No life story.
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import PageIntro from '../components/PageIntro.astro';
 import Rich from '../components/Rich.astro';
 import portrait from '../assets/portrait-studio.png';
 import { about, now, person, spoken } from '../data/site';
 import { cvLink } from '../lib/cv';
-import { type Lang, t } from '../i18n/ui';
+import { type Lang, lp, t } from '../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
@@ -21,11 +20,13 @@ const cv = cvLink(lang);
     : 'Mamoun El Araki, AI and software engineer in Morocco: computer science at Al Akhawayn and Boğaziçi, explainable ML, and the software around it.'}
   ogKey="about"
 >
-  <PageIntro label={fr ? 'À propos' : 'About'} title={fr ? 'À propos' : 'About'} />
-
   <section class="section about" aria-label={fr ? 'Qui je suis' : 'Who I am'}>
     <div class="wrap grid-12 about__grid">
       <div class="about__text">
+        <header>
+          <p class="label">{fr ? 'À propos' : 'About'}</p>
+          <h1 class="h1">{fr ? 'Moi, c’est Mamoun.' : 'I’m Mamoun.'}</h1>
+        </header>
         <p>{about.who[lang]}</p>
         <p>{about.what[lang]}</p>
         <p>{about.how[lang]}</p>
@@ -37,6 +38,11 @@ const cv = cvLink(lang);
       <figure class="about__photo">
         <Image src={portrait} alt={fr ? 'Mamoun El Araki, portrait en studio' : 'Mamoun El Araki, studio portrait'} widths={[360, 540, 720]} sizes="(min-width: 1024px) 400px, 80vw" format="webp" quality={72} loading="eager" />
       </figure>
+      <aside class="about__personal">
+        <p class="label label--plain">{fr ? 'Le projet qui compte le plus pour moi' : 'The project I’m proudest of'}</p>
+        <p>{fr ? 'AneuXplain est mon projet de fin d’études. L’article a été accepté à ICOA 2026 ; j’attends encore sa publication.' : 'AneuXplain was my capstone project. The paper was accepted at ICOA 2026; I’m still waiting for its publication.'}</p>
+        <a href={lp(lang, '/work/aneuxplain')}>{fr ? 'Voir le projet' : 'Explore AneuXplain'} <span aria-hidden="true">↗</span></a>
+      </aside>
     </div>
   </section>
 
@@ -44,14 +50,14 @@ const cv = cvLink(lang);
     <div class="wrap grid-12 about__grid">
       <div class="about__col">
         <p class="label">{fr ? 'Maintenant' : 'Now'}</p>
-        <h2 class="h2" id="about-now">{fr ? 'Un modèle xG pour le football, et un modèle Kaggle pour le genou.' : 'A football xG model and a Kaggle knee model.'}</h2>
+        <h2 class="h2" id="about-now">{fr ? 'Sur mon bureau.' : 'On my desk.'}</h2>
         <ul class="rows about__now">
           {now.inProgress.map((it) => <li><Rich text={it[lang]} /></li>)}
         </ul>
       </div>
       <div class="about__col about__langs">
         <p class="label">{fr ? 'Langues' : 'Languages'}</p>
-        <h2 class="h2" id="about-langs">{fr ? 'Arabe, français, anglais.' : 'Arabic, French, English.'}</h2>
+        <h2 class="about__small-title" id="about-langs">{fr ? 'Pour échanger.' : 'For conversation.'}</h2>
         <ul class="rows about__lang-list" aria-labelledby="about-langs">
           {spoken[lang].map((l) => <li>{l}</li>)}
         </ul>
@@ -61,6 +67,12 @@ const cv = cvLink(lang);
 </Base>
 
 <style>
+  .about { padding-top: calc(var(--header-h) + var(--s-8)); background: var(--bg-band); }
+  .about__text header { margin-bottom: var(--s-5); }
+  .about__personal { border-left: 2px solid var(--accent); padding: var(--s-5); background: var(--accent-surface); display: grid; gap: var(--s-3); }
+  .about__personal p { max-width: var(--measure); }
+  .about__personal a { justify-self: start; padding-block: var(--s-3); text-decoration-color: var(--accent); }
+  .about__small-title { font-size: var(--fs-sub); }
   .about__grid { row-gap: var(--s-7); align-items: start; }
   .about__text { display: grid; gap: var(--s-4); font-size: var(--fs-lede); line-height: 1.55; }
   .about__text p:first-child { color: var(--text); }
@@ -73,7 +85,8 @@ const cv = cvLink(lang);
   .about__col .h2 { margin-bottom: var(--s-5); max-width: 20ch; }
   @media (min-width: 1024px) {
     .about__text { grid-column: 1 / span 7; }
-    .about__photo { grid-column: 9 / -1; }
+    .about__photo { grid-column: 9 / -1; border-radius: var(--r-img) var(--s-9) var(--r-img) var(--r-img); }
+    .about__personal { grid-column: 1 / -1; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr) auto; gap: var(--s-6); align-items: center; }
     .about__col { grid-column: 1 / span 6; }
     .about__langs { grid-column: 8 / -1; }
   }

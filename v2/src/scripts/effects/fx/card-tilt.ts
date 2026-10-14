@@ -1,15 +1,10 @@
-// Project cards (home + /work): a soft light follows the cursor over the media (opacity 0.08, CSS) and the media
-// tilts toward it by at most 4deg. Mouse only: touch, reduced motion and no-JS keep flat cards.
+// Project evidence tilts by at most 1.5 degrees. Mouse only; no decorative glow.
 import type { FxContext } from '../index';
 
-const MAX = 4; // degrees
+const MAX = 1.5; // degrees; keep project evidence readable
 
 export default function cardTilt(media: HTMLElement, { gsap, fine }: FxContext) {
   if (!fine) return;
-  const glow = document.createElement('span');
-  glow.className = 'pcard__glow';
-  glow.setAttribute('aria-hidden', 'true');
-  media.append(glow);
   gsap.set(media, { transformPerspective: 900, transformStyle: 'preserve-3d' });
   const rx = gsap.quickTo(media, 'rotationX', { duration: 0.5, ease: 'power3.out' });
   const ry = gsap.quickTo(media, 'rotationY', { duration: 0.5, ease: 'power3.out' });

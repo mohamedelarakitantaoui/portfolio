@@ -23,10 +23,10 @@ const L = fr
 >
   <PageIntro
     label={fr ? 'Pour les clients' : 'For clients'}
-    title={fr ? 'Du robot de portail au MVP en ligne.' : 'From portal bots to working MVPs.'}
+    title={fr ? 'Automatisation & applications web.' : 'Automation & web applications.'}
     lede={fr
-      ? 'Pour les équipes qui copient des données à la main ou ont besoin d’une application qui marche avant la prochaine réunion. Tout projet plus gros commence par un appel.'
-      : 'For teams that copy data by hand, or need a working app before the next meeting. Anything bigger starts with a call.'}
+      ? 'Je développe des outils Python et des applications web. Nous définissons le périmètre, les livrables et le calendrier avant de commencer.'
+      : 'I build Python tools and web applications. We agree on scope, deliverables and a timeline before development starts.'}
    
   />
 
@@ -56,7 +56,7 @@ const L = fr
   <section class="section band" aria-labelledby="process-h2">
     <div class="wrap">
       <p class="label">{fr ? 'Déroulé' : 'Process'}</p>
-      <h2 class="h2 sec-h2" id="process-h2" data-reveal-lines>{fr ? 'Un appel, une page de périmètre, une démo par semaine.' : 'One call, one page of scope, a demo every week.'}</h2>
+      <h2 class="h2 sec-h2" id="process-h2" data-reveal-lines>{fr ? 'Comment se déroule un projet.' : 'How a project runs.'}</h2>
       <ol class="steps">
         {process.map((p) => (
           <li class="step">
@@ -73,7 +73,7 @@ const L = fr
     <div class="wrap faq-grid">
       <div>
         <p class="label">FAQ</p>
-        <h2 class="h2 sec-h2" id="faq-h2" data-reveal-lines>{fr ? 'Les langues, et ce qui se passe quand un portail change.' : 'Languages, and what happens when a portal changes.'}</h2>
+        <h2 class="h2 sec-h2" id="faq-h2" data-reveal-lines>{fr ? 'Questions pratiques.' : 'Practical questions.'}</h2>
       </div>
       <div class="faq">
         {faq.filter((f) => shows(f.a[lang])).map((f) => (
@@ -88,18 +88,21 @@ const L = fr
 </Base>
 
 <style>
-  .packs-sec { padding-top: 0; }
-  .pack { display: grid; gap: var(--s-5); padding-block: var(--s-7); }
-  @media (min-width: 1024px) { .pack { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto; gap: var(--s-7); align-items: start; } }
+  .packs-sec { padding-top: var(--s-7); }
+  .packs { display: grid; gap: var(--s-5); border: 0; }
+  .packs > .pack { display: grid; gap: var(--s-6); padding: var(--s-6); border: 1px solid var(--line-strong); background: var(--bg-band); }
+  .packs > .pack:first-child { background: var(--accent-surface); border-color: var(--accent-line); }
+  @media (min-width: 1024px) { .packs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .pack__head { display: grid; gap: var(--s-2); }
   .pack__n { color: var(--accent); }
-  .pack__name { font-family: var(--font-body); font-weight: 700; font-size: clamp(2rem, 4.2vw, 3.75rem); letter-spacing: var(--track-display); line-height: 0.95; }
+  .pack__name { font-family: var(--font-body); font-weight: 700; font-size: var(--fs-statement); letter-spacing: var(--track-display); line-height: 1.05; }
   .pack__facts > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); }
   .pack__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
   .pack__facts dd { color: var(--text-muted); }
   .pack__facts a { color: var(--text); text-decoration-color: var(--accent); }
   .pack__facts dd.pack__price { color: var(--text); font-weight: 600; }
-  .pack__cta { justify-self: start; }
+  .pack__cta { justify-self: start; align-self: end; }
+  @media (max-width: 639px) { .packs > .pack { padding: var(--s-5); } .pack__facts > div { grid-template-columns: 1fr; gap: var(--s-2); } }
   .sec-h2 { max-width: 16ch; margin-bottom: var(--s-7); }
   .steps { list-style: none; display: grid; gap: var(--s-6); }
   @media (min-width: 768px) { .steps { grid-template-columns: repeat(2, 1fr); } }

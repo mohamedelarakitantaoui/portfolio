@@ -63,7 +63,7 @@ La première version du collecteur tenait en un script de 3 643 lignes. Un passa
 
 </Chapter>
 
-<Chapter n="04" label="Décisions et compromis" title="J’ai choisi la configuration et les échecs visibles plutôt que le code astucieux.">
+<Chapter n="04" label="Décisions et compromis" title="Configuration par portail, navigateurs en parallèle et échecs visibles.">
 
 - **Des services plutôt qu’un script.** J’ai découpé le monolithe par tâche (trouver les URL, remplir les formulaires, télécharger, classer, réessayer), parce que dans un script de 3 643 lignes chaque étape était mêlée à toutes les autres.
 - **Du YAML par portail plutôt que des sélecteurs dans le code.** Chaque source est décrite en configuration, parce que les portails changent : un nouveau portail ou un sélecteur modifié, c’est une modification de configuration, pas de code.
@@ -72,7 +72,7 @@ La première version du collecteur tenait en un script de 3 643 lignes. Un passa
 
 </Chapter>
 
-<Chapter n="05" label="Résultats" title="Les mêmes 300 consultations, le temps d’un café au lieu d’un après-midi.">
+<Chapter n="05" label="Résultats" title="300 consultations en 15 minutes, contre 2 h 30 auparavant.">
 
 <Stats items={[
   { value: '2 h 30 → 15 min', caption: '300 consultations par passage : 90 % de temps de traitement en moins, plus de 10 h gagnées par semaine' },

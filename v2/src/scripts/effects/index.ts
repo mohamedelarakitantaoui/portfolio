@@ -4,7 +4,6 @@
 // Called from main.ts only when effects are allowed (kill switch, ?effects=off, reduced motion all checked there).
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import type Lenis from 'lenis';
 
 export interface FxContext { gsap: typeof gsap; ScrollTrigger: typeof ScrollTrigger; fine: boolean }
 type FxModule = { default: (el: HTMLElement, ctx: FxContext) => void | Promise<void> };
@@ -18,29 +17,7 @@ export async function start() {
   // Hover/cursor effects need a mouse; touch keeps native everything.
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  // Smooth wheel scrolling on mouse devices only, driven by GSAP's ticker so ScrollTrigger never reads stale
-  // positions. Keyboard scrolling, anchors and find-in-page keep working (Lenis listens to native scroll).
-  if (fine) {
-    const { default: Lenis } = await import('lenis');
-    // allowNestedScroll: a scrollable box (the terminal output) scrolls first, then the wheel goes back to the page.
-    const lenis = new Lenis({ duration: 1.1, allowNestedScroll: true });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-    window.__lenis = lenis;
-    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
-      const id = a.getAttribute('href')!;
-      if (id.length < 2 || a.hasAttribute('data-menu-open')) return;
-      const target = document.querySelector<HTMLElement>(id);
-      if (!target) return;
-      e.preventDefault();
-      lenis.scrollTo(target, { offset: -24 });
-      target.focus?.({ preventScroll: true });
-    }));
-    // Any open modal dialog (menu, palette, walkthrough) pauses smooth scrolling.
-    const sync = () => (document.querySelector('dialog[open]') ? lenis.stop() : lenis.start());
-    document.querySelectorAll('dialog').forEach((d) => new MutationObserver(sync).observe(d, { attributes: true, attributeFilter: ['open'] }));
-  }
+  // Native scrolling keeps keyboard, touch, anchors and browser find predictable.
 
   const ctx: FxContext = { gsap, ScrollTrigger, fine };
   const io = new IntersectionObserver((entries) => {
@@ -58,8 +35,4 @@ export async function start() {
   }, { rootMargin: '0px 0px 50% 0px' });
   document.querySelectorAll<HTMLElement>('[data-fx]').forEach((el) => io.observe(el));
   window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
-}
-
-declare global {
-  interface Window { __lenis?: Lenis }
 }

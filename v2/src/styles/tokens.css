@@ -1,4 +1,4 @@
-/* v4 tokens. One family (DM Sans), one accent (saffron), dark only. Contrast pairs are in docs/design-tokens.md. */
+/* V2 visual refresh: DM Sans, charcoal and ice blue from Mamoun's portrait. */
 :root {
   color-scheme: dark;
 
@@ -14,10 +14,16 @@
   --line-strong: rgba(255, 255, 255, 0.2);
   --line-input: #6b6b6b; /* UI boundaries (inputs, outline pills): 3.7 · 3.5 · 3.3 */
 
-  /* Accent: Taliouine saffron. Primary button, small labels, one highlight per screen. */
-  --accent: #f2a900; /* 9.7 · 9.4 · 8.8 */
-  --accent-hover: #ffc233;
-  --accent-ink: #0c0c0c; /* text on accent fill: 9.7 */
+  /* Ice blue echoes the real portrait; dark ink keeps button text legible. */
+  --accent: #a7c7ff;
+  --accent-hover: #c4d9ff;
+  --accent-ink: #0c0c0c;
+  --accent-surface: #182333;
+  --portrait-surface: #263449;
+  --accent-line: rgba(167, 199, 255, 0.3);
+  --fs-name: clamp(3.5rem, 9.2vw, 10.5rem);
+  --fs-feature: clamp(2.75rem, 4.5vw, 5rem);
+  --fs-index: clamp(3rem, 5vw, 6rem);
 
   /* Paper: the light state of the Experience section (effect 6). Contrast on #F2F0EA: ink 16.6, muted 7.8, quiet 6.1,
      accent 6.1 (saffron itself is only 1.76 on paper, so labels darken), input outline 3.0. */

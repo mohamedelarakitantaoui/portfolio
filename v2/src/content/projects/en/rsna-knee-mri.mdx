@@ -1,0 +1,169 @@
+---
+key: rsna-knee-mri
+lang: en
+order: 7
+title: Knee MRI Abnormality Detection
+description: A deep-learning pipeline that reads raw knee MRI and scores 12 abnormalities, built on free Kaggle GPUs for the RSNA 2026 competition.
+tier: more
+year: "2026"
+meta: Kaggle competition · RSNA · 2026
+outcome: Took my own knee-MRI models from 0.825 to 0.877 public-leaderboard ROC-AUC, with 58 expert labels and free GPUs.
+tldr:
+  - "**Problem:** score 12 knee abnormalities from raw MRI, when only 58 of 4,407 training studies come with expert labels."
+  - "**Built:** a DICOM cache of 21,137 series, an LLM report labeller checked against the 58 expert studies, and ResNet18 + EfficientNet-B0 models trained in parallel on two free T4 GPUs."
+  - "**Result:** my own models went from **0.825 to 0.877** public-leaderboard ROC-AUC. My best submission, a reproduced public ensemble, scores **0.954**. The competition closes on 22 Oct 2026."
+status: Competition open until 22 Oct 2026; the private-leaderboard result is pending.
+role: "Everything: data pipeline, labelling, training, inference"
+timeline: Autumn 2026
+team: Solo
+stack: [Python, PyTorch, timm, pydicom, OpenCV, pandas, scikit-learn, Gemini API, Kaggle Notebooks (2×T4)]
+links:
+  - { label: "Kaggle profile", href: "https://www.kaggle.com/elaramamoun" }
+  - { label: "Competition page", href: "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection" }
+codeNote: "Notebooks private while the competition runs. Walkthrough on request."
+number: { value: "0.877", caption: "public-leaderboard ROC-AUC of my own models (ResNet18 + EfficientNet-B0), up from 0.825" }
+progress: "In progress: the competition closes on 22 Oct 2026; the private-leaderboard result follows."
+bars: { title: "Public leaderboard, macro ROC-AUC: my own models", before: { label: "ResNet18 baseline", value: 0.825, text: "0.825" }, after: { label: "ResNet18 + EfficientNet-B0 ensemble", value: 0.877, text: "0.877" } }
+constraint: 58 expert labels for 4,407 studies, free-tier GPUs only, and competition data that can't leave Kaggle.
+tags: [PyTorch, Medical imaging, Computer vision, LLM labelling]
+next: preparia
+---
+import curves from '../../../assets/rsna-knee/training-curves.png';
+import submissions from '../../../assets/rsna-knee/kaggle-submissions.webp';
+import leaderboard from '../../../assets/rsna-knee/kaggle-leaderboard.webp';
+import notebook from '../../../assets/rsna-knee/kaggle-notebook.webp';
+
+<Note>The competition rules forbid publishing its data, so this page shows no scans: only my own logs, charts and Kaggle pages.</Note>
+
+<Chapter n="01" label="Problem" title="58 expert labels for 4,407 studies: the labels came before the model.">
+
+RSNA's 2026 Kaggle challenge asks for 12 probabilities per knee MRI study: ACL, MCL, medial and lateral meniscus, three osteoarthritis compartments (medial, lateral, patellofemoral), effusion, synovitis, Baker's cyst, contusion and fracture. The score is macro ROC-AUC.
+
+Each study is a folder of raw DICOM files: up to six MRI series across three planes (sagittal, coronal, axial), with and without fat suppression, each 20 to 40 slices.
+
+Radiology **reports** exist for every training study; expert **labels** exist for only 58. So the first problem wasn't the model: it was turning the other 4,349 free-text reports into training labels.
+
+</Chapter>
+
+<Chapter n="02" label="Constraints" title="Free GPUs, 58 labels, and data that can't leave Kaggle.">
+
+- **Labels:** 58 expert-labelled studies; everything else is report text.
+- **Compute:** free-tier Kaggle notebooks (2×T4 GPUs, with a weekly quota) and Google Colab.
+- **Data:** the competition data stays inside the competition, so nothing on this page shows a scan.
+- **An accident:** mid-competition, a laptop SSD failure wiped the LLM labels I had stored locally.
+
+</Chapter>
+
+<Chapter n="03" label="How it works" title="From raw DICOM to a submission file, on free compute.">
+
+<Flow label="Knee MRI pipeline" steps={['raw DICOM', 'cache (150 mm crop, 288 px)', 'report labels', 'ResNet18 / EfficientNet-B0', 'offline inference', 'submission.csv']} />
+
+**Report labels.** I built a labeller on the Gemini API: a radiology report goes in, a strict 12-field binary JSON comes out. I wrote three prompt versions and scored each against the 58 expert studies. Version 3 reached **82% macro balanced accuracy**, with 10 of 12 labels healthy and MCL sensitivity at 1.00. Turning off the model's default thinking tokens cut the API cost about 5×, and the runner resumes after a crash with per-row token accounting.
+
+<HBars
+  title="LLM labeller against the 58 expert studies: balanced accuracy"
+  note="Four of the 12 labels. Grey marks the two weak ones, where the report text runs out. Bars start at 0.5 (chance)."
+  ref={{ value: 0.82, label: 'macro 0.82 (all 12)' }}
+  items={[
+    { label: 'MCL', value: 0.93 },
+    { label: 'Fracture', value: 0.78 },
+    { label: 'Synovitis', value: 0.68, muted: true },
+    { label: 'Effusion', value: 0.65, muted: true },
+  ]}
+/>
+
+**The DICOM cache.** For each study the cache picks the series for 3 planes × 2 contrasts, orders slices by patient position, samples 16 slices, applies rescale slope and intercept, inverts MONOCHROME1 images and normalises by percentile. It ran over **4,407 studies in about 57 minutes** on CPU notebooks, so no GPU quota was spent: **21,137 series, 15.8 GiB**, saved as a private Kaggle dataset. Two studies failed, both truncated source files.
+
+**Cache v2.** The first cache squashed whole frames to 224 px, so small structures like the menisci lost detail. Version 2 finds the knee by the centre of mass of its Otsu foreground, crops a fixed **150 × 150 mm** window using the DICOM pixel spacing, then resizes to 288 px: every knee at the same real-world scale.
+
+**Training.** ResNet18 and EfficientNet-B0 multi-label models, trained on 3,479 studies and validated on 870, with the 58 expert studies held out as gold. The training labels come from a public LLM-label dataset built the same way as mine (chapter 04 says why). A small launcher runs one training process per GPU, so both models trained at once on Kaggle's 2×T4.
+
+<Figure img={curves} alt="Line chart of macro ROC-AUC per epoch. EfficientNet-B0 peaks at validation 0.848 and gold 0.859 at epoch 8 of 10. ResNet18 levels off near 0.82 validation and 0.84 gold over 20 epochs." caption="Both runs from one notebook: 2 h 59 min on 2×T4. Solid lines are validation (870 studies), dashed lines the 58 expert studies. Plotted from the knee-v2-train log." />
+
+**Inference.** The offline scoring notebook copies the preprocessing byte for byte, and a parity check proves it: **99 of 99** series identical between the training cache and the test-time code.
+
+</Chapter>
+
+<Chapter n="04" label="Key decisions and trade-offs" title="A pass/fail line, written down before every experiment.">
+
+I wrote the threshold first, then ran the experiment, then followed the threshold:
+
+<Rows items={[
+  ['01', 'Oct 8 · My model on cache v2', 'Needed gold ≥ 0.88 to keep investing; got 0.83. Switched strategy.'],
+  ['02', 'Oct 10 · Blend my model into a 0.943 public ensemble', 'Needed ≥ 0.945; got 0.942. Dropped the blend.'],
+  ['03', 'Oct 12 · Reproduce the versia-5 public ensemble', 'Needed to beat 0.943; got 0.954. Final pick.'],
+]} />
+
+- **Stop tuning the labeller at the data's ceiling.** The expert labels come from the images; my labeller reads the text. Effusion volume and synovial thickening show on MRI but rarely make it into a report. I tried a prompt fix for each, both made things worse, so I froze version 3 and wrote down why.
+- **The 58 expert studies as a local proxy.** Their score tracked the public leaderboard within a few points, so I checked there before spending a submission.
+- **Public labels after the SSD failure.** I switched training to a public LLM-label dataset built the same way ([stevenleehans/rsna-knee-llm-report-labels](https://www.kaggle.com/datasets/stevenleehans/rsna-knee-llm-report-labels)) and used my labeller's gold results to know which labels to trust.
+- **Speed alone couldn't win the Efficiency Track.** I derived the runtime-penalised score: about 0.01 AUC is worth about 12 minutes of runtime.
+
+</Chapter>
+
+<Chapter n="05" label="Results" title="0.825 to 0.877 with my own models; 0.954 with a reproduced public ensemble.">
+
+<Stats items={[
+  { value: '0.877', caption: 'public-leaderboard ROC-AUC, my ResNet18 + EfficientNet-B0 ensemble (from 0.825)' },
+  { value: '0.859', caption: 'best single model on the 58 expert studies (EfficientNet-B0, cache v2; validation 0.848)' },
+  { value: '0.954', caption: 'best submission: a reproduced public ensemble, not my model' },
+  { value: '99 / 99', caption: 'series byte-identical between the training cache and inference' },
+]} />
+
+<HBars
+  title="Public leaderboard, macro ROC-AUC, per submission"
+  note="Bars start at 0.5 (chance). The grey bars are public notebooks I reproduced, or blended my model into."
+  legend={['My own models', 'Public notebooks (reproduced or blended)']}
+  items={[
+    { label: 'ResNet18 baseline', value: 0.825, text: '0.825' },
+    { label: 'ResNet18 + EfficientNet-B0', value: 0.877, text: '0.877' },
+    { label: 'jiweiliu ensemble, reproduced', value: 0.943, text: '0.943', muted: true },
+    { label: 'Same + my model (dropped)', value: 0.942, text: '0.942', muted: true },
+    { label: 'versia-5 ensemble, reproduced', value: 0.954, text: '0.954', muted: true },
+  ]}
+/>
+
+<HBars
+  title="My best model, per finding: ROC-AUC on the 58 expert studies"
+  note="EfficientNet-B0 on cache v2. Bars start at 0.5 (chance). With 58 studies, each finding rests on few positive cases."
+  ref={{ value: 0.859, label: 'macro 0.859' }}
+  items={[
+    { label: 'Medial OA', value: 0.97 },
+    { label: "Baker's cyst", value: 0.95 },
+    { label: 'Fracture', value: 0.92 },
+    { label: 'Contusion', value: 0.91 },
+    { label: 'Medial meniscus', value: 0.91 },
+    { label: 'MCL', value: 0.90 },
+    { label: 'ACL', value: 0.89 },
+    { label: 'Effusion', value: 0.83 },
+    { label: 'Patellofemoral OA', value: 0.82 },
+    { label: 'Synovitis', value: 0.78 },
+    { label: 'Lateral OA', value: 0.77 },
+    { label: 'Lateral meniscus', value: 0.65 },
+  ]}
+/>
+
+<Figure img={submissions} light alt="Kaggle submissions list with five entries and public scores: knee-base-versia5 0.954, knee-jiwei-blend-v2 0.942, knee-v0-sub v1 ensemble 0.877, knee-v0-sub v0 0.825, knee-base-jiwei-v11 0.943." caption="My five submissions on Kaggle. The two public-ensemble entries are labelled there as unmodified copies." />
+
+<Figure img={leaderboard} light alt="Kaggle public leaderboard row: rank 1377, Elara Mamoun, score 0.954, 5 entries." caption="My public-leaderboard row on 14 Oct 2026: 0.954, rank 1,377. Many teams sit close to this score; the private leaderboard decides after 22 Oct." />
+
+<ModelCard
+  use="A competition entry: rank knee MRI studies by the likelihood of 12 findings, scored by macro ROC-AUC. Not a diagnostic tool."
+  outOfScope="Any clinical use, and scans from scanners or protocols outside the competition data."
+  data="RSNA 2026 competition data, 4,407 studies: trained on 3,479, validated on 870, with LLM labels drawn from radiology reports (public dataset). The 58 expert-labelled studies are held out as gold."
+  evaluation="Macro ROC-AUC over 12 findings. Best single model: 0.859 on the 58 expert studies (validation 0.848). Public leaderboard: 0.825 (ResNet18) → 0.877 (ResNet18 + EfficientNet-B0). Baselines: chance (0.5) and the public ensembles at 0.943 and 0.954."
+  limitations="Training labels come from report text, so findings rarely written in reports (effusion, synovitis) are noisy. The gold set is only 58 studies. The private-leaderboard result is pending until 22 Oct 2026."
+  failure="The lateral meniscus stayed the weakest finding throughout: 0.65 AUC on the expert studies, against 0.91 for the medial meniscus."
+/>
+
+<Figure img={notebook} light alt="Kaggle notebook page for knee-v2-train: one cell that writes the training script, runtime 2 h 59 min 53 s on GPU T4 x2, inputs: the competition, two cache notebooks and the RSNA Knee LLM Report Labels dataset." caption="The training notebook: one cell writes the script, a launcher starts one run per GPU." />
+
+</Chapter>
+
+<Chapter n="06" label="What I'd do next" title="Next: one lean model that keeps the ensemble's accuracy.">
+
+- Pseudo-label the training set with the strong ensemble, then distil it into a single lean model for the Efficiency Track.
+- Train the meniscus findings on a higher-resolution crop around the joint line.
+- Replace the report labels for effusion and synovitis with signals taken from the images.
+
+</Chapter>

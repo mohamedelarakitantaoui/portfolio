@@ -1,0 +1,507 @@
+<title>Mamoun El Araki Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap">
+<style>
+/* Layout: centred editorial hero over a dim point-cloud (Arik direction) -> stack strip -> service panels -> hairline project list -> sharp-panel doors -> giant two-face name. */
+/* Palette: black + champagne. No pills, no rounded cards; thin borders and small uppercase tracking carry the "premium" feel. */
+:root{
+  --bg:#070605;
+  --panel:#0F0D0B;
+  --fg:#E9DFCC;
+  --muted:#8E8474;
+  --line:rgba(233,223,204,.12);
+  --gold:#C8B07E;
+  --gold-ink:#0A0907;
+  --sans:"Jost","Futura","Century Gothic",system-ui,sans-serif;
+  --serif:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.65;overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1320px;margin-inline:auto}
+@media(min-width:820px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+.cap{font-family:var(--sans);font-weight:400;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.muted{color:var(--muted)}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0}
+
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.06;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#cloud{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,header,footer{position:relative;z-index:1}
+
+/* buttons: sharp, thin, small caps */
+.btn{display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:0 22px;border:1px solid var(--gold);color:var(--fg);text-decoration:none;font:400 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;background:transparent;cursor:pointer;transition:background .35s var(--ease),color .35s var(--ease)}
+.btn:hover{background:var(--gold);color:var(--gold-ink)}
+.btn.quiet{border-color:var(--line)}
+.btn.quiet:hover{background:transparent;color:var(--fg);border-color:var(--fg)}
+.btn .ar{transition:transform .35s var(--ease)}
+.btn:hover .ar{transform:translateX(4px)}
+
+/* header: a compact bar, centred */
+.site-head{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:calc(20px + env(safe-area-inset-top,0px));display:flex;justify-content:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{display:flex;align-items:center;gap:28px;padding:8px 8px 8px 18px;background:rgba(15,13,11,.82);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.mark{font-weight:400;font-size:15px;letter-spacing:.02em;text-decoration:none}
+.mark i{font-style:normal;color:var(--gold)}
+.bar nav{display:flex;gap:22px}
+.bar nav a{text-decoration:none;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);transition:color .2s}
+.bar nav a:hover{color:var(--fg)}
+.bar .btn{min-height:34px;padding:0 14px;font-size:10px}
+@media(max-width:760px){.bar nav{display:none}.bar{gap:16px}}
+
+/* hero */
+.hero{min-height:100svh;display:grid;grid-template-rows:1fr auto;padding-block:120px 28px;text-align:center}
+.hero-c{align-self:center;display:grid;justify-items:center;gap:26px}
+.hero h1{margin:0;font-weight:200;font-size:clamp(52px,8.6vw,132px);line-height:.98;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 em.s{display:block;font-weight:400;font-size:1.02em;letter-spacing:-.01em;color:var(--fg)}
+.hero p{margin:0;max-width:46ch;color:var(--muted);font-size:15px}
+.btns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:20px;text-align:left}
+.hud .r{text-align:right}
+.clock{font-size:20px;font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:.04em;color:var(--fg)}
+.fig{max-width:34ch;font-size:12.5px;color:var(--muted);line-height:1.5;justify-self:end}
+.fig b{font-weight:400;color:var(--fg)}
+.cue{display:grid;justify-items:center;gap:10px;text-decoration:none;color:var(--muted)}
+.cue i{display:block;width:1px;height:40px;background:linear-gradient(var(--gold),transparent);animation:cue 2.4s var(--ease) infinite}
+@keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media(max-width:820px){.hud{grid-template-columns:1fr;gap:16px}.hud .r{text-align:left}.fig{justify-self:start}.cue{display:none}}
+
+/* stack strip */
+.strip{display:flex;flex-wrap:wrap;justify-content:space-between;gap:18px 32px;padding-block:44px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.strip span{font-size:15px;font-weight:400;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.strip span:nth-child(3n+2){font-family:var(--serif);font-style:italic;text-transform:none;letter-spacing:0;font-size:19px}
+
+.solid{background:var(--bg)}
+section.pad{padding-block:120px}
+.eyebrow{display:flex;align-items:center;gap:14px;color:var(--muted);margin-bottom:22px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+h2{margin:0;font-weight:200;font-size:clamp(40px,5vw,72px);line-height:1;letter-spacing:-.02em;text-wrap:balance}
+h2 em.s{font-weight:400}
+
+/* statement */
+.statement{padding-block:16vh 20vh;text-align:center}
+.statement p{margin:0 auto;max-width:24ch;font-weight:200;font-size:clamp(32px,4.6vw,64px);line-height:1.12;letter-spacing:-.015em;text-wrap:balance}
+.statement .w{color:#5F584D;transition:color .4s var(--ease)}
+.statement .w.lit{color:var(--fg)}
+.statement .w.serif{font-family:var(--serif);font-style:italic;font-weight:400}
+
+/* services panels */
+.panels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:56px}
+.panel{background:var(--panel);border:1px solid var(--line);padding:30px 28px 34px;display:grid;gap:16px;align-content:start;transition:border-color .35s}
+.panel:hover{border-color:rgba(200,176,126,.5)}
+.panel .n{font-size:11px;color:var(--gold);letter-spacing:.2em}
+.panel h3{margin:0;font-weight:400;font-size:15px;letter-spacing:.18em;text-transform:uppercase}
+.panel p{margin:0;color:var(--muted);font-size:15px}
+.panel ul{margin:4px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px;color:var(--fg)}
+@media(max-width:860px){.panels{grid-template-columns:minmax(0,1fr)}}
+
+/* work */
+.work-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px}
+.work-top p{margin:0;max-width:36ch;color:var(--muted)}
+.projects{list-style:none;margin:56px 0 0;padding:0}
+.project{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr) minmax(0,.8fr);gap:32px;padding-block:40px;border-top:1px solid var(--line);position:relative}
+.project:last-child{border-bottom:1px solid var(--line)}
+.project::before{content:"";position:absolute;top:-1px;left:0;height:1px;width:0;background:var(--gold);transition:width .7s var(--ease)}
+.project:hover::before{width:100%}
+.project h3{margin:0;font-weight:300;font-size:clamp(28px,2.8vw,40px);line-height:1.05;letter-spacing:-.01em}
+.project h3 em.s{display:block;font-size:.62em;color:var(--muted);margin-top:6px}
+.project p{margin:0;font-size:15.5px;max-width:52ch}
+.tags{margin-top:12px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.tags b{font-weight:400;color:var(--gold)}
+.facts{margin:0;display:grid;gap:12px;align-content:start}
+.facts div{display:grid;gap:2px}
+.facts dt{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:0;font-size:14.5px}
+.facts dd.big{font-weight:200;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+@media(max-width:900px){.project{grid-template-columns:minmax(0,1fr);gap:16px}}
+
+/* now */
+.now{list-style:none;margin:48px 0 0;padding:0}
+.now li{display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;padding-block:22px;border-top:1px solid var(--line);align-items:baseline}
+.now li:last-child{border-bottom:1px solid var(--line)}
+.now .st{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+@media(max-width:600px){.now li{grid-template-columns:minmax(0,1fr);gap:4px}}
+
+/* doors */
+.doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:56px}
+.door{background:var(--panel);border:1px solid var(--line);padding:40px 36px;display:grid;gap:18px;align-content:start}
+.door h3{margin:0;font-weight:200;font-size:clamp(30px,3vw,42px);line-height:1.05}
+.door p{margin:0;color:var(--muted)}
+.door ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.door ul li{padding-left:22px;position:relative}
+.door ul li::before{content:"";position:absolute;left:0;top:.8em;width:12px;height:1px;background:var(--gold)}
+@media(max-width:820px){.doors{grid-template-columns:minmax(0,1fr)}.door{padding:28px 22px}}
+
+/* footer */
+.foot{padding-block:110px 32px;background:var(--bg);border-top:1px solid var(--line);text-align:center}
+.email{display:block;margin:18px 0 22px;font-weight:200;font-size:clamp(26px,4vw,48px);letter-spacing:-.01em;user-select:all;overflow-wrap:anywhere}
+.giant{margin:90px 0 28px;font-weight:200;font-size:clamp(54px,13vw,210px);line-height:.9;letter-spacing:-.035em;overflow-wrap:anywhere}
+.giant em.s{font-weight:400;color:var(--gold)}
+.foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-align:left}
+.foot-row a{text-decoration:none}
+.foot-row a:hover{color:var(--fg)}
+
+
+/* v3 additions: real-content pieces */
+.hero h1{font-size:clamp(44px,6.4vw,104px);max-width:15ch}
+.hstats{display:flex;gap:30px;margin:0;flex-wrap:wrap}
+.hstats div{display:grid;gap:2px}
+.hstats dt{font-weight:200;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.hstats dd{margin:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);max-width:16ch;line-height:1.4}
+.hud .r .fig{margin:8px 0 0 auto;text-align:right}
+.strip span:nth-child(3n+2){font-family:var(--sans);font-style:normal;text-transform:uppercase;letter-spacing:.08em;font-size:15px}
+.strip span:nth-child(even){font-family:var(--serif);font-style:italic;text-transform:none;letter-spacing:0;font-size:20px}
+.statement .lead{margin:28px auto 0;max-width:52ch;color:var(--muted);font-size:16px}
+.project{grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) auto}
+.project h3{margin-top:8px}
+.pbody{display:grid;gap:14px}
+.metric{font-size:14px;color:var(--gold)!important;letter-spacing:.02em}
+.small{font-size:14px}
+.plink{text-decoration:none;color:var(--muted);align-self:start;white-space:nowrap}
+.plink:hover{color:var(--gold)}
+.bars{display:grid;gap:8px;max-width:520px}
+.brow{display:grid;grid-template-columns:56px minmax(0,1fr) 74px;align-items:center;gap:12px}
+.brow i{display:block;height:10px;width:var(--w);background:rgba(233,223,204,.22)}
+.brow.hot i{background:var(--gold)}
+.brow b{font-weight:300;font-size:15px;font-variant-numeric:tabular-nums;text-align:right}
+.sub{margin:72px 0 0;font-weight:400;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.more{list-style:none;margin:20px 0 0;padding:0}
+.more li{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.5fr) auto;gap:32px;padding-block:20px;border-top:1px solid var(--line);align-items:baseline}
+.more li:last-child{border-bottom:1px solid var(--line)}
+.more b{font-weight:400;font-size:18px}
+.more span{color:var(--muted);font-size:15px;max-width:60ch}
+.more em{font-style:normal;font-size:12px;letter-spacing:.14em;color:var(--muted)}
+.now .role{display:block;font-weight:400;margin-bottom:4px;color:var(--fg)}
+.now li > span:last-child{color:var(--muted)}
+@media(max-width:900px){.project,.more li{grid-template-columns:minmax(0,1fr);gap:12px}}
+@media(max-width:820px){.hud .r .fig{margin-left:0;text-align:left}}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+
+<canvas id="cloud" aria-hidden="true"></canvas>
+
+<header class="site-head">
+  <div class="bar" id="bar">
+    <a class="mark" href="#top">Mamoun El Araki</a>
+    <nav aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#experience">About</a>
+      <a href="#services">Services</a>
+      <a href="#contact">CV</a>
+    </nav>
+    <a class="btn" href="#contact">Email me</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap" aria-labelledby="name">
+    <div class="hero-c">
+      <span class="cap muted">AI and software engineer · Based in Morocco</span>
+      <h1 id="name">I build ML that explains itself, <em class="s">and the software that ships it.</em></h1>
+      <p>Open to junior AI, ML and software engineering roles. Based in Morocco, open to remote and relocation.</p>
+      <div class="btns">
+        <a class="btn" href="#work">See my work <span class="ar" aria-hidden="true">→</span></a>
+        <a class="btn quiet" href="#contact">Download CV</a>
+      </div>
+    </div>
+    <div class="hud">
+      <dl class="hstats">
+        <div><dt>90%</dt><dd>less processing time at Intelcia</dd></div>
+        <div><dt>0.83</dt><dd>AUC, AneuXplain</dd></div>
+        <div><dt>ICOA 2026</dt><dd>paper accepted</dd></div>
+      </dl>
+      <a class="cue cap" href="#statement"><i></i>Scroll</a>
+      <div class="r">
+        <div class="cap muted">Morocco · <span id="tz">GMT+1</span></div>
+        <div class="clock" id="clock">--:--:--</div>
+        <p class="fig">Behind the text: an artery with an aneurysm as <span id="ptcount">6,000</span> points, the kind of 3D input AneuXplain reads. Illustrative, not patient data.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="solid">
+    <div class="wrap">
+      <div class="strip" aria-label="Institutions">
+        <span>Al Akhawayn University</span><span>Boğaziçi University</span><span>Intelcia Solutions</span><span>ICOA 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="statement wrap" id="statement" aria-label="About">
+    <span class="cap eyebrow" style="justify-content:center">About</span>
+    <p id="stmt">I measure before I trust a model, and I make its failures visible.</p>
+    <p class="lead">At Intelcia that meant retries and health checks instead of silent gaps. In AneuXplain, an “out of distribution” warning instead of a confident wrong answer.</p>
+  </section>
+
+  <div class="solid">
+    <section class="pad wrap" id="work" aria-labelledby="work-h">
+      <div class="work-top">
+        <div>
+          <span class="cap eyebrow">Work</span>
+          <h2 id="work-h">Projects with <em class="s">numbers on them.</em></h2>
+        </div>
+        <p>What I built, and what changed after it shipped.</p>
+      </div>
+      <ol class="projects">
+        <li class="project">
+          <div>
+            <span class="cap muted">Research · Capstone · 2026</span>
+            <h3>AneuXplain</h3>
+            <div class="tags">PyTorch · Explainability · Medical imaging</div>
+          </div>
+          <div class="pbody">
+            <p>Predicts aneurysm rupture risk from 3D vessel geometry and explains each prediction three ways. Paper accepted at ICOA 2026.</p>
+            <p class="metric">0.83 AUC · 85% accuracy, patient-level split</p>
+          </div>
+          <a class="plink cap" href="#work">Case study →</a>
+        </li>
+        <li class="project">
+          <div>
+            <span class="cap muted">Internship · Intelcia · 2025</span>
+            <h3>DCE Scraper</h3>
+            <div class="tags">Python · Selenium · Microservices</div>
+          </div>
+          <div class="pbody">
+            <p>Cut a 2h30 document run to 15 minutes for 300 consultations. A 3,643-line script split into 7 services, with retries and health checks.</p>
+            <div class="bars" aria-label="Processing time for 300 consultations">
+              <div class="brow"><span class="cap muted">Before</span><i style="--w:100%"></i><b>2h30</b></div>
+              <div class="brow hot"><span class="cap muted">After</span><i style="--w:10%"></i><b>15 min</b></div>
+            </div>
+            <p class="metric">90% less processing time · 10+ hours saved per week</p>
+          </div>
+          <a class="plink cap" href="#work">Case study →</a>
+        </li>
+        <li class="project">
+          <div>
+            <span class="cap muted">ML · Football · 2026</span>
+            <h3>PitchPoint</h3>
+            <div class="tags">xG · PyTorch · LightGBM · Calibration</div>
+          </div>
+          <div class="pbody">
+            <p>Expected goals from the positions of every player around the shot, checked by an evaluation harness built before any model.</p>
+            <div class="bars" aria-label="Calibration error, lower is better">
+              <div class="brow"><span class="cap muted">Before</span><i style="--w:100%"></i><b>0.0464</b></div>
+              <div class="brow hot"><span class="cap muted">After</span><i style="--w:8.2%"></i><b>0.0038</b></div>
+            </div>
+            <p class="metric">ECE 0.0038, down from 0.0464 · 444 tests passing</p>
+            <p class="muted small">In progress: the FastAPI + React web demo.</p>
+          </div>
+          <a class="plink cap" href="#work">Case study →</a>
+        </li>
+      </ol>
+
+      <h3 class="sub">More projects</h3>
+      <ul class="more">
+        <li><b>Knee MRI Abnormality Detection</b><span>A Kaggle entry for RSNA 2026: raw knee MRI in, 12 abnormality scores out. My own models reached 0.877 ROC-AUC on the public leaderboard.</span><em>2026</em></li>
+        <li><b>eSaha</b><span>A mental-health platform with a GPT-powered assistant in 4 languages, built with React, TypeScript, Flask and MongoDB behind JWT auth.</span><em>2025</em></li>
+        <li><b>Mini Private Cloud</b><span>A Python CLI that drives the Docker Engine: YAML provisioning, horizontal scaling, load balancing behind Nginx, self-healing services.</span><em>2026</em></li>
+        <li><b>Preparia</b><span>An exam-prep platform for ITS Elaraki School: 30+ interactive modules across 6 baccalaureate subjects, 150+ students and 12 teachers onboarded.</span><em>2024</em></li>
+      </ul>
+    </section>
+
+    <section class="pad wrap" id="experience" aria-labelledby="exp-h" style="padding-top:0">
+      <span class="cap eyebrow">Experience</span>
+      <h2 id="exp-h">Two internships, <em class="s">and what changed after each.</em></h2>
+      <ul class="now">
+        <li><span class="st">2025 · Jun–Aug</span><span><b class="role">Software Engineer Intern · Intelcia Solutions</b>Built the DCE Scraper: 90% less processing time (2h30 → 15 min), 10+ hours saved per week.</span></li>
+        <li><span class="st">2024 · Jun–Aug</span><span><b class="role">Web Applications Intern · ITS Elaraki School</b>Built Preparia: 30+ interactive modules across 6 baccalaureate subjects, 150+ students and 12 teachers onboarded.</span></li>
+        <li><span class="st">Education</span><span><b class="role">Al Akhawayn University, BSc Computer Science (2021–2026)</b>Boğaziçi University exchange (Fall 2024).</span></li>
+      </ul>
+    </section>
+
+    <section class="pad wrap" id="services" aria-labelledby="svc-h" style="padding-top:0">
+      <span class="cap eyebrow">What I do</span>
+      <h2 id="svc-h">Data pipelines, models you can check, <em class="s">and the apps around them.</em></h2>
+      <div class="panels">
+        <div class="panel">
+          <span class="n">01</span>
+          <h3>Automation &amp; data pipelines</h3>
+          <p>Python services that collect, clean and reconcile data from web portals, with retries, health checks and a log line for every failure.</p>
+          <ul><li>Python · Selenium · YAML config</li><li>Worker pools · ETL</li></ul>
+        </div>
+        <div class="panel">
+          <span class="n">02</span>
+          <h3>Machine learning &amp; evaluation</h3>
+          <p>The evaluation harness comes first: calibration, out-of-distribution holdouts and significance tests. Then a model that explains each prediction.</p>
+          <ul><li>PyTorch · scikit-learn · LightGBM</li><li>Calibration · FastAPI</li></ul>
+        </div>
+        <div class="panel">
+          <span class="n">03</span>
+          <h3>Full-stack products</h3>
+          <p>The app people open: a React front end on a FastAPI or Flask API, with auth, dashboards and 3D views, shipped in Docker.</p>
+          <ul><li>React · TypeScript · Three.js</li><li>FastAPI · Flask · Docker · Kubernetes</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="pad wrap" id="now" aria-labelledby="now-h" style="padding-top:0">
+      <span class="cap eyebrow">Now</span>
+      <h2 id="now-h">A football xG model <em class="s">and a Kaggle knee model.</em></h2>
+      <ul class="now">
+        <li><span class="st">In progress</span><span><b class="role">PitchPoint</b>Done: the model, an attention set encoder over player positions blended 50/50 with LightGBM. Next: FastAPI inference and a drag-and-drop pitch in React.</span></li>
+        <li><span class="st">In progress</span><span><b class="role">Kaggle, RSNA knee abnormality detection</b>Done: my own models went from 0.825 to 0.877 public-leaderboard ROC-AUC. Next: one lean model for the Efficiency track. Closes 22 Oct.</span></li>
+      </ul>
+    </section>
+
+    <section class="pad wrap" id="contact" aria-labelledby="doors-h" style="padding-top:0">
+      <span class="cap eyebrow">Two doors</span>
+      <h2 id="doors-h">Hiring, <em class="s">or building?</em></h2>
+      <div class="doors">
+        <div class="door">
+          <span class="cap muted">Employers</span>
+          <h3>Hiring?</h3>
+          <p>Junior AI, ML or software engineering. I want a first full-time role where the work ships. Based in Morocco, open to remote and relocation.</p>
+          <div class="btns" style="justify-content:flex-start"><a class="btn" href="#contact">Download CV <span class="ar" aria-hidden="true">→</span></a><a class="btn quiet" href="https://www.linkedin.com/in/mohamed-al-mamoun-t-el-araki-27ab042a3" target="_blank" rel="noopener">LinkedIn</a></div>
+        </div>
+        <div class="door">
+          <span class="cap muted">Clients</span>
+          <h3>Need something <em class="s">built?</em></h3>
+          <p>A bot that collects your data from web portals, or a web app MVP. Two fixed-scope packs, each with a deliverable and a timeline.</p>
+          <div class="btns" style="justify-content:flex-start"><a class="btn" href="#services">See services <span class="ar" aria-hidden="true">→</span></a></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span class="cap muted">Let's talk</span>
+    <span class="email" id="email">elaraki48@gmail.com</span>
+    <button class="btn" id="copy" type="button">Copy email</button>
+    <p class="giant" aria-hidden="true">Mamoun <em class="s">El Araki</em></p>
+    <div class="foot-row">
+      <span>© 2026 Mamoun El Araki</span>
+      <span><a href="https://www.linkedin.com/in/mohamed-al-mamoun-t-el-araki-27ab042a3" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/mohamedelarakitantaoui" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.kaggle.com/elaramamoun" target="_blank" rel="noopener">Kaggle</a></span>
+      <span>No cookies, no tracking</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = document.getElementById('cloud'), ctx = cv.getContext('2d');
+  var W, H, dpr, f, cx, cy;
+  var N = innerWidth < 760 ? 2600 : 6000;
+  document.getElementById('ptcount').textContent = N.toLocaleString('en-US');
+
+  function resize(){
+    dpr = Math.min(1.5, window.devicePixelRatio || 1);
+    W = innerWidth; H = innerHeight;
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    f = Math.min(W, H) * (W < 820 ? 1.0 : 1.25);
+    cx = W*0.5; cy = H*0.46;
+    if (reduced) draw(performance.now());
+  }
+
+  function norm(v){var l=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/l,v[1]/l,v[2]/l]}
+  function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+  function curve(t){return [t*2.6-1.3, 0.38*Math.sin(t*Math.PI*1.15)-0.15, 0.3*Math.cos(t*Math.PI*0.9)]}
+  function frame(T){var U=Math.abs(T[2])>0.9?[0,1,0]:[0,0,1];var n1=norm(cross(T,U));return [n1,cross(T,n1)]}
+  function rnd(){return Math.random()}
+  function sphereDir(){var u=rnd()*2-1,a=rnd()*Math.PI*2,s=Math.sqrt(1-u*u);return [s*Math.cos(a),s*Math.sin(a),u]}
+  function ring(c,fr,rad,th){return [c[0]+rad*(Math.cos(th)*fr[0][0]+Math.sin(th)*fr[1][0]),c[1]+rad*(Math.cos(th)*fr[0][1]+Math.sin(th)*fr[1][1]),c[2]+rad*(Math.cos(th)*fr[0][2]+Math.sin(th)*fr[1][2])]}
+
+  var bif = curve(0.42), sacC = (function(){var c=curve(0.62),d=norm([0.15,1,0.25]);return [c[0]+d[0]*0.3,c[1]+d[1]*0.3,c[2]+d[2]*0.3]})();
+  var pts=[];
+  for (var i=0;i<N;i++){
+    var r=rnd(), p, th=rnd()*Math.PI*2;
+    if (r<0.55){
+      var t=rnd(), c=curve(t), c2=curve(Math.min(1,t+0.001)), c1=curve(Math.max(0,t-0.001));
+      p=ring(c,frame(norm([c2[0]-c1[0],c2[1]-c1[1],c2[2]-c1[2]])),0.12*(1-0.25*t),th);
+    } else if (r<0.72){
+      var u=rnd(), d=norm([-0.35,0.9,0.25]);
+      p=ring([bif[0]+d[0]*u*0.95,bif[1]+d[1]*u*0.95,bif[2]+d[2]*u*0.95],frame(d),0.085-0.035*u,th);
+    } else {
+      var s=sphereDir(); p=[sacC[0]+s[0]*0.23,sacC[1]+s[1]*0.23,sacC[2]+s[2]*0.23];
+    }
+    var dx=p[0]-sacC[0],dy=p[1]-sacC[1],dz=p[2]-sacC[2], ex=p[0]-bif[0],ey=p[1]-bif[1],ez=p[2]-bif[2];
+    var sv=Math.max(Math.exp(-(dx*dx+dy*dy+dz*dz)/0.09),0.55*Math.exp(-(ex*ex+ey*ey+ez*ez)/0.02))+(rnd()-0.5)*0.08;
+    pts.push({p:p,s:Math.min(1,Math.max(0,sv))});
+  }
+  var mx0=0,my0=0,mz0=0; pts.forEach(function(o){mx0+=o.p[0];my0+=o.p[1];mz0+=o.p[2]}); mx0/=N;my0/=N;mz0/=N;
+  sacC=[sacC[0]-mx0,sacC[1]-my0,sacC[2]-mz0];
+  pts.sort(function(a,b){return a.s-b.s});
+  var shape=new Float32Array(N*3), start=new Float32Array(N*3), burst=new Float32Array(N*3), sal=new Float32Array(N), bucketEnd=[0,0,0,0,0];
+  pts.forEach(function(o,i){
+    var x=o.p[0]-mx0,y=o.p[1]-my0,z=o.p[2]-mz0;
+    shape[i*3]=x;shape[i*3+1]=y;shape[i*3+2]=z; sal[i]=o.s;
+    var sd=sphereDir(), rr=1.6+rnd()*2.2; start[i*3]=sd[0]*rr;start[i*3+1]=sd[1]*rr;start[i*3+2]=sd[2]*rr;
+    var bd=sphereDir(); burst[i*3]=x*2.4+bd[0]*0.9; burst[i*3+1]=y*2.4+bd[1]*0.9; burst[i*3+2]=z*2.4+bd[2]*0.9;
+    bucketEnd[Math.min(4,(o.s*5)|0)]=i+1;
+  });
+  for (var k=1;k<5;k++) if (bucketEnd[k]<bucketEnd[k-1]) bucketEnd[k]=bucketEnd[k-1];
+  /* champagne ramp: dim body, brighter where the model looked */
+  var colors=['rgba(233,223,204,.22)','rgba(226,210,178,.34)','rgba(214,192,148,.5)','rgba(222,200,152,.7)','rgba(246,234,208,.92)'];
+
+  var t0=performance.now(), mx=0,my=0,tmx=0,tmy=0, sp=0;
+  addEventListener('pointermove',function(e){tmx=e.clientX/W-0.5;tmy=e.clientY/H-0.5},{passive:true});
+  function ease(x){return 1-Math.pow(1-x,3)}
+
+  function draw(now){
+    var intro=reduced?1:ease(Math.min(1,(now-t0)/2000)), sc=ease(sp);
+    mx+=(tmx-mx)*0.05; my+=(tmy-my)*0.05;
+    var ay=(reduced?0.6:now*0.0001+0.6)+mx*0.5, ax=0.28+my*0.3;
+    var cay=Math.cos(ay),say=Math.sin(ay),cax=Math.cos(ax),sax=Math.sin(ax);
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    var gx=sacC[0]*cay+sacC[2]*say, gz0=-sacC[0]*say+sacC[2]*cay, gy=sacC[1]*cax-gz0*sax, gz=sacC[1]*sax+gz0*cax+3.4;
+    var gs=f/gz, GX=cx+gx*gs, GY=cy-gy*gs, gr=f*0.2*(1-sc*0.8);
+    var g=ctx.createRadialGradient(GX,GY,0,GX,GY,gr);
+    g.addColorStop(0,'rgba(200,176,126,'+(0.13*intro*(1-sc))+')'); g.addColorStop(1,'rgba(200,176,126,0)');
+    ctx.fillStyle=g; ctx.fillRect(GX-gr,GY-gr,gr*2,gr*2);
+    var i=0;
+    for (var b=0;b<5;b++){
+      ctx.fillStyle=colors[b];
+      for (;i<bucketEnd[b];i++){
+        var j=i*3;
+        var bx=start[j]+(shape[j]-start[j])*intro, by=start[j+1]+(shape[j+1]-start[j+1])*intro, bz=start[j+2]+(shape[j+2]-start[j+2])*intro;
+        var x=bx+(burst[j]-bx)*sc, y=by+(burst[j+1]-by)*sc, z=bz+(burst[j+2]-bz)*sc;
+        var x1=x*cay+z*say, z1=-x*say+z*cay, y2=y*cax-z1*sax, z2=y*sax+z1*cax+3.4;
+        if (z2<0.4) continue;
+        var s=f/z2, size=(0.95+sal[i]*0.8)*(3.4/z2);
+        ctx.fillRect(cx+x1*s, cy-y2*s, size, size);
+      }
+    }
+  }
+  function loop(now){draw(now);requestAnimationFrame(loop)}
+
+  var bar=document.getElementById('bar'), stmt=document.getElementById('stmt');
+  var serif={'trust':1,'visible.':1};
+  stmt.innerHTML=stmt.textContent.split(' ').map(function(w){return '<span class="w'+(serif[w.toLowerCase()]?' serif':'')+'">'+w+'</span>'}).join(' ');
+  var words=stmt.querySelectorAll('.w'), stSec=document.getElementById('statement');
+  function onScroll(){
+    sp=Math.min(1,Math.max(0,scrollY/(H*0.9)));
+    cv.style.opacity=String(1-sp*0.55);
+    var r=stSec.getBoundingClientRect(), pr=Math.min(1,Math.max(0,(H*0.85-r.top)/(r.height*0.75))), n=Math.round(pr*words.length);
+    for (var k=0;k<words.length;k++) words[k].classList.toggle('lit',reduced||k<n);
+    if (reduced) draw(performance.now());
+  }
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',function(){resize();onScroll()});
+  resize(); onScroll();
+  if (!reduced) requestAnimationFrame(loop); else draw(performance.now());
+
+  var clock=document.getElementById('clock'), tz=document.getElementById('tz');
+  function tick(){try{
+    var d=new Date();
+    clock.textContent=new Intl.DateTimeFormat('en-GB',{timeZone:'Africa/Casablanca',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(d);
+    var z=new Intl.DateTimeFormat('en-US',{timeZone:'Africa/Casablanca',timeZoneName:'shortOffset'}).formatToParts(d).filter(function(p){return p.type==='timeZoneName'})[0];
+    if(z) tz.textContent=z.value;
+  }catch(e){}}
+  tick(); setInterval(tick,1000);
+
+  var btn=document.getElementById('copy');
+  btn.addEventListener('click',function(){
+    var el=document.getElementById('email');
+    function sel(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selected · press Ctrl+C'}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(el.textContent).then(function(){btn.textContent='Copied'},sel)}else sel();
+  });
+})();
+</script>

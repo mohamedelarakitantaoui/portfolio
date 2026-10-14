@@ -13,8 +13,9 @@ const { label, title, lede } = Astro.props;
 </section>
 
 <style>
-  .intro { background: var(--bg-band); padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-8); border-bottom: 1px solid var(--line); }
-  @media (min-width: 1024px) { .intro { padding-top: calc(var(--header-h) + var(--s-10)); padding-bottom: var(--s-9); } }
+  .intro { background: var(--bg-band); padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-7); border-bottom: 1px solid var(--line); }
+  @media (min-width: 1024px) { .intro { padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-8); } }
   .intro__h1 { max-width: 16ch; }
+  @media (max-width: 767px) { .intro__h1 { font-size: var(--fs-h1-hero); } }
   .intro__lede { margin-top: var(--s-6); }
 </style>
