@@ -9,7 +9,8 @@ quiet #B0A696. Accent (champagne) #C8B07E, hover #D9C49A, dark text on champagne
 Lines are bone at 12% and 22%; UI borders #75695A. The "before" result bar is bone at 22%, the "after" bar champagne.
 Light screenshots are dimmed to 85% in a 1px line frame. The legacy paper token #F2F0EA is retained but unused.
 
-Type: Jost 200/300/400 for display and UI (headings at 200–300, tracking -0.02em); Cormorant Garamond Italic 400
+Type: Jost for display and UI (headings at 200–300, tracking -0.02em; paragraphs and lists 400 at 16–17px;
+500 only for <strong>); Cormorant Garamond Italic 400
 only for the second clause of a heading; labels, nav, buttons and meta in Jost 400 at 10.5–11px, uppercase, .2em.
 The mono font exists only in the terminal. Shapes are sharp: every radius token is 0. Container 1750px;
 intrinsic grids and 24px mobile gutters; every section uses --section-y. Native scrolling, transform/opacity-only
@@ -52,6 +53,7 @@ surfaces. Rendered pages are also checked with axe (`npm run check`).
 | `--accent-line` | `rgba(200, 176, 126, 0.35)` | |
 | `--bar-before` | `rgba(233, 223, 204, 0.22)` | |
 | `--dim-screen` | `brightness(0.85)` | |
+| `--photo-tone` | `saturate(0.6) sepia(0.14) brightness(0.92)` | |
 | `--fs-name` | `clamp(3.375rem, 13vw, 13.125rem)` | |
 | `--fs-feature` | `clamp(2.75rem, 4.5vw, 5rem)` | |
 | `--fs-index` | `clamp(3rem, 5vw, 6rem)` | |
@@ -71,6 +73,8 @@ surfaces. Rendered pages are also checked with axe (`npm run check`).
 | `--text-muted` | `var(--bone-1)` | |
 | `--text-quiet` | `var(--bone-2)` | |
 | `--nav-surface` | `rgba(15, 13, 11, 0.82)` | |
+| `--hero-scrim` | `rgb(7 6 5 / 0.7)` | |
+| `--hero-scrim-strong` | `rgb(7 6 5 / 0.85)` | |
 | `--font-body` | `'Jost Variable', 'Jost Fallback', 'Century Gothic', 'Segoe UI', Arial, sans-serif` | |
 | `--font-accent` | `'Cormorant Garamond Variable', 'Cormorant Fallback', Georgia, 'Times New Roman', serif` | |
 | `--font-code` | `'JetBrains Mono Variable', ui-monospace, 'Cascadia Mono', Consolas, monospace` | |
@@ -78,15 +82,17 @@ surfaces. Rendered pages are also checked with axe (`npm run check`).
 | `--fw-thin` | `200` | |
 | `--fw-light` | `300` | |
 | `--fw-regular` | `400` | |
+| `--fw-medium` | `500` | |
 | `--fs-display` | `clamp(3.25rem, 1.6rem + 3.9vw, 5.75rem)` | |
-| `--fs-h1-hero` | `clamp(2.5rem, 1rem + 4.4vw, 5rem)` | |
+| `--fs-h1-hero` | `clamp(2.5rem, 4.2vw + 2.2vh, 6rem)` | |
+| `--fs-h1-page` | `clamp(2.5rem, 1.2rem + 2.6vw, 4rem)` | |
 | `--fs-h2` | `clamp(2.5rem, 1.2rem + 3.2vw, 4.5rem)` | |
 | `--fs-statement` | `clamp(2.125rem, 1rem + 2.8vw, 4rem)` | |
 | `--fs-card` | `clamp(1.625rem, 1.2rem + 0.9vw, 2.125rem)` | |
 | `--fs-row` | `clamp(1.25rem, 1.1rem + 0.3vw, 1.375rem)` | |
 | `--fs-sub` | `clamp(1.5rem, 1.3rem + 0.4vw, 1.75rem)` | |
 | `--fs-lede` | `clamp(1.125rem, 1.05rem + 0.2vw, 1.25rem)` | |
-| `--fs-body` | `1rem` | |
+| `--fs-body` | `clamp(1rem, 0.96rem + 0.12vw, 1.0625rem)` | |
 | `--fs-small` | `0.875rem` | |
 | `--fs-label` | `0.6875rem` | |
 | `--fs-giant` | `clamp(4.5rem, 24vw, 30rem)` | |
@@ -99,6 +105,7 @@ surfaces. Rendered pages are also checked with axe (`npm run check`).
 | `--fs-lg` | `1.25rem` | |
 | `--fs-xl` | `1.5rem` | |
 | `--fs-stat` | `1.875rem` | |
+| `--fs-stat-sm` | `clamp(1.25rem, 5.4vw, 1.875rem)` | |
 | `--fs-marker` | `0.85em` | |
 | `--fs-serif` | `1.02em` | |
 | `--fs-hero-word` | `21.5vw` | |

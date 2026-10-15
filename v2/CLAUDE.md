@@ -23,7 +23,8 @@ must all pass (`docs/sops/release.md`).
 ## Design rules
 - Colours, fonts, sizes, spacing, radii, z-index and durations come only from `src/styles/tokens.css`.
   Why: one source of truth; raw values drift and make the site look AI-made. Stylelint enforces it.
-- Type (v5): Jost 200/300/400 for display and UI; headings at 200–300, tracking -0.02em. Cormorant Garamond Italic
+- Type (v5): Jost for display and UI; headings at 200–300, tracking -0.02em; paragraphs and list text Jost 400 at
+  16–17px; 500 only for `<strong>`/`<b>`. Cormorant Garamond Italic
   400 only for the second clause or second line of a heading (split in markup at the first comma; text unchanged),
   never a single emphasised word, never body text, at most once per heading; no natural split = all Jost. Small
   labels, nav, buttons and meta: Jost 400, 10.5–11px, uppercase, .2em. The mono exists only inside the ask-mamoun

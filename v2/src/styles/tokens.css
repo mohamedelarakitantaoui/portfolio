@@ -25,6 +25,7 @@
   --accent-line: rgba(200, 176, 126, 0.35);
   --bar-before: rgba(233, 223, 204, 0.22); /* the "before" result bar */
   --dim-screen: brightness(0.85); /* light screenshots and app recordings: never the brightest thing on a page */
+  --photo-tone: saturate(0.6) sepia(0.14) brightness(0.92); /* portraits outside the hero: ~40% desaturated, warm */
   --fs-name: clamp(3.375rem, 13vw, 13.125rem);   /* footer giant name: 210 → 54 */
   --fs-feature: clamp(2.75rem, 4.5vw, 5rem);
   --fs-index: clamp(3rem, 5vw, 6rem);
@@ -48,8 +49,10 @@
   --text-muted: var(--bone-1);
   --text-quiet: var(--bone-2);
   --nav-surface: rgba(15, 13, 11, 0.82); /* the floating nav bar, over a backdrop blur */
+  --hero-scrim: rgb(7 6 5 / 0.7);        /* behind the hero copy, over the toned shoulders */
+  --hero-scrim-strong: rgb(7 6 5 / 0.85); /* phones: the label sits on the bright collar */
 
-  /* Type: Jost (200-400) for everything; Cormorant Garamond Italic 400 only for a heading's second clause.
+  /* Type: Jost (200-500; 500 only for <strong>) for everything; Cormorant Garamond Italic 400 only for a heading's second clause.
      The mono exists for the ask-mamoun terminal and nothing else. */
   --font-body: 'Jost Variable', 'Jost Fallback', 'Century Gothic', 'Segoe UI', Arial, sans-serif;
   --font-accent: 'Cormorant Garamond Variable', 'Cormorant Fallback', Georgia, 'Times New Roman', serif;
@@ -57,18 +60,20 @@
   --font-arabic: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
   --fw-thin: 200;  /* display headings */
   --fw-light: 300; /* body, sub-headings */
-  --fw-regular: 400; /* labels, buttons, emphasis (the heaviest weight shipped) */
+  --fw-regular: 400; /* body text, labels, buttons */
+  --fw-medium: 500;  /* <strong> / <b> only (the heaviest weight shipped) */
 
   /* Scale, measured at 1920 and clamped down to 390 */
   --fs-display: clamp(3.25rem, 1.6rem + 3.9vw, 5.75rem);   /* 92 → 52 */
-  --fs-h1-hero: clamp(2.5rem, 1rem + 4.4vw, 5rem);         /* 80 → 40: the centred home hero, below the portrait's head */
+  --fs-h1-hero: clamp(2.5rem, 4.2vw + 2.2vh, 6rem);        /* home hero: 40 → 96 (width and height) */
+  --fs-h1-page: clamp(2.5rem, 1.2rem + 2.6vw, 4rem);       /* page intros on phones: 64 → 40 */
   --fs-h2: clamp(2.5rem, 1.2rem + 3.2vw, 4.5rem);          /* 72 → 40 */
   --fs-statement: clamp(2.125rem, 1rem + 2.8vw, 4rem);     /* 64 → 34 */
   --fs-card: clamp(1.625rem, 1.2rem + 0.9vw, 2.125rem);    /* 34 → 26 */
   --fs-row: clamp(1.25rem, 1.1rem + 0.3vw, 1.375rem);      /* 22 → 20 */
   --fs-sub: clamp(1.5rem, 1.3rem + 0.4vw, 1.75rem);        /* 28 → 24 */
   --fs-lede: clamp(1.125rem, 1.05rem + 0.2vw, 1.25rem);    /* 20 → 18 */
-  --fs-body: 1rem;                                          /* 16 */
+  --fs-body: clamp(1rem, 0.96rem + 0.12vw, 1.0625rem);     /* 16 → 17: paragraphs and list text, Jost 400 */
   --fs-small: 0.875rem;                                     /* 14 */
   --fs-label: 0.6875rem;                                    /* 11: uppercase labels, meta, buttons */
   --fs-giant: clamp(4.5rem, 24vw, 30rem);                   /* MAMOUN behind the portrait */
@@ -82,6 +87,7 @@
   --fs-lg: 1.25rem;     /* 20: FAQ questions */
   --fs-xl: 1.5rem;      /* 24: numbers in the capability previews */
   --fs-stat: 1.875rem;  /* 30: hero HUD numbers, project facts (Jost 200) */
+  --fs-stat-sm: clamp(1.25rem, 5.4vw, 1.875rem); /* phones: three HUD stats on one row */
   --fs-marker: 0.85em;  /* list markers, relative to their text */
   --fs-serif: 1.02em;   /* Cormorant clause: optically matches Jost's size */
   --fs-hero-word: 21.5vw; /* MAMOUN on phones (desktop: min(24vw, 34svh, 30rem) in Hero.astro) */

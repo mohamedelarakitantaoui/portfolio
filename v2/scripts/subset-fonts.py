@@ -3,7 +3,7 @@ JetBrains Mono for the terminal only) to the characters the site actually uses.
 
 Re-run after copy changes:  python scripts/subset-fonts.py   (needs: pip install fonttools brotli)
 Reads every text file in src/, keeps ASCII + every non-ASCII character found, narrows the weight axis to the
-weights the site uses (Jost 200-400; Cormorant pinned to a static 400), and writes src/assets/fonts/*.woff2 plus src/styles/fonts.css. Characters outside the
+weights the site uses (Jost 200-500, 500 only for <strong>; Cormorant pinned to a static 400), and writes src/assets/fonts/*.woff2 plus src/styles/fonts.css. Characters outside the
 subset still render: the fontsource latin-ext files stay declared as on-demand fallbacks, and anything
 else falls back to the next font in the stack.
 """
@@ -27,7 +27,7 @@ text = ''.join(sorted(c for c in chars if c.isprintable() or c in '  '))
 
 FONTS = [
     # family, style, source file (latin subset), weight axis kept (range or one static weight), css weight, output name
-    ('Jost Variable', 'normal', NM / 'jost/files/jost-latin-wght-normal.woff2', (200, 400), '200 400', 'jost-wght-subset.woff2'),
+    ('Jost Variable', 'normal', NM / 'jost/files/jost-latin-wght-normal.woff2', (200, 500), '200 500', 'jost-wght-subset.woff2'),
     ('Cormorant Garamond Variable', 'italic', NM / 'cormorant-garamond/files/cormorant-garamond-latin-wght-italic.woff2', 400, '400', 'cormorant-italic-400-subset.woff2'),
     ('JetBrains Mono Variable', 'normal', NM / 'jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2', None, '100 800', 'jetbrains-mono-wght-subset.woff2'),
 ]

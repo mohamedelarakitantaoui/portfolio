@@ -19,11 +19,11 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--fs-body);
-  font-weight: var(--fw-light);
+  font-weight: var(--fw-regular);
   letter-spacing: var(--track-body);
   line-height: 1.65;
   font-optical-sizing: auto;
-  /* Jost ships 200-400 only: heavier weights render at 400 instead of a smeared fake bold. */
+  /* Jost ships 200-500 only: heavier weights render at 500 instead of a smeared fake bold. */
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,6 +36,7 @@ button { font: inherit; color: inherit; letter-spacing: inherit; }
 p, figure { margin: 0; }
 ul, ol { margin: 0; padding: 0; }
 h1, h2, h3, h4 { margin: 0; font-weight: var(--fw-light); color: var(--heading); }
+b, strong { font-weight: var(--fw-medium); }
 dl, dd { margin: 0; }
 /* stylelint-disable-next-line declaration-no-important -- [hidden] must win over any component display rule */
 [hidden] { display: none !important; }
@@ -119,7 +120,7 @@ main p { max-width: var(--measure); }
 .prose > p, .prose li { max-width: var(--measure); }
 .prose p + p, .prose ul + p, .prose ol + p { margin-top: 1em; }
 .prose a { color: var(--text); text-decoration-color: var(--accent); }
-.prose strong { font-weight: var(--fw-regular); color: var(--heading); }
+.prose strong { font-weight: var(--fw-medium); color: var(--heading); }
 .prose ul { list-style: none; display: grid; gap: var(--s-2); margin-top: var(--s-4); }
 .prose ul li { position: relative; padding-inline-start: 1.25em; }
 .prose ul li::before {

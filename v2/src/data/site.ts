@@ -21,8 +21,8 @@ export const person = {
 
 export const status = {
   employers: {
-    en: 'Open to junior AI, ML and software engineering roles. Based in Morocco, open to remote and relocation. [[todo:visa wording, e.g. “visa sponsorship required”, or nothing]]',
-    fr: 'Ouvert aux postes junior en IA, ML et génie logiciel. Basé au Maroc, ouvert au travail à distance et à la relocalisation. [[todo:mention du visa, par ex. « parrainage de visa nécessaire », ou rien]]',
+    en: 'Open to junior AI, ML and software engineering roles. Based in Morocco, open to remote and relocation.',
+    fr: 'Ouvert aux postes junior en IA, ML et génie logiciel. Basé au Maroc, ouvert au travail à distance et à la relocalisation.',
   } as L,
   clients: {
     en: 'Taking freelance projects: automation, data collection and web app MVPs.',

@@ -18,14 +18,27 @@ Newest first. Each line: date, decision, and where it shows.
   secondary: hairline border turning bone. Panels only for service cards and the two doors. No film grain.
 - Home kept its current structure (Hero → Work → About → Experience → Now → Doors; no proof strip or Capabilities).
   Hero: the h1 is `hero.h1` split "…itself," + Cormorant "and the software that ships it."; label "Mamoun El Araki ·
-  AI and software engineer · Based in Morocco" (phones: name on line 1, role + location on line 2); the portrait's
-  head sits above the headline, toned (grayscale, warm sepia, brightness 0.4) and masked; HUD row with the three
-  stats, a scroll cue and a live Africa/Casablanca clock, plus "My capstone project: AneuXplain ↗".
+  AI and software engineer · Based in Morocco" (phones: name on line 1, role + location on line 2). Arik
+  composition: a head-and-shoulders portrait, 78svh tall (55svh on phones), centred just under the nav, toned
+  (grayscale, warm sepia, brightness 0.55), head and shoulders kept: bottom fade 62% → 96%, side fade reaching
+  transparent at the image edges (ellipse 50% 94% at 50% 38%; wider leaves the image frame visible). The copy
+  starts just under the chin, over the shoulders, never over the face, on a soft scrim (rgb 7 6 5 / .7, sized to its
+  box so there is no seam); worst-case contrast on the brightest pixel behind it: label ≥ 5.1, h1 ≥ 4.8, status ≥ 11.7. h1 clamp(40px, 4.2vw + 2.2vh, 96px),
+  line-height 1.02, one Jost line + one Cormorant line on desktop. The HUD row (three stats, a scroll cue, a live
+  Africa/Casablanca clock, "My capstone project: AneuXplain ↗") closes the first screen; the whole hero fits one
+  screen at 1920×1080, 1440×900, 1366×768 and 390×844.
 - Home Work = hairline rows (meta + title + tags | media or flat before/after bars + outcome + champagne metric |
   "Case study →"); /work keeps its card layout. About = centred statement, no photo (the hero portrait is the only
   one on the home page). Header: fixed centred bar, all five links + EN/FR + "Email me"; the floating Menu pill is gone.
 - Light screenshots and app recordings (project media, AneuXplain loop and stills, report pages, Kaggle figures):
   1px `--line` frame on `--surface`, dimmed to 85%. Creative photography is not dimmed.
+- No visa mention anywhere on the site (user, 2026-10-14): the employers status line ends at "open to remote and
+  relocation" (EN and FR); the visa TODO is removed.
+- 2026-10-15 polish: hero copy starts at --chin + 48px (the label sits on the collar, below the chin); HUD row
+  top-aligned and held to the .wrap gutters (one minmax(0, 1fr) column); tighter copy under 820px tall so the stats
+  row fits 1366×768 and 1536×730 (1920×1080 at 125%); phones use a stronger scrim (rgb 7 6 5 / .85) for the label.
+  Body text Jost 400 at 16–17px; Jost subset widened to 200–500, 500 only for <strong>/<b>. /about photo toned
+  (saturate .6, sepia .14, brightness .92). Favicon "ME" regenerated in Jost 500, bone on #070605, square.
 - Motion added (behind the kill switch and reduced motion): champagne hairline across a project row on hover,
   4px arrow nudge on buttons, About word scrub (opacity). The visual test masks the live clock.
 

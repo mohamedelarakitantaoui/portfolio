@@ -8,7 +8,7 @@ simply not shown on the live site. EN and FR versions sit side by side in the sa
 1. **CV PDFs.** AI-ML, Data and Software are in `public/cv/` (copied 2026-10-08 from Downloads) but still say "95 %": replace them with the corrected LaTeX exports before publishing. `-Conseil.pdf` (FR, /fr/cv only) is still missing; its button stays hidden until the file exists.
 2. **Screenshots** for the DCE Scraper (terminal run or output folder, no client data) and PitchPoint (the pitch UI). Add as `cover` + `coverAlt` in the project's MDX frontmatter (both languages). Until then those two cards (and case-study headers) show a before/after bar panel drawn from their real numbers.
 3. **PitchPoint:** competitions and seasons, one observed failure mode, role, repo link. → `src/content/projects/{en,fr}/pitchpoint.mdx`. (Metric done: ECE 0.0464 → 0.0038.)
-4. **Visa wording** in the status line ("visa sponsorship required" or nothing). → `src/data/site.ts` `status.employers`
+4. *(decided 2026-10-14: no visa mention anywhere on the site; the status line ends at "open to remote and relocation".)*
 5. *(removed in v4: the AUI IT / DevOps line is off the site and out of the ask-mamoun notes.)*
 
 ## Case studies

@@ -63,8 +63,8 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
 <style>
   /* v5: a compact bar, fixed and centred: hairline border, panel colour at 82% over a backdrop blur. */
   .site-header {
-    position: fixed; inset: 0 0 auto 0; z-index: var(--z-header);
-    display: flex; justify-content: center; padding: var(--s-4) var(--gutter) 0; pointer-events: none;
+    position: fixed; top: calc(var(--s-4) + env(safe-area-inset-top, 0px)); left: 0; right: 0; z-index: var(--z-header);
+    display: flex; justify-content: center; padding-inline: var(--gutter); pointer-events: none;
   }
   .site-header__inner {
     pointer-events: auto; display: flex; align-items: center; gap: var(--s-5);

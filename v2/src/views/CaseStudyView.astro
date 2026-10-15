@@ -165,7 +165,7 @@ const chapters = [...(project.body ?? '').matchAll(/<Chapter\s+n="([^"]+)"\s+lab
   .tldr__list { list-style: none; display: grid; gap: var(--s-4); }
   .tldr__list li { position: relative; padding-inline-start: 1.4em; color: var(--text-muted); max-width: var(--measure); font-size: var(--fs-lede); line-height: 1.6; }
   .tldr__list li::before { content: ''; position: absolute; inset-inline-start: 0; top: 0.85em; width: 0.6em; height: 1px; background: var(--text-quiet); }
-  .tldr__list :global(strong) { color: var(--heading); font-weight: var(--fw-regular); }
+  .tldr__list :global(strong) { color: var(--heading); font-weight: var(--fw-medium); }
   .cs__next { display: block; text-decoration: none; background: var(--bg-band); border-top: 1px solid var(--line); padding-block: var(--s-9); overflow-x: clip; }
   .cs__next-inner { display: grid; gap: var(--s-2); }
   .cs__next-label { margin-bottom: 0; }
