@@ -279,15 +279,17 @@ if (form) {
     if (submit) submit.disabled = true;
     fallback?.setAttribute('hidden', '');
     const data = new FormData(form);
-    const body = new URLSearchParams(data as unknown as Record<string, string>).toString();
     try {
-      const res = await fetch(form.getAttribute('action') || '/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+      // FormSubmit's AJAX endpoint (data-endpoint) answers JSON: { success: "true" | "false", message }.
+      const res = await fetch(form.dataset.endpoint || form.action, { method: 'POST', headers: { Accept: 'application/json' }, body: data });
       if (!res.ok) throw new Error(String(res.status));
+      const json = await res.json().catch(() => ({})) as { success?: string | boolean };
+      if (String(json.success) !== 'true') throw new Error('not sent');
       form.hidden = true;
       success?.removeAttribute('hidden');
       success?.focus();
     } catch {
-      // No form backend on this host: hand the message to the visitor's email app instead.
+      // The form service failed or isn't activated yet: hand the message to the visitor's email app instead.
       const subject = encodeURIComponent(`${topic?.selectedOptions[0]?.textContent ?? 'Contact'}: ${data.get('name') ?? ''}`);
       const text = encodeURIComponent(`${data.get('message') ?? ''}\n\n${data.get('name') ?? ''} <${data.get('email') ?? ''}>`);
       fallback?.removeAttribute('hidden');

@@ -4,6 +4,16 @@ Facts on the site come only from the three current CV PDFs in `public/cv/` (date
 When the two disagree, this file wins and the CV gets re-exported (see `docs/sops/update-cv.md`).
 Newest first. Each line: date, decision, and where it shows.
 
+## 2026-10-29 (contact form: FormSubmit)
+- User wants contact-form messages emailed to him without the visitor's email app opening, at no cost. The site is on
+  GitHub Pages (no form backend), so the form posts to FormSubmit (formsubmit.co: free, no account, no card), which
+  forwards each message to elaraki48@gmail.com. With JS: AJAX endpoint, thank-you shown in place; without JS: normal
+  POST, FormSubmit redirects to /contact/sent (`_next`). Hidden `_subject`, `_template=table`, `_honey` honeypot.
+  The mailto fallback stays for a failed send. Replaces the Netlify Forms attributes and the "pick the form service"
+  TODO. Privacy page names FormSubmit (EN + FR).
+- One-time step for the user: the first message triggers FormSubmit's activation email to elaraki48@gmail.com;
+  messages are delivered only after he clicks "Activate Form".
+
 ## 2026-10-29 (Kaggle: RSNA knee MRI, final results)
 - Final results, from the user's Kaggle Submissions and Leaderboard pages (read 2026-10-27). Supersedes the 2026-10-14
   "shown while open" state: no "In progress", no "closes 22 Oct", no Efficiency-track next step, no rank #1377, no

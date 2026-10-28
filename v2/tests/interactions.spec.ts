@@ -15,10 +15,10 @@ test('contact clears corrected errors and prevents duplicate requests', async ({
   let requests = 0;
   let release!: () => void;
   const pending = new Promise<void>((resolve) => { release = resolve; });
-  await page.route('**/contact/sent', async (route) => {
+  await page.route('https://formsubmit.co/ajax/**', async (route) => {
     requests++;
     await pending;
-    await route.fulfill({ status: 200, body: 'OK' });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":"true","message":"The form was submitted successfully."}' });
   });
   await page.goto('/contact');
   await expect(page.locator('#main [data-copy]')).toBeVisible();

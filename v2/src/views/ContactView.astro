@@ -3,15 +3,21 @@ import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CopyEmail from '../components/CopyEmail.astro';
 import Rich from '../components/Rich.astro';
-import Todo from '../components/mdx/Todo.astro';
 import { person, status } from '../data/site';
 import { type Lang, lp } from '../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
+// Messages go through FormSubmit (formsubmit.co, free, no account), which emails them to person.email. With JS,
+// main.ts posts to the AJAX endpoint and shows the thank-you in place; without JS the browser posts to `action` and
+// FormSubmit sends the visitor back to /contact/sent. The first message ever sent triggers a one-time activation
+// email to that address; nothing is delivered until it is confirmed.
+const formAction = `https://formsubmit.co/${person.email}`;
+const formAjax = `https://formsubmit.co/ajax/${person.email}`;
+const sentUrl = new URL(lp(lang, '/contact/sent'), Astro.site).href;
 const F = fr
-  ? { name: 'Votre nom', email: 'Votre e-mail', msg: 'Message', send: 'Envoyer', errName: 'Indiquez votre nom.', errEmail: 'Indiquez une adresse e-mail valide.', errMsg: 'Écrivez quelques mots.', ok: 'Merci, votre message est bien parti.', fallback: 'Ce site n’a pas encore de service de formulaire : votre application e-mail va s’ouvrir avec le message prêt. Sinon, écrivez à elaraki48@gmail.com.', note: 'Votre nom, votre e-mail et votre message servent uniquement à vous répondre.' }
-  : { name: 'Your name', email: 'Your email', msg: 'Message', send: 'Send', errName: 'Please add your name.', errEmail: 'Please add a valid email address.', errMsg: 'Please write a few words.', ok: 'Thanks, your message is on its way.', fallback: 'This site has no form service yet, so your email app will open with the message ready. Otherwise, write to elaraki48@gmail.com.', note: 'Your name, email and message are only used to reply to you.' };
+  ? { name: 'Votre nom', email: 'Votre e-mail', msg: 'Message', send: 'Envoyer', errName: 'Indiquez votre nom.', errEmail: 'Indiquez une adresse e-mail valide.', errMsg: 'Écrivez quelques mots.', ok: 'Merci, votre message est bien parti.', fallback: 'Le message n’a pas pu partir : votre application e-mail va s’ouvrir avec le message prêt. Sinon, écrivez à elaraki48@gmail.com.', note: 'Votre nom, votre e-mail et votre message servent uniquement à vous répondre.' }
+  : { name: 'Your name', email: 'Your email', msg: 'Message', send: 'Send', errName: 'Please add your name.', errEmail: 'Please add a valid email address.', errMsg: 'Please write a few words.', ok: 'Thanks, your message is on its way.', fallback: 'The message couldn’t be sent, so your email app will open with it ready. Otherwise, write to elaraki48@gmail.com.', note: 'Your name, email and message are only used to reply to you.' };
 ---
 <Base
   lang={lang}
@@ -43,9 +49,11 @@ const F = fr
 
       <div class="contact__formwrap">
         <h2 class="h3 contact__formtitle">{fr ? 'Votre message' : 'Your message'}</h2>
-        <form class="cform" name="contact" method="POST" action={lp(lang, '/contact/sent')} data-netlify="true" netlify-honeypot="company" data-contact-form>
-          <input type="hidden" name="form-name" value="contact" />
-          <p class="sr-only"><label>Company <input type="text" name="company" tabindex="-1" autocomplete="off" /></label></p>
+        <form class="cform" name="contact" method="POST" action={formAction} data-endpoint={formAjax} data-contact-form>
+          <input type="hidden" name="_subject" value={fr ? 'Portfolio : nouveau message' : 'Portfolio: new message'} />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_next" value={sentUrl} />
+          <p class="sr-only"><label>Company <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label></p>
           <div class="field">
             <label for="cf-topic">{fr ? 'Sujet' : 'About'}</label>
             <select id="cf-topic" name="topic">
@@ -72,7 +80,7 @@ const F = fr
             <p class="field__err" id="cf-msg-err"></p>
           </div>
           <button class="btn btn--primary" type="submit">{F.send} <span class="btn__arrow" aria-hidden="true">→</span></button>
-          <p class="cform__note">{F.note} <Todo>{fr ? 'choisir le service de formulaire (Netlify Forms ou Formspree)' : 'pick the form service (Netlify Forms or Formspree)'}</Todo></p>
+          <p class="cform__note">{F.note}</p>
         </form>
         <p class="cform__msg" data-form-success tabindex="-1" role="status" hidden>{F.ok}</p>
         <p class="cform__msg" data-form-fallback tabindex="-1" role="status" hidden>{F.fallback}</p>
