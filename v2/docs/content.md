@@ -279,7 +279,7 @@ API, Axios, Supabase (Auth, DB, Storage) · Link: github.com/mohamedelarakitanta
 
 ### 4.5 Preparia (`/work/preparia`)
 Sidebar: Role: project intern · Timeline: Jun-Aug 2024 · Client: ITS Elaraki School ·
-Status: live · Platform: web · Stack: WordPress, Elementor, H5P · Link: preparia.ma/fr_fr ·
+Status: live · Platform: web · Stack: WordPress, Elementor, H5P · Link: preparia.ma ·
 **Big number:** `TODO(user)`
 - **01 Problem.** h2: "Exam prep students practise on, instead of reading."
   `TODO(user): which competitive exams, for whom`

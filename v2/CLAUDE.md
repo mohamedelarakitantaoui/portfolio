@@ -31,7 +31,7 @@ must all pass (`docs/sops/release.md`).
   terminal. Why: the approved Arik direction (`design-references/v5-prototype.html`).
 - Palette (v5): near-black `#070605` with bone text `#E9DFCC` and a desaturated champagne `#C8B07E`, used on thin
   lines, small text, the "after" bar and a button fill on hover only, never as a big bright fill. It is not the v4
-  saffron. Light screenshots sit in a 1px line frame, dimmed to 85% (`--dim-screen`). Keep the portrait (behind the
+  saffron. Light screenshots sit in a 1px line frame, dimmed to 75% (`--dim-screen`). Keep the portrait (behind the
   hero copy, toned), project media and restrained accent hierarchy.
 - Shapes (v5): sharp. No pills, no rounded cards, radius tokens are 0. Panels (`--surface` + 1px line) only for
   service cards and the two doors; lists use hairline rows. Every section uses `--section-y`.

@@ -1,8 +1,10 @@
 ---
-// Case study template (v3): header (meta, title, outcome, real media) → overview sidebar (Role · Timeline · Team ·
-// Stack · Status · Links) → TL;DR (3 bullets) → chapters 01–06 → next project.
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+// Case study (v5): poster opening (meta, the title in Jost 200 + a Cormorant subtitle on its own line, no comma;
+// then the outcome, with the key metric large like the hero stats on the right, both top-aligned) → the project media big and framed → HUD row on a hairline (Role · Timeline · Team ·
+// Stack · Links) → TL;DR in three hairline columns → chapters as numbered hairline sections → previous / next.
+import { render, type CollectionEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import ProjectPager from '../components/ProjectPager.astro';
 import ProjectMedia from '../components/ProjectMedia.astro';
 import Diagram from '../components/Diagram.astro';
 import Flow from '../components/mdx/Flow.astro';
@@ -17,6 +19,7 @@ import Todo from '../components/mdx/Todo.astro';
 import ModelCard from '../components/mdx/ModelCard.astro';
 import HBars from '../components/mdx/HBars.astro';
 import Figure from '../components/mdx/Figure.astro';
+import HackathonCertificates from '../components/mdx/HackathonCertificates.astro';
 import { type Lang, lp, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { rich, shows } from '../lib/rich';
@@ -24,154 +27,166 @@ interface Props { project: CollectionEntry<'projects'>; lang: Lang }
 const { project, lang } = Astro.props;
 const d = project.data;
 const { Content } = await render(project);
-const published = (p: CollectionEntry<'projects'>) => p.data.caseStudy && (import.meta.env.DEV || !p.data.draft);
-const all = await getCollection('projects', (p) => p.data.lang === lang);
-// Follow the `next` chain until it lands on a page that exists in this build.
-let next = all.find((p) => p.data.key === d.next);
-for (let i = 0; next && !published(next) && i < all.length; i++) next = all.find((p) => p.data.key === next!.data.next);
 const fr = lang === 'fr';
-const meta: [string, string][] = [
+const hud: [string, string][] = [
   [t(lang, 'meta.role'), d.role],
   [t(lang, 'meta.timeline'), d.timeline],
   [t(lang, 'meta.team'), d.team],
-  [t(lang, 'meta.stack'), d.stack.filter((s) => shows(s)).join(', ')],
-  [t(lang, 'meta.status'), d.status],
+  [t(lang, 'meta.stack'), d.stack.filter((s) => shows(s)).join(' · ')],
 ];
 const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
 const chapters = [...(project.body ?? '').matchAll(/<Chapter\s+n="([^"]+)"\s+label="([^"]+)"\s+title="([^"]+)"/g)]
   .filter(([, , , title]) => shows(title));
+// TL;DR bullets open with "**Problem:**", "**Built:**", "**Result:**": the bold lead becomes the column label.
+const tldr = (d.tldr ?? []).map((b) => {
+  const m = /^\*\*(.+?):?\*\*:?\s*(.*)$/s.exec(b);
+  // The text loses its lead, so it starts with a capital.
+  return m ? { label: m[1].replace(/\s*:$/, '').trim(), text: m[2].charAt(0).toLocaleUpperCase(lang) + m[2].slice(1) } : { label: '', text: b };
+});
 ---
 <Base lang={lang} title={`${d.title} · ${t(lang, 'cs.label')} · ${person.name}`} description={d.description} ogKey={`work-${d.key}`}>
   <article class="cs">
-    <div class="cs__head-band"><div class="wrap cs__hero"><header class="cs__head">
-      <nav class="crumbs meta" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
-        <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
-      </nav>
-      <p class="label label--plain">{d.meta}</p>
-      <h1 class="h1 cs__title">{d.title}</h1>
-      <p class="lede cs__outcome" set:html={rich(d.outcome)} />
-      {d.metric && <p class="cs__metric" set:html={rich(d.metric)} />}
+    <header class="cs__poster">
+      <div class="wrap">
+        <nav class="crumbs meta" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
+          <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
+        </nav>
+        <p class="label">{d.meta}</p>
+        <h1 class:list={['cs__title', { 'cs__title--long': d.title.length > 20 }]}>
+          {d.subtitle ? <Fragment>{d.title}<span class="sr-only">: </span><span class="serif serif--line cs__clause">{d.subtitle}</span></Fragment> : d.title}
+        </h1>
+        <div class="cs__intro">
+          <p class="lede cs__outcome" set:html={rich(d.outcome)} />
+          <div class="cs__key">
+            {d.number && (
+              <p class="cs__stat">
+                <span class="cs__stat-value">{d.number.value}</span>
+                <span class="cs__stat-caption" set:html={rich(d.number.caption)} />
+              </p>
+            )}
+            {d.progress
+              ? <p class="cs__status"><span class="cs__dot" aria-hidden="true"></span><span set:html={rich(d.progress)} /></p>
+              : shows(d.status) && <p class="cs__status"><span class="cs__dot" aria-hidden="true"></span><span set:html={rich(d.status)} /></p>}
+          </div>
+        </div>
+      </div>
     </header>
 
     {(d.loop || d.cover || d.bars) && (
-      <div class="cs__cover">
+      <div class="wrap cs__media">
         <ProjectMedia project={project} lang={lang} eager />
       </div>
     )}
-    </div></div>
 
-    {chapters.length > 0 && <nav class="cs__contents wrap" aria-label={fr ? 'Chapitres du projet' : 'Project chapters'}>
-      {chapters.map(([, n, label]) => <a href={`#ch-${n}`}><span>{n}</span>{label}</a>)}
-    </nav>}
+    <div class="wrap">
+      <dl class="cs__hud">
+        {hud.filter(([, v]) => shows(v)).map(([k, v]) => (
+          <div><dt class="meta">{k}</dt><dd set:html={rich(v)} /></div>
+        ))}
+        {(d.links.length > 0 || d.codeNote) && (
+          <div>
+            <dt class="meta">{t(lang, 'meta.links')}</dt>
+            <dd>
+              {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => {
+                const ext = /^https?:/.test(l.href);
+                return <li><a href={l.href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
+              })}</ul>}
+              {d.codeNote && <p class="cs__codenote">{d.codeNote} <a href={lp(lang, '/contact')}>{fr ? 'Me contacter' : 'Ask me'} →</a></p>}
+            </dd>
+          </div>
+        )}
+      </dl>
 
-    <div class="wrap grid-12 cs__grid">
-      <aside class="cs__side" aria-label={fr ? 'Fiche projet' : 'Project overview'}>
-        <div class="cs__sticky">
-          <p class="label label--plain cs__side-label">{fr ? 'Fiche projet' : 'Overview'}</p>
-          <dl class="cs__meta">
-            {meta.filter(([, v]) => shows(v)).map(([k, v]) => (
-              <div><dt class="meta">{k}</dt><dd set:html={rich(v)} /></div>
+      {tldr.length > 0 && (
+        <section class="tldr" aria-labelledby="tldr-h">
+          <h2 class="label label--plain tldr__h" id="tldr-h">{t(lang, 'cs.tldr')}</h2>
+          <ol class="tldr__cols">
+            {tldr.map((b, i) => (
+              <li>
+                <p class="meta tldr__label"><span class="tldr__n">{String(i + 1).padStart(2, '0')}</span>{b.label}</p>
+                <p class="tldr__text" set:html={rich(b.text)} />
+              </li>
             ))}
-            {(d.links.length > 0 || d.codeNote) && (
-              <div>
-                <dt class="meta">{t(lang, 'meta.links')}</dt>
-                <dd>
-                  {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => {
-                    const ext = /^https?:/.test(l.href);
-                    return <li><a href={l.href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
-                  })}</ul>}
-                  {d.codeNote && <p class="cs__codenote">{d.codeNote} <a href={lp(lang, '/contact')}>{fr ? 'Me contacter' : 'Ask me'} →</a></p>}
-                </dd>
-              </div>
-            )}
-          </dl>
-          {d.number ? (
-            <div class="cs__big">
-              <span class="cs__big-value">{d.number.value}</span>
-              <span class="cs__big-caption" set:html={rich(d.number.caption)} />
-            </div>
-          ) : null}
-          {d.progress && (
-            <p class="cs__progress"><span class="cs__dot" aria-hidden="true"></span><span set:html={rich(d.progress)} /></p>
-          )}
-        </div>
-      </aside>
+          </ol>
+        </section>
+      )}
+
+      {chapters.length > 0 && <nav class="cs__contents" aria-label={fr ? 'Chapitres du projet' : 'Project chapters'}>
+        {chapters.map(([, n, label]) => <a href={`#ch-${n}`}><span>{n}</span>{label}</a>)}
+      </nav>}
 
       <div class="cs__body">
-        {d.tldr && (
-          <section class="tldr" aria-labelledby="tldr-h">
-            <h2 class="tldr__h label label--plain" id="tldr-h">{t(lang, 'cs.tldr')}</h2>
-            <ul class="tldr__list">
-              {d.tldr.map((b) => <li set:html={rich(b)} />)}
-            </ul>
-          </section>
-        )}
-        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard, HBars, Figure }} />
+        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard, HBars, Figure, HackathonCertificates }} />
       </div>
     </div>
 
-    {next && next.data.key !== d.key && (
-      <a class="cs__next" href={lp(lang, `/work/${next.data.key}`)}>
-        <span class="wrap cs__next-inner">
-          <span class="label cs__next-label">{t(lang, 'cta.nextProject')}</span>
-          <span class="cs__next-title">{next.data.title}</span>
-        </span>
-      </a>
-    )}
+    <ProjectPager lang={lang} current={d.key} />
   </article>
 </Base>
 
 <style>
-  .cs__head-band { background: var(--bg-band); border-bottom: 1px solid var(--line); }
-  .cs__hero { display: grid; gap: var(--s-7); padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-7); }
-  .cs__head, .cs__cover { min-width: 0; }
-  .cs__title { font-size: var(--fs-feature); overflow-wrap: anywhere; }
-  @media (min-width: 1024px) { .cs__hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7); align-items: center; min-height: 640px; } }
-  .cs__contents { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-block: var(--s-5); border-bottom: 1px solid var(--line); }
-  .cs__contents a { display: inline-flex; align-items: center; min-height: 44px; gap: var(--s-2); font-size: var(--fs-small); text-decoration: none; }
-  .cs__contents a span { color: var(--accent); }
-  .cs__contents a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
-  .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-6); font-size: var(--fs-small); }
+  /* Poster */
+  .cs__poster { padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-7); }
+  @media (min-width: 1024px) { .cs__poster { padding-top: calc(var(--header-h) + var(--s-8)); } }
+  .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-5); font-size: var(--fs-small); }
   .crumbs a { color: var(--text-muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .crumbs a:hover { color: var(--heading); }
   .crumbs span { display: inline-flex; align-items: center; }
-  .cs__head .label { color: var(--text-quiet); }
-  .cs__outcome { margin-top: var(--s-6); color: var(--text); max-width: 46ch; }
-  .cs__metric { margin-top: var(--s-5); color: var(--heading); font-weight: var(--fw-regular); }
-  .cs__grid { row-gap: var(--s-8); padding-block: var(--s-7); }
-  @media (min-width: 1024px) {
-    .cs__side { grid-column: 1 / span 4; }
-    .cs__body { grid-column: 6 / -1; }
-    .cs__side { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+  .cs__title {
+    font-size: var(--fs-poster); font-weight: var(--fw-thin); letter-spacing: var(--track-display); line-height: 0.92;
+    color: var(--heading); text-wrap: balance; overflow-wrap: anywhere;
   }
-  .cs__side { align-self: start; }
-  .cs__side-label { color: var(--text-quiet); margin-bottom: var(--s-3); }
-  .cs__meta > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); font-size: var(--fs-small); }
-  .cs__meta > div:last-child { border-bottom: 1px solid var(--line); }
-  .cs__meta dt { color: var(--text-quiet); }
-  .cs__meta dd { color: var(--text); overflow-wrap: anywhere; }
+  /* Long titles ("Knee MRI Abnormality Detection") stay on one line at 1920 so the metric and media fit the first screen. */
+  .cs__title--long { font-size: var(--fs-poster-long); }
+  .cs__clause { font-size: var(--fs-poster-clause); line-height: 1.15; margin-top: 0.3em; color: var(--text); text-wrap: balance; }
+  .cs__intro { display: grid; gap: var(--s-6); margin-top: var(--s-6); }
+  .cs__outcome { color: var(--text); max-width: 46ch; }
+  .cs__key { display: grid; gap: var(--s-4); align-content: start; }
+  .cs__stat { display: grid; gap: var(--s-2); }
+  .cs__stat-value { font-size: var(--fs-h2); font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1; color: var(--heading); font-variant-numeric: tabular-nums; }
+  .cs__stat-caption { font-size: var(--fs-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-muted); line-height: 1.6; max-width: 34ch; }
+  .cs__status { display: flex; gap: var(--s-3); align-items: baseline; padding-top: var(--s-4); border-top: 1px solid var(--line); color: var(--text-muted); font-size: var(--fs-small); max-width: 46ch; }
+  .cs__dot { flex: none; width: 6px; height: 6px; background: var(--accent); transform: translateY(-2px); }
+  @media (min-width: 1024px) {
+    .cs__intro { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--grid-gap); align-items: start; }
+    .cs__key { justify-self: end; width: min(100%, 30rem); }
+  }
+
+  /* Media: big, framed (ProjectMedia draws the frame and the dim) */
+  .cs__media { padding-bottom: var(--s-7); }
+
+  /* HUD row */
+  .cs__hud { display: grid; gap: 0 var(--s-6); border-block: 1px solid var(--line-strong); }
+  .cs__hud > div { display: grid; gap: var(--s-2); align-content: start; padding-block: var(--s-5); border-top: 1px solid var(--line); min-width: 0; font-size: var(--fs-small); }
+  .cs__hud > div:first-child { border-top: 0; }
+  .cs__hud dt { color: var(--text-quiet); }
+  .cs__hud dd { color: var(--text); overflow-wrap: anywhere; }
+  @media (min-width: 768px) {
+    .cs__hud { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+    .cs__hud > div { border-top: 0; }
+  }
   .cs__links { list-style: none; display: grid; gap: var(--s-1); }
-  .cs__links a { text-decoration-color: var(--accent); display: inline-block; padding-block: 10px; margin-block: -10px; }
+  .cs__links a { color: var(--text); text-decoration-color: var(--accent); display: inline-block; padding-block: 10px; margin-block: -10px; }
   .cs__codenote { color: var(--text-muted); }
   .cs__codenote a { color: var(--text); text-decoration-color: var(--accent); white-space: nowrap; }
-  .cs__big { display: grid; gap: var(--s-2); margin-top: var(--s-6); }
-  .cs__big-value { font-size: var(--fs-h2); font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1; color: var(--heading); }
-  .cs__big-caption { color: var(--text-muted); font-size: var(--fs-small); }
-  .cs__progress { display: flex; gap: var(--s-3); align-items: baseline; margin-top: var(--s-4); padding-top: var(--s-4); border-top: 1px solid var(--line); }
-  .cs__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-  .cs__body { min-width: 0; container-type: inline-size; }
-  .tldr { border-block: 1px solid var(--line-strong); padding-block: var(--s-6); margin-bottom: var(--s-6); }
-  .tldr__h { color: var(--accent); margin-bottom: var(--s-4); }
-  .tldr__list { list-style: none; display: grid; gap: var(--s-4); }
-  .tldr__list li { position: relative; padding-inline-start: 1.4em; color: var(--text-muted); max-width: var(--measure); font-size: var(--fs-lede); line-height: 1.6; }
-  .tldr__list li::before { content: ''; position: absolute; inset-inline-start: 0; top: 0.85em; width: 0.6em; height: 1px; background: var(--text-quiet); }
-  .tldr__list :global(strong) { color: var(--heading); font-weight: var(--fw-medium); }
-  .cs__next { display: block; text-decoration: none; background: var(--bg-band); border-top: 1px solid var(--line); padding-block: var(--s-9); overflow-x: clip; }
-  .cs__next-inner { display: grid; gap: var(--s-2); }
-  .cs__next-label { margin-bottom: 0; }
-  .cs__next-title {
-    font-size: var(--fs-display); font-weight: var(--fw-thin); letter-spacing: var(--track-display); line-height: 0.94; color: var(--heading);
-    text-wrap: balance; transition: color var(--dur-1) var(--ease-out);
-  }
-  .cs__next:hover .cs__next-title { color: var(--accent); }
+
+  /* TL;DR: three hairline columns */
+  .tldr { padding-block: var(--s-8) var(--s-7); }
+  .tldr__h { color: var(--accent); margin-bottom: var(--s-5); }
+  .tldr__cols { list-style: none; display: grid; gap: 0 var(--s-6); }
+  .tldr__cols > li { display: grid; gap: var(--s-3); align-content: start; padding-block: var(--s-5); border-top: 1px solid var(--line); min-width: 0; }
+  @media (min-width: 900px) { .tldr__cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .tldr__label { display: flex; gap: var(--s-3); color: var(--text-muted); }
+  .tldr__n { color: var(--accent); }
+  .tldr__text { color: var(--text); }
+  .tldr__text :global(strong) { color: var(--heading); font-weight: var(--fw-medium); }
+
+  /* Chapter index */
+  .cs__contents { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-block: var(--s-3); border-block: 1px solid var(--line); }
+  .cs__contents a { display: inline-flex; align-items: center; min-height: 44px; gap: var(--s-2); font-size: var(--fs-small); color: var(--text-muted); text-decoration: none; }
+  .cs__contents a span { color: var(--accent); font-size: var(--fs-label); letter-spacing: var(--track-label); }
+  .cs__contents a:hover { color: var(--heading); }
+
+  .cs__body { min-width: 0; padding-bottom: var(--section-y); }
+  .cs__body > :global(.note) { margin-top: var(--s-7); }
 </style>

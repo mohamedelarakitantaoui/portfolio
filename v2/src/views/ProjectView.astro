@@ -1,0 +1,111 @@
+---
+// Short project page (`caseStudy: false`): poster opening (meta, title, one-line summary, the metric if one exists)
+// → HUD row on a hairline (Year · Role · Stack · Links) → "What it does" as numbered hairline rows → previous / next.
+// Only frontmatter facts; a field that is only a TODO is left out in production (`shows`).
+import type { CollectionEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ProjectPager from '../components/ProjectPager.astro';
+import { type Lang, lp, t } from '../i18n/ui';
+import { person } from '../data/site';
+import { rich, shows } from '../lib/rich';
+interface Props { project: CollectionEntry<'projects'>; lang: Lang }
+const { project, lang } = Astro.props;
+const d = project.data;
+const fr = lang === 'fr';
+const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
+const hud: [string, string][] = [
+  [t(lang, 'meta.year'), d.year],
+  [t(lang, 'meta.role'), d.role],
+  [t(lang, 'meta.stack'), d.stack.filter((s) => shows(s)).join(' · ')],
+];
+---
+<Base lang={lang} title={`${d.title} · ${t(lang, 'proj.label')} · ${person.name}`} description={d.description} ogKey={`work-${d.key}`}>
+  <article class="pp">
+    <header class="pp__head">
+      <div class="wrap">
+        <nav class="crumbs meta" aria-label={fr ? 'Fil d’Ariane' : 'Breadcrumb'}>
+          <a href={lp(lang, '/work')}>{t(lang, 'nav.work')}</a><span aria-hidden="true">/</span><span aria-current="page">{d.title}</span>
+        </nav>
+        <p class="label">{d.meta}</p>
+        <h1 class="h1 pp__title">{d.title}</h1>
+        <div class="pp__sum">
+          <p class="lede pp__lede" set:html={rich(d.outcome)} />
+          {d.number && (
+            <p class="pp__big">
+              <span class="pp__big-value">{d.number.value}</span>
+              <span class="pp__big-caption" set:html={rich(d.number.caption)} />
+            </p>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <dl class="pp__hud">
+        {hud.filter(([, v]) => shows(v)).map(([k, v]) => (
+          <div><dt class="meta">{k}</dt><dd set:html={rich(v)} /></div>
+        ))}
+        {d.links.length > 0 && (
+          <div>
+            <dt class="meta">{t(lang, 'meta.links')}</dt>
+            <dd><ul class="pp__links">{d.links.map((l) => {
+              const ext = /^https?:/.test(l.href);
+              return <li><a href={l.href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
+            })}</ul></dd>
+          </div>
+        )}
+      </dl>
+
+      {d.features && d.features.length > 0 && (
+        <section class="pp__section" aria-labelledby="pp-features">
+          <h2 class="h3 pp__h2" id="pp-features">{t(lang, 'proj.features')}</h2>
+          <ol class="rows pp__features">
+            {d.features.map((f, i) => (
+              <li><span class="pp__n meta" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p set:html={rich(f)} /></li>
+            ))}
+          </ol>
+        </section>
+      )}
+    </div>
+
+    <ProjectPager lang={lang} current={d.key} />
+  </article>
+</Base>
+
+<style>
+  .pp__head { background: var(--bg-band); border-bottom: 1px solid var(--line); padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-8); }
+  @media (min-width: 1024px) { .pp__head { padding-top: calc(var(--header-h) + var(--s-9)); padding-bottom: var(--s-9); } }
+  .crumbs { display: flex; gap: var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-6); font-size: var(--fs-small); }
+  .crumbs a { color: var(--text-muted); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .crumbs a:hover { color: var(--heading); }
+  .crumbs span { display: inline-flex; align-items: center; }
+  .pp__title { max-width: 14ch; overflow-wrap: anywhere; }
+  @media (max-width: 767px) { .pp__title { font-size: var(--fs-h1-page); } }
+  .pp__sum { display: grid; gap: var(--s-6); margin-top: var(--s-6); }
+  .pp__lede { max-width: 52ch; }
+  @media (min-width: 1024px) {
+    .pp__sum { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; }
+  }
+  .pp__big { display: grid; gap: var(--s-2); }
+  .pp__big-value { font-size: var(--fs-h2); font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1; color: var(--heading); }
+  .pp__big-caption { color: var(--text-muted); font-size: var(--fs-small); }
+
+  /* HUD: one hairline row of facts */
+  .pp__hud { display: grid; gap: 0 var(--s-6); border-bottom: 1px solid var(--line); }
+  .pp__hud > div { display: grid; gap: var(--s-2); align-content: start; padding-block: var(--s-5); border-top: 1px solid var(--line); min-width: 0; }
+  .pp__hud > div:first-child { border-top: 0; }
+  .pp__hud dt { color: var(--text-quiet); }
+  .pp__hud dd { color: var(--text); overflow-wrap: anywhere; }
+  @media (min-width: 768px) {
+    .pp__hud { grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+    .pp__hud > div { border-top: 0; }
+  }
+  .pp__links { list-style: none; display: grid; gap: var(--s-1); }
+  .pp__links a { color: var(--text); text-decoration-color: var(--accent); display: inline-block; padding-block: 10px; margin-block: -10px; }
+
+  .pp__section { display: grid; gap: var(--s-5); padding-block: var(--section-y); }
+  @media (min-width: 1024px) { .pp__section { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--grid-gap); } }
+  .pp__features > li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: var(--s-4); align-items: baseline; padding-block: var(--s-5); }
+  .pp__n { color: var(--accent); }
+  .pp__features p { color: var(--text); }
+</style>

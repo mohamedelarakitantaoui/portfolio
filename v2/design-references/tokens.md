@@ -7,7 +7,7 @@ champagne used on thin lines and small text, never as a big bright fill. It is n
 Page #070605; bands #0B0A08; panels #0F0D0B. Heading #F2EBDD, text #E9DFCC, muted #BEB4A3,
 quiet #B0A696. Accent (champagne) #C8B07E, hover #D9C49A, dark text on champagne #0A0907.
 Lines are bone at 12% and 22%; UI borders #75695A. The "before" result bar is bone at 22%, the "after" bar champagne.
-Light screenshots are dimmed to 85% in a 1px line frame. The legacy paper token #F2F0EA is retained but unused.
+Light screenshots are dimmed to 75% in a 1px line frame. The legacy paper token #F2F0EA is retained but unused.
 
 Type: Jost for display and UI (headings at 200–300, tracking -0.02em; paragraphs and lists 400 at 16–17px;
 500 only for <strong>); Cormorant Garamond Italic 400
@@ -52,11 +52,15 @@ surfaces. Rendered pages are also checked with axe (`npm run check`).
 | `--portrait-surface` | `#1a1611` | |
 | `--accent-line` | `rgba(200, 176, 126, 0.35)` | |
 | `--bar-before` | `rgba(233, 223, 204, 0.22)` | |
-| `--dim-screen` | `brightness(0.85)` | |
+| `--dim-screen` | `brightness(0.75)` | |
 | `--photo-tone` | `saturate(0.6) sepia(0.14) brightness(0.92)` | |
 | `--fs-name` | `clamp(3.375rem, 13vw, 13.125rem)` | |
+| `--fs-email` | `clamp(1.625rem, 1rem + 2.6vw, 3rem)` | email headline (footer, /contact) |
 | `--fs-feature` | `clamp(2.75rem, 4.5vw, 5rem)` | |
 | `--fs-index` | `clamp(3rem, 5vw, 6rem)` | |
+| `--fs-poster` | `clamp(3.25rem, 1.25rem + 7vw, 9.5rem)` | case-study poster title |
+| `--fs-poster-long` | `clamp(2.75rem, 1rem + 4.6vw, 6.5rem)` | poster titles over 20 characters |
+| `--fs-poster-clause` | `0.4em` | Cormorant clause under a poster title |
 | `--paper` | `#f2f0ea` | |
 | `--paper-ink` | `#111111` | |
 | `--paper-muted` | `#4a4a45` | |
@@ -84,7 +88,7 @@ surfaces. Rendered pages are also checked with axe (`npm run check`).
 | `--fw-regular` | `400` | |
 | `--fw-medium` | `500` | |
 | `--fs-display` | `clamp(3.25rem, 1.6rem + 3.9vw, 5.75rem)` | |
-| `--fs-h1-hero` | `clamp(2.5rem, 4.2vw + 2.2vh, 6rem)` | |
+| `--fs-h1-hero` | `clamp(2.5rem, 4.5vw, 5.25rem)` | |
 | `--fs-h1-page` | `clamp(2.5rem, 1.2rem + 2.6vw, 4rem)` | |
 | `--fs-h2` | `clamp(2.5rem, 1.2rem + 3.2vw, 4.5rem)` | |
 | `--fs-statement` | `clamp(2.125rem, 1rem + 2.8vw, 4rem)` | |

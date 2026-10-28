@@ -3,7 +3,9 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // One MDX file per project per language: src/content/projects/<lang>/<key>.mdx (id = "<lang>/<key>").
-// Case study template (v3): header → overview sidebar → TL;DR (3 bullets) → chapters 01–06 → next project.
+// Case study template (v3): header → overview sidebar → TL;DR (3 bullets) → chapters 01–06 → previous / next project.
+// caseStudy: false = a short project page (title, summary, year, role, stack, features, links) built from frontmatter.
+// `order` is the display order on /work (featured first, then "More projects") and the previous / next cycle.
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
   schema: ({ image }) =>
@@ -12,6 +14,8 @@ const projects = defineCollection({
       lang: z.enum(['en', 'fr']),
       order: z.number(),
       title: z.string().min(1),
+      // Case-study poster: the Cormorant subtitle under the title, no comma ("AneuXplain" / "explainable AI for medical imaging").
+      subtitle: z.string().optional(),
       description: z.string().max(155),
       // featured = one of the three cards on the home page and /work; more = a one-line row.
       tier: z.enum(['featured', 'more']).default('more'),
@@ -42,6 +46,10 @@ const projects = defineCollection({
       }).optional(),
       constraint: z.string(),
       tags: z.array(z.string().min(1)).min(1).max(4),
+      // /work filter chips (src/lib/projects.ts): ml = ML & AI, automation, web = Web & Mobile, research.
+      category: z.array(z.enum(['ml', 'automation', 'web', 'research'])).min(1),
+      // Short project pages: what it does, one fact per bullet (from the CVs, site.ts or decisions.md only).
+      features: z.array(z.string().min(1)).optional(),
       cover: image().optional(),
       coverAlt: z.string().optional(),
       // Real product loop for the card and case-study header (files in public/).
@@ -50,7 +58,6 @@ const projects = defineCollection({
       caseStudy: z.boolean().default(true),
       // draft: the case-study page is built by `astro dev` only, never in production.
       draft: z.boolean().default(false),
-      next: z.string(),
     }).superRefine((d, ctx) => {
       // Guardrails: a featured card always shows a real result or says it is in progress; a cover always has alt text.
       if (d.tier === 'featured' && !d.metric && !d.progress) {

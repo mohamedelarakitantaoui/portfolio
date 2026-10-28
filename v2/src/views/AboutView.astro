@@ -1,12 +1,14 @@
 ---
-// About (v3): three short paragraphs (who, what I work on, how I work), the photo, Now, languages. No life story.
+// About (v5): the toned portrait large on one side and the text on the other (who, what I work on, how I work),
+// the proudest project as one hairline row, then Experience and Education as hairline rows, then Now and languages.
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Rich from '../components/Rich.astro';
 import portrait from '../assets/portrait-studio.png';
-import { about, now, person, spoken } from '../data/site';
+import { about, education, experience, now, person, spoken } from '../data/site';
 import { cvLink } from '../lib/cv';
 import { type Lang, lp, t } from '../i18n/ui';
+import { rich, shows } from '../lib/rich';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
@@ -20,45 +22,87 @@ const cv = cvLink(lang);
     : 'Mamoun El Araki, AI and software engineer in Morocco: computer science at Al Akhawayn and Boğaziçi, explainable ML, and the software around it.'}
   ogKey="about"
 >
-  <section class="section about" aria-label={fr ? 'Qui je suis' : 'Who I am'}>
-    <div class="wrap grid-12 about__grid">
-      <div class="about__text">
-        <header>
-          <p class="label">{fr ? 'À propos' : 'About'}</p>
-          <h1 class="h1">{fr ? 'Moi, c’est Mamoun.' : 'I’m Mamoun.'}</h1>
-        </header>
-        <p>{about.who[lang]}</p>
+  <section class="ab" aria-label={fr ? 'Qui je suis' : 'Who I am'}>
+    <div class="wrap ab__grid">
+      <figure class="ab__photo">
+        <Image src={portrait} alt={fr ? 'Mamoun El Araki, portrait en studio' : 'Mamoun El Araki, studio portrait'} widths={[480, 720, 960, 1254]} sizes="(min-width: 1024px) 40vw, 92vw" format="webp" quality={72} loading="eager" />
+      </figure>
+      <div class="ab__text">
+        <p class="label">{fr ? 'À propos' : 'About'}</p>
+        <h1 class="h1">{fr ? 'Moi, c’est Mamoun.' : 'I’m Mamoun.'}</h1>
+        <p class="ab__lead">{about.who[lang]}</p>
         <p>{about.what[lang]}</p>
         <p>{about.how[lang]}</p>
-        <div class="about__ctas">
-          <a class="btn btn--primary" href={cv.href}>{t(lang, 'cta.downloadCv')}</a>
+        <div class="ab__ctas">
+          <a class="btn btn--primary" href={cv.href}>{t(lang, 'cta.downloadCv')} <span class="btn__arrow" aria-hidden="true">→</span></a>
           <a class="link" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
         </div>
       </div>
-      <figure class="about__photo">
-        <Image src={portrait} alt={fr ? 'Mamoun El Araki, portrait en studio' : 'Mamoun El Araki, studio portrait'} widths={[360, 540, 720]} sizes="(min-width: 1024px) 400px, 80vw" format="webp" quality={72} loading="eager" />
-      </figure>
-      <aside class="about__personal">
-        <p class="label label--plain">{fr ? 'Le projet qui compte le plus pour moi' : 'The project I’m proudest of'}</p>
-        <p>{fr ? 'AneuXplain est mon projet de fin d’études. L’article a été accepté à ICOA 2026 ; j’attends encore sa publication.' : 'AneuXplain was my capstone project. The paper was accepted at ICOA 2026; I’m still waiting for its publication.'}</p>
-        <a href={lp(lang, '/work/aneuxplain')}>{fr ? 'Voir le projet' : 'Explore AneuXplain'} <span aria-hidden="true">↗</span></a>
-      </aside>
+    </div>
+  </section>
+
+  <section class="section ab-cv" aria-label={fr ? 'Parcours' : 'Background'}>
+    <div class="wrap">
+      <a class="ab-proud" href={lp(lang, '/work/aneuxplain')}>
+        <span class="meta ab-proud__label">{fr ? 'Le projet qui compte le plus pour moi' : 'The project I’m proudest of'}</span>
+        <span class="ab-proud__text">{fr ? 'AneuXplain est mon projet de fin d’études. L’article a été accepté à ICOA 2026 ; j’attends encore sa publication.' : 'AneuXplain was my capstone project. The paper was accepted at ICOA 2026; I’m still waiting for its publication.'}</span>
+        <span class="meta ab-proud__go">{fr ? 'Voir le projet' : 'Explore AneuXplain'} <span class="btn__arrow" aria-hidden="true">→</span></span>
+      </a>
+
+      <div class="ab-block">
+        <div class="ab-block__head">
+          <p class="label">{fr ? 'Expérience' : 'Experience'}</p>
+          <h2 class="h2" id="ab-exp">{fr ? 'Stages, projets et mentorat.' : 'Internships, projects and mentoring.'}</h2>
+        </div>
+        <ol class="rows ab-rows" aria-labelledby="ab-exp">
+          {experience.map((e) => (
+            <li class="ab-row">
+              <p class="ab-row__when">{shows(e.year) && <span>{e.year}</span>}{shows(e.span[lang]) && <span set:html={rich(e.span[lang])} />}</p>
+              <div class="ab-row__main">
+                <h3 class="ab-row__title"><span set:html={rich(e.role[lang])} /><span class="ab-row__sep" aria-hidden="true"> · </span><span class="sr-only">, </span><span class="ab-row__org">{e.org}</span></h3>
+                <p class="ab-row__where">{e.location}</p>
+                {shows(e.result[lang]) && <p class="ab-row__text" set:html={rich(e.result[lang])} />}
+                {e.tags.length > 0 && <ul class="tags ab-row__tags" aria-label="Stack">{e.tags.map((tg) => <li class="tag">{tg}</li>)}</ul>}
+                {e.href && <a class="link ab-row__cs" href={lp(lang, e.href)}>{t(lang, 'cs.label')}<span class="sr-only">: {e.org}</span></a>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="ab-block">
+        <div class="ab-block__head">
+          <p class="label">{fr ? 'Formation' : 'Education'}</p>
+          <h2 class="h2" id="ab-edu">{fr ? 'Ifrane et Istanbul.' : 'Ifrane and Istanbul.'}</h2>
+        </div>
+        <ol class="rows ab-rows" aria-labelledby="ab-edu">
+          {education.map((ed) => (
+            <li class="ab-row">
+              <p class="ab-row__when"><span>{ed.dates[lang]}</span></p>
+              <div class="ab-row__main">
+                <h3 class="ab-row__title">{ed.school}</h3>
+                <p class="ab-row__text">{ed.degree[lang]}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   </section>
 
   <section class="section band" aria-labelledby="about-now">
-    <div class="wrap grid-12 about__grid">
-      <div class="about__col">
+    <div class="wrap ab-now">
+      <div>
         <p class="label">{fr ? 'Maintenant' : 'Now'}</p>
         <h2 class="h2" id="about-now">{fr ? 'Sur mon bureau.' : 'On my desk.'}</h2>
-        <ul class="rows about__now">
+        <ul class="rows ab-now__list">
           {now.inProgress.map((it) => <li><Rich text={it[lang]} /></li>)}
         </ul>
       </div>
-      <div class="about__col about__langs">
+      <div>
         <p class="label">{fr ? 'Langues' : 'Languages'}</p>
-        <h2 class="about__small-title" id="about-langs">{fr ? 'Pour échanger.' : 'For conversation.'}</h2>
-        <ul class="rows about__lang-list" aria-labelledby="about-langs">
+        <h2 class="h3" id="about-langs">{fr ? 'Pour échanger.' : 'For conversation.'}</h2>
+        <ul class="rows ab-now__list ab-now__langs" aria-labelledby="about-langs">
           {spoken[lang].map((l) => <li>{l}</li>)}
         </ul>
       </div>
@@ -67,28 +111,74 @@ const cv = cvLink(lang);
 </Base>
 
 <style>
-  .about { padding-top: calc(var(--header-h) + var(--s-8)); background: var(--bg-band); }
-  .about__text header { margin-bottom: var(--s-5); }
-  .about__personal { border-left: 2px solid var(--accent); padding: var(--s-5); background: var(--accent-surface); display: grid; gap: var(--s-3); }
-  .about__personal p { max-width: var(--measure); }
-  .about__personal a { justify-self: start; padding-block: var(--s-3); text-decoration-color: var(--accent); }
-  .about__small-title { font-size: var(--fs-sub); }
-  .about__grid { row-gap: var(--s-7); align-items: start; }
-  .about__text { display: grid; gap: var(--s-4); font-size: var(--fs-lede); line-height: 1.55; }
-  .about__text p:first-child { color: var(--text); }
-  .about__text p + p { color: var(--text-muted); }
-  .about__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-3); }
-  .about__photo { max-width: 400px; border-radius: var(--r-img); overflow: hidden; aspect-ratio: 3 / 4; background: var(--surface); border: 1px solid var(--line); }
-  /* Toned to the v5 palette: about 40% desaturated with a slight warm shift (the blue shirt no longer clashes). */
-  .about__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: var(--photo-tone); }
-  .about__now > li, .about__lang-list > li { padding-block: var(--s-4); color: var(--text-muted); }
-  .about__now :global(strong) { color: var(--text); font-weight: var(--fw-medium); }
-  .about__col .h2 { margin-bottom: var(--s-5); max-width: 20ch; }
-  @media (min-width: 1024px) {
-    .about__text { grid-column: 1 / span 7; }
-    .about__photo { grid-column: 9 / -1; }
-    .about__personal { grid-column: 1 / -1; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr) auto; gap: var(--s-6); align-items: center; }
-    .about__col { grid-column: 1 / span 6; }
-    .about__langs { grid-column: 8 / -1; }
+  /* Opening: portrait | text */
+  .ab { padding-top: calc(var(--header-h) + var(--s-7)); padding-bottom: var(--s-8); border-bottom: 1px solid var(--line); }
+  .ab__grid { display: grid; gap: var(--s-7); }
+  .ab__photo {
+    margin: 0; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--r-img);
+    background: var(--surface); border: 1px solid var(--line);
   }
+  /* Toned to the v5 palette: about 40% desaturated with a slight warm shift (the blue shirt no longer clashes). */
+  .ab__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: var(--photo-tone); display: block; }
+  .ab__text { display: grid; gap: var(--s-4); align-content: center; min-width: 0; }
+  .ab__text .label { margin-bottom: 0; }
+  .ab__text .h1 { margin-bottom: var(--s-4); }
+  .ab__text p:not(.label) { font-size: var(--fs-lede); line-height: 1.6; color: var(--text-muted); max-width: 54ch; }
+  .ab__text .ab__lead { color: var(--text); }
+  .ab__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin-top: var(--s-4); }
+  @media (min-width: 1024px) {
+    .ab { padding-top: calc(var(--header-h) + var(--s-8)); padding-bottom: var(--s-9); }
+    .ab__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-9); align-items: center; }
+    .ab__photo { max-height: calc(100svh - var(--header-h) - var(--s-9)); width: 100%; justify-self: start; }
+  }
+
+  /* The proudest project: one hairline row, the whole row is the link */
+  .ab-proud {
+    position: relative; display: grid; gap: var(--s-3) var(--grid-gap); padding-block: var(--s-6);
+    border-block: 1px solid var(--line-strong); text-decoration: none; color: var(--text);
+  }
+  .ab-proud::before {
+    content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left center;
+  }
+  :global(.fx-on) .ab-proud::before { transition: transform var(--dur-row) var(--ease-out); }
+  :global(.fx-on) .ab-proud:hover::before { transform: scaleX(1); }
+  .ab-proud__label { color: var(--accent); }
+  .ab-proud__text { font-size: var(--fs-lede); line-height: 1.5; max-width: 60ch; }
+  .ab-proud__go { color: var(--text-muted); white-space: nowrap; }
+  .ab-proud:hover .ab-proud__go { color: var(--accent); }
+  :global(.fx-on) .ab-proud:hover .btn__arrow { transform: translateX(4px); }
+  @media (min-width: 1024px) {
+    .ab-proud { grid-template-columns: minmax(0, 3fr) minmax(0, 7fr) minmax(0, 2fr); align-items: baseline; }
+    .ab-proud__go { justify-self: end; }
+  }
+
+  /* Experience and Education: label + h2, then hairline rows (date | role · org, place, result, tags) */
+  .ab-block { margin-top: var(--section-y); }
+  .ab-block__head { margin-bottom: var(--s-7); }
+  .ab-block__head .h2 { max-width: 16ch; }
+  .ab-row { display: grid; gap: var(--s-2) var(--grid-gap); padding-block: var(--s-6); }
+  .ab-row__when {
+    display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: baseline; color: var(--accent);
+    font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase;
+  }
+  .ab-row__main { display: grid; gap: var(--s-2); min-width: 0; }
+  .ab-row__title { font-size: var(--fs-row); font-weight: var(--fw-light); letter-spacing: var(--track-h); line-height: 1.3; color: var(--heading); }
+  .ab-row__sep, .ab-row__org { color: var(--text-muted); }
+  .ab-row__where { font-size: var(--fs-small); color: var(--text-quiet); }
+  .ab-row__text { color: var(--text-muted); max-width: 64ch; }
+  .ab-row__tags { margin-top: var(--s-2); }
+  .ab-row__cs { font-size: var(--fs-small); }
+  @media (min-width: 1024px) {
+    .ab-row { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .ab-row__when { grid-column: 1 / span 3; flex-direction: column; gap: 2px; padding-top: 0.35em; }
+    .ab-row__main { grid-column: 4 / -1; }
+  }
+
+  /* Now + languages */
+  .ab-now { display: grid; gap: var(--s-8); }
+  .ab-now .h2, .ab-now .h3 { margin-bottom: var(--s-5); max-width: 20ch; }
+  .ab-now__list > li { padding-block: var(--s-4); color: var(--text-muted); }
+  .ab-now__list :global(strong) { color: var(--text); font-weight: var(--fw-medium); }
+  @media (min-width: 1024px) { .ab-now { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: var(--s-9); } }
 </style>

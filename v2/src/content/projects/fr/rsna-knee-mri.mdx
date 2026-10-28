@@ -1,8 +1,9 @@
 ---
 key: rsna-knee-mri
 lang: fr
-order: 7
+order: 4
 title: Détection d’anomalies sur IRM du genou
+subtitle: "des IRM du genou brutes en entrée, 12 scores d’anomalies en sortie"
 description: Un pipeline de deep learning qui lit des IRM du genou brutes et note 12 anomalies, sur les GPU gratuits de Kaggle, pour la compétition RSNA 2026.
 tier: more
 year: "2026"
@@ -26,7 +27,7 @@ progress: "En cours : la compétition se termine le 22 octobre 2026 ; le résult
 bars: { title: "Classement public, ROC-AUC macro : mes propres modèles", before: { label: "ResNet18 de base", value: 0.825, text: "0,825" }, after: { label: "Ensemble ResNet18 + EfficientNet-B0", value: 0.877, text: "0,877" } }
 constraint: 58 labels d’experts pour 4 407 études, uniquement des GPU gratuits, et des données de compétition qui ne quittent pas Kaggle.
 tags: [PyTorch, Imagerie médicale, Vision par ordinateur, Étiquetage LLM]
-next: preparia
+category: [ml]
 ---
 import curves from '../../../assets/rsna-knee/training-curves.png';
 import submissions from '../../../assets/rsna-knee/kaggle-submissions.webp';

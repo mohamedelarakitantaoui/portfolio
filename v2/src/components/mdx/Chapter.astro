@@ -1,5 +1,6 @@
 ---
-// One case-study chapter: small uppercase "Chapter 0X · label", an h2 that is a claim, then the body.
+// One case-study chapter, a numbered hairline section: the big thin number and the label on the left, an h2 that is
+// a claim and the body on the right (stacked on phones).
 // In production a chapter whose title or body is only TODO markers is omitted entirely.
 import { rich, shows } from '../../lib/rich';
 import { langFromUrl, t } from '../../i18n/ui';
@@ -12,17 +13,30 @@ const render = shows(title) && (import.meta.env.DEV || hasBody);
 ---
 {render && (
   <section class="chapter" aria-labelledby={`ch-${n}`}>
-    <p class="chapter__label meta"><span class="chapter__n">{t(lang, 'chapter')} {n}</span><span aria-hidden="true">·</span><span>{label}</span></p>
-    <h2 class="chapter__title" id={`ch-${n}`} data-reveal-lines set:html={rich(title)} />
-    <div class="chapter__body prose" set:html={body} />
+    <div class="chapter__side">
+      <p class="chapter__n" aria-hidden="true">{n}</p>
+      <p class="chapter__label meta"><span class="sr-only">{t(lang, 'chapter')} {n} · </span>{label}</p>
+    </div>
+    <div class="chapter__main">
+      <h2 class="chapter__title" id={`ch-${n}`} data-reveal-lines set:html={rich(title)} />
+      <div class="chapter__body prose" set:html={body} />
+    </div>
   </section>
 )}
 
 <style>
-  .chapter { padding-block: var(--s-8); border-top: 1px solid var(--line); }
-  .chapter__label { display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2); color: var(--text-quiet); margin-bottom: var(--s-4); }
-  .chapter__n { white-space: nowrap; }
-  .chapter__n { color: var(--accent); }
+  .chapter {
+    display: grid; gap: var(--s-4) var(--grid-gap); padding-block: var(--s-8); border-top: 1px solid var(--line);
+    scroll-margin-top: var(--header-h);
+  }
+  .chapter:first-of-type { border-top: 0; }
+  .chapter__side { display: flex; align-items: baseline; gap: var(--s-4); align-content: start; }
+  .chapter__n {
+    font-size: var(--fs-index); font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 0.9;
+    color: var(--text-quiet); font-variant-numeric: tabular-nums;
+  }
+  .chapter__label { color: var(--accent); }
+  .chapter__main { min-width: 0; container-type: inline-size; }
   .chapter__title {
     font-size: clamp(2rem, 1.2rem + 2vw, 3.25rem);
     font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1.08; max-width: 22ch;
@@ -32,4 +46,8 @@ const render = shows(title) && (import.meta.env.DEV || hasBody);
   .chapter__body :global(ol:not([class])) { padding-inline-start: 1.3em; display: grid; gap: var(--s-2); margin-top: var(--s-4); }
   .chapter__body :global(ol:not([class]) li::marker) { color: var(--accent); font-family: var(--font-body); font-size: var(--fs-marker); }
   .chapter__body :global(ul:not([class]) li) { max-width: var(--measure); }
+  @media (min-width: 1024px) {
+    .chapter { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); padding-block: var(--s-9); }
+    .chapter__side { flex-direction: column; gap: var(--s-3); position: sticky; top: calc(var(--header-h) + var(--s-6)); align-self: start; }
+  }
 </style>

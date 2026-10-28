@@ -1,8 +1,9 @@
 ---
 key: rsna-knee-mri
 lang: en
-order: 7
+order: 4
 title: Knee MRI Abnormality Detection
+subtitle: "raw knee MRI in, 12 abnormality scores out"
 description: A deep-learning pipeline that reads raw knee MRI and scores 12 abnormalities, built on free Kaggle GPUs for the RSNA 2026 competition.
 tier: more
 year: "2026"
@@ -26,7 +27,7 @@ progress: "In progress: the competition closes on 22 Oct 2026; the private-leade
 bars: { title: "Public leaderboard, macro ROC-AUC: my own models", before: { label: "ResNet18 baseline", value: 0.825, text: "0.825" }, after: { label: "ResNet18 + EfficientNet-B0 ensemble", value: 0.877, text: "0.877" } }
 constraint: 58 expert labels for 4,407 studies, free-tier GPUs only, and competition data that can't leave Kaggle.
 tags: [PyTorch, Medical imaging, Computer vision, LLM labelling]
-next: preparia
+category: [ml]
 ---
 import curves from '../../../assets/rsna-knee/training-curves.png';
 import submissions from '../../../assets/rsna-knee/kaggle-submissions.webp';

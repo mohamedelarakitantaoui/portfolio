@@ -36,7 +36,7 @@ const L = fr
         {services.map((s) => (
           <li class="pack">
             <div class="pack__head">
-              <span class="meta pack__n">[{s.n}]</span>
+              <span class="meta pack__n">{s.n}</span>
               <h2 class="pack__name">{s.name[lang]}</h2>
             </div>
             <dl class="pack__facts">
@@ -46,7 +46,7 @@ const L = fr
               <div><dt class="meta">{L.price}</dt><dd class="pack__price">{s.price[lang]}</dd></div>
               <div><dt class="meta">{L.proof}</dt><dd><a href={lp(lang, `/work/${s.proof.slug}`)}>{s.proof.label} <span aria-hidden="true">→</span></a></dd></div>
             </dl>
-            <a class="btn btn--primary pack__cta" href={lp(lang, '/contact') + `?for=project&pack=${s.n}`}>{t(lang, 'cta.start')}<span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn--primary pack__cta" href={lp(lang, '/contact') + `?for=project&pack=${s.n}`}>{t(lang, 'cta.start')} <span class="btn__arrow" aria-hidden="true">→</span></a>
           </li>
         ))}
       </ol>
@@ -90,12 +90,13 @@ const L = fr
 <style>
   .packs-sec { padding-top: var(--s-7); }
   .packs { display: grid; gap: var(--s-5); border: 0; }
-  .packs > .pack { display: grid; gap: var(--s-6); padding: var(--s-6); border: 1px solid var(--line-strong); background: var(--bg-band); }
-  .packs > .pack:first-child { background: var(--accent-surface); border-color: var(--accent-line); }
+  /* Two sharp --surface panels with a hairline (panels are allowed only here and on the two doors). */
+  .packs > .pack { display: grid; grid-template-rows: auto 1fr auto; gap: var(--s-6); padding: var(--s-7) var(--s-6); border: 1px solid var(--line); background: var(--surface); }
+  .packs > .pack:last-child { border-bottom: 1px solid var(--line); }
   @media (min-width: 1024px) { .packs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .pack__head { display: grid; gap: var(--s-2); }
   .pack__n { color: var(--accent); }
-  .pack__name { font-family: var(--font-body); font-weight: var(--fw-thin); font-size: var(--fs-statement); letter-spacing: var(--track-display); line-height: 1.05; }
+  .pack__name { font-weight: var(--fw-thin); font-size: var(--fs-statement); letter-spacing: var(--track-display); line-height: 1.05; color: var(--heading); }
   .pack__facts > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--s-3); padding-block: var(--s-3); border-top: 1px solid var(--line); }
   .pack__facts dt { color: var(--text-quiet); padding-top: 0.2em; }
   .pack__facts dd { color: var(--text-muted); }
@@ -109,7 +110,7 @@ const L = fr
   @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
   .step { border-top: 1px solid var(--line-strong); padding-top: var(--s-4); display: grid; gap: var(--s-2); align-content: start; }
   .step__n { color: var(--accent); }
-  .step__title { font-family: var(--font-body); font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); }
+  .step__title { font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); }
   .step__text { color: var(--text-muted); }
   .faq-grid { display: grid; gap: var(--s-6); }
   @media (min-width: 1024px) { .faq-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-8); } }

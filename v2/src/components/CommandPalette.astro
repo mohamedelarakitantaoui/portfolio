@@ -1,19 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
 import { type Lang, lp, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { cvLink } from '../lib/cv';
+import { allProjects, projectHref } from '../lib/projects';
 interface Props { lang: Lang; enPath: string; frPath: string }
 const { lang, enPath, frPath } = Astro.props;
 const cv = cvLink(lang);
-const projects = (await getCollection('projects', (p) => p.data.lang === lang && p.data.tier === 'featured')).sort((a, b) => a.data.order - b.data.order);
+// Every project page: case studies and short project pages.
+const projects = await allProjects(lang);
 const go = t(lang, 'palette.go');
 const act = t(lang, 'palette.action');
 const fr = lang === 'fr';
 const items = [
   { kind: go, label: t(lang, 'nav.home'), href: lp(lang, '/'), keys: 'home accueil' },
   { kind: go, label: t(lang, 'nav.work'), href: lp(lang, '/work'), keys: 'work projects projets portfolio' },
-  ...projects.map((p) => ({ kind: go, label: `${p.data.title} · ${t(lang, 'cta.caseStudy')}`, href: lp(lang, `/work/${p.data.key}`), keys: `${p.data.tags.join(' ')} ${p.data.meta}` })),
+  ...projects.map((p) => ({ kind: go, label: `${p.data.title} · ${t(lang, p.data.caseStudy ? 'cs.label' : 'proj.label')}`, href: projectHref(lang, p.data.key), keys: `${p.data.tags.join(' ')} ${p.data.stack.join(' ')} ${p.data.meta}` })),
   { kind: go, label: t(lang, 'nav.about'), href: lp(lang, '/about'), keys: 'about experience education propos' },
   { kind: go, label: t(lang, 'nav.services'), href: lp(lang, '/services'), keys: 'services freelance packs hire offres' },
   { kind: go, label: t(lang, 'nav.cv'), href: lp(lang, '/cv'), keys: 'cv resume curriculum' },

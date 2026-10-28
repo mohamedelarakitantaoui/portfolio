@@ -1,24 +1,25 @@
 ---
 // v5 home project row (hairline, 3 columns): meta + title + tags | real media (the AneuXplain loop) or the flat
 // before/after bars, outcome, champagne metric, "In progress" line | "Case study →".
-// A champagne hairline grows across the row on hover (effects on only). /work keeps ProjectCard.
+// A champagne hairline grows across the row on hover (effects on only). Used on the home page and /work.
 import type { CollectionEntry } from 'astro:content';
 import ProjectMedia from './ProjectMedia.astro';
 import ProjectBars from './ProjectBars.astro';
-import { type Lang, lp, t } from '../i18n/ui';
+import { type Lang, t } from '../i18n/ui';
+import { projectHref } from '../lib/projects';
 import { rich } from '../lib/rich';
 interface Props { project: CollectionEntry<'projects'>; lang: Lang }
 const { project, lang } = Astro.props;
 const d = project.data;
-const href = d.caseStudy && (import.meta.env.DEV || !d.draft) ? lp(lang, `/work/${d.key}`) : null;
+const href = projectHref(lang, d.key);
 const metric = d.metric ?? (d.number ? `${d.number.value} · ${d.number.caption}` : null);
 // Effect: the AneuXplain video grows into its column on scroll (src/scripts/effects/fx/media-grow.ts).
 const grow = d.key === 'aneuxplain' ? 'media-grow' : undefined;
 ---
-<li class="prow" data-reveal>
+<li class="prow" data-reveal data-categories={d.category.join(' ')}>
   <div class="prow__id">
     <p class="meta prow__meta">{d.meta}</p>
-    <h3 class="prow__title">{href ? <a href={href}>{d.title}</a> : d.title}</h3>
+    <h3 class="prow__title"><a href={href}>{d.title}</a></h3>
     <ul class="tags prow__tags" aria-label="Stack">{d.tags.slice(0, 4).map((tg) => <li class="tag">{tg}</li>)}</ul>
   </div>
   <div class="prow__body">
@@ -28,7 +29,7 @@ const grow = d.key === 'aneuxplain' ? 'media-grow' : undefined;
     {metric && <p class="prow__metric" set:html={rich(metric)} />}
     {d.progress && <p class="prow__progress" set:html={rich(d.progress)} />}
   </div>
-  {href && <a class="prow__link meta" href={href} aria-hidden="true" tabindex="-1">{t(lang, 'cs.label')} <span class="btn__arrow">→</span></a>}
+  <a class="prow__link meta" href={href} aria-hidden="true" tabindex="-1">{t(lang, d.caseStudy ? 'cs.label' : 'proj.label')} <span class="btn__arrow">→</span></a>
 </li>
 
 <style>

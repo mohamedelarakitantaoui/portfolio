@@ -1,62 +1,82 @@
 ---
-import { getCollection } from 'astro:content';
+// /work lists ALL projects: the featured ones as the home page's hairline rows, then every "More projects" row.
+// Filter chips (All · ML & AI · Automation · Web & Mobile · Research) appear with JS (src/scripts/main.ts); without JS
+// every project shows. Every row links to its case study or short project page.
 import Base from '../layouts/Base.astro';
 import PageIntro from '../components/PageIntro.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import ProjectRow from '../components/ProjectRow.astro';
 import MoreProjects from '../components/MoreProjects.astro';
 import { person } from '../data/site';
-import { type Lang } from '../i18n/ui';
+import { type Lang, t } from '../i18n/ui';
+import { allProjects, CATEGORIES } from '../lib/projects';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
-const featured = (await getCollection('projects', (p) => p.data.lang === lang && p.data.tier === 'featured')).sort((a, b) => a.data.order - b.data.order);
+const all = await allProjects(lang);
+const featured = all.filter((p) => p.data.tier === 'featured');
+const chips = ['all', ...CATEGORIES] as const;
 ---
 <Base
   lang={lang}
   title={fr ? `Projets · ${person.name}` : `Work · ${person.name}`}
   description={fr
-    ? 'Trois projets en détail (AneuXplain, DCE Scraper chez Intelcia, PitchPoint), chacun avec son chiffre et son point de départ, et cinq plus petits.'
-    : 'Three projects in depth (AneuXplain, the Intelcia DCE Scraper, PitchPoint), each with its number and starting point, plus five smaller ones.'}
+    ? 'Tous mes projets : trois en détail (AneuXplain, DCE Scraper chez Intelcia, PitchPoint), chacun avec son chiffre, et six autres, chacun avec sa page.'
+    : 'Every project: three in depth (AneuXplain, the Intelcia DCE Scraper, PitchPoint), each with its number, and six more, each with its own page.'}
   ogKey="work"
 >
   <PageIntro
     label={fr ? 'Projets' : 'Work'}
-    title={fr ? 'Projets choisis.' : 'Selected projects.'}
+    title={fr ? 'Tous les projets.' : 'All projects.'}
     lede={fr
       ? 'De mon projet de fin d’études à l’automatisation chez Intelcia : ce que j’ai construit, les choix techniques et les limites.'
       : 'From my capstone to automation at Intelcia: what I built, the technical decisions and the limitations.'}
-  >
-    <nav class="work-index" aria-label={fr ? 'Index des projets' : 'Project index'}>
-      {featured.map((p, i) => <a href={`#project-${p.data.key}`}><span class="meta">0{i + 1}</span>{p.data.title}<span aria-hidden="true">↓</span></a>)}
-      <a href="#work-more">{fr ? 'Autres projets' : 'More projects'}<span aria-hidden="true">↓</span></a>
-    </nav>
-  </PageIntro>
+  />
 
-  <section class="section work-list" aria-label={fr ? 'Projets choisis' : 'Selected projects'}>
-    <div class="wrap work-grid">
-      {featured.map((p, i) => <div class="work-entry" id={`project-${p.data.key}`}><p class="work-entry__index meta" aria-hidden="true">0{i + 1}</p><ProjectCard project={p} lang={lang} headingLevel="h2" /></div>)}
-    </div>
-  </section>
-
-  <section class="section band" aria-label={fr ? 'Autres projets' : 'More projects'}>
+  <section class="section work" aria-label={fr ? 'Projets' : 'Projects'}>
     <div class="wrap">
-      <MoreProjects lang={lang} heading="h2" id="work-more" />
+      <div class="work__bar" data-filter-bar hidden>
+        <div class="chips" role="group" aria-label={t(lang, 'work.filter')}>
+          {chips.map((c) => (
+            <button type="button" class="chip" data-filter={c} aria-pressed={c === 'all' ? 'true' : 'false'}>{t(lang, `cat.${c}` as const)}</button>
+          ))}
+        </div>
+        <p class="meta work__count" data-filter-status data-template={t(lang, 'work.count')} aria-live="polite">{t(lang, 'work.count').replace('{n}', String(all.length))}</p>
+      </div>
+
+      <div class="work__groups">
+      <div data-filter-group>
+        <h2 class="work__h" id="work-featured">{t(lang, 'work.featured')}</h2>
+        <ol class="work__rows" aria-labelledby="work-featured">
+          {featured.map((p) => <ProjectRow project={p} lang={lang} />)}
+        </ol>
+      </div>
+
+      <div data-filter-group>
+        <MoreProjects lang={lang} heading="h2" id="work-more" />
+      </div>
+      </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .work-grid { display: grid; }
-  .work-list { padding-top: var(--s-7); }
-  .work-index { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-7); margin-top: var(--s-7); border-top: 1px solid var(--line-strong); padding-top: var(--s-4); }
-  .work-index a { display: inline-flex; gap: var(--s-3); align-items: center; min-height: 44px; text-decoration: none; }
-  .work-index a:hover { color: var(--accent); }
-  .work-index .meta { color: var(--accent); }
-  .work-entry { padding-block: var(--s-7); border-top: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + var(--s-5)); }
-  .work-entry:first-child { border-top: 0; padding-top: 0; }
-  .work-entry__index { color: var(--accent); margin-bottom: var(--s-5); }
-  @media (min-width: 1024px) {
-    .work-entry > :global(.pcard) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-7); align-items: center; }
-    .work-entry:nth-child(2) > :global(.pcard) > :global(.pcard__media) { order: 2; }
+  .work { padding-top: var(--s-7); }
+  .work__bar {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-4) var(--s-6);
+    padding-bottom: var(--s-6); margin-bottom: var(--s-7); border-bottom: 1px solid var(--line);
   }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .chip {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);
+    border: 1px solid var(--line); border-radius: var(--r-btn); background: transparent; color: var(--text-muted);
+    font: inherit; font-size: var(--fs-label); font-weight: var(--fw-regular); letter-spacing: var(--track-label);
+    text-transform: uppercase; cursor: pointer;
+    transition: border-color var(--dur-btn) var(--ease-out), color var(--dur-btn) var(--ease-out);
+  }
+  .chip:hover { border-color: var(--line-input); color: var(--heading); }
+  .chip[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); }
+  .work__count { color: var(--text-quiet); }
+  .work__h { font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); color: var(--heading); margin-bottom: var(--s-4); }
+  .work__rows { list-style: none; }
+  .work__groups { display: grid; gap: var(--section-y); }
 </style>

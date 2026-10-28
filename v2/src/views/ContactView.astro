@@ -22,8 +22,13 @@ const F = fr
   ogKey="contact"
 >
   <PageIntro label="Contact" title={fr ? 'Un poste ou un projet ?' : 'A role or a project?'} lede={fr ? 'Écrivez-moi directement ou laissez quelques détails ci-dessous.' : 'Email me directly, or leave a few details below.'}>
-    <a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a>
-    <div class="contact__actions"><CopyEmail lang={lang} /><a class="btn" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a><a class="btn" href={lp(lang, '/cv')}>CV</a></div>
+    <p class="contact__email-wrap"><a class="contact__email" href={`mailto:${person.email}`}>{person.email}</a></p>
+    <div class="contact__actions">
+      <CopyEmail lang={lang} class="btn--primary" />
+      <a class="link" href={person.linkedin} target="_blank" rel="noopener">LinkedIn<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
+      <a class="link" href={person.github} target="_blank" rel="noopener">GitHub<span class="sr-only"> ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
+      <a class="link link--plain" href={lp(lang, '/cv')}>CV <span aria-hidden="true">→</span></a>
+    </div>
   </PageIntro>
 
   <section class="section band" aria-label={fr ? 'Formulaire et disponibilités' : 'Form and availability'}>
@@ -37,7 +42,7 @@ const F = fr
       </div>
 
       <div class="contact__formwrap">
-        <h2 class="contact__formtitle">{fr ? 'Votre message' : 'Your message'}</h2>
+        <h2 class="h3 contact__formtitle">{fr ? 'Votre message' : 'Your message'}</h2>
         <form class="cform" name="contact" method="POST" action={lp(lang, '/contact/sent')} data-netlify="true" netlify-honeypot="company" data-contact-form>
           <input type="hidden" name="form-name" value="contact" />
           <p class="sr-only"><label>Company <input type="text" name="company" tabindex="-1" autocomplete="off" /></label></p>
@@ -66,7 +71,7 @@ const F = fr
             <p class="cform__note" id="cf-msg-help">{fr ? 'Pour un poste : l’équipe et la mission. Pour un projet : le besoin, les données disponibles et vos délais.' : 'For a role: the team and position. For a project: the problem, available data and your timeline.'}</p>
             <p class="field__err" id="cf-msg-err"></p>
           </div>
-          <button class="btn btn--primary" type="submit">{F.send}<span class="arrow" aria-hidden="true">→</span></button>
+          <button class="btn btn--primary" type="submit">{F.send} <span class="btn__arrow" aria-hidden="true">→</span></button>
           <p class="cform__note">{F.note} <Todo>{fr ? 'choisir le service de formulaire (Netlify Forms ou Formspree)' : 'pick the form service (Netlify Forms or Formspree)'}</Todo></p>
         </form>
         <p class="cform__msg" data-form-success tabindex="-1" role="status" hidden>{F.ok}</p>
@@ -77,32 +82,46 @@ const F = fr
 </Base>
 
 <style>
+  /* The email as a headline, like the footer: Jost 200, a hairline underline that turns champagne on hover. */
+  .contact__email-wrap { margin-top: var(--s-6); max-width: none; }
   .contact__email {
-    display: inline-block; margin-top: var(--s-6); font-family: var(--font-body); font-weight: var(--fw-regular);
-    font-size: clamp(1.75rem, 6vw, 4.5rem); letter-spacing: var(--track-display); line-height: 1; overflow-wrap: anywhere;
-    text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 0.15em;
+    display: inline-block; font-size: var(--fs-email); font-weight: var(--fw-thin); line-height: 1.15; color: var(--heading);
+    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--line-strong);
+    overflow-wrap: anywhere; transition: text-decoration-color var(--dur-2) var(--ease-out);
   }
-  .contact__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+  .contact__email:hover, .contact__email:focus-visible { text-decoration-color: var(--accent); }
+  .contact__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-6); margin-top: var(--s-5); }
+  .link--plain::after { content: none; }
+
   .contact__grid { display: grid; gap: var(--s-8); }
-  .contact__formwrap { background: var(--accent-surface); padding: var(--s-6); border: 1px solid var(--accent-line); border-radius: var(--r-img); }
-  .contact__formtitle { font-size: var(--fs-sub); margin-bottom: var(--s-6); }
-  @media (min-width: 1024px) { .contact__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
-  .contact__facts > div { display: grid; gap: var(--s-1); padding-block: var(--s-4); border-top: 1px solid var(--line); }
+  @media (min-width: 1024px) { .contact__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; } }
+  .contact__facts > div { display: grid; gap: var(--s-2); padding-block: var(--s-5); border-top: 1px solid var(--line); }
+  .contact__facts > div:last-child { border-bottom: 1px solid var(--line); }
   .contact__facts dt { color: var(--text-quiet); }
   .contact__facts dd { color: var(--text-muted); }
-  .contact__facts a { color: var(--text); }
+  .contact__facts a { color: var(--text); text-decoration-color: var(--accent); }
+
+  /* The form: one sharp --surface panel with a hairline, labels as small uppercase meta, inputs on the page colour. */
+  .contact__formwrap { background: var(--surface); padding: var(--s-6); border: 1px solid var(--line); border-radius: var(--r-img); }
+  @media (min-width: 1024px) { .contact__formwrap { padding: var(--s-7); } }
+  .contact__formtitle { margin-bottom: var(--s-6); }
   .cform { display: grid; gap: var(--s-5); }
   .field { display: grid; gap: var(--s-2); }
-  .field label { font-weight: var(--fw-regular); }
+  .field label {
+    font-size: var(--fs-label); font-weight: var(--fw-regular); letter-spacing: var(--track-label);
+    text-transform: uppercase; color: var(--text-muted);
+  }
   .field input, .field textarea, .field select {
     width: 100%; min-height: 48px; padding: var(--s-3) var(--s-4); border-radius: var(--r-btn);
     border: 1px solid var(--line-input); background: var(--bg); color: var(--text); font: inherit;
+    transition: border-color var(--dur-btn) var(--ease-out);
   }
-  .field textarea { resize: vertical; min-height: 140px; }
-  .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .field input:hover, .field textarea:hover, .field select:hover { border-color: var(--text-quiet); }
+  .field textarea { resize: vertical; min-height: 160px; }
+  .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { outline: 1px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
   .field [aria-invalid='true'] { border-color: var(--accent); }
   .field__err { color: var(--accent-hover); font-size: var(--fs-small); min-height: 1em; }
   .cform .btn { justify-self: start; }
-  .cform__note { color: var(--text-muted); }
-  .cform__msg { padding: var(--s-5); border: 1px solid var(--accent); border-radius: var(--r-img); }
+  .cform__note { color: var(--text-muted); font-size: var(--fs-small); }
+  .cform__msg { padding: var(--s-5); border: 1px solid var(--accent-line); background: var(--surface); }
 </style>

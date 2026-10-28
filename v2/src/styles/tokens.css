@@ -24,11 +24,15 @@
   --portrait-surface: #1a1611;
   --accent-line: rgba(200, 176, 126, 0.35);
   --bar-before: rgba(233, 223, 204, 0.22); /* the "before" result bar */
-  --dim-screen: brightness(0.85); /* light screenshots and app recordings: never the brightest thing on a page */
+  --dim-screen: brightness(0.75); /* light screenshots and app recordings: never the brightest thing on a page */
   --photo-tone: saturate(0.6) sepia(0.14) brightness(0.92); /* portraits outside the hero: ~40% desaturated, warm */
   --fs-name: clamp(3.375rem, 13vw, 13.125rem);   /* footer giant name: 210 → 54 */
+  --fs-email: clamp(1.625rem, 1rem + 2.6vw, 3rem); /* the email address as a headline: footer and /contact, 48 → 26 */
   --fs-feature: clamp(2.75rem, 4.5vw, 5rem);
   --fs-index: clamp(3rem, 5vw, 6rem);
+  --fs-poster: clamp(3.25rem, 1.25rem + 7vw, 9.5rem); /* case-study poster title: 152 → 52 */
+  --fs-poster-long: clamp(2.75rem, 1rem + 4.6vw, 6.5rem); /* poster titles over 20 characters: 104 → 44 */
+  --fs-poster-clause: 0.4em; /* the Cormorant clause under a poster title, relative to it */
 
   /* Paper: the light state of the Experience section (effect 6, not mounted). Kept for its tokens only. */
   --paper: #f2f0ea;
@@ -65,7 +69,7 @@
 
   /* Scale, measured at 1920 and clamped down to 390 */
   --fs-display: clamp(3.25rem, 1.6rem + 3.9vw, 5.75rem);   /* 92 → 52 */
-  --fs-h1-hero: clamp(2.5rem, 4.2vw + 2.2vh, 6rem);        /* home hero: 40 → 96 (width and height) */
+  --fs-h1-hero: clamp(2.5rem, 4.5vw, 5.25rem);        /* split home hero: 40 → 84 */
   --fs-h1-page: clamp(2.5rem, 1.2rem + 2.6vw, 4rem);       /* page intros on phones: 64 → 40 */
   --fs-h2: clamp(2.5rem, 1.2rem + 3.2vw, 4.5rem);          /* 72 → 40 */
   --fs-statement: clamp(2.125rem, 1rem + 2.8vw, 4rem);     /* 64 → 34 */

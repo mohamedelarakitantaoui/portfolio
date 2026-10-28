@@ -5,3 +5,4 @@ dist/
 .env.*
 qa/out/
 .lighthouseci/
+qa/qa/out/

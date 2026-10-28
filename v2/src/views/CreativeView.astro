@@ -104,7 +104,7 @@ const designs = await Promise.all([
   .photo__frame { position: relative; }
   .photo__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-img); background: transparent; }
   .photo figcaption { display: grid; gap: var(--s-2); margin-top: var(--s-4); justify-items: start; }
-  .photo figcaption strong { font-family: var(--font-body); font-size: var(--fs-sub); letter-spacing: var(--track-h); font-weight: var(--fw-light); }
+  .photo figcaption strong { font-size: var(--fs-sub); letter-spacing: var(--track-h); font-weight: var(--fw-light); }
   .photo__meta { color: var(--text-muted); }
   .photo figcaption .btn { white-space: normal; text-align: start; line-height: 1.3; padding-block: var(--s-2); }
   .more { margin-top: var(--s-6); }
@@ -112,12 +112,12 @@ const designs = await Promise.all([
   @media (min-width: 640px) { .design-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1024px) { .design-grid { grid-template-columns: repeat(3, 1fr); } .design:nth-child(2) { margin-top: var(--s-8); } }
   .design__link { display: grid; gap: var(--s-4); text-decoration: none; }
-  .design__img { width: 100%; height: auto; aspect-ratio: 1275 / 1650; object-fit: contain; background: var(--accent-surface); border-radius: var(--r-img); border: 1px solid var(--line); transition: transform var(--dur-2) var(--ease-out); }
+  .design__img { width: 100%; height: auto; aspect-ratio: 1275 / 1650; object-fit: contain; background: var(--surface); border-radius: var(--r-img); border: 1px solid var(--line); transition: transform var(--dur-2) var(--ease-out); }
   @media (prefers-reduced-motion: no-preference) and (hover: hover) { .design__link:hover .design__img { transform: translateY(-4px); } }
   .design__preview { color: var(--text-muted); font-size: var(--fs-small); }
   .design__body { display: grid; gap: var(--s-1); margin-top: var(--s-5); }
   .design__tool { color: var(--accent); }
-  .design__title { font-family: var(--font-body); font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); }
+  .design__title { font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); }
   .design__note { color: var(--text-muted); }
   .design__pdf { color: var(--text); font-size: var(--fs-small); margin-top: var(--s-1); min-height: 44px; display: inline-flex; align-items: center; gap: var(--s-2); justify-self: start; text-decoration-color: var(--accent); }
   .design__link:hover .design__preview { color: var(--accent); }

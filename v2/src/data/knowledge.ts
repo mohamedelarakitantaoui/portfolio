@@ -6,10 +6,18 @@ interface Side { title: string; text: string; answer: string }
 interface Chunk { id: string; tags: string; en: Side; fr: Side }
 
 const chunks: Chunk[] = [
+  { id: 'shre7lia', tags: 'shre7lia hackathon fusion ai rag university courses study assistant second workflows université cours',
+    en: { title: 'Shre7lia', text: 'Shre7lia: university study assistant, Fusion AI workflows, hybrid RAG, prompt-injection and data-leak protection. Fusion AI Hackathon 2026, Al Akhawayn University, 2nd place, team of 6.', answer: 'Our team of 6 took 2nd place at Fusion AI Hackathon 2026 at Al Akhawayn University with Shre7lia, a course-grounded study assistant using Fusion AI workflows and hybrid RAG. I was a team member and built one workflow. See /work/shre7lia.' },
+    fr: { title: 'Shre7lia', text: 'Shre7lia : assistant pour les cours universitaires, workflows Fusion AI, RAG hybride, protection contre les injections de prompt et les fuites de données. Fusion AI Hackathon 2026, Al Akhawayn University, 2e place, équipe de 6.', answer: 'Notre équipe de 6 a obtenu la 2e place au Fusion AI Hackathon 2026 à Al Akhawayn University avec Shre7lia, un assistant ancré dans les cours, utilisant Fusion AI et du RAG hybride. Membre de l’équipe, j’ai réalisé un workflow. Voir /fr/work/shre7lia.' } },
   {
     id: 'identity', tags: 'who name mamoun about yourself qui présentation',
     en: { title: 'Who', text: 'Mamoun El Araki is an AI and software engineer: machine learning that explains its predictions, data pipelines, and web and mobile apps.', answer: 'Mamoun El Araki, an AI and software engineer: I build ML that explains itself, and the software that ships it.' },
     fr: { title: 'Qui', text: 'Mamoun El Araki est ingénieur IA et logiciel : du machine learning qui explique ses prédictions, des pipelines de données, des applications web et mobiles.', answer: 'Mamoun El Araki, ingénieur IA et logiciel : je construis du ML qui s’explique, et le logiciel qui le met en production.' },
+  },
+  {
+    id: 'projects', tags: 'projects project list all work portfolio pages what built projets liste tous réalisations',
+    en: { title: 'All projects', text: 'Every project has a page on /work: case studies for AneuXplain, DCE Scraper, PitchPoint, the Kaggle RSNA knee MRI entry and Preparia; short project pages for eSaha, Mini Private Cloud, Quiz Game App and Courses & Lessons App.', answer: 'Nine projects, each with its own page on /work: five case studies (AneuXplain, DCE Scraper, PitchPoint, Kaggle RSNA knee MRI, Preparia) and four short pages (eSaha, Mini Private Cloud, Quiz Game App, Courses & Lessons App).' },
+    fr: { title: 'Tous les projets', text: 'Chaque projet a sa page sur /fr/work : des études de cas pour AneuXplain, DCE Scraper, PitchPoint, la compétition Kaggle RSNA (IRM du genou) et Preparia ; des pages courtes pour eSaha, Mini Private Cloud, Quiz Game App et Courses & Lessons App.', answer: 'Neuf projets, chacun avec sa page sur /fr/work : cinq études de cas (AneuXplain, DCE Scraper, PitchPoint, Kaggle RSNA IRM du genou, Preparia) et quatre pages courtes (eSaha, Mini Private Cloud, Quiz Game App, Courses & Lessons App).' },
   },
   {
     id: 'location', tags: 'where based location city live morocco remote relocation où ville maroc habite distance',
@@ -88,18 +96,18 @@ const chunks: Chunk[] = [
   },
   {
     id: 'esaha', tags: 'esaha mental health web app react typescript flask mongodb gpt llm assistant multilingual languages jwt 2025 santé mentale langues',
-    en: { title: 'eSaha', text: 'eSaha (2025): a mental-health platform with a GPT-powered conversational assistant in 4 languages. React and TypeScript front end, Flask back end, MongoDB, JWT authentication, sentiment analysis, dashboards and appointment booking.', answer: 'eSaha is a mental-health platform with a GPT-powered assistant in 4 languages, built with React, TypeScript, Flask and MongoDB, behind JWT-secured APIs.' },
-    fr: { title: 'eSaha', text: 'eSaha (2025) : une plateforme de santé mentale avec un assistant conversationnel GPT en 4 langues. Interface React et TypeScript, back-end Flask, MongoDB, authentification JWT, analyse de sentiment, tableaux de bord et prise de rendez-vous.', answer: 'eSaha est une plateforme de santé mentale avec un assistant GPT en 4 langues, construite en React, TypeScript, Flask et MongoDB, avec des API sécurisées par JWT.' },
+    en: { title: 'eSaha', text: 'eSaha (2025): a mental-health platform with a GPT-powered conversational assistant in 4 languages. React and TypeScript front end, Flask back end, MongoDB, JWT authentication, sentiment analysis, dashboards and appointment booking.', answer: 'eSaha is a mental-health platform with a GPT-powered assistant in 4 languages, built with React, TypeScript, Flask and MongoDB, behind JWT-secured APIs. Page: /work/esaha.' },
+    fr: { title: 'eSaha', text: 'eSaha (2025) : une plateforme de santé mentale avec un assistant conversationnel GPT en 4 langues. Interface React et TypeScript, back-end Flask, MongoDB, authentification JWT, analyse de sentiment, tableaux de bord et prise de rendez-vous.', answer: 'eSaha est une plateforme de santé mentale avec un assistant GPT en 4 langues, construite en React, TypeScript, Flask et MongoDB, avec des API sécurisées par JWT. Page : /fr/work/esaha.' },
   },
   {
-    id: 'quiz', tags: 'kotlin android mobile quiz game app firebase coroutines',
-    en: { title: 'Quiz Game App', text: 'An Android quiz game in Kotlin: Firebase auth, real-time questions with a 15-second timer, coroutines, leaderboards and an offline cache.', answer: 'A Kotlin Android quiz game with Firebase auth, a 15-second timer, coroutines, leaderboards and an offline cache.' },
-    fr: { title: 'Quiz Game App', text: 'Un jeu de quiz Android en Kotlin : authentification Firebase, questions en temps réel avec un minuteur de 15 secondes, coroutines, classements et cache hors ligne.', answer: 'Un jeu de quiz Android en Kotlin avec Firebase, un minuteur de 15 secondes, des coroutines, des classements et un cache hors ligne.' },
+    id: 'quiz', tags: 'kotlin android mobile quiz game app firebase coroutines leaderboard jeu 2024 year année',
+    en: { title: 'Quiz Game App', text: 'Quiz Game App (2024): an Android quiz game in Kotlin: Firebase auth, real-time questions with a 15-second timer, coroutines, leaderboards and an offline cache.', answer: 'Quiz Game App (2024): a Kotlin Android quiz game with Firebase auth, a 15-second timer, coroutines, leaderboards and an offline cache. Page: /work/quiz-game-app.' },
+    fr: { title: 'Quiz Game App', text: 'Quiz Game App (2024) : un jeu de quiz Android en Kotlin : authentification Firebase, questions en temps réel avec un minuteur de 15 secondes, coroutines, classements et cache hors ligne.', answer: 'Quiz Game App (2024) : un jeu de quiz Android en Kotlin avec Firebase, un minuteur de 15 secondes, des coroutines, des classements et un cache hors ligne. Page : /fr/work/quiz-game-app.' },
   },
   {
-    id: 'courses', tags: 'flutter mobile courses lessons wordpress app dart',
-    en: { title: 'Courses & Lessons App', text: 'A Flutter app with a WordPress backend for browsing courses, lessons and media.', answer: 'A Flutter app on a WordPress backend for browsing courses, lessons and media.' },
-    fr: { title: 'Courses & Lessons App', text: 'Une application Flutter avec un back-end WordPress pour parcourir cours, leçons et médias.', answer: 'Une application Flutter sur un back-end WordPress pour parcourir cours, leçons et médias.' },
+    id: 'courses', tags: 'flutter mobile courses lessons wordpress app dart 2023 year année',
+    en: { title: 'Courses & Lessons App', text: 'Courses & Lessons App (2023): a Flutter app with a WordPress backend for browsing courses, lessons and media.', answer: 'Courses & Lessons App (2023): a Flutter app on a WordPress backend for browsing courses, lessons and media. Page: /work/courses-lessons-app.' },
+    fr: { title: 'Courses & Lessons App', text: 'Courses & Lessons App (2023) : une application Flutter avec un back-end WordPress pour parcourir cours, leçons et médias.', answer: 'Courses & Lessons App (2023) : une application Flutter sur un back-end WordPress pour parcourir cours, leçons et médias. Page : /fr/work/courses-lessons-app.' },
   },
   {
     id: 'kaggle', tags: 'kaggle competition knee rsna mri medical imaging dicom leaderboard auc ml machine learning now compétition genou irm imagerie médicale classement',
@@ -114,8 +122,8 @@ const chunks: Chunk[] = [
 
   {
     id: 'mini-private-cloud', tags: 'mini private cloud docker orchestration cli devops containers infra nginx yaml scaling load balancing self-healing conteneurs',
-    en: { title: 'Mini Private Cloud', text: 'Mini Private Cloud (2026): a Python CLI that drives the Docker Engine. Declarative YAML provisioning, isolated container networking, persistent volumes, an Nginx gateway, horizontal scaling, load balancing, monitoring and self-healing services.', answer: 'Mini Private Cloud is a Python CLI that drives the Docker Engine: you declare services in YAML, and it provisions, scales and load-balances them behind an Nginx gateway, with self-healing services.' },
-    fr: { title: 'Mini Private Cloud', text: 'Mini Private Cloud (2026) : un CLI Python qui pilote le Docker Engine. Provisionnement déclaratif en YAML, réseaux de conteneurs isolés, volumes persistants, passerelle Nginx, montée en charge horizontale, répartition de charge, supervision et services auto-réparateurs.', answer: 'Mini Private Cloud est un CLI Python qui pilote le Docker Engine : on déclare les services en YAML, et il les provisionne, les fait monter en charge et répartit la charge derrière une passerelle Nginx, avec des services auto-réparateurs.' },
+    en: { title: 'Mini Private Cloud', text: 'Mini Private Cloud (2026): a Python CLI that drives the Docker Engine. Declarative YAML provisioning, isolated container networking, persistent volumes, an Nginx gateway, horizontal scaling, load balancing, monitoring and self-healing services.', answer: 'Mini Private Cloud is a Python CLI that drives the Docker Engine: you declare services in YAML, and it provisions, scales and load-balances them behind an Nginx gateway, with self-healing services. Page: /work/mini-private-cloud.' },
+    fr: { title: 'Mini Private Cloud', text: 'Mini Private Cloud (2026) : un CLI Python qui pilote le Docker Engine. Provisionnement déclaratif en YAML, réseaux de conteneurs isolés, volumes persistants, passerelle Nginx, montée en charge horizontale, répartition de charge, supervision et services auto-réparateurs.', answer: 'Mini Private Cloud est un CLI Python qui pilote le Docker Engine : on déclare les services en YAML, et il les provisionne, les fait monter en charge et répartit la charge derrière une passerelle Nginx, avec des services auto-réparateurs. Page : /fr/work/mini-private-cloud.' },
   },
   {
     id: 'skills-code', tags: 'programming languages code coding skills python javascript typescript kotlin java c sql dart langages',

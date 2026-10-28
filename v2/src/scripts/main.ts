@@ -232,8 +232,13 @@ if (filters.length) {
       el.hidden = !show;
       if (show) n++;
     });
+    // A group (Featured, More projects) with nothing left to show hides its heading too.
+    $$('[data-filter-group]').forEach((g) => { g.hidden = !$$('[data-categories]', g).some((el) => !el.hidden); });
     if (status) status.textContent = (status.dataset.template ?? '{n}').replace('{n}', String(n));
   }));
+  // The chips only work with JS, so they only appear with it.
+  const bar = $('[data-filter-bar]');
+  if (bar) bar.hidden = false;
 }
 
 /* ---------------- contact form ---------------- */

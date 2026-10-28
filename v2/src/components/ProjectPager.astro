@@ -1,0 +1,52 @@
+---
+// End of every project page: previous / next project, cycling through ALL projects (src/lib/projects.ts order).
+import { allProjects, neighbours, projectHref } from '../lib/projects';
+import { type Lang, t } from '../i18n/ui';
+interface Props { lang: Lang; current: string }
+const { lang, current } = Astro.props;
+const n = neighbours(await allProjects(lang), current);
+---
+{n && (
+  <nav class="pager" aria-label={lang === 'fr' ? 'Autres projets' : 'Other projects'}>
+    <div class="wrap pager__inner">
+      <a class="pager__link pager__link--prev" href={projectHref(lang, n.prev.data.key)} rel="prev">
+        <span class="label label--plain pager__label"><span aria-hidden="true">← </span>{t(lang, 'cta.prevProject')}</span>
+        <span class="pager__title">{n.prev.data.title}</span>
+      </a>
+      <a class="pager__link pager__link--next" href={projectHref(lang, n.next.data.key)} rel="next">
+        <span class="label label--plain pager__label">{t(lang, 'cta.nextProject')}<span aria-hidden="true"> →</span></span>
+        <span class="pager__title">{n.next.data.title}</span>
+      </a>
+    </div>
+  </nav>
+)}
+
+<style>
+  .pager { background: var(--bg-band); border-top: 1px solid var(--line); overflow-x: clip; }
+  .pager__inner { display: grid; }
+  .pager__link {
+    position: relative; display: grid; gap: var(--s-2); align-content: start;
+    padding-block: var(--s-8); text-decoration: none; min-width: 0;
+  }
+  .pager__link + .pager__link { border-top: 1px solid var(--line); }
+  /* Hover: a champagne hairline grows along the top edge (transform only, effects on only). */
+  .pager__link::before {
+    content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left center;
+  }
+  :global(.fx-on) .pager__link::before { transition: transform var(--dur-row) var(--ease-out); }
+  :global(.fx-on) .pager__link:hover::before { transform: scaleX(1); }
+  .pager__label { margin-bottom: 0; color: var(--text-quiet); }
+  .pager__title {
+    font-size: var(--fs-h2); font-weight: var(--fw-thin); letter-spacing: var(--track-h); line-height: 1;
+    color: var(--heading); text-wrap: balance; overflow-wrap: anywhere;
+    transition: color var(--dur-1) var(--ease-out);
+  }
+  .pager__link:hover .pager__title { color: var(--accent); }
+  @media (min-width: 900px) {
+    .pager__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .pager__link + .pager__link { border-top: 0; border-left: 1px solid var(--line); padding-left: var(--s-7); text-align: end; justify-items: end; }
+    .pager__link--prev { padding-right: var(--s-7); }
+    .pager__link--next::before { transform-origin: right center; }
+  }
+</style>

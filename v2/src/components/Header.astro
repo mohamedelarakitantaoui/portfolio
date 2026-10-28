@@ -61,7 +61,7 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
 </dialog>
 
 <style>
-  /* v5: a compact bar, fixed and centred: hairline border, panel colour at 82% over a backdrop blur. */
+  /* Compact floating bar, with restrained link and button feedback. */
   .site-header {
     position: fixed; top: calc(var(--s-4) + env(safe-area-inset-top, 0px)); left: 0; right: 0; z-index: var(--z-header);
     display: flex; justify-content: center; padding-inline: var(--gutter); pointer-events: none;
@@ -80,13 +80,20 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
   .site-nav { display: none; }
   .site-nav ul { display: flex; gap: var(--s-1); list-style: none; }
   .site-nav a {
-    display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2);
+    position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-2);
     text-decoration: none; font-size: var(--fs-cap); font-weight: var(--fw-regular);
     letter-spacing: var(--track-label); text-transform: uppercase; color: var(--text-muted);
     transition: color var(--dur-1) var(--ease-out);
   }
-  .site-nav a:hover, .site-nav a[aria-current='page'] { color: var(--heading); }
-  .site-nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 6px; }
+  .site-nav a:hover, .site-nav a:focus-visible, .site-nav a[aria-current='page'] { color: var(--heading); }
+  .site-nav a::after {
+    content: ''; position: absolute; inset-inline: var(--s-2); bottom: var(--s-2); height: 1px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left center;
+  }
+  .site-nav a:hover::after, .site-nav a:focus-visible::after, .site-nav a[aria-current='page']::after { transform: scaleX(1); }
+  :global(.fx-on) .site-nav a::after { transition: transform var(--dur-btn) var(--ease-out); }
+  .site-header__inner > .logo:hover, .site-header__inner > .logo:focus-visible { color: var(--accent); }
+  .site-header__inner:focus-within { border-color: var(--accent-line); }
 
   .site-header__tools { display: flex; align-items: center; gap: var(--s-1); }
   .lang-pill {
@@ -98,6 +105,11 @@ const isCurrent = (href: string) => here === href || (href !== '/' && here.start
   .lang-pill__sep { margin-inline: 0.3em; }
   .site-header__tools .btn { padding: 0 var(--s-4); }
   .hire { display: none; }
+  :global(.fx-on) .site-header__tools .btn { transition: transform var(--dur-btn) var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    :global(.fx-on) .site-header__tools .btn:hover { transform: translateY(-2px); }
+    :global(.fx-on) .site-header__tools .btn:active { transform: translateY(0); }
+  }
 
   @media (min-width: 1024px) {
     .site-nav { display: block; }

@@ -1,11 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import CaseStudyView from '../../../views/CaseStudyView.astro';
+import ProjectView from '../../../views/ProjectView.astro';
+import { allProjects } from '../../../lib/projects';
+// Every project has a page: its case study, or a short project page (caseStudy: false).
 export async function getStaticPaths() {
-  const projects = await getCollection('projects', (p) => p.data.lang === 'fr' && p.data.caseStudy && (import.meta.env.DEV || !p.data.draft));
-  // draft pages (eSaha) exist in `astro dev` only
-  return projects.map((project) => ({ params: { slug: project.data.key }, props: { project } }));
+  return (await allProjects('fr')).map((project) => ({ params: { slug: project.data.key }, props: { project } }));
 }
 const { project } = Astro.props;
 ---
-<CaseStudyView project={project} lang="fr" />
+{project.data.caseStudy ? <CaseStudyView project={project} lang="fr" /> : <ProjectView project={project} lang="fr" />}

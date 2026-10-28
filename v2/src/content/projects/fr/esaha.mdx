@@ -7,52 +7,22 @@ description: Une plateforme de santé mentale avec un assistant GPT en 4 langues
 tier: more
 year: "2025"
 meta: Full-stack · Santé · 2025
-outcome: Une plateforme de santé mentale avec un assistant GPT en 4 langues.
-draft: true
+outcome: Une plateforme de santé mentale avec un assistant GPT en 4 langues, construite en React, TypeScript, Flask et MongoDB, avec authentification JWT.
 status: "[[todo:en ligne, démo ou dépôt seulement ?]]"
 role: "[[todo:seul ? projet de cours ou initiative personnelle ?]]"
 timeline: "2025"
 team: "[[todo:équipe]]"
 stack: [React, TypeScript, Flask, MongoDB, API GPT, JWT]
 links: []
-codeNote: "Code privé (sous licence). Démonstration sur demande."
 constraint: Des données de santé, donc confidentialité d’abord et routes protégées partout.
 tags: [React, TypeScript, Flask, MongoDB]
-diagram: esaha
-next: aneuxplain
+category: [web, ml]
+# Page projet courte (décidé le 2026-10-15) : faits de site.ts et des CV uniquement, pas de lien vers le dépôt.
+caseStudy: false
+features:
+  - "Un assistant conversationnel sur l’API GPT-3.5, avec une même personnalité dans 4 langues grâce au prompt engineering."
+  - "Une analyse de sentiment sur la conversation."
+  - "Des tableaux de bord et la prise de rendez-vous."
+  - "Une interface React et TypeScript traduite en 4 langues."
+  - "Un back-end Flask structuré en services : une API REST sécurisée par JWT, sur MongoDB."
 ---
-
-<Chapter n="01" label="Problème" title="Demander de l’aide ne devrait pas coûter sa vie privée.">
-
-<Todo>à qui s’adresse eSaha, et pourquoi vous l’avez construit</Todo>
-
-</Chapter>
-
-<Chapter n="02" label="Approche" title="Une connexion, quatre langues, un assistant qui garde sa personnalité.">
-
-Chaque page est protégée par une authentification JWT. Ce que fait l’application :
-
-- tableaux de bord et prise de rendez-vous ;
-- un assistant conversationnel sur l’API GPT-3.5, avec une même personnalité dans 4 langues ;
-- une analyse de sentiment sur la conversation ;
-- une interface traduite en 4 langues.
-
-</Chapter>
-
-<Chapter n="03" label="Architecture" title="Une interface React sur une API Flask et MongoDB.">
-
-<Diagram name="esaha" lang="fr" />
-
-</Chapter>
-
-<Chapter n="04" label="Résultat" title="[[todo:le résultat en une ligne]]">
-
-<Todo>utilisateurs ou testeurs, retours, scores Lighthouse, captures d’écran, ce qui a été livré</Todo>
-
-</Chapter>
-
-<Chapter n="05" label="Ce que je ferais autrement" title="[[todo:votre leçon en une ligne]]">
-
-<Todo>votre réponse honnête</Todo>
-
-</Chapter>

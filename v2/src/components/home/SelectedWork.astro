@@ -1,7 +1,9 @@
 ---
-// v5 Work: the heading on the left, the intro on the right, then the featured projects as hairline rows.
+// v5 Work: the heading on the left, the intro on the right, the featured projects as hairline rows, then the
+// home "More projects" rows (each a link to its page) and "All projects →".
 import { getCollection } from 'astro:content';
 import ProjectRow from '../ProjectRow.astro';
+import MoreProjects from '../MoreProjects.astro';
 import { type Lang, lp, t } from '../../i18n/ui';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -25,6 +27,10 @@ const fr = lang === 'fr';
     <ol class="work__rows">
       {projects.map((p) => <ProjectRow project={p} lang={lang} />)}
     </ol>
+    <div class="work__more">
+      <MoreProjects lang={lang} homeOnly />
+      <a class="btn work__all" href={lp(lang, '/work')}>{t(lang, 'cta.allProjects')} <span class="btn__arrow" aria-hidden="true">→</span></a>
+    </div>
   </div>
 </section>
 
@@ -35,6 +41,8 @@ const fr = lang === 'fr';
   .work__intro p { max-width: 40ch; color: var(--text-muted); }
   .work__intro .link { margin-top: var(--s-3); }
   .work__rows { list-style: none; }
+  .work__more { margin-top: var(--section-y); }
+  .work__all { margin-top: var(--s-6); }
   @media (min-width: 900px) {
     .work__head { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--s-8); }
     .work__intro { justify-self: end; }

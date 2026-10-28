@@ -18,14 +18,18 @@ const pages: Record<string, { en: string; fr: string }> = {
   privacy: { en: 'Privacy: no cookies, no tracking.', fr: 'Confidentialité : aucun cookie.' },
 };
 
+/** At most `n` characters, cut at a word boundary. */
+const clip = (s: string, n: number) => (s.length <= n ? s : `${s.slice(0, s.lastIndexOf(' ', n - 1)).replace(/[\s,:;·]+$/, '')}…`);
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const projects = await getCollection('projects', (p) => p.data.caseStudy && (import.meta.env.DEV || !p.data.draft));
+  // One per project page (case studies and short project pages).
+  const projects = await getCollection('projects', (p) => import.meta.env.DEV || !p.data.draft);
   const out: { params: { key: string }; props: { title: string; kicker: string } }[] = [];
   for (const [k, v] of Object.entries(pages)) {
     for (const lang of ['en', 'fr'] as const) out.push({ params: { key: `${k}-${lang}` }, props: { title: v[lang], kicker: lang === 'fr' ? 'Ingénieur IA et logiciel' : 'AI and software engineer' } });
   }
   for (const p of projects) {
-    out.push({ params: { key: `work-${p.data.key}-${p.data.lang}` }, props: { title: p.data.title, kicker: (p.data.number ? `${plain(p.data.number.value)} · ${plain(p.data.number.caption)}` : plain(p.data.progress ?? p.data.outcome)).slice(0, 90) } });
+    out.push({ params: { key: `work-${p.data.key}-${p.data.lang}` }, props: { title: p.data.title, kicker: clip(p.data.number ? `${plain(p.data.number.value)} · ${plain(p.data.number.caption)}` : plain(p.data.progress ?? p.data.outcome), 90) } });
   }
   return out;
 };

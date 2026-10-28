@@ -36,7 +36,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
       </ul>
     )}
     {pdfs.filter((d) => !d.href).map((d) => <p class="dl__todo"><Todo>{d.todo[lang]}</Todo></p>)}
-    <p class="cv__updated"><Todo>{fr ? 'mois de mise à jour, 2026' : 'update month, 2026'}</Todo></p>
+    <p class="cv__updated">{fr ? 'Mis à jour en octobre 2026' : 'Updated October 2026'}</p>
   </PageIntro>
 
   <section class="section band" aria-label={fr ? 'CV en ligne' : 'Web CV'}>
@@ -94,7 +94,7 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
               <li class="paper__item">
                 <p class="paper__when">{shows(p.year) && <span class="paper__year" set:html={rich(p.year)} />}</p>
                 <div>
-                  <h4>{p.caseStudy ? <a href={lp(lang, p.caseStudy)}>{p.title}</a> : p.title}</h4>
+                  <h4><a href={lp(lang, `/work/${p.key}`)}>{p.title}</a></h4>
                   <p set:html={rich(p.line[lang])} />
                 </div>
               </li>
@@ -136,26 +136,28 @@ const newTab = fr ? 'nouvel onglet' : 'opens in a new tab';
   @media (min-width: 1024px) { .cv-layout { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--s-8); } .cv-index { display: grid; position: sticky; top: calc(var(--header-h) + var(--s-5)); align-self: start; } }
   .cv__updated { color: var(--text-quiet); margin-top: var(--s-4); }
   .dl__todo { margin-top: var(--s-2); }
-  .downloads { margin-top: var(--s-6); max-width: 720px; }
-  .dl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-3); padding-block: var(--s-3); min-height: 64px; }
-  .dl__label { font-weight: var(--fw-regular); }
-  .paper { max-width: 880px; }
+  .downloads { margin-top: var(--s-7); max-width: 760px; }
+  .dl { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-3); padding-block: var(--s-4); min-height: 72px; }
+  .dl__label { font-size: var(--fs-row); font-weight: var(--fw-light); letter-spacing: var(--track-h); color: var(--heading); }
+  .paper { max-width: 1120px; }
   .paper__head { padding-bottom: var(--s-6); border-bottom: 1px solid var(--line-strong); }
-  .paper__name { font-family: var(--font-body); font-size: var(--fs-h2); font-weight: var(--fw-thin); letter-spacing: var(--track-display); line-height: 1; }
+  .paper__name { font-size: var(--fs-h2); font-weight: var(--fw-thin); letter-spacing: var(--track-display); line-height: 1; }
   .paper__role { margin-top: var(--s-2); color: var(--text-muted); }
   .paper__contact { margin-top: var(--s-3); color: var(--text-muted); }
   .paper__contact a { color: var(--text); text-decoration-color: var(--accent); display: inline-block; padding-block: 10px; }
   .paper__status { margin-top: var(--s-3); color: var(--text-muted); }
-  .paper__sec { padding-block: var(--s-6); border-bottom: 1px solid var(--line); }
-  .paper__h { font-size: var(--fs-label); letter-spacing: var(--track-label); text-transform: uppercase; color: var(--accent); font-weight: var(--fw-regular); margin-bottom: var(--s-3); }
+  .paper__sec { padding-block: var(--s-8); border-bottom: 1px solid var(--line); scroll-margin-top: var(--header-h); }
+  .paper__h { font-size: var(--fs-sub); font-weight: var(--fw-light); letter-spacing: var(--track-h); color: var(--heading); margin-bottom: var(--s-5); }
   .paper__rows { list-style: none; }
-  .paper__item { display: grid; gap: var(--s-1) var(--s-5); padding-block: var(--s-3); }
+  .paper__item { display: grid; gap: var(--s-2) var(--grid-gap); padding-block: var(--s-5); }
   .paper__rows > .paper__item + .paper__item { border-top: 1px solid var(--line); }
-  @media (min-width: 640px) { .paper__item { grid-template-columns: 9rem minmax(0, 1fr); } }
-  .paper__when { display: flex; flex-direction: column; color: var(--text-quiet); padding-top: 0.15em; font-family: var(--font-body); font-size: var(--fs-label); letter-spacing: 0.04em; }
-  .paper__year { color: var(--text); }
-  .paper__item h4 { font-weight: var(--fw-regular); font-size: var(--fs-md); }
+  .paper__rows > .paper__item:first-child { border-top: 1px solid var(--line); }
+  @media (min-width: 640px) { .paper__item { grid-template-columns: 11rem minmax(0, 1fr); } }
+  /* Same date column as the home Experience rows: champagne, uppercase, small. */
+  .paper__when { display: flex; flex-direction: column; gap: 2px; color: var(--accent); padding-top: 0.35em; font-size: var(--fs-cap); letter-spacing: var(--track-label); text-transform: uppercase; }
+  .paper__year { color: var(--accent); }
+  .paper__item h4 { font-weight: var(--fw-light); font-size: var(--fs-row); letter-spacing: var(--track-h); line-height: 1.3; color: var(--heading); }
   .paper__item h4 a { text-decoration-color: var(--accent); display: inline-block; padding-block: 11px; margin-block: -11px; }
-  .paper__item p { color: var(--text-muted); }
+  .paper__item p { color: var(--text-muted); margin-top: var(--s-1); }
   .paper__tags { margin-top: var(--s-2); }
 </style>

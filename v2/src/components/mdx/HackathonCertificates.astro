@@ -1,0 +1,28 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Lang } from '../../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const dir = path.resolve('public/media/hackathon');
+const files = fs.existsSync(dir)
+  ? fs.readdirSync(dir, { withFileTypes: true }).filter((f) => f.isFile() && /\.(png|jpe?g|webp|avif)$/i.test(f.name)).map((f) => f.name).sort()
+  : [];
+---
+{files.length > 0 && <section class="certificates" aria-labelledby="certificates-title">
+  <h2 class="h3" id="certificates-title">{lang === 'fr' ? 'Certificats' : 'Certificates'}</h2>
+  <div class="certificates__grid">
+    {files.map((file, i) => <figure>
+      <a href={`/media/hackathon/${encodeURIComponent(file)}`}>
+        <img src={`/media/hackathon/${encodeURIComponent(file)}`} loading="lazy" alt={lang === 'fr' ? `Certificat du Fusion AI Hackathon 2026, ${i + 1}` : `Fusion AI Hackathon 2026 certificate, ${i + 1}`} />
+      </a>
+    </figure>)}
+  </div>
+</section>}
+<style>
+  .certificates { padding-block: var(--s-7); }
+  .certificates__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--s-5); margin-top: var(--s-5); }
+  .certificates figure { margin: 0; border: 1px solid var(--line); background: var(--surface); padding: var(--s-3); }
+  .certificates a { display: block; }
+  .certificates img { display: block; width: 100%; height: auto; filter: var(--dim-screen); }
+</style>

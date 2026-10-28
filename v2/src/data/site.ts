@@ -129,6 +129,12 @@ export const doors = {
 
 // Experience rows. `home: true` = on the home page; every row is on the CV.
 export const experience = [
+  { home: false, year: '2026', span: { en: 'Activity', fr: 'Activité' } as L,
+    role: { en: 'Team member', fr: 'Membre de l’équipe' } as L,
+    org: 'Fusion AI Hackathon 2026', location: 'Al Akhawayn University, Ifrane',
+    line: { en: 'Fusion AI Hackathon 2026, Al Akhawayn University: 2nd place (team of 6).', fr: 'Fusion AI Hackathon 2026, Al Akhawayn University : 2e place (équipe de 6).' } as L,
+    result: { en: 'Fusion AI Hackathon 2026, Al Akhawayn University: 2nd place (team of 6). Built one of the Fusion AI workflows for Shre7lia.', fr: 'Fusion AI Hackathon 2026, Al Akhawayn University : 2e place (équipe de 6). Réalisation d’un des workflows Fusion AI pour Shre7lia.' } as L,
+    tags: ['Fusion AI', 'RAG'], href: '/work/shre7lia' },
   {
     home: true,
     year: '2025',
@@ -285,8 +291,11 @@ export const skills = [
 ];
 
 // "More projects": one row each (title · one line · year · links). Home page, /work and the CV.
-export interface MoreProject { key: string; title: string; year: string; line: L; home?: boolean; caseStudy?: string; links: { label: string; href: string }[] }
+// Every row links to /work/<key>: a case study or a short project page. `key` must match a file in src/content/projects/.
+export interface MoreProject { key: string; title: string; year: string; line: L; home?: boolean; links: { label: string; href: string }[] }
 export const moreProjects: MoreProject[] = [
+  { key: 'shre7lia', home: true, title: 'Shre7lia', year: '2026',
+    line: { en: 'An AI study assistant for university courses. 2nd place at Fusion AI Hackathon 2026, Al Akhawayn University, with a team of 6.', fr: 'Un assistant IA pour les cours universitaires. 2e place au Fusion AI Hackathon 2026, Al Akhawayn University, en équipe de 6.' }, links: [] },
   {
     key: 'rsna-knee-mri',
     home: true,
@@ -296,7 +305,6 @@ export const moreProjects: MoreProject[] = [
       en: 'A Kaggle entry for RSNA 2026: raw knee MRI in, 12 abnormality scores out. My own models reached 0.877 ROC-AUC on the public leaderboard; the competition closes on 22 Oct.',
       fr: 'Une participation Kaggle à RSNA 2026 : des IRM du genou brutes en entrée, 12 scores d’anomalies en sortie. Mes propres modèles atteignent 0,877 de ROC-AUC au classement public ; la compétition se termine le 22 octobre.',
     },
-    caseStudy: '/work/rsna-knee-mri',
     links: [{ label: 'Kaggle', href: 'https://www.kaggle.com/elaramamoun' }],
   },
   {
@@ -330,13 +338,12 @@ export const moreProjects: MoreProject[] = [
       en: 'An exam-prep platform for ITS Elaraki School: 30+ interactive modules across 6 baccalaureate subjects, 150+ students and 12 teachers onboarded.',
       fr: 'Une plateforme de préparation aux examens pour l’école ITS Elaraki : plus de 30 modules interactifs sur 6 matières du baccalauréat, plus de 150 élèves et 12 enseignants formés.',
     },
-    caseStudy: '/work/preparia',
-    links: [{ label: 'preparia.ma', href: 'https://preparia.ma/fr_fr' }],
+    links: [{ label: 'preparia.ma', href: 'https://preparia.ma/' }],
   },
   {
-    key: 'quiz',
+    key: 'quiz-game-app',
     title: 'Quiz Game App',
-    year: '[[todo:year]]',
+    year: '2024',
     line: {
       en: 'An Android quiz game in Kotlin: Firebase auth, a 15-second timer, leaderboards and an offline cache.',
       fr: 'Un jeu de quiz Android en Kotlin : authentification Firebase, minuteur de 15 secondes, classements et cache hors ligne.',
@@ -344,9 +351,9 @@ export const moreProjects: MoreProject[] = [
     links: [{ label: 'GitHub', href: 'https://github.com/mohamedelarakitantaoui/game-app' }],
   },
   {
-    key: 'courses',
+    key: 'courses-lessons-app',
     title: 'Courses & Lessons App',
-    year: '[[todo:year]]',
+    year: '2023',
     line: {
       en: 'A Flutter app on a WordPress backend for browsing courses, lessons and media.',
       fr: 'Une application Flutter sur un back-end WordPress pour parcourir cours, leçons et médias.',

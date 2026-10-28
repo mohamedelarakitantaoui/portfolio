@@ -1,7 +1,7 @@
 ---
 key: mini-private-cloud
 lang: fr
-order: 4
+order: 6
 title: Mini Private Cloud
 description: Un CLI Python qui pilote le Docker Engine, avec provisionnement déclaratif en YAML, montée en charge, répartition de charge et passerelle Nginx.
 tier: more
@@ -12,10 +12,15 @@ status: "2026"
 role: "[[todo:rôle]]"
 timeline: "2026"
 team: "[[todo:équipe]]"
-stack: [Python, Docker Engine, YAML, Nginx, PostgreSQL]
+stack: [Python, Docker, Nginx, PostgreSQL, YAML]
 links: []
 constraint: "[[todo:la contrainte de départ]]"
 tags: [Python, Docker, Nginx, YAML]
+category: [automation]
 caseStudy: false
-next: esaha
+features:
+  - "Un provisionnement déclaratif : les services sont décrits en YAML."
+  - "Des réseaux de conteneurs isolés et des volumes persistants."
+  - "Une passerelle Nginx avec répartition de charge et montée en charge horizontale."
+  - "Métriques, journaux et supervision, et des services auto-réparateurs."
 ---

@@ -27,15 +27,26 @@ const copy = {
 }[page];
 ---
 <Base lang={lang} title={copy.meta} description={copy.desc} ogKey={page === 'sent' ? 'contact' : 'privacy'} noindex={page === 'sent'}>
-  <PageIntro label={page === 'sent' ? 'Contact' : (fr ? 'Informations du site' : 'Site information')} title={copy.title}>
-    <div class="simple prose">
-      {copy.body.map((p) => <p>{p}</p>)}
-      {copy.todo && <p><Todo>{copy.todo}</Todo></p>}
-      <p><a href={lp(lang, '/')}>{t(lang, 'nav.home')} →</a></p>
+  <PageIntro label={page === 'sent' ? 'Contact' : (fr ? 'Informations du site' : 'Site information')} title={copy.title} lede={copy.body[0]} />
+  <section class="section simple" aria-label={copy.title}>
+    <div class="wrap">
+      {copy.body.length > 1 && (
+        <ol class="rows simple__rows">
+          {copy.body.slice(1).map((p, i) => <li><span class="meta simple__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><p>{p}</p></li>)}
+        </ol>
+      )}
+      {copy.todo && <p class="simple__todo"><Todo>{copy.todo}</Todo></p>}
+      <a class="btn simple__home" href={lp(lang, '/')}>{t(lang, 'nav.home')} <span class="btn__arrow" aria-hidden="true">→</span></a>
     </div>
-  </PageIntro>
+  </section>
 </Base>
 
 <style>
-  .simple { margin-top: var(--s-6); color: var(--text-muted); font-size: var(--fs-lede); }
+  /* Privacy and "sent": the first sentence is the lede; the rest are numbered hairline rows, like the home lists. */
+  .simple__rows { max-width: 64rem; }
+  .simple__rows > li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: var(--s-4); align-items: baseline; padding-block: var(--s-5); }
+  .simple__rows p { font-size: var(--fs-lede); line-height: 1.6; color: var(--text); }
+  .simple__n { color: var(--accent); }
+  .simple__todo { margin-top: var(--s-5); }
+  .simple__home { margin-top: var(--s-7); }
 </style>

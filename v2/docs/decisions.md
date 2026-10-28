@@ -4,6 +4,52 @@ Facts on the site come only from the three current CV PDFs in `public/cv/` (date
 When the two disagree, this file wins and the CV gets re-exported (see `docs/sops/update-cv.md`).
 Newest first. Each line: date, decision, and where it shows.
 
+## 2026-10-15 (CV update label)
+- User confirmed the CV page label: "Updated October 2026" / "Mis à jour en octobre 2026". Keep this month fixed until the user supplies a new month after re-exporting the CVs; do not derive it from the current date or file timestamps.
+
+## 2026-10-15 (compact navigation restored)
+- User requested the original compact floating boxed navigation back, with subtle interactions. Restored its layout; champagne link underlines appear on hover and keyboard focus, buttons lift slightly on mouse hover with effects enabled. Current-page links retain an underline. Reduced motion and the effects kill switch disable the added motion. Supersedes the briefly tried full-width header.
+
+## 2026-10-15 (hero composition refinement)
+- User explicitly confirmed that the portrait must stay in the middle. Centred portrait with a compact shoulder crop, then centred headline and actions below the face, HUD beneath. Supersedes the earlier overlapping composition.
+- Copy and facts remain unchanged in EN and FR. Headline uses the existing Jost/Cormorant pairing, capped at 84px, with balanced line wrapping. The portrait remains visible without JavaScript or effects.
+
+## 2026-10-15 (Shre7lia)
+- Facts approved by the user: docs/hackathon-shre7lia.md. EN/FR poster page, home and /work rows (ML & AI, 2026), previous/next, sitemap, command palette, ask-mamoun and generated OG images.
+- Subtitle: "an AI study assistant for university courses". Metric "2nd place", caption "Fusion AI Hackathon 2026 · team of 6" (translated in FR).
+- Role only: team member, built one Fusion AI workflow. About and web CV include the hackathon activity.
+- Certificate images in public/media/hackathon/ appear framed and dimmed if present. No files means no certificate block.
+
+## 2026-10-15 (v5 final: every project reachable)
+- Years (user, 2026-10-15): Quiz Game App 2024, Courses & Lessons App 2023 (pages, "More projects" rows, /cv,
+  ask-mamoun notes).
+- Every project has a page and every row links to it: case studies for AneuXplain, DCE Scraper, PitchPoint, RSNA knee
+  MRI and Preparia; short project pages (`caseStudy: false`, `src/views/ProjectView.astro`) for eSaha, Mini Private
+  Cloud, Quiz Game App (`/work/quiz-game-app`) and Courses & Lessons App (`/work/courses-lessons-app`). Short pages
+  show only facts from `site.ts`, the CVs and this file: title, one-line summary, year, role, stack, the metric if one
+  exists, "What it does" bullets and links; a field that is only a TODO is left out.
+- **eSaha (user, 2026-10-15): supersedes "no public case study".** eSaha gets a short project page built from the
+  facts in `site.ts` and the CVs (mental-health platform, GPT assistant in 4 languages, React, TypeScript, Flask,
+  MongoDB, JWT; sentiment analysis, dashboards and appointment booking). Still no repo link. The old draft chapters and
+  the architecture diagram (its modules are not on the CVs) are not shown.
+- /work lists all projects (featured rows, then "More projects") with filter chips All · ML & AI · Automation ·
+  Web & Mobile · Research (`category` in the frontmatter). Home shows the `home` "More projects" rows plus
+  "All projects →". Case studies and short pages end with Previous / Next project, cycling through all projects in
+  `order`. All project pages are in the sitemap, the ⌘K palette, the ask-mamoun notes and have their own OG image.
+
+- Case-study template (user-approved on AneuXplain, 2026-10-15): poster title in Jost 200 (`--fs-poster`) with a
+  Cormorant subtitle on its own line, **no comma** after the title (an exception to the first-comma split rule: the
+  subtitle is the `subtitle` frontmatter field, a screen reader hears "Title: subtitle"); the outcome directly under
+  it, the key metric on the right aligned to the outcome's top; big framed media; HUD row (Role · Timeline · Team ·
+  Stack · Links); TL;DR in three columns; chapters as numbered hairline sections. Subtitles: AneuXplain "explainable
+  AI for medical imaging", PitchPoint "evaluation-driven deep learning" (CV wording); DCE Scraper "an end-to-end
+  Python data pipeline" (FR "un pipeline de données Python de bout en bout", Data CV wording); RSNA "raw knee MRI in,
+  12 abnormality scores out" (FR "des IRM du genou brutes en entrée, 12 scores d’anomalies en sortie"; site.ts wording,
+  confirmed by the user, not on the CVs); Preparia "interactive exam prep for 150+ students" (FR "une préparation aux
+  examens interactive pour plus de 150 élèves"), chosen by the user so it doesn't repeat the outcome. All approved
+  2026-10-15. Titles longer than 20 characters use `--fs-poster-long` so the metric and the top of the media fit the
+  first screen at 1920×1080. Light screenshots dimmed to 75% (`--dim-screen`).
+
 ## 2026-10-14 (v5 champagne)
 - Visual redesign v5, "black + champagne" (Arik direction, prototype `design-references/v5-prototype.html`), on branch
   `v5-champagne` from `1c4ca62` (the ice-blue snapshot on `refine-personal-portfolio`). Design only: content,
@@ -31,7 +77,7 @@ Newest first. Each line: date, decision, and where it shows.
   "Case study →"); /work keeps its card layout. About = centred statement, no photo (the hero portrait is the only
   one on the home page). Header: fixed centred bar, all five links + EN/FR + "Email me"; the floating Menu pill is gone.
 - Light screenshots and app recordings (project media, AneuXplain loop and stills, report pages, Kaggle figures):
-  1px `--line` frame on `--surface`, dimmed to 85%. Creative photography is not dimmed.
+  1px `--line` frame on `--surface`, dimmed to 85% (75% since 2026-10-15). Creative photography is not dimmed.
 - No visa mention anywhere on the site (user, 2026-10-14): the employers status line ends at "open to remote and
   relocation" (EN and FR); the visa TODO is removed.
 - 2026-10-15 polish: hero copy starts at --chin + 48px (the label sits on the collar, below the chin); HUD row
@@ -89,7 +135,7 @@ Newest first. Each line: date, decision, and where it shows.
 - Intelcia result: "90% less processing time (2h30 → 15 min), 10+ hours saved per week". Never 95%: 2h30 → 15 min
   is a 90% cut. (The current CV PDFs still say "95 %": they must be re-exported; `npm run check:cv` blocks deploy.)
 - eSaha stack: React, TypeScript, Flask, MongoDB, GPT API, JWT. Never Supabase. eSaha has no public case study (draft),
-  one "More projects" row, no repo link.
+  one "More projects" row, no repo link. (Superseded 2026-10-15: short project page, still no repo link.)
 - The 6.4 MB file at the repo root is the AneuXplain capstone report, never a CV. Published compressed at
   `public/research/aneuxplain-capstone-report.pdf`, linked only from the AneuXplain case study.
 - CV PDFs: `Mohamed-El-Araki-CV-{AI-ML,Data,Software}.pdf` (EN) and `-Conseil.pdf` (FR, /fr/cv only, not yet

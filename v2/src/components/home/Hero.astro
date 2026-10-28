@@ -1,8 +1,5 @@
 ---
-// v5 hero (Arik composition): a large head-and-shoulders portrait (78svh tall, 55svh on phones) sits centred just
-// under the nav; it fades to the page from mid-chest down and at its sides, so no rectangle shows. The copy starts
-// right under the chin and sits over the faded shoulders and chest, never over the face. The HUD row (three stats, a
-// scroll cue, a live Morocco clock; static "GMT+1" without JS) closes the first screen.
+// v5 hero: centred portrait, clear face, centred headline and actions below, then the stats.
 import { heroPortrait, PORTRAIT_SIZES } from '../../lib/portrait';
 import { type Lang, lp, t } from '../../i18n/ui';
 import { hero, person, status } from '../../data/site';
@@ -54,61 +51,30 @@ const [h1a, h1b] = splitClause(hero.h1[lang]);
 </section>
 
 <style>
-  /* --ph: the portrait's height; its width follows from the image ratio (height = 0.954 x width).
-     --chin: where the copy starts, just under the chin (measured at 40% of the image height). */
-  .hero {
-    --ph: 78svh;
-    --pw: calc(var(--ph) / 0.954);
-    --chin: calc(var(--ph) * 0.41);
-    position: relative; overflow: clip; isolation: isolate;
-    padding-top: var(--header-h);
-    background: var(--bg);
-  }
-  /* One column held to the .wrap width (minmax(0, 1fr)): no content can push the HUD past the side gutters. */
+  /* Centred portrait above centred copy: the face stays clear of the headline. */
+  .hero { position: relative; overflow: clip; isolation: isolate; padding-top: var(--header-h); background: var(--bg); }
   .hero__inner { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; min-height: calc(100svh - var(--header-h)); }
-  .hero__stage { position: relative; isolation: isolate; }
-  .hero__portrait {
-    position: absolute; inset: 0 0 auto; z-index: var(--z-behind); display: flex; justify-content: center; pointer-events: none;
-  }
-  .hero__portrait picture { display: block; flex: none; width: var(--pw); }
-  .hero__portrait img {
-    width: 100%; height: auto;
-    filter: grayscale(1) sepia(0.42) brightness(0.55) contrast(1.04);
-    /* Two masks, intersected: keep head and shoulders, fade out from the chest down (62% → 96% of the height),
-       and fade the sides. The shoulders run to the image's left and right edges, so the side ellipse must reach
-       transparent exactly there (50% radius); a wider one leaves the image frame visible as two vertical cuts.
-       (94% vertical: the banned-strings rule would read the round value as the Intelcia figure.) */
-    mask-image:
-      linear-gradient(to bottom, var(--mask-solid) 62%, transparent 96%),
-      radial-gradient(ellipse 50% 94% at 50% 38%, var(--mask-solid) 60%, transparent 100%);
-    mask-composite: intersect;
-  }
-  .hero__copy {
-    position: relative; display: grid; justify-items: center; gap: var(--s-3); text-align: center;
-    /* The label sits on the collar: --chin plus 48px. */
-    padding-block: calc(var(--chin) + var(--s-7)) var(--s-5);
-  }
-  /* Scrim behind the text (from above the label down), so the copy stays AA over the visible shoulders. Sits above
-     the portrait, below the text. Sized to its box's closest side so it fades to nothing inside the box: no seam. */
-  .hero__copy::before {
-    content: ''; position: absolute; inset: calc(var(--chin) - var(--s-4)) calc(-1 * var(--s-6)) calc(-1 * var(--s-6));
-    z-index: var(--z-behind); pointer-events: none;
-    background: radial-gradient(closest-side at 50% 50%, var(--hero-scrim) 55%, transparent 100%);
-  }
-  /* Over the toned collar: full text colour, not muted, so the small label stays clear. */
-  .hero__role { display: flex; flex-wrap: wrap; justify-content: center; max-width: none; color: var(--text); }
+  .hero__stage { position: relative; isolation: isolate; display: grid; justify-items: center; align-content: center; padding-block: var(--s-5) var(--s-7); }
+  .hero__portrait { width: min(56svh, 38rem); max-width: 100%; min-width: 0; margin-bottom: var(--s-3); pointer-events: none; }
+  .hero__portrait picture { display: block; width: 100%; aspect-ratio: 1.35; overflow: hidden; }
+  .hero__portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: grayscale(1) sepia(0.42) brightness(0.65) contrast(1.04); mask-image: linear-gradient(to bottom, var(--mask-solid) 58%, transparent 100%); }
+  .hero__copy { position: relative; display: grid; justify-items: center; gap: var(--s-4); text-align: center; min-width: 0; width: 100%; }
+  .hero__role { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) 0; color: var(--text-muted); max-width: 100%; }
   .hero__name { color: var(--heading); }
   .hero__phrases { display: inline-flex; flex-wrap: wrap; justify-content: center; }
   .hero__phrases > span { white-space: nowrap; }
   .hero__sep { margin-inline: 0.7em; }
-  /* Wide, not narrow: each half of the sentence takes one line on desktop (Jost line, then the Cormorant line). */
-  .hero__h1 {
-    font-size: var(--fs-h1-hero); font-weight: var(--fw-thin); line-height: 1.02;
-    letter-spacing: var(--track-display); max-width: none; text-wrap: balance;
+  .hero__h1 { font-size: var(--fs-h1-hero); font-weight: var(--fw-thin); line-height: 1.05; letter-spacing: var(--track-display); max-width: none; text-wrap: balance; }
+  .hero__h1 .serif { white-space: normal; margin-top: 0.12em; }
+  .hero__status { max-width: 76ch; color: var(--text-muted); text-wrap: balance; }
+  .hero__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); margin-top: var(--s-2); }
+  @media (max-width: 599px) {
+    .hero__portrait { width: min(80vw, 26rem); }
+    .hero__role { flex-direction: column; align-items: center; font-size: var(--fs-cap); letter-spacing: 0.12em; }
+    .hero__role > .hero__sep { display: none; }
+    .hero__sep { margin-inline: 0.5em; }
+    .hero__h1 { max-width: 18ch; }
   }
-  .hero__h1 .serif { white-space: normal; }
-  .hero__status { max-width: none; color: var(--text); text-wrap: balance; }
-  .hero__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); }
 
   /* HUD row: stats | scroll cue | Morocco clock, over a hairline */
   /* Top-aligned: the stats sit right under the hairline, so they stay on the first screen even when the clock
@@ -120,6 +86,8 @@ const [h1a, h1b] = splitClause(hero.h1[lang]);
   .hero__stats { min-width: 0; }
   /* Short screens (e.g. 1920x1080 at 125% scaling = 1536x730): slightly tighter copy. */
   @media (min-width: 600px) and (max-height: 820px) {
+    .hero__portrait { width: min(40svh, 26rem); }
+    .hero__stage { padding-bottom: var(--s-5); }
     .hero__copy { gap: var(--s-2); padding-bottom: var(--s-3); }
     .hero__hud { padding-block: var(--s-3); }
   }
@@ -151,15 +119,6 @@ const [h1a, h1b] = splitClause(hero.h1[lang]);
   .hero__feature span:last-child { color: var(--accent); }
   .hero__feature:hover span:first-child { text-decoration: underline; text-decoration-color: var(--accent); }
 
-  /* Phones: name on line 1, role + location on line 2 (wrapping only at the " · " between whole phrases). */
-  @media (max-width: 599px) {
-    .hero { --ph: 55svh; }
-    /* Phones: the label sits on the bright collar, so the scrim is stronger and reaches higher. */
-    .hero__copy::before { background: radial-gradient(closest-side at 50% 32%, var(--hero-scrim-strong) 72%, transparent 100%); }
-    .hero__role { flex-direction: column; align-items: center; font-size: var(--fs-cap); letter-spacing: 0.12em; }
-    .hero__role > .hero__sep { display: none; }
-    .hero__sep { margin-inline: 0.5em; }
-  }
   @media (max-width: 819px) {
     .hero__hud { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
     /* Phones: the three stats stay on one row, so the row is visible on the first screen. */

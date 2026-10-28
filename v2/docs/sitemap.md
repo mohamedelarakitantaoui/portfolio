@@ -6,12 +6,17 @@ AR copy exists.
 
 ```
 /                         Home
-/work                     All projects + archive (filter pills)
-/work/dce-scraper         Case study: DCE Scraper (Intelcia)            ← strongest, first
-/work/secure-gov-rag      Case study: Secure Government RAG (in development)
-/work/aneuxplain          Case study: AneuXplain (research paper)
-/work/esaha               Case study: eSaha
+/work                     All projects: featured rows + "More projects" rows, filter chips
+/work/aneuxplain          Case study: AneuXplain (capstone, ICOA 2026)
+/work/dce-scraper         Case study: DCE Scraper (Intelcia)
+/work/pitchpoint          Case study: PitchPoint
+/work/rsna-knee-mri       Case study: Kaggle RSNA knee MRI
+/work/shre7lia            Project: Shre7lia (Fusion AI Hackathon 2026, 2nd place)
 /work/preparia            Case study: Preparia (ITS Elaraki)
+/work/esaha               Short project page: eSaha
+/work/mini-private-cloud  Short project page: Mini Private Cloud
+/work/quiz-game-app       Short project page: Quiz Game App
+/work/courses-lessons-app Short project page: Courses & Lessons App
 /about                    Story, experience list, education, languages, how I work
 /services                 3 packs + process + FAQ (for clients)
 /cv                       Web CV + downloads
