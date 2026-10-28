@@ -34,7 +34,7 @@ const chips = ['all', ...CATEGORIES] as const;
 
   <section class="section work" aria-label={fr ? 'Projets' : 'Projects'}>
     <div class="wrap">
-      <div class="work__bar" data-filter-bar hidden>
+      <div class="work__bar" data-filter-bar>
         <div class="chips" role="group" aria-label={t(lang, 'work.filter')}>
           {chips.map((c) => (
             <button type="button" class="chip" data-filter={c} aria-pressed={c === 'all' ? 'true' : 'false'}>{t(lang, `cat.${c}` as const)}</button>
@@ -62,9 +62,15 @@ const chips = ['all', ...CATEGORIES] as const;
 <style>
   .work { padding-top: var(--s-7); }
   .work__bar {
-    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-4) var(--s-6);
+    flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-4) var(--s-6);
     padding-bottom: var(--s-6); margin-bottom: var(--s-7); border-bottom: 1px solid var(--line);
   }
+  /* The chips only work with JS. Without JS the bar is not shown at all. With JS (html.js is set before first
+     paint) it takes its space at once but stays invisible until main.ts marks it ready, so showing it doesn't push
+     the project list down (CLS on /work). */
+  .work__bar { display: none; }
+  :global(html.js) .work__bar { display: flex; visibility: hidden; }
+  :global(html.js) .work__bar.is-ready { visibility: visible; }
   .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
   .chip {
     display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s-4);

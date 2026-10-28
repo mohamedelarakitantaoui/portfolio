@@ -238,7 +238,7 @@ if (filters.length) {
   }));
   // The chips only work with JS, so they only appear with it.
   const bar = $('[data-filter-bar]');
-  if (bar) bar.hidden = false;
+  if (bar) bar.classList.add('is-ready'); // space reserved in CSS under html.js (no layout shift)
 }
 
 /* ---------------- contact form ---------------- */
