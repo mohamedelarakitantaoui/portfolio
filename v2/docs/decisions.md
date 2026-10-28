@@ -4,6 +4,29 @@ Facts on the site come only from the three current CV PDFs in `public/cv/` (date
 When the two disagree, this file wins and the CV gets re-exported (see `docs/sops/update-cv.md`).
 Newest first. Each line: date, decision, and where it shows.
 
+## 2026-10-29 (Kaggle: RSNA knee MRI, final results)
+- Final results, from the user's Kaggle Submissions and Leaderboard pages (read 2026-10-27). Supersedes the 2026-10-14
+  "shown while open" state: no "In progress", no "closes 22 Oct", no Efficiency-track next step, no rank #1377, no
+  0.954 or 0.877 as a headline.
+- Private (public) macro ROC-AUC per submission: v0 ResNet18 0.811 (0.825); v1 ResNet18 + EfficientNet-B0 0.863
+  (0.877); jiwei v11 public notebook 0.927 (0.943); jiwei + own EffNet 10% blend 0.926 (0.942, failed its pre-set
+  threshold, dropped); versia5 public notebook 0.937 (0.954); versia7b public notebook 0.940 (0.956). 6 submissions,
+  Aug–Oct 2026. Final picks: versia5 and versia7b, unmodified public notebooks, as a hedge (eligibility of their
+  pretrained OAI weights not ruled on).
+- Final rank #2135 of ~6,300 teams on the private leaderboard (top ~34%), with versia7b. Competition closed
+  2026-10-22; private leaderboard preliminary until RSNA verifies winners (Nov 2026). 1st place 0.960 (Team Kangaroo),
+  10th 0.957; gap from the final pick to 1st: 0.020.
+- Public→private drop: own model −0.014, public notebooks −0.016 (no extra overfitting).
+- Honesty rule unchanged: 0.940 and the rank belong to a reproduced public notebook, never "my model"; 0.863 is the
+  user's own model. Shown separately everywhere (case study EN/FR, now-note, More projects row, ask-mamoun).
+- Winners also treated it as a labelling problem, adding agent-driven ROI labelling and laterality-aware cropping.
+  Next steps (user): rebuild own report labels and train on them, add laterality normalisation and knee-ROI cropping,
+  close the 0.863 → 0.94 gap with his own pipeline before the next RSNA challenge.
+- The Oct 14 Kaggle screenshots (public-only, rank #1377) are replaced by fresh captures taken 2026-10-29:
+  `kaggle-submissions-final.webp` (all six, private + public; the competition's MRI thumbnail cropped out) and
+  `kaggle-leaderboard-final.webp` (the user's own private-leaderboard row only; other competitors left out). The
+  per-submission chart shows private scores with the public score beside each.
+
 ## 2026-10-15 (CV update label)
 - User confirmed the CV page label: "Updated October 2026" / "Mis à jour en octobre 2026". Keep this month fixed until the user supplies a new month after re-exporting the CVs; do not derive it from the current date or file timestamps.
 

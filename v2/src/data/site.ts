@@ -104,8 +104,8 @@ export const now = {
       fr: '**PitchPoint.** Fait : le modèle, un encodeur d’ensembles à attention sur les positions des joueurs, mélangé à 50/50 avec LightGBM. Ensuite : l’inférence FastAPI et un terrain en glisser-déposer en React.',
     },
     {
-      en: '**Kaggle, RSNA knee abnormality detection.** Done: my own models went from 0.825 to 0.877 public-leaderboard ROC-AUC. Next: one lean model for the Efficiency track. The competition closes on 22 Oct.',
-      fr: '**Kaggle, détection d’anomalies du genou (RSNA).** Fait : mes propres modèles sont passés de 0,825 à 0,877 de ROC-AUC au classement public. Ensuite : un seul modèle léger pour la catégorie Efficiency. La compétition se termine le 22 octobre.',
+      en: '**Kaggle, RSNA knee abnormality detection.** Done: #2,135 of ~6,300 teams with a reproduced public ensemble (0.940); my own models reached 0.863 private ROC-AUC. Next: rebuild my own labels, add laterality normalisation and knee cropping, and close that gap before the next RSNA challenge.',
+      fr: '**Kaggle, détection d’anomalies du genou (RSNA).** Fait : 2 135ᵉ sur environ 6 300 équipes avec un ensemble public reproduit (0,940) ; mes propres modèles atteignent 0,863 de ROC-AUC au classement privé. Ensuite : reconstruire mes propres labels, normaliser la latéralité, recadrer le genou, et réduire cet écart avant le prochain challenge RSNA.',
     },
   ] as L[],
 };
@@ -302,8 +302,8 @@ export const moreProjects: MoreProject[] = [
     title: 'Knee MRI Abnormality Detection',
     year: '2026',
     line: {
-      en: 'A Kaggle entry for RSNA 2026: raw knee MRI in, 12 abnormality scores out. My own models reached 0.877 ROC-AUC on the public leaderboard; the competition closes on 22 Oct.',
-      fr: 'Une participation Kaggle à RSNA 2026 : des IRM du genou brutes en entrée, 12 scores d’anomalies en sortie. Mes propres modèles atteignent 0,877 de ROC-AUC au classement public ; la compétition se termine le 22 octobre.',
+      en: 'A Kaggle entry for RSNA 2026: raw knee MRI in, 12 abnormality scores out. My own models reached 0.863 private ROC-AUC; my final pick, a reproduced public ensemble, placed #2,135 of ~6,300 teams.',
+      fr: 'Une participation Kaggle à RSNA 2026 : des IRM du genou brutes en entrée, 12 scores d’anomalies en sortie. Mes propres modèles atteignent 0,863 de ROC-AUC au classement privé ; mon choix final, un ensemble public reproduit, s’est classé 2 135ᵉ sur environ 6 300 équipes.',
     },
     links: [{ label: 'Kaggle', href: 'https://www.kaggle.com/elaramamoun' }],
   },

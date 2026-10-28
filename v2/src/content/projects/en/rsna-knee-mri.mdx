@@ -8,12 +8,12 @@ description: A deep-learning pipeline that reads raw knee MRI and scores 12 abno
 tier: more
 year: "2026"
 meta: Kaggle competition · RSNA · 2026
-outcome: Took my own knee-MRI models from 0.825 to 0.877 public-leaderboard ROC-AUC, with 58 expert labels and free GPUs.
+outcome: Finished #2,135 of ~6,300 teams (top 34%) with a reproduced public ensemble; my own knee-MRI models reached 0.863 private ROC-AUC, with 58 expert labels and free GPUs.
 tldr:
   - "**Problem:** score 12 knee abnormalities from raw MRI, when only 58 of 4,407 training studies come with expert labels."
   - "**Built:** a DICOM cache of 21,137 series, an LLM report labeller checked against the 58 expert studies, and ResNet18 + EfficientNet-B0 models trained in parallel on two free T4 GPUs."
-  - "**Result:** my own models went from **0.825 to 0.877** public-leaderboard ROC-AUC. My best submission, a reproduced public ensemble, scores **0.954**. The competition closes on 22 Oct 2026."
-status: Competition open until 22 Oct 2026; the private-leaderboard result is pending.
+  - "**Result:** my own models reached **0.863** private-leaderboard ROC-AUC (0.811 → 0.863; public 0.825 → 0.877). My final pick, a reproduced public ensemble, scored **0.940** and placed **#2,135 of ~6,300** teams. 1st place scored 0.960."
+status: Competition closed on 22 Oct 2026. Private leaderboard preliminary until RSNA verifies the winners (Nov 2026).
 role: "Everything: data pipeline, labelling, training, inference"
 timeline: Autumn 2026
 team: Solo
@@ -21,17 +21,16 @@ stack: [Python, PyTorch, timm, pydicom, OpenCV, pandas, scikit-learn, Gemini API
 links:
   - { label: "Kaggle profile", href: "https://www.kaggle.com/elaramamoun" }
   - { label: "Competition page", href: "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection" }
-codeNote: "Notebooks private while the competition runs. Walkthrough on request."
-number: { value: "0.877", caption: "public-leaderboard ROC-AUC of my own models (ResNet18 + EfficientNet-B0), up from 0.825" }
-progress: "In progress: the competition closes on 22 Oct 2026; the private-leaderboard result follows."
-bars: { title: "Public leaderboard, macro ROC-AUC: my own models", before: { label: "ResNet18 baseline", value: 0.825, text: "0.825" }, after: { label: "ResNet18 + EfficientNet-B0 ensemble", value: 0.877, text: "0.877" } }
+codeNote: "Notebooks private. Walkthrough on request."
+number: { value: "0.863", caption: "private-leaderboard ROC-AUC of my own models (ResNet18 + EfficientNet-B0), up from 0.811" }
+bars: { title: "Private leaderboard (final), macro ROC-AUC: my own models", before: { label: "ResNet18 baseline", value: 0.811, text: "0.811" }, after: { label: "ResNet18 + EfficientNet-B0 ensemble", value: 0.863, text: "0.863" } }
 constraint: 58 expert labels for 4,407 studies, free-tier GPUs only, and competition data that can't leave Kaggle.
 tags: [PyTorch, Medical imaging, Computer vision, LLM labelling]
 category: [ml]
 ---
 import curves from '../../../assets/rsna-knee/training-curves.png';
-import submissions from '../../../assets/rsna-knee/kaggle-submissions.webp';
-import leaderboard from '../../../assets/rsna-knee/kaggle-leaderboard.webp';
+import submissions from '../../../assets/rsna-knee/kaggle-submissions-final.webp';
+import leaderboard from '../../../assets/rsna-knee/kaggle-leaderboard-final.webp';
 import notebook from '../../../assets/rsna-knee/kaggle-notebook.webp';
 
 <Note>The competition rules forbid publishing its data, so this page shows no scans: only my own logs, charts and Kaggle pages.</Note>
@@ -92,7 +91,8 @@ I wrote the threshold first, then ran the experiment, then followed the threshol
 <Rows items={[
   ['01', 'Oct 8 · My model on cache v2', 'Needed gold ≥ 0.88 to keep investing; got 0.83. Switched strategy.'],
   ['02', 'Oct 10 · Blend my model into a 0.943 public ensemble', 'Needed ≥ 0.945; got 0.942. Dropped the blend.'],
-  ['03', 'Oct 12 · Reproduce the versia-5 public ensemble', 'Needed to beat 0.943; got 0.954. Final pick.'],
+  ['03', 'Oct 12 · Reproduce the versia-5 public ensemble', 'Needed to beat 0.943; got 0.954 public. Kept as a final pick.'],
+  ['04', 'Final picks · versia-5 and versia-7b, both public notebooks', 'Not my own model: a hedge, because the eligibility of their pretrained OAI weights had not been ruled on.'],
 ]} />
 
 - **Stop tuning the labeller at the data's ceiling.** The expert labels come from the images; my labeller reads the text. Effusion volume and synovial thickening show on MRI but rarely make it into a report. I tried a prompt fix for each, both made things worse, so I froze version 3 and wrote down why.
@@ -102,27 +102,37 @@ I wrote the threshold first, then ran the experiment, then followed the threshol
 
 </Chapter>
 
-<Chapter n="05" label="Results" title="0.825 to 0.877 with my own models; 0.954 with a reproduced public ensemble.">
+<Chapter n="05" label="Results" title="#2,135 of ~6,300 with a reproduced public ensemble; 0.863 with my own models.">
+
+The competition closed on 22 Oct 2026. Final standings are on the private leaderboard, which stays preliminary until RSNA verifies the winners in November.
 
 <Stats items={[
-  { value: '0.877', caption: 'public-leaderboard ROC-AUC, my ResNet18 + EfficientNet-B0 ensemble (from 0.825)' },
+  { value: '#2,135', caption: 'of ~6,300 teams on the private leaderboard (top 34%), with a reproduced public ensemble (versia-7b, 0.940), not my model' },
+  { value: '0.863', caption: 'private-leaderboard ROC-AUC of my own ResNet18 + EfficientNet-B0 ensemble (public 0.877)' },
   { value: '0.859', caption: 'best single model on the 58 expert studies (EfficientNet-B0, cache v2; validation 0.848)' },
-  { value: '0.954', caption: 'best submission: a reproduced public ensemble, not my model' },
   { value: '99 / 99', caption: 'series byte-identical between the training cache and inference' },
 ]} />
 
 <HBars
-  title="Public leaderboard, macro ROC-AUC, per submission"
-  note="Bars start at 0.5 (chance). The grey bars are public notebooks I reproduced, or blended my model into."
+  title="Private leaderboard (final), macro ROC-AUC, all six submissions"
+  note="Final private scores; the Kaggle screenshot below lists each public score next to them. Bars start at 0.5 (chance). Grey bars are public notebooks I reproduced, or blended my model into."
   legend={['My own models', 'Public notebooks (reproduced or blended)']}
   items={[
-    { label: 'ResNet18 baseline', value: 0.825, text: '0.825' },
-    { label: 'ResNet18 + EfficientNet-B0', value: 0.877, text: '0.877' },
-    { label: 'jiweiliu ensemble, reproduced', value: 0.943, text: '0.943', muted: true },
-    { label: 'Same + my model (dropped)', value: 0.942, text: '0.942', muted: true },
-    { label: 'versia-5 ensemble, reproduced', value: 0.954, text: '0.954', muted: true },
+    { label: 'ResNet18 baseline', value: 0.811, text: '0.811' },
+    { label: 'ResNet18 + EfficientNet-B0', value: 0.863, text: '0.863' },
+    { label: 'jiweiliu ensemble, reproduced', value: 0.927, text: '0.927', muted: true },
+    { label: 'Same + my model (dropped)', value: 0.926, text: '0.926', muted: true },
+    { label: 'versia-5 ensemble, reproduced', value: 0.937, text: '0.937', muted: true },
+    { label: 'versia-7b ensemble, reproduced', value: 0.940, text: '0.940', muted: true },
   ]}
 />
+
+<Figure img={submissions} light alt="Kaggle submissions page, all six entries with private and public scores: knee-base-versia7b 0.940 / 0.956 and knee-base-versia5 0.937 / 0.954 (both selected for the final score, both described as unmodified), knee-jiwei-blend-v2 0.926 / 0.942, knee-v0-sub v1 ensemble 0.863 / 0.877, knee-v0-sub v0 0.811 / 0.825, knee-base-jiwei-v11 0.927 / 0.943." caption="All six submissions after the close, private score then public. The two selected for the final score are unmodified public notebooks, labelled as such on Kaggle." />
+
+<Figure img={leaderboard} light alt="Kaggle private leaderboard row: rank 2135, up 21 places from the public leaderboard, Elara Mamoun, score 0.940, 6 entries." caption="My row on the final private leaderboard: #2,135 of ~6,300 teams, 0.940 with a reproduced public ensemble, up 21 places from the public leaderboard." />
+
+- **No extra overfitting in my own pipeline.** From public to private, my ensemble lost 0.014 and the public notebooks lost 0.016: the drop was about the same.
+- **The gap to the top.** 1st place (Team Kangaroo) scored 0.960, 10th place 0.957; my final pick was 0.020 behind the winner. My own models sit 0.077 below that pick, and that gap is the real work left.
 
 <HBars
   title="My best model, per finding: ROC-AUC on the 58 expert studies"
@@ -144,16 +154,12 @@ I wrote the threshold first, then ran the experiment, then followed the threshol
   ]}
 />
 
-<Figure img={submissions} light alt="Kaggle submissions list with five entries and public scores: knee-base-versia5 0.954, knee-jiwei-blend-v2 0.942, knee-v0-sub v1 ensemble 0.877, knee-v0-sub v0 0.825, knee-base-jiwei-v11 0.943." caption="My five submissions on Kaggle. The two public-ensemble entries are labelled there as unmodified copies." />
-
-<Figure img={leaderboard} light alt="Kaggle public leaderboard row: rank 1377, Elara Mamoun, score 0.954, 5 entries." caption="My public-leaderboard row on 14 Oct 2026: 0.954, rank 1,377. Many teams sit close to this score; the private leaderboard decides after 22 Oct." />
-
 <ModelCard
   use="A competition entry: rank knee MRI studies by the likelihood of 12 findings, scored by macro ROC-AUC. Not a diagnostic tool."
   outOfScope="Any clinical use, and scans from scanners or protocols outside the competition data."
   data="RSNA 2026 competition data, 4,407 studies: trained on 3,479, validated on 870, with LLM labels drawn from radiology reports (public dataset). The 58 expert-labelled studies are held out as gold."
-  evaluation="Macro ROC-AUC over 12 findings. Best single model: 0.859 on the 58 expert studies (validation 0.848). Public leaderboard: 0.825 (ResNet18) → 0.877 (ResNet18 + EfficientNet-B0). Baselines: chance (0.5) and the public ensembles at 0.943 and 0.954."
-  limitations="Training labels come from report text, so findings rarely written in reports (effusion, synovitis) are noisy. The gold set is only 58 studies. The private-leaderboard result is pending until 22 Oct 2026."
+  evaluation="Macro ROC-AUC over 12 findings. Best single model: 0.859 on the 58 expert studies (validation 0.848). Private leaderboard (final): 0.811 (ResNet18) → 0.863 (ResNet18 + EfficientNet-B0); public 0.825 → 0.877. Baselines: chance (0.5) and the reproduced public ensembles at 0.927–0.940 private."
+  limitations="Training labels come from report text, so findings rarely written in reports (effusion, synovitis) are noisy. The gold set is only 58 studies. My own report labels were lost in an SSD failure, so the final models trained on a public label set."
   failure="The lateral meniscus stayed the weakest finding throughout: 0.65 AUC on the expert studies, against 0.91 for the medial meniscus."
 />
 
@@ -161,10 +167,12 @@ I wrote the threshold first, then ran the experiment, then followed the threshol
 
 </Chapter>
 
-<Chapter n="06" label="What I'd do next" title="Next: one lean model that keeps the ensemble's accuracy.">
+<Chapter n="06" label="What I'd do next" title="Next: close the gap from 0.863 to 0.94 with my own pipeline.">
 
-- Pseudo-label the training set with the strong ensemble, then distil it into a single lean model for the Efficiency Track.
-- Train the meniscus findings on a higher-resolution crop around the joint line.
-- Replace the report labels for effusion and synovitis with signals taken from the images.
+The winning teams treated this as a labelling problem too, then went further: agent-driven labelling of the region of interest and cropping that knows whether a knee is left or right. That is where I'd go next, before the next RSNA challenge:
+
+- Rebuild my own report labels and train on them, instead of the public label set.
+- Normalise laterality (left vs right knee) and crop around the knee joint, so every study reaches the model the same way round.
+- Train the meniscus findings on a higher-resolution crop around the joint line, and replace the report labels for effusion and synovitis with signals taken from the images.
 
 </Chapter>
