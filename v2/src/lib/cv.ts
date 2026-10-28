@@ -4,6 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { type Lang, lp } from '../i18n/ui';
+import { withBase } from './base';
 
 type L = Record<Lang, string>;
 interface CvFile { file: string; label: L; todo: L; langs: Lang[] }
@@ -20,7 +21,7 @@ const kb = (bytes: number) => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).t
 export const cvDownloads = files.map((f) => {
   const p = path.resolve('public/cv', f.file);
   const exists = fs.existsSync(p);
-  return { ...f, href: exists ? `/cv/${f.file}` : null, size: exists ? kb(fs.statSync(p).size) : null };
+  return { ...f, href: exists ? withBase(`/cv/${f.file}`) : null, size: exists ? kb(fs.statSync(p).size) : null };
 });
 
 /** The PDFs offered on /cv (EN) or /fr/cv (FR). The Conseil CV is French-only. */

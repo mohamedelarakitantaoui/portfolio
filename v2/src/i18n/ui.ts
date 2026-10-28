@@ -5,21 +5,41 @@ export const defaultLang: Lang = 'en';
 // Arabic is prepared (dir="rtl", IBM Plex Sans Arabic, logical CSS) but not published until the copy exists.
 export const rtlLangs = ['ar'];
 
-/** Localise an internal path: lp('fr', '/work') -> '/fr/work' */
+// Base path for sub-folder hosting (GitHub Pages: /portfolio/), set at build time with BASE_PATH (astro.config.mjs).
+// Empty at the domain root. Kept in this file (no imports) because scripts/check-i18n.mjs loads it with plain Node,
+// where import.meta.env is undefined. Re-exported from src/lib/base.ts for components.
+export const BASE = (import.meta.env?.BASE_URL ?? '/').replace(/\/+$/, '');
+
+/** '/media/x.mp4' -> '/portfolio/media/x.mp4'. External, hash and already-based URLs pass through unchanged. */
+export function withBase(path: string): string {
+  if (!BASE || !path.startsWith('/') || path.startsWith('//')) return path;
+  if (path === BASE || path.startsWith(`${BASE}/`)) return path;
+  return path === '/' ? `${BASE}/` : `${BASE}${path}`;
+}
+
+/** '/portfolio/fr/work' -> '/fr/work' (the site-relative path, for language and canonical logic). */
+export function stripBase(pathname: string): string {
+  if (!BASE) return pathname;
+  if (pathname === BASE) return '/';
+  return pathname.startsWith(`${BASE}/`) ? pathname.slice(BASE.length) : pathname;
+}
+
+/** Localise an internal path: lp('fr', '/work') -> '/fr/work' (with the base path in front when there is one) */
 export function lp(lang: Lang, path: string): string {
-  const clean = path === '/' ? '' : path.replace(/\/$/, '');
-  if (lang === defaultLang) return clean || '/';
-  return `/${lang}${clean}` || `/${lang}`;
+  const clean = path === '/' ? '' : stripBase(path).replace(/\/$/, '');
+  if (lang === defaultLang) return withBase(clean || '/');
+  return withBase(`/${lang}${clean}`);
 }
 
 /** The same page in the other language */
 export function swapLangPath(pathname: string, to: Lang): string {
-  const bare = pathname.replace(/^\/fr(?=\/|$)/, '') || '/';
+  const bare = stripBase(pathname).replace(/^\/fr(?=\/|$)/, '') || '/';
   return lp(to, bare);
 }
 
 export function langFromUrl(url: URL): Lang {
-  return url.pathname === '/fr' || url.pathname.startsWith('/fr/') ? 'fr' : 'en';
+  const p = stripBase(url.pathname);
+  return p === '/fr' || p.startsWith('/fr/') ? 'fr' : 'en';
 }
 
 export const strings = {

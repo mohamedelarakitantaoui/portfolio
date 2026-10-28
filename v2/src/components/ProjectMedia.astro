@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ProjectBars from './ProjectBars.astro';
 import type { Lang } from '../i18n/ui';
+import { withBase } from '../lib/base';
 interface Props { project: CollectionEntry<'projects'>; lang: Lang; eager?: boolean; ratio?: string }
 const { project, lang, eager = false, ratio = '16 / 9' } = Astro.props;
 const d = project.data;
@@ -13,9 +14,9 @@ const sizes = '(min-width: 1024px) 58vw, 100vw';
 ---
 {d.loop ? (
   <div class="media zoom" style={`--ratio:${ratio}`}>
-    <video class="media__el" data-loop muted loop playsinline preload="none" poster={d.loop.poster} width="1280" height="690" aria-label={d.loop.alt}>
-      <source src={d.loop.webm} type="video/webm" />
-      <source src={d.loop.mp4} type="video/mp4" />
+    <video class="media__el" data-loop muted loop playsinline preload="none" poster={withBase(d.loop.poster)} width="1280" height="690" aria-label={d.loop.alt}>
+      <source src={withBase(d.loop.webm)} type="video/webm" />
+      <source src={withBase(d.loop.mp4)} type="video/mp4" />
     </video>
     <button class="media__toggle" type="button" data-loop-toggle hidden data-play={fr ? 'Lire' : 'Play'} data-pause="Pause">
       <span data-loop-label>{fr ? 'Lire' : 'Play'}</span>

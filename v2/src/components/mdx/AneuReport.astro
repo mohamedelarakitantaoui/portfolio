@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import { langFromUrl } from '../../i18n/ui';
 import cover from '../../assets/aneuxplain/06a-report-cover.webp';
 import findings from '../../assets/aneuxplain/06b-report-findings.webp';
+import { withBase } from '../../lib/base';
 
 const fr = langFromUrl(Astro.url) === 'fr';
 // Pin positions are percentages of each page image, set on the target text.
@@ -34,7 +35,7 @@ const sizes = '(min-width: 1024px) 34vw, 70vw';
 </figure>
 
 <p class="report__cta">
-  <a class="btn" href="/research/aneuxplain-capstone-report.pdf" target="_blank" rel="noopener">
+  <a class="btn" href={withBase('/research/aneuxplain-capstone-report.pdf')} target="_blank" rel="noopener">
     {fr ? 'Lire le rapport de fin d’études complet (PDF, 53 pages, en anglais)' : 'Read the full capstone report (PDF, 53 pages)'} <span aria-hidden="true">↗</span>
   </a>
 </p>

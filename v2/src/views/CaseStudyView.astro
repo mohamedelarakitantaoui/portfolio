@@ -23,6 +23,8 @@ import HackathonCertificates from '../components/mdx/HackathonCertificates.astro
 import { type Lang, lp, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { rich, shows } from '../lib/rich';
+import { withBase } from '../lib/base';
+import BaseLink from '../components/mdx/BaseLink.astro';
 interface Props { project: CollectionEntry<'projects'>; lang: Lang }
 const { project, lang } = Astro.props;
 const d = project.data;
@@ -89,7 +91,7 @@ const tldr = (d.tldr ?? []).map((b) => {
             <dd>
               {d.links.length > 0 && <ul class="cs__links">{d.links.map((l) => {
                 const ext = /^https?:/.test(l.href);
-                return <li><a href={l.href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
+                return <li><a href={withBase(l.href)} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
               })}</ul>}
               {d.codeNote && <p class="cs__codenote">{d.codeNote} <a href={lp(lang, '/contact')}>{fr ? 'Me contacter' : 'Ask me'} →</a></p>}
             </dd>
@@ -116,7 +118,7 @@ const tldr = (d.tldr ?? []).map((b) => {
       </nav>}
 
       <div class="cs__body">
-        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard, HBars, Figure, HackathonCertificates }} />
+        <Content components={{ Chapter, PullQuote, Stats, Rows, Note, Todo, Diagram, Flow, AneuApp, AneuReport, ModelCard, HBars, Figure, HackathonCertificates, a: BaseLink }} />
       </div>
     </div>
 

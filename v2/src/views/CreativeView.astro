@@ -9,6 +9,7 @@ import xd from '../assets/creative/magazine-app-xd.png';
 import moviePoster from '../assets/creative/movie-poster.png';
 import newsletter from '../assets/creative/newsletter.png';
 import type { Lang } from '../i18n/ui';
+import { withBase } from '../lib/base';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const fr = lang === 'fr';
@@ -48,13 +49,13 @@ const designs = await Promise.all([
           <div class="photo__frame">
             <img class="photo__media" srcset={posterSrcset} sizes={posterSizes} src={posterSet[1].src} width="1280" height="720" alt={fr ? 'Couverture du livre photo Journey Through the Lens' : 'Cover of the Journey Through the Lens photo book'} loading="eager" fetchpriority="high" decoding="async" />
             <video class="photo__video" muted loop playsinline controls preload="none" poster={posterSet[1].src} width="960" height="540" data-loop aria-label={fr ? 'Extrait muet du livre photo Journey Through the Lens' : 'Silent excerpt of the Journey Through the Lens photo book'}>
-              <source src="/media/journey-loop.mp4" type="video/mp4" />
+              <source src={withBase('/media/journey-loop.mp4')} type="video/mp4" />
             </video>
           </div>
           <figcaption>
             <strong>Journey Through the Lens</strong> <Todo>{fr ? 'confirmer le titre' : 'confirm title'}</Todo>
             <span class="photo__meta">{fr ? 'Livre photo qui suit les projets de fin d’études de deux étudiants, 2025.' : 'A photo book following two students’ capstone projects, 2025.'}</span>
-            <a class="btn btn--sm" href="/media/journey-full.mp4">{fr ? 'Voir la vidéo complète (1 min 07, son, 2,1 Mo)' : 'Watch the full video (1:07, sound, 2.1 MB)'}</a>
+            <a class="btn btn--sm" href={withBase('/media/journey-full.mp4')}>{fr ? 'Voir la vidéo complète (1 min 07, son, 2,1 Mo)' : 'Watch the full video (1:07, sound, 2.1 MB)'}</a>
           </figcaption>
         </figure>
         <figure class="photo">
@@ -84,7 +85,7 @@ const designs = await Promise.all([
                 <span class="meta design__tool">{d.tool}</span>
                 <span class="design__title">{d.title}</span>
                 <span class="design__note">{d.note}</span>
-                <a class="design__pdf" href={d.href} target="_blank" rel="noopener">PDF · {d.size} <span aria-hidden="true">↗</span><span class="sr-only"> — {d.title} ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
+                <a class="design__pdf" href={withBase(d.href)} target="_blank" rel="noopener">PDF · {d.size} <span aria-hidden="true">↗</span><span class="sr-only"> — {d.title} ({fr ? 'nouvel onglet' : 'opens in a new tab'})</span></a>
               </span>
           </li>
         ))}

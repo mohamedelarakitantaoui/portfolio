@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Lang } from '../../i18n/ui';
+import { withBase } from '../../lib/base';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const dir = path.resolve('public/media/hackathon');
@@ -13,8 +14,8 @@ const files = fs.existsSync(dir)
   <h2 class="h3" id="certificates-title">{lang === 'fr' ? 'Certificats' : 'Certificates'}</h2>
   <div class="certificates__grid">
     {files.map((file, i) => <figure>
-      <a href={`/media/hackathon/${encodeURIComponent(file)}`}>
-        <img src={`/media/hackathon/${encodeURIComponent(file)}`} loading="lazy" alt={lang === 'fr' ? `Certificat du Fusion AI Hackathon 2026, ${i + 1}` : `Fusion AI Hackathon 2026 certificate, ${i + 1}`} />
+      <a href={withBase(`/media/hackathon/${encodeURIComponent(file)}`)}>
+        <img src={withBase(`/media/hackathon/${encodeURIComponent(file)}`)} loading="lazy" alt={lang === 'fr' ? `Certificat du Fusion AI Hackathon 2026, ${i + 1}` : `Fusion AI Hackathon 2026 certificate, ${i + 1}`} />
       </a>
     </figure>)}
   </div>

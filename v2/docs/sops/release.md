@@ -15,7 +15,14 @@
    (`check`, `visual`, `perf`, `cv`), require branches to be up to date, block force pushes.
 3. Deploy only from `main` (Netlify/Vercel: production branch = `main`, base directory `v2`, build command
    `npm run build`, publish directory `dist`). Preview deploys from other branches are fine.
-4. Visual baselines: run the workflow manually with "update baselines" once, download the `visual-baselines` artifact,
+4. GitHub Pages (live at https://mohamedelarakitantaoui.github.io/portfolio/): Settings → Pages → Build and
+   deployment → Source = **GitHub Actions**. `.github/workflows/deploy.yml` then deploys `v2/dist/` after every
+   green CI run on `main` (or by hand: Actions → Deploy to GitHub Pages → Run workflow). It builds with the base
+   path GitHub reports (`BASE_PATH=/portfolio`, empty with a custom domain) and runs `scripts/check-base.mjs`.
+   Internal URLs must go through `lp()` or `withBase()` (`src/lib/base.ts`), never a bare `"/media/…"`.
+   To try the sub-folder build locally: `BASE_PATH=/portfolio SITE_URL=https://mohamedelarakitantaoui.github.io
+   npm run build && BASE_PATH=/portfolio node scripts/check-base.mjs`.
+5. Visual baselines: run the workflow manually with "update baselines" once, download the `visual-baselines` artifact,
    review the images, and commit them into `tests/visual.spec.ts-snapshots/`.
 
 Never deploy with a red check, and never use `--no-verify`.

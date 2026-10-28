@@ -7,6 +7,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SITE_URL = process.env.SITE_URL || 'https://mamounelaraki.com';
+// Sub-folder hosting (GitHub Pages project site: BASE_PATH=/portfolio). Unset = domain root, as before.
+// Hand-written internal URLs go through withBase()/lp() (src/lib/base.ts) so they follow this value.
+const BASE_PATH = process.env.BASE_PATH || '/';
 
 /** Fails `astro build` if a TODO(user) marker would reach a public page. Dev builds still show them. */
 function noTodoInProduction() {
@@ -35,6 +38,7 @@ function noTodoInProduction() {
 
 export default defineConfig({
   site: SITE_URL,
+  base: BASE_PATH,
   trailingSlash: 'ignore',
   build: { format: 'directory', inlineStylesheets: 'always' },
   i18n: {

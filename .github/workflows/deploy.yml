@@ -1,0 +1,82 @@
+# Guardrail file: edit only with Mamoun's OK (added with his OK, Oct 28 2026).
+# Deploys the Astro portfolio in v2/ to GitHub Pages (Settings → Pages → Source: GitHub Actions).
+# Runs after the CI workflow finishes green on main (check, visual, perf, cv: docs/sops/release.md), or by hand
+# from the Actions tab. It re-runs the hard gates itself, builds for the Pages address (base path and origin come
+# from actions/configure-pages, so /portfolio/ today and the domain root if a custom domain is added later),
+# checks every internal URL sits under that base, then publishes v2/dist/.
+name: Deploy to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer push waits instead of cancelling a deploy halfway.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: v2
+
+env:
+  CI: '1'
+  SKIP_INSTALL_SIMPLE_GIT_HOOKS: '1'
+
+jobs:
+  build:
+    # Automatic runs only after a green CI on main; manual runs always.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The exact commit CI tested (workflow_run), or the branch picked in the Actions tab.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm, cache-dependency-path: v2/package-lock.json }
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Checks (types, styles, banned strings, i18n, build, HTML, links, SEO, media, smoke, a11y)
+        run: npm run check
+      - name: CV check
+        run: npm run check:cv
+
+      - id: pages
+        uses: actions/configure-pages@v5
+      - name: Build for GitHub Pages
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+        run: |
+          echo "Building for ${SITE_URL}${BASE_PATH}/"
+          rm -rf dist
+          npm run build
+      - name: Every internal URL under the base path
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+        run: node scripts/check-base.mjs
+      - uses: actions/upload-pages-artifact@v4
+        with: { path: v2/dist }
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

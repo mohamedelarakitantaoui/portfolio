@@ -8,6 +8,7 @@ import ProjectPager from '../components/ProjectPager.astro';
 import { type Lang, lp, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { rich, shows } from '../lib/rich';
+import { withBase } from '../lib/base';
 interface Props { project: CollectionEntry<'projects'>; lang: Lang }
 const { project, lang } = Astro.props;
 const d = project.data;
@@ -50,7 +51,7 @@ const hud: [string, string][] = [
             <dt class="meta">{t(lang, 'meta.links')}</dt>
             <dd><ul class="pp__links">{d.links.map((l) => {
               const ext = /^https?:/.test(l.href);
-              return <li><a href={l.href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
+              return <li><a href={withBase(l.href)} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>{l.label}{ext && <Fragment><span aria-hidden="true"> ↗</span><span class="sr-only"> ({newTab})</span></Fragment>}</a></li>;
             })}</ul></dd>
           </div>
         )}

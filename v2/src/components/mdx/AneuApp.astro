@@ -8,9 +8,10 @@ import s02 from '../../assets/aneuxplain/02-3d-reconstruction.webp';
 import s03 from '../../assets/aneuxplain/03-risk-score.webp';
 import s04 from '../../assets/aneuxplain/04-heatmap.webp';
 import s05 from '../../assets/aneuxplain/05-measurements.webp';
+import { withBase } from '../../lib/base';
 
 const fr = langFromUrl(Astro.url) === 'fr';
-const dir = '/media/aneuxplain';
+const dir = withBase('/media/aneuxplain');
 const walk = `${dir}/aneuxplain-walkthrough.mp4`;
 const poster = `${dir}/aneuxplain-poster-v3.webp`;
 const stills = [

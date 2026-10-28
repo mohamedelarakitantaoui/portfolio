@@ -1,0 +1,7 @@
+---
+// Markdown links in case-study bodies (`[report](/research/x.pdf)`): adds the base path to site-relative hrefs
+// so they work when the site is hosted in a sub-folder. Every other attribute passes through unchanged.
+import { withBase } from '../../lib/base';
+const { href, ...rest } = Astro.props;
+---
+<a href={typeof href === 'string' ? withBase(href) : href} {...rest}><slot /></a>

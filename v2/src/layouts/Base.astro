@@ -9,6 +9,7 @@ import jost from '../assets/fonts/jost-wght-subset.woff2?url';
 import { type Lang, swapLangPath, t } from '../i18n/ui';
 import { person } from '../data/site';
 import { plain } from '../lib/rich';
+import { stripBase, withBase } from '../lib/base';
 
 interface Props {
   lang: Lang;
@@ -21,12 +22,13 @@ interface Props {
 const { lang, title, description, ogKey, bodyClass = '', noindex = false } = Astro.props;
 
 const site = Astro.site ?? new URL('https://example.com');
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const canonical = new URL(path, site).href;
+// `path` is site-relative (no base); every absolute URL below adds the base back.
+const path = stripBase(Astro.url.pathname).replace(/\/$/, '') || '/';
+const canonical = new URL(withBase(path), site).href;
 const isNotFound = path === '/404';
-const enPath = isNotFound ? '/' : swapLangPath(path, 'en');
-const frPath = isNotFound ? '/fr' : swapLangPath(path, 'fr');
-const ogImage = new URL(`/og/${ogKey}-${lang}.png`, site).href;
+const enPath = isNotFound ? withBase('/') : swapLangPath(path, 'en');
+const frPath = isNotFound ? withBase('/fr') : swapLangPath(path, 'fr');
+const ogImage = new URL(withBase(`/og/${ogKey}-${lang}.png`), site).href;
 const fullTitle = title.length > 60 ? title.slice(0, 59) + '…' : title;
 
 const jsonLd = [
@@ -37,8 +39,8 @@ const jsonLd = [
     alternateName: person.legalName,
     jobTitle: person.jobTitle,
     email: `mailto:${person.email}`,
-    url: new URL('/', site).href,
-    image: new URL('/og/home-en.png', site).href,
+    url: new URL(withBase('/'), site).href,
+    image: new URL(withBase('/og/home-en.png'), site).href,
     address: { '@type': 'PostalAddress', addressCountry: 'MA' },
     alumniOf: [
       { '@type': 'CollegeOrUniversity', name: 'Al Akhawayn University' },
@@ -52,7 +54,7 @@ const jsonLd = [
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: person.name,
-    url: new URL('/', site).href,
+    url: new URL(withBase('/'), site).href,
     inLanguage: ['en', 'fr'],
   },
 ];
@@ -71,10 +73,10 @@ const jsonLd = [
     <link rel="alternate" hreflang="x-default" href={new URL(enPath, site).href} />
     <meta name="theme-color" content="#070605" />
     <link rel="preload" href={jost} as="font" type="font/woff2" crossorigin />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={withBase('/favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={withBase('/sitemap-index.xml')} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={person.name} />
