@@ -4,7 +4,7 @@ lang: fr
 order: 1
 title: AneuXplain
 subtitle: une IA explicable pour l’imagerie médicale
-description: Une IA explicable qui prédit le risque de rupture d’anévrisme à partir de la géométrie 3D des vaisseaux. Projet AUI, article accepté à ICOA 2026.
+description: Une IA explicable qui prédit le risque de rupture d’anévrisme à partir de la géométrie 3D des vaisseaux. Projet AUI, article présenté à ICOA 2026.
 tier: featured
 year: "2026"
 meta: Recherche · Projet de fin d’études · 2026
@@ -12,9 +12,9 @@ outcome: Prédit le risque de rupture d’un anévrisme à partir de la géomét
 tldr:
   - "**Problème :** les modèles de risque de rupture renvoient un score qu’un clinicien ne peut pas vérifier, et sont rarement testés sur les examens d’un autre hôpital."
   - "**Construit :** un modèle PointNet sur la géométrie 3D des vaisseaux, avec une carte de saillance par gradient et un rapport morphologique de 8 mesures, servi dans une application FastAPI + React + Three.js."
-  - "**Résultat :** **ROC-AUC de 0,834** et **85 % d’exactitude** avec un découpage par patient (16 patients mis de côté), et 48 sujets externes sur 50 traités de bout en bout. Article accepté à ICOA 2026."
-status: Article accepté à ICOA 2026 (paper ID 69). Prototype de recherche, pas un dispositif médical. [[todo:lien des actes / DOI une fois publié]]
-role: Seul auteur du projet de fin d’études ; co-auteur de l’article [[todo:liste complète des auteurs ICOA]]
+  - "**Résultat :** **ROC-AUC de 0,834** et **85 % d’exactitude** avec un découpage par patient (16 patients mis de côté), et 48 sujets externes sur 50 traités de bout en bout. Article présenté à ICOA 2026, publication en attente."
+status: Article présenté à ICOA 2026 (paper ID 69), publication en attente. Prototype de recherche, pas un dispositif médical. [[todo:lien des actes / DOI une fois publié]]
+role: Seul auteur du projet de fin d’études ; co-auteur de l’article avec le Dr Oualid Kafi
 timeline: printemps 2026
 team: "Seul, encadré par le Dr Oualid Kafi ; évalué par le Dr Lamiae Bouanane"
 stack: [PyTorch, PointNet, DICOM, Marching cubes, FastAPI, React, Three.js]
@@ -28,6 +28,8 @@ tags: [PyTorch, PointNet, Explicabilité, Imagerie médicale]
 category: [ml, research]
 loop: { webm: "/media/aneuxplain/aneuxplain-loop-v3.webm", mp4: "/media/aneuxplain/aneuxplain-loop-v3.mp4", poster: "/media/aneuxplain/aneuxplain-poster-v3.webp", alt: "Boucle muette de 19 secondes de l’application AneuXplain : carte de chaleur du risque sur le vaisseau, mesures sur le maillage filaire, score de risque de rupture de 67 %, puis reconstruction 3D des vaisseaux" }
 ---
+
+import certificate from '../../../assets/aneuxplain/icoa-2026-certificate.png';
 
 <Note>Prototype de recherche, pas un dispositif médical.</Note>
 
@@ -92,6 +94,8 @@ Le 0,834 se situe dans la fourchette publiée pour les classifieurs PointNet sur
 />
 
 [Lire le rapport de fin d’études complet (PDF, 53 pages, en anglais)](/research/aneuxplain-capstone-report.pdf)
+
+<Figure img={certificate} light alt="Certificat ICOA 2026 décerné à Mohamed Al Mamoun Tantaoui El Araki et Oualid Kafi pour la présentation de l’article AneuXplain: An Explainable Hybrid Deep Learning Framework for Intracranial Aneurysm Rupture Risk Assessment from 3D Vascular Geometry, Dakhla, 29–30 octobre 2026." caption="J’ai présenté l’article à la 12ᵉ International Conference on Optimization and Applications (ICOA 2026) à Dakhla, au Maroc, les 29 et 30 octobre 2026. Le certificat confirme la présentation ; la publication est encore en attente." />
 
 </Chapter>
 

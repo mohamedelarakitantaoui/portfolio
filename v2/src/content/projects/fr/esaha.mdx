@@ -3,11 +3,11 @@ key: esaha
 lang: fr
 order: 5
 title: eSaha
-description: Une plateforme de santé mentale avec un assistant GPT en 4 langues, en React, TypeScript, Flask et MongoDB, avec authentification JWT.
+description: Une plateforme de santé mentale avec un assistant GPT en arabe, français et anglais, en React, TypeScript, Flask et MongoDB, derrière une auth JWT.
 tier: more
 year: "2025"
 meta: Full-stack · Santé · 2025
-outcome: Une plateforme de santé mentale avec un assistant GPT en 4 langues, construite en React, TypeScript, Flask et MongoDB, avec authentification JWT.
+outcome: Une plateforme de santé mentale avec un assistant GPT en arabe, français et anglais, construite en React, TypeScript, Flask et MongoDB, avec authentification JWT.
 status: "[[todo:en ligne, démo ou dépôt seulement ?]]"
 role: "[[todo:seul ? projet de cours ou initiative personnelle ?]]"
 timeline: "2025"
@@ -20,9 +20,12 @@ category: [web, ml]
 # Page projet courte (décidé le 2026-10-15) : faits de site.ts et des CV uniquement, pas de lien vers le dépôt.
 caseStudy: false
 features:
-  - "Un assistant conversationnel sur l’API GPT-3.5, avec une même personnalité dans 4 langues grâce au prompt engineering."
-  - "Une analyse de sentiment sur la conversation."
-  - "Des tableaux de bord et la prise de rendez-vous."
-  - "Une interface React et TypeScript traduite en 4 langues."
-  - "Un back-end Flask structuré en services : une API REST sécurisée par JWT, sur MongoDB."
+  - "Un assistant conversationnel sur l’API GPT-3.5, avec une même personnalité en arabe, français et anglais."
+  - "Une analyse de sentiment sur chaque message, qui renvoie une humeur, un score et les facteurs associés."
+  - "Un suivi de l’humeur avec analyses et export des données, affiché dans des tableaux de bord."
+  - "La prise de rendez-vous avec suivi du statut."
+  - "Des contacts d’urgence avec alerte, et des ressources consultables par recherche."
+  - "Une interface React et TypeScript avec Vite et Tailwind, dans les mêmes 3 langues."
+  - "Une API REST Flask de 45 routes : authentification JWT, mots de passe bcrypt, MongoDB."
+number: { value: "45", caption: "routes d’API : chat, humeur, rendez-vous, urgence, ressources et profil" }
 ---

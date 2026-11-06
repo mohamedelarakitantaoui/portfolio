@@ -54,7 +54,7 @@ const projects = defineCollection({
       coverAlt: z.string().optional(),
       // Real product loop for the card and case-study header (files in public/).
       loop: z.object({ webm: z.string(), mp4: z.string(), poster: z.string(), alt: z.string() }).optional(),
-      diagram: z.enum(['dce', 'esaha', 'preparia']).optional(),
+      diagram: z.enum(['dce', 'esaha', 'preparia', 'cloud']).optional(),
       caseStudy: z.boolean().default(true),
       // draft: the case-study page is built by `astro dev` only, never in production.
       draft: z.boolean().default(false),

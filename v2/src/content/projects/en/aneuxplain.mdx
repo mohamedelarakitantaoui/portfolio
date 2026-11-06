@@ -4,7 +4,7 @@ lang: en
 order: 1
 title: AneuXplain
 subtitle: explainable AI for medical imaging
-description: Explainable AI that predicts aneurysm rupture risk from 3D vessel geometry and shows its reasoning. AUI capstone; paper accepted at ICOA 2026.
+description: Explainable AI that predicts aneurysm rupture risk from 3D vessel geometry and shows its reasoning. AUI capstone; paper presented at ICOA 2026.
 tier: featured
 year: "2026"
 meta: Research · Capstone · 2026
@@ -12,9 +12,9 @@ outcome: Predicts aneurysm rupture risk from 3D vessel geometry and explains eac
 tldr:
   - "**Problem:** rupture-risk models return one score a clinician can't check, and they are rarely tested on another hospital's scans."
   - "**Built:** a PointNet risk model on 3D vessel geometry with a gradient-saliency heatmap and an 8-measurement morphology report, served in a FastAPI + React + Three.js app."
-  - "**Result:** **0.834 ROC-AUC** and **85% accuracy** on a patient-level split (16 held-out patients), and 48 of 50 external subjects processed end to end. Paper accepted at ICOA 2026."
-status: Paper accepted at ICOA 2026 (paper ID 69). Research prototype, not a medical device. [[todo:proceedings link / DOI once published]]
-role: Sole author of the capstone; paper co-author [[todo:full ICOA author list]]
+  - "**Result:** **0.834 ROC-AUC** and **85% accuracy** on a patient-level split (16 held-out patients), and 48 of 50 external subjects processed end to end. Paper presented at ICOA 2026; publication pending."
+status: Paper presented at ICOA 2026 (paper ID 69), publication pending. Research prototype, not a medical device. [[todo:proceedings link / DOI once published]]
+role: Sole author of the capstone; paper co-author with Dr. Oualid Kafi
 timeline: Spring 2026
 team: "Solo, supervised by Dr. Oualid Kafi; evaluated by Dr. Lamiae Bouanane"
 stack: [PyTorch, PointNet, DICOM, Marching cubes, FastAPI, React, Three.js]
@@ -28,6 +28,8 @@ tags: [PyTorch, PointNet, Explainability, Medical imaging]
 category: [ml, research]
 loop: { webm: "/media/aneuxplain/aneuxplain-loop-v3.webm", mp4: "/media/aneuxplain/aneuxplain-loop-v3.mp4", poster: "/media/aneuxplain/aneuxplain-poster-v3.webp", alt: "Silent 19-second loop of the AneuXplain app: risk heatmap on the vessel, measurements on the wireframe, the 67% rupture-risk score, then the 3D vessel reconstruction" }
 ---
+
+import certificate from '../../../assets/aneuxplain/icoa-2026-certificate.png';
 
 <Note>Research prototype, not a medical device.</Note>
 
@@ -92,6 +94,8 @@ The 0.834 sits inside the published range for PointNet classifiers on IntrA (0.8
 />
 
 [Read the full capstone report (PDF, 53 pages)](/research/aneuxplain-capstone-report.pdf)
+
+<Figure img={certificate} light alt="ICOA 2026 certificate awarded to Mohamed Al Mamoun Tantaoui El Araki and Oualid Kafi for presenting the paper AneuXplain: An Explainable Hybrid Deep Learning Framework for Intracranial Aneurysm Rupture Risk Assessment from 3D Vascular Geometry, Dakhla, 29–30 October 2026." caption="I presented the paper at the 12th International Conference on Optimization and Applications (ICOA 2026) in Dakhla, Morocco, on 29–30 October 2026. The certificate confirms the presentation; publication is still pending." />
 
 </Chapter>
 

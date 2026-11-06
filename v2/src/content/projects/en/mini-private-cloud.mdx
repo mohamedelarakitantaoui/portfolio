@@ -3,24 +3,92 @@ key: mini-private-cloud
 lang: en
 order: 6
 title: Mini Private Cloud
-description: A Python CLI that drives the Docker Engine with declarative YAML provisioning, scaling, load balancing, an Nginx gateway and self-healing services.
+subtitle: "a private cloud on one laptop"
+description: A Docker-based private cloud on one laptop, run by a Python controller with YAML provisioning, scaling, an Nginx gateway and self-healing replicas.
 tier: more
 year: "2026"
-meta: Infra · CLI · 2026
-outcome: "A Python CLI that drives the Docker Engine: declarative YAML provisioning, horizontal scaling, load balancing behind an Nginx gateway, and self-healing services."
-status: "2026"
-role: "[[todo:role]]"
-timeline: "2026"
-team: "[[todo:team]]"
-stack: [Python, Docker, Nginx, PostgreSQL, YAML]
-links: []
-constraint: "[[todo:the constraint it was built under]]"
+meta: Infra · Course project · 2026
+outcome: A Docker-based private cloud on one host, run by about 2,250 lines of Python.
+tldr:
+  - "**Problem:** a small university department needs to host internal services without expensive infrastructure or a public cloud account."
+  - "**Built:** a Python controller that provisions services from YAML onto Docker, behind one Nginx gateway, with scaling, metering, a sandbox and a healing loop."
+  - "**Result:** the web tier scales from **1 to 3 replicas** with no gateway rewrite, data survives a destroyed container, and **15 validation steps** run from init to destroy."
+status: Course project, July 2026
+role: Controller, gateway, tests and report
+timeline: July 2026
+team: Solo
+stack: [Python, Docker, Nginx, PostgreSQL 16, Flask, FastAPI, YAML]
+links:
+  - { label: "GitHub (Mini_Cloud)", href: "https://github.com/mohamedelarakitantaoui/Mini_Cloud" }
+codeNote: "The public repo holds the CLI, its modules, the gateway and the app. The control API and dashboard are not in it."
+number: { value: "1 → 3", caption: "web replicas behind one gateway, with no gateway rewrite" }
+constraint: One laptop, no public cloud account, everything managed by command.
 tags: [Python, Docker, Nginx, YAML]
 category: [automation]
-caseStudy: false
-features:
-  - "Declarative provisioning: the services are described in YAML."
-  - "Isolated container networking and persistent volumes."
-  - "An Nginx gateway with load balancing and horizontal scaling."
-  - "Metrics, logging and monitoring, and self-healing services."
+diagram: cloud
 ---
+
+<Chapter n="01" label="Problem" title="A department's services, without a data centre.">
+
+A small university department needs to host internal services for students and staff, without expensive infrastructure or a public cloud account. I built the prototype for a Cloud Computing course at Al Akhawayn University: a private cloud that runs on one laptop and is managed by command.
+
+</Chapter>
+
+<Chapter n="02" label="Constraints" title="One host, one operator, one course.">
+
+- **Hardware:** a single Windows 11 laptop with Docker Desktop.
+- **Operation:** every action had to work from the command line.
+- **Exposure:** one public entry point; everything else stays on a private network.
+- **Time:** a course deadline, shared between the required features and the optional ones.
+
+</Chapter>
+
+<Chapter n="03" label="How it works" title="Containers as machines, a bridge as the subnet.">
+
+<Diagram name="cloud" lang="en" />
+
+Each cloud concept maps to a Docker one. Containers are the compute instances, a user-defined bridge (`mini-cloud-net`) is the private subnet with internal DNS, and named volumes are the persistent storage. **Nginx** is the only service with a host port, on 8080, routing `/portal` and `/app`.
+
+`cloudctl.py` is the controller. It covers `init`, `provision`, `list`, `scale`, `metrics`, `logs`, `storage`, `check-db`, `heal`, `run` and `destroy`.
+
+</Chapter>
+
+<Chapter n="04" label="Key decisions and trade-offs" title="Fail early, prove persistence, scale only what can scale.">
+
+- **Idempotent init.** It inspects first, then creates or reuses each resource, so running it twice doesn't hit name conflicts.
+- **YAML validated before Docker is touched.** Required fields, replica limits, volumes and routes are checked first: a clear error and no half-created service.
+- **Persistence proven by destruction.** I write a file to the volume, delete the container, re-provision, then read the file back through the gateway.
+- **Discovery at request time.** Nginx resolves replicas through Docker DNS, so going from 1 to 3 needs no gateway change.
+- **Stateful and stateless treated differently.** The database is marked `scalable: false` and the controller refuses to scale it, because two Postgres processes on one volume would corrupt it.
+- **Load balancing you can see.** Each replica returns an `X-Served-By` header, and the dashboard counts which replica answered.
+- **Healing with limits.** The loop checks every 3 seconds, restarts stopped replicas and gives up after 3 failed attempts.
+- **A locked-down sandbox.** `run` starts a throwaway `python:3.12-alpine` container with no network, a read-only filesystem, CPU, memory and process limits, a timeout and automatic removal. The API binds to localhost and loads YAML only from a whitelist.
+- **Metering that says what it is.** Each volume is measured against a 650 MB demonstration quota with an alert at 75%. Billing is simulated and labelled as simulated.
+
+</Chapter>
+
+<Chapter n="05" label="Results" title="15 validation steps, from init to destroy.">
+
+<Stats items={[
+  { value: '~2,250', caption: 'lines of Python in the controller and its modules' },
+  { value: '1 → 3', caption: 'web replicas, with no gateway rewrite' },
+  { value: '15', caption: 'validation steps, run in operator order' },
+  { value: '3 s', caption: 'between healing checks, 3 attempts at most' },
+]} />
+
+<Flow label="Validation order" steps={['docker info + init', 'provision', 'gateway + network + DB', 'persistence', 'scale + load balancing', 'metrics + logs', 'failure + recovery', 'sandbox', 'destroy']} />
+
+</Chapter>
+
+<Chapter n="06" label="Limitations and what I'd do next" title="Scope control is part of engineering quality.">
+
+Optional features ate into the time for the required ones. That's the main lesson, and the list of what's unfinished shows it:
+
+- the `delete <service>` command was never finished, and `--help` has a formatting bug from an unescaped `%`;
+- it runs on a single host, so there is no real high availability;
+- healing runs in the foreground only, scaling is manual and metrics show the current moment only;
+- security is at prototype level: HTTP only, credentials in YAML, no role-based access.
+
+Next I'd finish `delete`, run healing as a background service, and move the credentials out of the YAML files.
+
+</Chapter>

@@ -47,16 +47,45 @@ export const diagrams: Record<string, Diagram> = {
     ],
   },
 
+  cloud: {
+    h: 450,
+    title: { en: 'Mini Private Cloud architecture', fr: 'Architecture de Mini Private Cloud' },
+    desc: {
+      en: 'The controller and a localhost-only API drive Docker. Inside a private network, one Nginx gateway routes to web replicas and a Flask app; PostgreSQL and named volumes hold the data.',
+      fr: 'Le contrôleur et une API limitée à localhost pilotent Docker. Dans un réseau privé, une passerelle Nginx route vers les réplicas web et une application Flask ; PostgreSQL et les volumes nommés gardent les données.',
+    },
+    groups: [{ x: 0, y: 172, w: 420, h: 272, label: 'mini-cloud-net' }],
+    nodes: [
+      { x: 4, y: 4, w: 204, h: 52, title: 'cloudctl.py', sub: { en: 'CLI, YAML specs', fr: 'CLI, specs YAML' }, kind: 'chip' },
+      { x: 212, y: 4, w: 204, h: 52, title: { en: 'Control API', fr: 'API de contrôle' }, sub: { en: 'FastAPI, localhost only', fr: 'FastAPI, localhost seul' }, kind: 'chip' },
+      { x: 4, y: 96, w: 412, h: 52, title: 'Docker Engine', sub: { en: 'containers, bridge network, named volumes', fr: 'conteneurs, réseau bridge, volumes nommés' } },
+      { x: 12, y: 198, w: 396, h: 56, title: { en: 'Nginx gateway', fr: 'Passerelle Nginx' }, sub: { en: 'the only host port: 8080, /portal and /app', fr: 'seul port hôte : 8080, /portal et /app' }, kind: 'accent' },
+      { x: 12, y: 294, w: 192, h: 52, title: { en: 'Web replicas', fr: 'Réplicas web' }, sub: { en: '1 → 3, X-Served-By', fr: '1 → 3, X-Served-By' } },
+      { x: 216, y: 294, w: 192, h: 52, title: 'Flask app', sub: { en: 'sign-up, login', fr: 'inscription, connexion' } },
+      { x: 12, y: 382, w: 192, h: 52, title: { en: 'Named volume', fr: 'Volume nommé' }, sub: { en: 'survives the container', fr: 'survit au conteneur' }, kind: 'out' },
+      { x: 216, y: 382, w: 192, h: 52, title: 'PostgreSQL 16', sub: { en: 'scalable: false', fr: 'scalable: false' }, kind: 'out' },
+    ],
+    edges: [
+      { pts: [[106, 56], [106, 96]] },
+      { pts: [[314, 56], [314, 96]] },
+      { pts: [[210, 148], [210, 198]] },
+      { pts: [[108, 254], [108, 294]] },
+      { pts: [[312, 254], [312, 294]] },
+      { pts: [[108, 346], [108, 382]] },
+      { pts: [[312, 346], [312, 382]] },
+    ],
+  },
+
   esaha: {
     h: 420,
     title: { en: 'eSaha architecture', fr: 'Architecture d’eSaha' },
     desc: {
-      en: 'A React and TypeScript front end, localised in 4 languages, on a Flask REST API secured with JWT, with MongoDB and the GPT API behind it.',
-      fr: 'Une interface React et TypeScript, traduite en 4 langues, sur une API REST Flask sécurisée par JWT, avec MongoDB et l’API GPT derrière.',
+      en: 'A React and TypeScript front end, localised in 3 languages, on a Flask REST API secured with JWT, with MongoDB and the GPT API behind it.',
+      fr: 'Une interface React et TypeScript, traduite en 3 langues, sur une API REST Flask sécurisée par JWT, avec MongoDB et l’API GPT derrière.',
     },
     groups: [{ x: 0, y: 84, w: W, h: 222, label: { en: 'PROTECTED ROUTES', fr: 'ROUTES PROTÉGÉES' } }],
     nodes: [
-      { x: 60, y: 4, w: 300, h: 52, title: 'React SPA', sub: 'TypeScript · 4 languages', kind: 'chip' },
+      { x: 60, y: 4, w: 300, h: 52, title: 'React SPA', sub: 'TypeScript · 3 languages', kind: 'chip' },
       { x: col3(0) + 6, y: 112, w: 124, h: 40, title: { en: 'Auth', fr: 'Auth' } },
       { x: col3(1) + 4, y: 112, w: 124, h: 40, title: { en: 'Directory', fr: 'Annuaire' } },
       { x: col3(2) + 2, y: 112, w: 124, h: 40, title: { en: 'Live chat', fr: 'Chat' } },

@@ -38,7 +38,7 @@ export const hero = {
   stats: [
     { value: { en: '90%', fr: '90 %' } as L, label: { en: 'less processing time at Intelcia', fr: 'de temps de traitement en moins chez Intelcia' } as L },
     { value: { en: '0.83', fr: '0,83' } as L, label: { en: 'AUC, AneuXplain', fr: 'AUC, AneuXplain' } as L },
-    { value: { en: 'ICOA 2026', fr: 'ICOA 2026' } as L, label: { en: 'paper accepted', fr: 'article accepté' } as L },
+    { value: { en: 'ICOA 2026', fr: 'ICOA 2026' } as L, label: { en: 'paper presented', fr: 'article présenté' } as L },
   ],
 };
 
@@ -222,8 +222,8 @@ export const about = {
     fr: 'Je suis Mamoun El Araki, ingénieur IA et logiciel, basé au Maroc. J’ai étudié l’informatique à l’Université Al Akhawayn, à Ifrane, avec un semestre d’échange à l’Université Boğaziçi, à Istanbul.',
   } as L,
   what: {
-    en: 'I work on machine learning that explains its predictions, like AneuXplain, my capstone on aneurysm rupture risk (paper accepted at ICOA 2026). I also build the software around it: data pipelines, APIs and web apps.',
-    fr: 'Je travaille sur du machine learning qui explique ses prédictions, comme AneuXplain, mon projet de fin d’études sur le risque de rupture d’anévrisme (article accepté à ICOA 2026). Je construis aussi le logiciel autour : pipelines de données, API et applications web.',
+    en: 'I work on machine learning that explains its predictions, like AneuXplain, my capstone on aneurysm rupture risk (paper presented at ICOA 2026). I also build the software around it: data pipelines, APIs and web apps.',
+    fr: 'Je travaille sur du machine learning qui explique ses prédictions, comme AneuXplain, mon projet de fin d’études sur le risque de rupture d’anévrisme (article présenté à ICOA 2026). Je construis aussi le logiciel autour : pipelines de données, API et applications web.',
   } as L,
   how: {
     en: 'I measure before and after, and I make failures visible. At Intelcia that meant retries and health checks instead of silent gaps. In AneuXplain it meant an “out of distribution” warning instead of a confident wrong answer.',
@@ -313,8 +313,8 @@ export const moreProjects: MoreProject[] = [
     title: 'eSaha',
     year: '2025',
     line: {
-      en: 'A mental-health platform with a GPT-powered assistant in 4 languages, built with React, TypeScript, Flask and MongoDB behind JWT auth.',
-      fr: 'Une plateforme de santé mentale avec un assistant GPT en 4 langues, construite en React, TypeScript, Flask et MongoDB, avec authentification JWT.',
+      en: 'A mental-health platform with a GPT-powered assistant in Arabic, French and English, built with React, TypeScript, Flask and MongoDB behind JWT auth.',
+      fr: 'Une plateforme de santé mentale avec un assistant GPT en arabe, français et anglais, construite en React, TypeScript, Flask et MongoDB, avec authentification JWT.',
     },
     links: [],
   },
@@ -327,7 +327,7 @@ export const moreProjects: MoreProject[] = [
       en: 'A Python CLI that drives the Docker Engine: declarative YAML provisioning, horizontal scaling, load balancing behind an Nginx gateway, and self-healing services.',
       fr: 'Un CLI Python qui pilote le Docker Engine : provisionnement déclaratif en YAML, montée en charge horizontale, répartition de charge derrière une passerelle Nginx, et services auto-réparateurs.',
     },
-    links: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/mohamedelarakitantaoui/Mini_Cloud' }],
   },
   {
     key: 'preparia',
@@ -345,8 +345,8 @@ export const moreProjects: MoreProject[] = [
     title: 'Quiz Game App',
     year: '2024',
     line: {
-      en: 'An Android quiz game in Kotlin: Firebase auth, a 15-second timer, leaderboards and an offline cache.',
-      fr: 'Un jeu de quiz Android en Kotlin : authentification Firebase, minuteur de 15 secondes, classements et cache hors ligne.',
+      en: 'An Android quiz game in Kotlin: Firebase auth, questions from the Realtime Database, a 15-second timer and per-user scores.',
+      fr: 'Un jeu de quiz Android en Kotlin : authentification Firebase, questions depuis la Realtime Database, minuteur de 15 secondes et scores par utilisateur.',
     },
     links: [{ label: 'GitHub', href: 'https://github.com/mohamedelarakitantaoui/game-app' }],
   },
@@ -355,8 +355,8 @@ export const moreProjects: MoreProject[] = [
     title: 'Courses & Lessons App',
     year: '2023',
     line: {
-      en: 'A Flutter app on a WordPress backend for browsing courses, lessons and media.',
-      fr: 'Une application Flutter sur un back-end WordPress pour parcourir cours, leçons et médias.',
+      en: 'A Flutter app connected to the Preparia WordPress site: sign-in and course listings, at an early stage.',
+      fr: 'Une application Flutter connectée au site WordPress de Preparia : connexion et liste des cours, à un stade précoce.',
     },
     links: [{ label: 'GitHub', href: 'https://github.com/mohamedelarakitantaoui/my-courses-lessons-app' }],
   },

@@ -3,24 +3,92 @@ key: mini-private-cloud
 lang: fr
 order: 6
 title: Mini Private Cloud
-description: Un CLI Python qui pilote le Docker Engine, avec provisionnement déclaratif en YAML, montée en charge, répartition de charge et passerelle Nginx.
+subtitle: "un cloud privé sur un seul ordinateur"
+description: "Un cloud privé Docker sur un seul ordinateur, piloté par un contrôleur Python : provisionnement YAML, montée en charge, passerelle Nginx, auto-réparation."
 tier: more
 year: "2026"
-meta: Infra · CLI · 2026
-outcome: "Un CLI Python qui pilote le Docker Engine : provisionnement déclaratif en YAML, montée en charge horizontale, répartition de charge derrière une passerelle Nginx, et services auto-réparateurs."
-status: "2026"
-role: "[[todo:rôle]]"
-timeline: "2026"
-team: "[[todo:équipe]]"
-stack: [Python, Docker, Nginx, PostgreSQL, YAML]
-links: []
-constraint: "[[todo:la contrainte de départ]]"
+meta: Infra · Projet de cours · 2026
+outcome: Un cloud privé basé sur Docker sur un seul hôte, piloté par environ 2 250 lignes de Python.
+tldr:
+  - "**Problème :** un petit département universitaire doit héberger des services internes sans infrastructure coûteuse ni compte de cloud public."
+  - "**Construit :** un contrôleur Python qui provisionne les services depuis du YAML sur Docker, derrière une passerelle Nginx, avec montée en charge, mesure du stockage, bac à sable et boucle de réparation."
+  - "**Résultat :** le tier web passe de **1 à 3 réplicas** sans réécrire la passerelle, les données survivent à un conteneur détruit, et **15 étapes de validation** vont de l’initialisation à la destruction."
+status: Projet de cours, juillet 2026
+role: Contrôleur, passerelle, tests et rapport
+timeline: juillet 2026
+team: Seul
+stack: [Python, Docker, Nginx, PostgreSQL 16, Flask, FastAPI, YAML]
+links:
+  - { label: "GitHub (Mini_Cloud)", href: "https://github.com/mohamedelarakitantaoui/Mini_Cloud" }
+codeNote: "Le dépôt public contient le CLI, ses modules, la passerelle et l’application. L’API de contrôle et le tableau de bord n’y sont pas."
+number: { value: "1 → 3", caption: "réplicas web derrière une passerelle, sans la réécrire" }
+constraint: Un ordinateur, pas de compte de cloud public, tout géré en ligne de commande.
 tags: [Python, Docker, Nginx, YAML]
 category: [automation]
-caseStudy: false
-features:
-  - "Un provisionnement déclaratif : les services sont décrits en YAML."
-  - "Des réseaux de conteneurs isolés et des volumes persistants."
-  - "Une passerelle Nginx avec répartition de charge et montée en charge horizontale."
-  - "Métriques, journaux et supervision, et des services auto-réparateurs."
+diagram: cloud
 ---
+
+<Chapter n="01" label="Problème" title="Les services d’un département, sans centre de données.">
+
+Un petit département universitaire doit héberger des services internes pour ses étudiants et son personnel, sans infrastructure coûteuse ni compte de cloud public. J’ai construit ce prototype pour un cours de Cloud Computing à l’Université Al Akhawayn : un cloud privé qui tourne sur un seul ordinateur et se gère en ligne de commande.
+
+</Chapter>
+
+<Chapter n="02" label="Contraintes" title="Un hôte, un opérateur, un cours.">
+
+- **Matériel :** un seul ordinateur sous Windows 11 avec Docker Desktop.
+- **Exploitation :** chaque action devait fonctionner en ligne de commande.
+- **Exposition :** un seul point d’entrée public ; tout le reste sur un réseau privé.
+- **Temps :** l’échéance d’un cours, partagée entre les fonctions obligatoires et les options.
+
+</Chapter>
+
+<Chapter n="03" label="Fonctionnement" title="Des conteneurs comme machines, un bridge comme sous-réseau.">
+
+<Diagram name="cloud" lang="fr" />
+
+Chaque concept du cloud correspond à un concept Docker. Les conteneurs sont les instances de calcul, un bridge défini par l’utilisateur (`mini-cloud-net`) est le sous-réseau privé avec DNS interne, et les volumes nommés sont le stockage persistant. **Nginx** est le seul service avec un port sur l’hôte, le 8080, et route `/portal` et `/app`.
+
+`cloudctl.py` est le contrôleur. Il couvre `init`, `provision`, `list`, `scale`, `metrics`, `logs`, `storage`, `check-db`, `heal`, `run` et `destroy`.
+
+</Chapter>
+
+<Chapter n="04" label="Décisions et compromis" title="Échouer tôt, prouver la persistance, ne scaler que ce qui peut l’être.">
+
+- **Une initialisation idempotente.** Elle inspecte d’abord, puis crée ou réutilise chaque ressource : la lancer deux fois ne provoque aucun conflit de nom.
+- **Le YAML validé avant de toucher à Docker.** Champs requis, limites de réplicas, volumes et routes sont vérifiés d’abord : une erreur claire et aucun service à moitié créé.
+- **La persistance prouvée par la destruction.** J’écris un fichier sur le volume, je supprime le conteneur, je reprovisionne, puis je relis le fichier à travers la passerelle.
+- **La découverte au moment de la requête.** Nginx résout les réplicas via le DNS de Docker : passer de 1 à 3 ne demande aucun changement de passerelle.
+- **Stateful et stateless traités différemment.** La base est marquée `scalable: false` et le contrôleur refuse de la scaler, car deux processus Postgres sur un même volume la corrompraient.
+- **Une répartition de charge visible.** Chaque réplica renvoie un en-tête `X-Served-By`, et le tableau de bord compte quel réplica a répondu.
+- **Une réparation avec des limites.** La boucle vérifie toutes les 3 secondes, redémarre les réplicas arrêtés et abandonne après 3 échecs.
+- **Un bac à sable verrouillé.** `run` lance un conteneur jetable `python:3.12-alpine` sans réseau, avec système de fichiers en lecture seule, limites de CPU, de mémoire et de processus, délai maximal et suppression automatique. L’API écoute sur localhost et ne charge le YAML que depuis une liste blanche.
+- **Une mesure qui dit ce qu’elle est.** Chaque volume est mesuré par rapport à un quota de démonstration de 650 Mo, avec une alerte à 75 %. La facturation est simulée et indiquée comme telle.
+
+</Chapter>
+
+<Chapter n="05" label="Résultats" title="15 étapes de validation, de l’initialisation à la destruction.">
+
+<Stats items={[
+  { value: '~2 250', caption: 'lignes de Python dans le contrôleur et ses modules' },
+  { value: '1 → 3', caption: 'réplicas web, sans réécrire la passerelle' },
+  { value: '15', caption: 'étapes de validation, dans l’ordre d’un opérateur' },
+  { value: '3 s', caption: 'entre deux vérifications, 3 tentatives au maximum' },
+]} />
+
+<Flow label="Ordre de validation" steps={['docker info + init', 'provisionnement', 'passerelle + réseau + base', 'persistance', 'scale + répartition', 'métriques + logs', 'panne + reprise', 'bac à sable', 'destruction']} />
+
+</Chapter>
+
+<Chapter n="06" label="Limites et suite" title="Maîtriser le périmètre fait partie de la qualité.">
+
+Les fonctions optionnelles ont pris du temps aux fonctions obligatoires. C’est la leçon principale, et la liste de ce qui reste inachevé le montre :
+
+- la commande `delete <service>` n’a jamais été terminée, et `--help` a un bug de format dû à un `%` non échappé ;
+- tout tourne sur un seul hôte, donc sans vraie haute disponibilité ;
+- la réparation tourne seulement au premier plan, la montée en charge est manuelle et les métriques ne montrent que l’instant présent ;
+- la sécurité reste au niveau d’un prototype : HTTP seul, identifiants dans le YAML, pas de contrôle d’accès par rôle.
+
+Ensuite, je terminerais `delete`, je ferais tourner la réparation en service d’arrière-plan et je sortirais les identifiants des fichiers YAML.
+
+</Chapter>

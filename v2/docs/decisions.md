@@ -37,6 +37,16 @@ Newest first. Each line: date, decision, and where it shows.
   `kaggle-leaderboard-final.webp` (the user's own private-leaderboard row only; other competitors left out). The
   per-submission chart shows private scores with the public score beside each.
 
+## 2026-11-06 (project pages from the repos; ICOA presented)
+- User: eSaha assistant runs in 3 languages (Arabic, French, English), not 4. Quiz 2024, Courses 2023 stand.
+- Quiz: leaderboards and offline cache removed (user unsure, code shows neither); per-user scores saved to Firebase.
+- Mini Private Cloud is now a full case study; eSaha, Quiz and Courses stay short pages, rewritten from `docs/case-study-facts.md`.
+  Instructor names omitted. Public repo holds the CLI, modules, gateway and app, not the control API or dashboard.
+- Courses connects to the Preparia WordPress site; pages link to each other. Staging URL never shown.
+- Preparia: the two empty chapters are dropped until the user supplies them; Results is chapter 04.
+- AneuXplain: presented at ICOA 2026, Dakhla, 29–30 Oct 2026, with Dr. Oualid Kafi (certificate 202610/ID069). Publication
+  still pending: say "presented", never "published". Certificate on the case study.
+
 ## 2026-10-15 (CV update label)
 - User confirmed the CV page label: "Updated October 2026" / "Mis à jour en octobre 2026". Keep this month fixed until the user supplies a new month after re-exporting the CVs; do not derive it from the current date or file timestamps.
 
